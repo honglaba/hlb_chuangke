@@ -20,8 +20,11 @@ body{
 	max-width: 750px;
 	font-family: micorsoft yahei,simhei;
 	margin: 0 auto;
-	
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
 	}
+
 .y-flex{
 	display: flex;
 }
@@ -111,3 +114,17 @@ body{
 	line-height: .32rem;
 }
 /* 字体end */
+.main{
+	position: absolute;
+	top: 47px;
+	bottom: 53px;
+	overflow: auto;
+	width: 100%;
+}
+/* 边距 */
+.pd20{padding: .2rem;}
+.pdlr20{ padding-left: .2rem; padding-right: .2rem;}
+.pdtb20{ padding-top: .2rem;padding-bottom: .2rem;}
+.mt20{ margin-top: .2rem;}
+.mb20{ margin-bottom: .2rem;}
+/* 边距 end */
