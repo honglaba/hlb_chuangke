@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Header></Header>
-    <div class="main">
+    <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>
         <group>
@@ -16,7 +16,7 @@
         <div class="tips">
           <p>登录即视为同意
             <span>
-              <<用户使用协议>></span>
+              用户使用协议</span>
           </p>
         </div>
         <div class="tongdao">
@@ -30,6 +30,10 @@
 <script>
 import { XInput, Group, Divider } from "vux";
 export default {
+   data() {
+    return {
+    };
+  },
   components: {
     XInput,
     Group,
@@ -87,22 +91,6 @@ export default {
     width: 100%;
     border: none;
   }
-}
-.btn-aoc {
-  box-sizing: border-box;
-  display: inline-block;
-  margin: 0 auto;
-  height: 0.9rem;
-  width: 1.6rem;
-  line-height: 0.9rem;
-  font-weight: 700;
-  font-size: 0.32rem;
-  text-align: center;
-  color: #fff;
-  background-image: -webkit-linear-gradient(225deg, #f5252d 0, #ff7d32 94%);
-  background-image: linear-gradient(225deg, #f5252d 0, #ff7d32 94%);
-  border-radius: 0.04rem;
-  // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 </style>
 

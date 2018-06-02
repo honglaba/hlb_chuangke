@@ -1,12 +1,12 @@
 <template>
-        <x-header :left-options="{backText: ''}">{{headerTitle}}</x-header>
+  <x-header :left-options="{backText: ''}" :title="xtitle"></x-header>
 </template>
 <script>
 import { XHeader } from "vux";
 export default {
   data() {
     return {
-      headerTitle: "登录"
+      xtitle: "默认标题"
     };
   },
   components: {
@@ -14,12 +14,12 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.vux-header{
-  border-bottom: #e6e6e6 solid 1px;
-  background: #fff;
-  .vux-header-title{
-    color: #333;
-  }
+<style>
+.vux-header {
+  border-bottom: #e6e6e6 solid 1px !important;
+  background: #fff !important;
+}
+.vux-header .vux-header-title > span {
+  color: #333;
 }
 </style>
