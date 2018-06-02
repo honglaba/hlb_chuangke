@@ -21,7 +21,7 @@
         </div>
         <div class="tongdao">
           <divider>第三方登录</divider>
-          <div class="weixin"><img src="../../assets/images/common/weixin.png"></div>
+          <div class="weixin"><img src="../../assets/images/weixin.png"></div>
         </div>
       </div>
     </div>
@@ -30,14 +30,13 @@
 <script>
 import { XInput, Group, Divider } from "vux";
 export default {
-   data() {
-    return {
-    };
+  data() {
+    return {};
   },
   components: {
     XInput,
     Group,
-    Divider,
+    Divider
   }
 };
 </script>
@@ -67,11 +66,11 @@ export default {
   &::before {
     content: "|";
     width: 1px;
-    color: #D9D9D9;
-    padding-right: .2rem;
+    color: #d9d9d9;
+    padding-right: 0.2rem;
   }
 }
-.fasong_active{
+.fasong_active {
   color: #666;
 }
 .tongdao {

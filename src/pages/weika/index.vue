@@ -1,38 +1,38 @@
 <template>
-    <div class="app">
-        <Header></Header>
-        <div class="main">
-            <div class="content">
-                <div class="banner pd20">
-                    <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange"></swiper>
-                    <div class="kaitong">
-                        <span>立即开通</span>
-                    </div>
-                </div>
-                <div class="fuwu">
-                    sadasdasd
-                </div>
-            </div>
+  <div class="app">
+    <Header></Header>
+    <div class="main">
+      <div class="content">
+        <div class="banner pd20">
+          <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange"></swiper>
+          <div class="kaitong">
+            <span>立即开通</span>
+          </div>
         </div>
-        <Footer></Footer>
+        <div class="fuwu">
+          sadasdasd
+        </div>
+      </div>
     </div>
+    <Footer></Footer>
+  </div>
 </template>
 <script>
 import { Swiper } from "vux";
 const baseList = [
   {
     url: "javascript:",
-    img: "../../assets/images/weika/temp/banner01.jpg",
+    img: "./images/weika/temp/banner01.jpg",
     title: "送你一朵fua"
   },
   {
     url: "javascript:",
-    img: "../../assets/images/weika/temp/banner01.jpg",
+    img: "./images/weika/temp/banner01.jpg",
     title: "送你一辆车"
   },
   {
     url: "javascript:",
-    img: "../../assets/images/weika/temp/banner01.jpg", // 404
+    img: "./images/weika/temp/banner01.jpg", // 404
     title: "送你一次旅行"
   }
 ];
@@ -78,7 +78,7 @@ export default {
 }
 .fuwu {
   background: #fff;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
   text-align: center;
 }
 </style>
