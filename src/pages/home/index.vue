@@ -204,7 +204,64 @@
   
 
 </section>
-    <Footerx></Footerx>
+
+<section class="vux-1px-tb bmar20 bgf tpad36">
+  <div class="lrpad32 til-row bmar52">
+    <h3 class="fl">精选上家</h3>
+    <a class="fr" href="#">更多></a>
+  </div>
+  <div class="y-flex business">
+    <router-link tag="a" to="#" class="flex1">
+      <div class="img-box">
+         <img src="./images/home-seller-img1.png" />
+         <img src="./images/home-seller-logo1.png" />
+      </div>
+      <p class="business-name">沙拉低卡</p>
+    </router-link>
+    <router-link tag="a" to="#" class="flex1">
+      <div class="img-box">
+         <img src="./images/home-seller-img2.png" />
+         <img src="./images/home-seller-logo2.png" />
+      </div>
+      <p class="business-name">酱子（高级日料）</p>
+    </router-link>
+  </div>
+</section>
+
+<section class="vux-1px-tb bmar20 bgf guess">
+  <div class="til-row vux-1px-b">
+    <h3>猜你喜欢</h3>
+  </div>
+  <ul class="guess-list">
+    <li class="vux-1px-b">
+      <div class="guess-img"><img src="./images/home-like-img1.png"></div>
+      <div class="txt flex1">
+        <h4>良记甜品</h4>
+        <span class="mark">到店直换</span>
+        <p class="tsc">特色菜</p>
+        <div class="price-row">
+          <div><span>4.9</span>分</div>
+          <p>(118条评价)</p>
+        </div>
+      </div>
+      <p>16km</p>
+    </li>
+    <li class="vux-1px-b">
+      <div class="guess-img"><img src="./images/home-like-img2.png"></div>
+      <div class="txt flex1">
+        <h4>肯德基宅急送</h4>
+        <span class="mark">到店直换</span>
+        <p class="tsc">特色菜</p>
+        <div class="price-row">
+          <div><span>4.9</span>分</div>
+          <p>(118条评价)</p>
+        </div>
+      </div>
+      <p>16km</p>
+    </li>
+  </ul>
+</section>
+<Footerx></Footerx>
   </div>
 </template>
 
@@ -345,7 +402,122 @@ export default {
      display: block;
    }
  }
- .swiper-pagination-bullet-active{
-   background: #ccc;
- }
+.business{
+  padding: 0 .2rem;
+  padding-bottom: .15rem;
+  >a{
+    color: #333;
+    font-size: .28rem;
+  }
+  >a:nth-child(1){
+    margin-right: .2rem;
+  }
+}
+.img-box{
+    position: relative;
+    width: 3.44rem;
+    height: 1.7rem;
+    >img:nth-child(1){
+      width: 3.44rem;
+      height: 1.7rem;
+    }
+    >img:nth-child(2){
+      width:1.06rem;
+      height:1.06rem;
+      position: absolute;
+      bottom: -.56rem;
+      left:0 ;
+    }
+  }
+  .business-name{
+    padding-left: 1.14rem;
+    height: .53rem;
+    line-height: .53rem;
+    font-weight: bold;
+  }
+  .guess{
+    .til-row{
+      height: .94rem;
+      padding-top: .3rem;
+      box-sizing: border-box;
+      h3{
+        width: 2.25rem;
+        height: .34rem;
+        background: url(./images/home-like-background.png) no-repeat;
+        background-size:100%; 
+        font-size: .34rem;
+        margin: 0 auto;
+        text-align: center;
+        color: #333;
+      }
+    }
+    .guess-list{
+      padding-left: .3rem;
+      >li{
+        padding: .32rem .24rem .32rem 0;
+        display: flex;
+        .guess-img{
+          width: 2.02rem;
+          height: 2.02rem;
+          overflow: hidden;
+          margin-right: .32rem;
+          img{
+            height:100%;
+            margin: 0 auto;
+          }
+        }
+        .txt{
+          h4{
+            font-size: .36rem;
+            color: #333;
+            margin-bottom: .1rem;
+          }
+          .mark{
+            font-size: .22rem;
+            color: #fa443a;
+            background: #fff5f4;
+            border: 1px solid #fededc;
+            width: 1.11rem;
+            // height: .32rem;
+            box-sizing: border-box;
+            display: block;
+            text-align: center;
+            line-height: .32rem;
+            border-radius: .04rem;
+            margin-bottom: .42rem;
+          }
+          // .mark.vue-1px:before{
+          //   border: 1px solid #fededc;
+          //   border-radius: .04rem;
+          // }
+          .tsc{
+            font-size: .28rem;
+            color: #666;
+            margin-bottom: .1rem;
+          }
+          .price-row{
+            overflow: hidden;
+            font-size: .28rem;
+            color: #666;
+            >div{
+              float: left;
+              margin-right:.4rem;
+              span{
+                color: #f00;
+                font-size: .3rem;
+                
+              }
+            }
+            >p{
+              float: left;
+            }
+          }
+        }
+        >p{
+          font-size: .24rem;
+          color: #666;
+        }
+      }
+    }
+  }
 </style>
