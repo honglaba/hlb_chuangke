@@ -20,11 +20,8 @@ body{
 	max-width: 750px;
 	font-family: micorsoft yahei,simhei;
 	margin: 0 auto;
-	overflow: hidden;
-	height: 100%;
-	width: 100%;
+	background: #f5f5f5;
 	}
-
 .y-flex{
 	display: flex;
 }
@@ -69,9 +66,39 @@ body{
 .bmar15{
 	margin-bottom: .15rem;
 }
+.bmar20{
+	margin-bottom: .2rem;
+}
+.rpad24{
+	padding-right: .24rem;
+}
+.bpad26{
+	padding-bottom: .26rem;
+}
+.tpad27{padding-top: .27rem;}
+.lrpad32{
+	padding: 0 .32rem;
+}
+.tpad36{
+	padding-top: .36rem;
+}
+.bmar56{
+	margin-bottom: .56rem;
+}
+.lpad26{
+	padding-left: .26rem;
+}
+.bmar26{
+	margin-bottom: .26rem;
+}
+.lrpad30{
+	padding: 0 .3rem;
+}
 /* 宽高end */
 /* 颜色 */
-
+.bgf{
+	background: #fff;
+}
 /* 颜色end */
 /* 字体 */
 .fz36{
@@ -113,9 +140,6 @@ body{
 .lh32{
 	line-height: .32rem;
 }
-
-/*add by chenghai*/
-body{font-size: .28rem;color:#333;}
 /* 字体end */
 .main{
 	position: absolute;
