@@ -21,7 +21,7 @@
         </div>
         <div class="tongdao">
           <divider>第三方登录</divider>
-          <div class="weixin"><img src="../../assets/images/common/weixin.png"></div>
+          <div class="weixin"><img src="../../assets/images/weixin.png"></div>
         </div>
       </div>
     </div>

@@ -6,10 +6,10 @@
                 <div class="xuanze">
                     <ul>
                         <li>
-                            <a href="#"><img src="./images/weika/you.png"><br>我有推荐人</a>
+                            <a href="#"><img src="./images/you.png"><br>我有推荐人</a>
                         </li>
                         <li>
-                            <a href="#"><img src="./images/weika/meiyou.png"><br>我没有推荐人</a>
+                            <a href="#"><img src="./images/meiyou.png"><br>我没有推荐人</a>
                         </li>
                     </ul>
                 </div>
