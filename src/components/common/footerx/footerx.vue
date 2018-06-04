@@ -1,36 +1,47 @@
 <template>
     <footer class="y-flex y-ac vux-1px-t">
-        <a href="#" class="flex1 cur">
+        <router-link to="/home/index" class="flex1"  v-bind:class="{cur:active=='HomeIndex'}">
             <span class="nav-ico type3"></span>
             <p>首页</p>
-        </a>
-         <a href="#" class="flex1">
+        </router-link>
+         <router-link to="/shop/index" class="flex1" v-bind:class="{cur:active=='ShopIndex'}">
             <span class="nav-ico type2"></span>
             <p>附近</p>
-        </a>
-         <a href="#" class="flex1">
+        </router-link >
+         <router-link to="/weika/index" class="flex1" v-bind:class="{cur:active=='WeikaIndex'}">
             <span class="nav-ico type1"></span>
             <p>创客微卡</p>
-        </a>
-         <a href="#" class="flex1">
+        </router-link >
+         <router-link to="/member/index" class="flex1"  v-bind:class="{cur:active=='MemberIndex'}">
             <span class="nav-ico type4"></span>
             <p>我的</p>
-        </a>
+        </router-link >
     </footer>
 </template>
 <script>
 export default {
-    
+    data(){
+        return{
+            active:null
+        }
+    },
+    methods:{
+    },
+    mounted(){
+        this.active=this.$route.name
+    }
+
 }
 </script>
 <style lang="less" scoped>
     @import '~vux/src/styles/1px.less';
     footer{
+        width: 7.5rem;
         height:1rem ;
         position: fixed !important;
         bottom: 0;
-        left: 0;
-        width: 100%;
+        left: 50%;
+        margin-left:-3.75rem;
         background: #fff;
         z-index: 100;
         font-size: .24rem;

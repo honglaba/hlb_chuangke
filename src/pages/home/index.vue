@@ -21,19 +21,19 @@
               <p>美食</p>
             </a>
             <a href="#">
-              <div class="nav-ico type1"></div>
+              <div class="nav-ico type2"></div>
               <p>酒店</p>
             </a>
             <a href="#">
-              <div class="nav-ico type1"></div>
+              <div class="nav-ico type3"></div>
               <p>休闲娱乐</p>
             </a>
             <a href="#">
-              <div class="nav-ico type1"></div>
+              <div class="nav-ico type4"></div>
               <p>美容丽人</p>
             </a>
             <a href="#">
-              <div class="nav-ico type1"></div>
+              <div class="nav-ico type5"></div>
               <p>生活服务</p>
             </a>
           </div>
@@ -207,7 +207,7 @@
 
 <section class="vux-1px-tb bmar20 bgf tpad36">
   <div class="lrpad32 til-row bmar52">
-    <h3 class="fl">精选上家</h3>
+    <h3 class="fl">精选商家</h3>
     <a class="fr" href="#">更多></a>
   </div>
   <div class="y-flex business">
@@ -236,7 +236,10 @@
     <li class="vux-1px-b">
       <div class="guess-img"><img src="./images/home-like-img1.png"></div>
       <div class="txt flex1">
-        <h4>良记甜品</h4>
+        <div class="til-row2">
+          <h4>良记甜品</h4>
+          <p>创客推荐</p>
+        </div>
         <span class="mark">到店直换</span>
         <p class="tsc">特色菜</p>
         <div class="price-row">
@@ -249,7 +252,10 @@
     <li class="vux-1px-b">
       <div class="guess-img"><img src="./images/home-like-img2.png"></div>
       <div class="txt flex1">
-        <h4>肯德基宅急送</h4>
+        <div class="til-row2">
+          <h4>肯德基宅急送</h4>
+          <p>创客推荐</p>
+        </div>
         <span class="mark">到店直换</span>
         <p class="tsc">特色菜</p>
         <div class="price-row">
@@ -268,8 +274,8 @@
 <script>
 // import headerx from "../../components/common/headerx/headerx.vue";
 // import footerx from "../../components/common/footerx/footerx.vue";
-import { Swiper } from "vux";
-
+// import { Swiper } from "vux";
+  // import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 
 
 export default {
@@ -278,12 +284,37 @@ export default {
     return {
     };
   },
+  methods:{
+  },
+  mounted(){
+    // //首页swiper
+    var bannerSwiper = new Swiper ('.banner-swiper', {
+      // loop:true,
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows : true,
+      },
+    })  
+    var navSwiper=new Swiper ('.nav-swiper',{
+      pagination: {
+        el: '.swiper-pagination',
+      },
+    })
+  },
   // components: { headerx, footerx }
 };
 </script>
 
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
+// @import url("../../../static/swiper/swiper-4.2.6.min.css");
 #app{
   padding-bottom: 1rem;
 }
@@ -309,10 +340,25 @@ export default {
       .nav-ico {
         width: 0.84rem;
         height: 0.84rem;
-        background: url(./images/home-tab-icon1.png) no-repeat;
-        background-size: 100%;
+        background: url(./images/navico2.png) no-repeat;
+        background-size: 4.2rem;
         margin: 0 auto;
         margin-bottom: 0.2rem;
+      }
+      .nav-ico.type1{
+        background-position:0 0; 
+      }
+      .nav-ico.type2{
+        background-position:-.84rem 0; 
+      }
+      .nav-ico.type3{
+        background-position:-1.68rem 0; 
+      }
+      .nav-ico.type4{
+        background-position:-2.52rem 0; 
+      }
+      .nav-ico.type5{
+        background-position:-3.36rem 0; 
       }
     }
   }
@@ -467,10 +513,27 @@ export default {
           }
         }
         .txt{
+          .til-row2{
+            display: flex;
+            align-items: center;
+            height: .36rem;
+            margin-bottom: .1rem;
+            >p{
+              font-size: .2rem;
+              color: #333;
+              width: .9rem;
+              height: .3rem;
+              text-align: center;
+              line-height: .3rem;
+              border-radius: .02rem;
+              background: linear-gradient(left,#ffd05f,#ffb51d);
+              border: .01rem solid #ffecb0;
+            }
+          }
           h4{
             font-size: .36rem;
             color: #333;
-            margin-bottom: .1rem;
+            margin-right: .16rem;
           }
           .mark{
             font-size: .22rem;
