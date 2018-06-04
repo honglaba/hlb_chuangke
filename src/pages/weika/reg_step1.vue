@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <div>
         <Header></Header>
         <div class="main2">
             <div class="content pd20">

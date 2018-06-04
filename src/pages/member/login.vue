@@ -5,7 +5,7 @@
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>
         <group>
-          <x-input label-width="4em" placeholder="请输入手机号码" required></x-input>
+           <x-input label-width="4em" name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" required></x-input>
           <x-input placeholder="请输入验证码" class="weui-vcode" required>
             <span slot="right" class="fasong">获取验证码</span>
           </x-input>

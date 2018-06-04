@@ -5,13 +5,18 @@ import MemberIndex from '@/pages/member/index'
 import HomeIndex from '@/pages/home/index'
 import ShopIndex from '@/pages/shop/index'
 import WeikaIndex from '@/pages/weika/index'
-import WeikaRegstep1 from '@/pages/weika/Reg_step1'
+import WeikaVip from '@/pages/weika/vip'
+import WeikaReg from '@/pages/weika/reg'
+import WeikaRegstep1 from '@/pages/weika/reg_step1'
+import WeikaRegstep2 from '@/pages/weika/reg_step2'
+import WeikaRegstep3 from '@/pages/weika/reg_step3'
+import WeikaPay from '@/pages/weika/pay'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/member/login',
       name: 'MemberLogin',
       component: MemberLogin,
       meta: {
@@ -43,6 +48,14 @@ export default new Router({
       }
     },
     {
+      path: '/weika/vip',
+      name: 'WeikaVip',
+      component: WeikaVip,
+      meta: {
+        title: '微卡vip首页'
+      }
+    },
+    {
       path: '/home/index',
       name: 'HomeIndex',
       component: HomeIndex,
@@ -51,11 +64,43 @@ export default new Router({
       }
     },
     {
+      path: '/weika/reg',
+      name: 'WeikaReg',
+      component: WeikaReg,
+      meta: {
+        title: '注册创客微卡'
+      }
+    },
+    {
       path: '/weika/reg_step1',
       name: 'WeikaReg_step1',
       component: WeikaRegstep1,
       meta: {
         title: '注册创客微卡'
+      }
+    },
+    {
+      path: '/weika/reg_step2',
+      name: 'WeikaReg_step2',
+      component: WeikaRegstep2,
+      meta: {
+        title: '填写推荐人信息'
+      }
+    },
+    {
+      path: '/weika/reg_step3',
+      name: 'WeikaReg_step3',
+      component: WeikaRegstep3,
+      meta: {
+        title: '填写个人信息'
+      }
+    },
+    {
+      path: '/weika/pay',
+      name: 'WeikaPay',
+      component: WeikaPay,
+      meta: {
+        title: '填写个人信息'
       }
     }
   ]
