@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
+    <Footerx></Footerx>
   </div>
 </template>
 <script>
