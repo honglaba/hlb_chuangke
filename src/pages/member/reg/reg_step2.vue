@@ -3,7 +3,7 @@
     <Header></Header>
     <div class="main2">
       <div class="content pd20">
-        <div class="logo"><img src="./images/b1.png"><br>填写推荐人信息</div>
+        <div class="logo"><img src="./../images/b1.png"><br>填写推荐人信息</div>
         <group>
           <x-input label-width="4em" placeholder="推荐人信息" required></x-input>
           <x-input label-width="4em" placeholder="推荐人手机" required></x-input>

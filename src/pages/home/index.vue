@@ -247,6 +247,7 @@ import ListInner from "../../components/common/listInner/listInner"
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 
 
+
 export default {
   name: "App",
   data() {
