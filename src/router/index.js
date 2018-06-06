@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import MemberLogin from '@/pages/member/login'
 import MemberIndex from '@/pages/member/index'
 import HomeIndex from '@/pages/home/index'
+import Recommend from '@/pages/home/recommend'
+import Food from '@/pages/home/food'
+import Details from '@/pages/home/details'
 import ShopIndex from '@/pages/shop/index'
 import WeikaIndex from '@/pages/weika/index'
 import WeikaVip from '@/pages/weika/vip'
@@ -11,6 +14,7 @@ import WeikaRegstep1 from '@/pages/weika/reg_step1'
 import WeikaRegstep2 from '@/pages/weika/reg_step2'
 import WeikaRegstep3 from '@/pages/weika/reg_step3'
 import WeikaPay from '@/pages/weika/pay'
+
 Vue.use(Router)
 
 export default new Router({
@@ -101,6 +105,29 @@ export default new Router({
       component: WeikaPay,
       meta: {
         title: '填写个人信息'
+      }
+    },
+    {
+      path: '/home/recommend',
+      name: 'Recommend',
+      component:Recommend,
+      meta: {
+        title: '精品推荐 '
+      }
+    },
+    {
+      path: '/home/details',
+      name: 'Details',
+      component:Details,
+      meta: {
+        title: '商品详情页 '
+      }
+    },{
+      path: '/home/food',
+      name: 'Food',
+      component:Food,
+      meta: {
+        title: '商品详情页 '
       }
     }
   ]

@@ -16,10 +16,10 @@
   <div class="swiper-container nav-swiper">
       <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <a href="#">
+            <router-link to="/home/food">
               <div class="nav-ico type1"></div>
               <p>美食</p>
-            </a>
+            </router-link>
             <a href="#">
               <div class="nav-ico type2"></div>
               <p>酒店</p>
@@ -96,7 +96,7 @@
 <section class="vux-1px-tb bmar20 bgf tpad36">
   <div class="lrpad32 til-row bmar56">
     <h3 class="fl">精选推荐</h3>
-    <a class="fr" href="#">更多></a>
+    <router-link to="/home/recommend" class="fr">更多></router-link>
   </div>
   <div class="y-flex ad-type-one">
     <router-link tag="a" to="#">
@@ -229,42 +229,13 @@
 </section>
 
 <section class="vux-1px-tb bmar20 bgf guess">
-  <div class="til-row vux-1px-b">
+  <div class="til-row1 vux-1px-b">
     <h3>猜你喜欢</h3>
   </div>
   <ul class="guess-list">
-    <li class="vux-1px-b">
-      <div class="guess-img"><img src="./images/home-like-img1.png"></div>
-      <div class="txt flex1">
-        <div class="til-row2">
-          <h4>良记甜品</h4>
-          <p>创客推荐</p>
-        </div>
-        <span class="mark">到店直换</span>
-        <p class="tsc">特色菜</p>
-        <div class="price-row">
-          <div><span>4.9</span>分</div>
-          <p>(118条评价)</p>
-        </div>
-      </div>
-      <p>16km</p>
-    </li>
-    <li class="vux-1px-b">
-      <div class="guess-img"><img src="./images/home-like-img2.png"></div>
-      <div class="txt flex1">
-        <div class="til-row2">
-          <h4>肯德基宅急送</h4>
-          <p>创客推荐</p>
-        </div>
-        <span class="mark">到店直换</span>
-        <p class="tsc">特色菜</p>
-        <div class="price-row">
-          <div><span>4.9</span>分</div>
-          <p>(118条评价)</p>
-        </div>
-      </div>
-      <p>16km</p>
-    </li>
+     <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+       <ListInner :businessList="item"></ListInner>
+      </router-link>
   </ul>
 </section>
 <Footerx></Footerx>
@@ -272,18 +243,20 @@
 </template>
 
 <script>
-// import headerx from "../../components/common/headerx/headerx.vue";
-// import footerx from "../../components/common/footerx/footerx.vue";
-// import { Swiper } from "vux";
-  // import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
+import ListInner from "../../components/common/listInner/listInner"
+import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 
 
 export default {
   name: "App",
   data() {
     return {
+      businessList:[
+        {name:'良记甜品',pic:'../../../static/images/nearby-label-img1.png'},
+        {name:'肯德基宅急送',pic:'../../../static/images/nearby-label-img2.png'}]
     };
   },
+  components:{ListInner},  
   methods:{
   },
   mounted(){
@@ -308,13 +281,12 @@ export default {
       },
     })
   },
-  // components: { headerx, footerx }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 @import "~vux/src/styles/1px.less";
-// @import url("../../../static/swiper/swiper-4.2.6.min.css");
+@import url("../../../static/swiper/swiper-4.2.6.min.css");
 #app{
   padding-bottom: 1rem;
 }
@@ -366,7 +338,7 @@ export default {
     height: 2rem;
   }
   .swiper-pagination {
-    bottom: 0;
+    bottom: .2rem;
   }
 }
 .ad {
@@ -482,7 +454,7 @@ export default {
     font-weight: bold;
   }
   .guess{
-    .til-row{
+    .til-row1{
       height: .94rem;
       padding-top: .3rem;
       box-sizing: border-box;
@@ -501,86 +473,17 @@ export default {
       padding-left: .3rem;
       >li{
         padding: .32rem .24rem .32rem 0;
-        display: flex;
-        .guess-img{
-          width: 2.02rem;
-          height: 2.02rem;
-          overflow: hidden;
-          margin-right: .32rem;
-          img{
-            height:100%;
-            margin: 0 auto;
-          }
-        }
-        .txt{
-          .til-row2{
-            display: flex;
-            align-items: center;
-            height: .36rem;
-            margin-bottom: .1rem;
-            >p{
-              font-size: .2rem;
-              color: #333;
-              width: .9rem;
-              height: .3rem;
-              text-align: center;
-              line-height: .3rem;
-              border-radius: .02rem;
-              background: linear-gradient(left,#ffd05f,#ffb51d);
-              border: .01rem solid #ffecb0;
-            }
-          }
-          h4{
-            font-size: .36rem;
-            color: #333;
-            margin-right: .16rem;
-          }
-          .mark{
-            font-size: .22rem;
-            color: #fa443a;
-            background: #fff5f4;
-            border: 1px solid #fededc;
-            width: 1.11rem;
-            // height: .32rem;
-            box-sizing: border-box;
-            display: block;
-            text-align: center;
-            line-height: .32rem;
-            border-radius: .04rem;
-            margin-bottom: .42rem;
-          }
-          // .mark.vue-1px:before{
-          //   border: 1px solid #fededc;
-          //   border-radius: .04rem;
-          // }
-          .tsc{
-            font-size: .28rem;
-            color: #666;
-            margin-bottom: .1rem;
-          }
-          .price-row{
-            overflow: hidden;
-            font-size: .28rem;
-            color: #666;
-            >div{
-              float: left;
-              margin-right:.4rem;
-              span{
-                color: #f00;
-                font-size: .3rem;
-                
-              }
-            }
-            >p{
-              float: left;
-            }
-          }
-        }
-        >p{
-          font-size: .24rem;
-          color: #666;
-        }
       }
     }
+  }
+  .swiper-pagination-bullet{
+    width: .1rem !important;
+    height: .1rem !important;
+    background: #f1f1f1;
+    opacity: 1;
+    margin-right: .12rem !important;
+  }
+  .swiper-pagination-bullet-active{
+    background: #ccc;
   }
 </style>
