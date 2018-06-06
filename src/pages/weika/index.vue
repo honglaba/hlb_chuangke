@@ -6,7 +6,7 @@
         <div class="banner pd20">
           <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange"></swiper>
           <div class="kaitong">
-            <span>立即开通</span>
+            <router-link to="vip"><span>立即开通</span></router-link>
           </div>
         </div>
         <div class="fuwu">
