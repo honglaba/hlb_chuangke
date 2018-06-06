@@ -96,7 +96,7 @@
 <section class="vux-1px-tb bmar20 bgf tpad36">
   <div class="lrpad32 til-row bmar56">
     <h3 class="fl">精选推荐</h3>
-    <a class="fr" href="#">更多></a>
+    <router-link to="/home/recommend" class="fr">更多></router-link>
   </div>
   <div class="y-flex ad-type-one">
     <router-link tag="a" to="#">
@@ -275,7 +275,7 @@
 // import headerx from "../../components/common/headerx/headerx.vue";
 // import footerx from "../../components/common/footerx/footerx.vue";
 // import { Swiper } from "vux";
-  // import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
+  import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 
 
 export default {
@@ -312,9 +312,9 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 @import "~vux/src/styles/1px.less";
-// @import url("../../../static/swiper/swiper-4.2.6.min.css");
+@import url("../../../static/swiper/swiper-4.2.6.min.css");
 #app{
   padding-bottom: 1rem;
 }
@@ -366,7 +366,7 @@ export default {
     height: 2rem;
   }
   .swiper-pagination {
-    bottom: 0;
+    bottom: .2rem;
   }
 }
 .ad {
@@ -582,5 +582,15 @@ export default {
         }
       }
     }
+  }
+  .swiper-pagination-bullet{
+    width: .1rem !important;
+    height: .1rem !important;
+    background: #f1f1f1;
+    opacity: 1;
+    margin-right: .12rem !important;
+  }
+  .swiper-pagination-bullet-active{
+    background: #ccc;
   }
 </style>
