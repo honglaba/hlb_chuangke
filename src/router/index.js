@@ -18,6 +18,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '',
+      name: 'HomeIndex',
+      component: HomeIndex,
+      meta: {
+        title: '首页'
+      }
+    },
+    {
       path: '/member/login',
       name: 'MemberLogin',
       component: MemberLogin,
@@ -58,7 +66,7 @@ export default new Router({
       }
     },
     {
-      path: '/',
+      path: '/home/index',
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
