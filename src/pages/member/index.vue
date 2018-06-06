@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
     <div class="main">
       <div class="content">
         <div class="topbg pd20">
@@ -37,6 +37,7 @@
             <li>
               <span><img src="./images/daifukuan.png"></span>
               <span>待付款</span>
+              <span class="num">8</span>
             </li>
             <li>
               <span><img src="./images/daishouhuo.png"></span>
@@ -49,6 +50,7 @@
             <li>
               <span><img src="./images/daipinglun.png"></span>
               <span>待评论</span>
+              <span class="num">12</span>
             </li>
             <li>
               <span><img src="./images/daituikuan.png"></span>
@@ -177,8 +179,21 @@ export default {};
   li {
     width: 25%;
     text-align: center;
+    position: relative;
     span {
       display: block;
+    }
+    .num{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: .3rem;
+      height: .3rem;
+      background: #ff7f32;
+      color: #ffffff;
+      border-radius: 1rem;
+      font-size: .2rem;
+      text-align: center;
     }
   }
 }
