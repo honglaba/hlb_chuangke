@@ -180,19 +180,24 @@ export default {};
     width: 25%;
     text-align: center;
     position: relative;
+    img {
+      height: 0.68rem;
+      width: 0.68rem;
+    }
     span {
       display: block;
     }
-    .num{
+    .num {
       position: absolute;
       top: 0;
       right: 0;
-      width: .3rem;
-      height: .3rem;
+      width: 0.3rem;
+      height: 0.3rem;
+      line-height: 0.3rem;
       background: #ff7f32;
       color: #ffffff;
       border-radius: 1rem;
-      font-size: .2rem;
+      font-size: 0.2rem;
       text-align: center;
     }
   }
