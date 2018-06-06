@@ -122,9 +122,33 @@ export default {
         {
           name: "丽人",
           active: false
+        },
+        {
+          name: "附近商家",
+          active: false
+        },
+        {
+          name: "美食",
+          active: false
+        },
+        {
+          name: "酒店",
+          active: false
+        },
+        {
+          name: "娱乐",
+          active: false
+        },
+        {
+          name: "电影",
+          active: false
+        },
+        {
+          name: "丽人",
+          active: false
         }
       ],
-      navs:[
+      navs: [
         {
           name: "全部",
           active: true
@@ -165,11 +189,11 @@ export default {
       this.tabNavs[index].active = true;
     },
     navTap: function(index) {
-        let navs=document.querySelectorAll(".tab-con li");
-        for(let i=0,len=navs.length;i<len;i++){
-            this.navs[i].active=false;
-        }
-        this.navs[index].active=true;
+      let navs = document.querySelectorAll(".tab-con li");
+      for (let i = 0, len = navs.length; i < len; i++) {
+        this.navs[i].active = false;
+      }
+      this.navs[index].active = true;
     }
   }
 };
@@ -198,16 +222,22 @@ export default {
 }
 .tab-nav {
   background: #fff;
-  display: flex;
   height: 0.8rem;
   font-size: 0.28rem;
   color: #333;
+  width: 100%;
+  // display: inline;
+  white-space: nowrap;
+  overflow-x: scroll;
+  float: left;
+  overflow-y: hidden;
   > li {
-    flex: 1;
     height: 0.8rem;
     text-align: center;
     line-height: 0.8rem;
     position: relative;
+    display: inline-block;
+    margin: 0 0.3rem;
   }
   > .cur {
     color: #f60;

@@ -1,18 +1,18 @@
 <template>
     <footer class="y-flex y-ac vux-1px-t">
-        <router-link to="/home/index" class="flex1"  v-bind:class="{cur:active=='HomeIndex'}">
+        <router-link to="/home/index" class="flex1"  v-bind:class="{cur:active=='home'}">
             <span class="nav-ico type3"></span>
             <p>首页</p>
         </router-link>
-         <router-link to="/shop/index" class="flex1" v-bind:class="{cur:active=='ShopIndex'}">
+         <router-link to="/shop/index" class="flex1" v-bind:class="{cur:active=='shop'}">
             <span class="nav-ico type2"></span>
             <p>附近</p>
         </router-link >
-         <router-link to="/weika/index" class="flex1" v-bind:class="{cur:active=='WeikaIndex'}">
+         <router-link to="/weika/index" class="flex1" v-bind:class="{cur:active=='weika'}">
             <span class="nav-ico type1"></span>
             <p>创客微卡</p>
         </router-link >
-         <router-link to="/member/index" class="flex1"  v-bind:class="{cur:active=='MemberIndex'}">
+         <router-link to="/member/index" class="flex1"  v-bind:class="{cur:active=='member'}">
             <span class="nav-ico type4"></span>
             <p>我的</p>
         </router-link >
@@ -28,7 +28,7 @@ export default {
     methods:{
     },
     mounted(){
-        this.active=this.$route.name
+        this.active=this.$route.fullPath.split("/")[1];
     }
 
 }
