@@ -79,17 +79,17 @@ import { Swiper } from "vux";
 const baseList = [
   {
     url: "javascript:",
-    img: "./images/temp/banner01.jpg",
+    img: require("./images/temp/banner01.jpg"),
     title: "送你一朵fua"
   },
   {
     url: "javascript:",
-    img: "./images/temp/banner01.jpg",
+    img: require("./images/temp/banner01.jpg"),
     title: "送你一辆车"
   },
   {
     url: "javascript:",
-    img: "./images/temp/banner01.jpg", // 404
+    img: require("./images/temp/banner01.jpg"), // 404
     title: "送你一次旅行"
   }
 ];

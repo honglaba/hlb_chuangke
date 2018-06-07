@@ -13,6 +13,8 @@ import Regstep1 from '@/pages/member/reg/reg_step1'
 import Regstep2 from '@/pages/member/reg/reg_step2'
 import Regstep3 from '@/pages/member/reg/reg_step3'
 import WeikaPay from '@/pages/weika/pay'
+import withdraw from '@/pages/weika/withdraw'//提现
+import withdraw_log from '@/pages/weika/withdraw_log'//提现记录
 import Food from '@/pages/home/food'
 
 Vue.use(Router)
@@ -57,6 +59,22 @@ export default new Router({
       component: WeikaIndex,
       meta: {
         title: '微卡首页'
+      }
+    },
+    {
+      path: '/weika/withdraw_log',
+      name: 'withdraw_log',
+      component: withdraw_log,
+      meta: {
+        title: '提现记录'
+      }
+    },
+    {
+      path: '/weika/withdraw',
+      name: 'withdraw',
+      component: withdraw,
+      meta: {
+        title: '提现'
       }
     },
     {
