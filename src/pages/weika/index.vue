@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { Swiper } from 'vux';
+import { Swiper } from 'vux'
 const baseList = [
   {
     url: 'javascript:',
