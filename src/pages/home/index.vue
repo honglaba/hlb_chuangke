@@ -2,19 +2,18 @@
   <div id="app">
     <Headerx></Headerx>
 
-   
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27">
 
-    <div class="swiper-container banner-swiper">
-      <div class="swiper-wrapper">
+      <div class="swiper-container banner-swiper">
+        <div class="swiper-wrapper">
           <div class="swiper-slide"><img src="./images/home-banner-img1.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img2.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img3.png" /></div>
+        </div>
       </div>
-    </div>
 
-  <div class="swiper-container nav-swiper">
-      <div class="swiper-wrapper">
+      <div class="swiper-container nav-swiper">
+        <div class="swiper-wrapper">
           <div class="swiper-slide">
             <router-link to="/home/food">
               <div class="nav-ico type1"></div>
@@ -81,188 +80,191 @@
               <p>生活服务</p>
             </a>
           </div>
+        </div>
+        <div class="swiper-pagination"></div>
       </div>
-       <div class="swiper-pagination"></div>
-  </div>
 
-  <div class="y-flex ad">
-    <a href="#">
-      <!-- <img src="./images/home-news-text.png" /> -->
-    </a>
-    <a href="#"  class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
-  </div>
-</section>
+      <div class="y-flex ad">
+        <a href="#">
+          <!-- <img src="./images/home-news-text.png" /> -->
+        </a>
+        <a href="#" class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
+      </div>
+    </section>
 
-<section class="vux-1px-tb bmar20 bgf tpad36">
-  <div class="lrpad32 til-row bmar56">
-    <h3 class="fl">精选推荐</h3>
-    <router-link to="/home/recommend" class="fr">更多></router-link>
-  </div>
-  <div class="y-flex ad-type-one">
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img1.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>蓝牙耳机</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>980</span>
-          </p>
-          <p>特价</p>
-        </div>
+    <section class="vux-1px-tb bmar20 bgf tpad36">
+      <div class="lrpad32 til-row bmar56">
+        <h3 class="fl">精选推荐</h3>
+        <router-link to="/home/recommend" class="fr">更多></router-link>
       </div>
-    </router-link>
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img2.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>Midea洗衣机</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>980</span>
-          </p>
-          <p>特价</p>
-        </div>
+      <div class="y-flex ad-type-one">
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img1.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>蓝牙耳机</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>980</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img2.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>Midea洗衣机</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>980</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img3.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>九阳电饭煲</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>980</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
       </div>
-    </router-link>
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img3.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>九阳电饭煲</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>980</span>
-          </p>
-          <p>特价</p>
-        </div>
+      <div class="lrpad30 bmar26">
+        <div class="vux-1px-t"></div>
       </div>
-    </router-link>
-  </div>
-  <div class="lrpad30 bmar26">
-    <div class="vux-1px-t"></div>
-  </div>
-  <div class="y-flex ad-type-two">
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img4.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>车厘子</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>580</span>
-          </p>
-          <p>特价</p>
-        </div>
+      <div class="y-flex ad-type-two">
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img4.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>车厘子</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>580</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img5.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>桂花糕</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>580</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
+        <router-link tag="a" to="#">
+          <img src="./images/home-recommend-img6.png" />
+          <div class="lpad26">
+            <div class="txt1">
+              <p>坚果大礼包</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>580</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
       </div>
-    </router-link>
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img5.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>桂花糕</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>580</span>
-          </p>
-          <p>特价</p>
-        </div>
-      </div>
-    </router-link>
-    <router-link tag="a" to="#">
-      <img src="./images/home-recommend-img6.png" />
-      <div class="lpad26">
-        <div class="txt1">
-          <p>坚果大礼包</p>
-          <p>送创客微卡</p>
-        </div>
-        <div class="txt2">
-          <p>
-            <span>￥</span>
-            <span>580</span>
-          </p>
-          <p>特价</p>
-        </div>
-      </div>
-    </router-link>
-  </div>
-  
 
-</section>
+    </section>
 
-<section class="vux-1px-tb bmar20 bgf tpad36">
-  <div class="lrpad32 til-row bmar52">
-    <h3 class="fl">精选商家</h3>
-    <a class="fr" href="#">更多></a>
-  </div>
-  <div class="y-flex business">
-    <router-link tag="a" to="#" class="flex1">
-      <div class="img-box">
-         <img src="./images/home-seller-img1.png" />
-         <img src="./images/home-seller-logo1.png" />
+    <section class="vux-1px-tb bmar20 bgf tpad36">
+      <div class="lrpad32 til-row bmar52">
+        <h3 class="fl">精选商家</h3>
+        <a class="fr" href="#">更多></a>
       </div>
-      <p class="business-name">沙拉低卡</p>
-    </router-link>
-    <router-link tag="a" to="#" class="flex1">
-      <div class="img-box">
-         <img src="./images/home-seller-img2.png" />
-         <img src="./images/home-seller-logo2.png" />
+      <div class="y-flex business">
+        <router-link tag="a" to="#" class="flex1">
+          <div class="img-box">
+            <img src="./images/home-seller-img1.png" />
+            <img src="./images/home-seller-logo1.png" />
+          </div>
+          <p class="business-name">沙拉低卡</p>
+        </router-link>
+        <router-link tag="a" to="#" class="flex1">
+          <div class="img-box">
+            <img src="./images/home-seller-img2.png" />
+            <img src="./images/home-seller-logo2.png" />
+          </div>
+          <p class="business-name">酱子（高级日料）</p>
+        </router-link>
       </div>
-      <p class="business-name">酱子（高级日料）</p>
-    </router-link>
-  </div>
-</section>
+    </section>
 
-<section class="vux-1px-tb bmar20 bgf guess">
-  <div class="til-row1 vux-1px-b">
-    <h3>猜你喜欢</h3>
-  </div>
-  <ul class="guess-list">
-     <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
-       <ListInner :businessList="item"></ListInner>
-      </router-link>
-  </ul>
-</section>
-<Footerx></Footerx>
+    <section class="vux-1px-tb bmar20 bgf guess">
+      <div class="til-row1 vux-1px-b">
+        <h3>猜你喜欢</h3>
+      </div>
+      <ul class="guess-list">
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+          <ListInner :businessList="item"></ListInner>
+        </router-link>
+      </ul>
+    </section>
+    <Footerx></Footerx>
   </div>
 </template>
 
 <script>
-import ListInner from "../../components/common/listInner/listInner"
+import ListInner from '../../components/common/listInner/listInner'
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 
-
-
 export default {
-  name: "App",
-  data() {
+  name: 'App',
+  data () {
     return {
-      businessList:[
-        {name:'良记甜品',pic:'../../../static/images/nearby-label-img1.png'},
-        {name:'肯德基宅急送',pic:'../../../static/images/nearby-label-img2.png'}]
-    };
+      businessList: [
+        {
+          name: '良记甜品',
+          pic: '../../../static/images/nearby-label-img1.png'
+        },
+        {
+          name: '肯德基宅急送',
+          pic: '../../../static/images/nearby-label-img2.png'
+        }
+      ]
+    }
   },
-  components:{ListInner},  
-  methods:{
-  },
-  mounted(){
+  components: { ListInner },
+  methods: {},
+  mounted () {
     // //首页swiper
-    var bannerSwiper = new Swiper ('.banner-swiper', {
+    var bannerSwiper = new Swiper('.banner-swiper', {
       // loop:true,
       effect: 'coverflow',
       grabCursor: true,
@@ -273,22 +275,22 @@ export default {
         stretch: 0,
         depth: 100,
         modifier: 1,
-        slideShadows : true,
-      },
-    })  
-    var navSwiper=new Swiper ('.nav-swiper',{
-      pagination: {
-        el: '.swiper-pagination',
-      },
+        slideShadows: true
+      }
     })
-  },
-};
+    var navSwiper = new Swiper('.nav-swiper', {
+      pagination: {
+        el: '.swiper-pagination'
+      }
+    })
+  }
+}
 </script>
 
 <style lang="less" >
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
-#app{
+#app {
   padding-bottom: 1rem;
 }
 .swiper-container {
@@ -318,20 +320,20 @@ export default {
         margin: 0 auto;
         margin-bottom: 0.2rem;
       }
-      .nav-ico.type1{
-        background-position:0 0; 
+      .nav-ico.type1 {
+        background-position: 0 0;
       }
-      .nav-ico.type2{
-        background-position:-.84rem 0; 
+      .nav-ico.type2 {
+        background-position: -0.84rem 0;
       }
-      .nav-ico.type3{
-        background-position:-1.68rem 0; 
+      .nav-ico.type3 {
+        background-position: -1.68rem 0;
       }
-      .nav-ico.type4{
-        background-position:-2.52rem 0; 
+      .nav-ico.type4 {
+        background-position: -2.52rem 0;
       }
-      .nav-ico.type5{
-        background-position:-3.36rem 0; 
+      .nav-ico.type5 {
+        background-position: -3.36rem 0;
       }
     }
   }
@@ -339,152 +341,152 @@ export default {
     height: 2rem;
   }
   .swiper-pagination {
-    bottom: .2rem;
+    bottom: 0.2rem;
   }
 }
 .ad {
   padding-left: 0.34rem;
-  height: 0.35rem; 
+  height: 0.35rem;
   > a:nth-child(1) {
     width: 1.26rem;
     display: block;
     margin-right: 0.24rem;
     background: url(./images/home-news-text.png) no-repeat center;
-    background-size:100%; 
+    background-size: 100%;
   }
   > a:nth-child(2) {
     font-size: 0.26rem;
     color: #222;
-    padding-left:.24rem;
+    padding-left: 0.24rem;
   }
 }
-.til-row{
+.til-row {
   overflow: hidden;
-  line-height: .4rem;
-  h3{
-    font-size: .4rem;
-    color:#333;
-  }
-  a{
-    font-size: .28rem;
-    color:#666;
-  }
-}
- .ad-type-one{
-   a{
-     flex: 1
-   }
-   img{
-     width: 1.78rem;
-     display: block;
-     margin: 0 auto;
-   }
- }
- .txt1{
-   margin-bottom: .26rem;
-   >p:nth-child(1){
-     font-size: .28rem;
-     color:#666;
-     font-weight: bold;
-     margin-bottom: .08rem;
-   }
-   >p:nth-child(2){
-     font-size: .24rem;
-     color:#999;
-   }
- }
- .txt2{
-   display: flex;
-   align-items: center;
-   font-size: .28rem;
-   padding-bottom: .3rem;
-   >p:nth-child(1){
-     color: #f60;
-     font-family: Arial, Helvetica, sans-serif;
-     span:nth-child(1){
-       font-size: .22rem;
-     }
-   }
-   >p:nth-child(2){
-     color:#666;
-   }
- }
- .ad-type-two{
-   a{
-     flex: 1
-   }
-   img{
-     width: 1.7rem;
-     height: 1.7rem;
-     margin: 0 auto;
-     margin-bottom:.28rem; 
-     display: block;
-   }
- }
-.business{
-  padding: 0 .2rem;
-  padding-bottom: .15rem;
-  >a{
+  line-height: 0.4rem;
+  h3 {
+    font-size: 0.4rem;
     color: #333;
-    font-size: .28rem;
   }
-  >a:nth-child(1){
-    margin-right: .2rem;
+  a {
+    font-size: 0.28rem;
+    color: #666;
   }
 }
-.img-box{
-    position: relative;
+.ad-type-one {
+  a {
+    flex: 1;
+  }
+  img {
+    width: 1.78rem;
+    display: block;
+    margin: 0 auto;
+  }
+}
+.txt1 {
+  margin-bottom: 0.26rem;
+  > p:nth-child(1) {
+    font-size: 0.28rem;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 0.08rem;
+  }
+  > p:nth-child(2) {
+    font-size: 0.24rem;
+    color: #999;
+  }
+}
+.txt2 {
+  display: flex;
+  align-items: center;
+  font-size: 0.28rem;
+  padding-bottom: 0.3rem;
+  > p:nth-child(1) {
+    color: #f60;
+    font-family: Arial, Helvetica, sans-serif;
+    span:nth-child(1) {
+      font-size: 0.22rem;
+    }
+  }
+  > p:nth-child(2) {
+    color: #666;
+  }
+}
+.ad-type-two {
+  a {
+    flex: 1;
+  }
+  img {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin: 0 auto;
+    margin-bottom: 0.28rem;
+    display: block;
+  }
+}
+.business {
+  padding: 0 0.2rem;
+  padding-bottom: 0.15rem;
+  > a {
+    color: #333;
+    font-size: 0.28rem;
+  }
+  > a:nth-child(1) {
+    margin-right: 0.2rem;
+  }
+}
+.img-box {
+  position: relative;
+  width: 3.44rem;
+  height: 1.7rem;
+  > img:nth-child(1) {
     width: 3.44rem;
     height: 1.7rem;
-    >img:nth-child(1){
-      width: 3.44rem;
-      height: 1.7rem;
-    }
-    >img:nth-child(2){
-      width:1.06rem;
-      height:1.06rem;
-      position: absolute;
-      bottom: -.56rem;
-      left:0 ;
-    }
   }
-  .business-name{
-    padding-left: 1.14rem;
-    height: .53rem;
-    line-height: .53rem;
-    font-weight: bold;
+  > img:nth-child(2) {
+    width: 1.06rem;
+    height: 1.06rem;
+    position: absolute;
+    bottom: -0.56rem;
+    left: 0;
   }
-  .guess{
-    .til-row1{
-      height: .94rem;
-      padding-top: .3rem;
-      box-sizing: border-box;
-      h3{
-        width: 2.25rem;
-        height: .34rem;
-        background: url(./images/home-like-background.png) no-repeat;
-        background-size:100%; 
-        font-size: .34rem;
-        margin: 0 auto;
-        text-align: center;
-        color: #333;
-      }
-    }
-    .guess-list{
-      padding-left: .3rem;
-      >li{
-        padding: .32rem .24rem .32rem 0;
-      }
+}
+.business-name {
+  padding-left: 1.14rem;
+  height: 0.53rem;
+  line-height: 0.53rem;
+  font-weight: bold;
+}
+.guess {
+  .til-row1 {
+    height: 0.94rem;
+    padding-top: 0.3rem;
+    box-sizing: border-box;
+    h3 {
+      width: 2.25rem;
+      height: 0.34rem;
+      background: url(./images/home-like-background.png) no-repeat;
+      background-size: 100%;
+      font-size: 0.34rem;
+      margin: 0 auto;
+      text-align: center;
+      color: #333;
     }
   }
-  .swiper-pagination-bullet{
-    width: .1rem !important;
-    height: .1rem !important;
-    background: #f1f1f1;
-    opacity: 1;
-    margin-right: .12rem !important;
+  .guess-list {
+    padding-left: 0.3rem;
+    > li {
+      padding: 0.32rem 0.24rem 0.32rem 0;
+    }
   }
-  .swiper-pagination-bullet-active{
-    background: #ccc;
-  }
+}
+.swiper-pagination-bullet {
+  width: 0.1rem !important;
+  height: 0.1rem !important;
+  background: #f1f1f1;
+  opacity: 1;
+  margin-right: 0.12rem !important;
+}
+.swiper-pagination-bullet-active {
+  background: #ccc;
+}
 </style>

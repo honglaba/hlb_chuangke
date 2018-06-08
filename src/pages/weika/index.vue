@@ -75,42 +75,42 @@
   </div>
 </template>
 <script>
-import { Swiper } from "vux";
+import { Swiper } from 'vux';
 const baseList = [
   {
-    url: "javascript:",
-    img: "./images/temp/banner01.jpg",
-    title: "送你一朵fua"
+    url: 'javascript:',
+    img: require('./images/temp/banner01.jpg'),
+    title: '送你一朵fua'
   },
   {
-    url: "javascript:",
-    img: "./images/temp/banner01.jpg",
-    title: "送你一辆车"
+    url: 'javascript:',
+    img: require('./images/temp/banner01.jpg'),
+    title: '送你一辆车'
   },
   {
-    url: "javascript:",
-    img: "./images/temp/banner01.jpg", // 404
-    title: "送你一次旅行"
+    url: 'javascript:',
+    img: require('./images/temp/banner01.jpg'), // 404
+    title: '送你一次旅行'
   }
-];
+]
 export default {
-  data() {
+  data () {
     return {
       demo01_list: baseList
-    };
+    }
   },
   components: {
     Swiper
   },
   methods: {
-    onSwiperItemIndexChange(index) {
-      console.log("demo item change", index);
+    onSwiperItemIndexChange (index) {
+      console.log('demo item change', index)
     },
-    demo01_onIndexChange(index) {
-      this.demo01_index = index;
+    demo01_onIndexChange (index) {
+      this.demo01_index = index
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .content {

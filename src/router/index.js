@@ -5,6 +5,8 @@ import MemberIndex from '@/pages/member/index'
 import HomeIndex from '@/pages/home/index'
 import Recommend from '@/pages/home/recommend'
 import Details from '@/pages/home/details'
+import Notice from '@/pages/home/notice'
+import BussinessDetails from '@/pages/home/business-details'
 import ShopIndex from '@/pages/shop/index'
 import WeikaIndex from '@/pages/weika/index'
 import WeikaVip from '@/pages/weika/vip'
@@ -13,7 +15,11 @@ import Regstep1 from '@/pages/member/reg/reg_step1'
 import Regstep2 from '@/pages/member/reg/reg_step2'
 import Regstep3 from '@/pages/member/reg/reg_step3'
 import WeikaPay from '@/pages/weika/pay'
+import withdraw from '@/pages/weika/withdraw'// 提现
+import withdraw_log from '@/pages/weika/withdraw_log'// 提现记录
 import Food from '@/pages/home/food'
+import Location from '@/pages/home/location'
+import Map from '@/pages/home/map'
 
 Vue.use(Router)
 
@@ -57,6 +63,22 @@ export default new Router({
       component: WeikaIndex,
       meta: {
         title: '微卡首页'
+      }
+    },
+    {
+      path: '/weika/withdraw_log',
+      name: 'withdraw_log',
+      component: withdraw_log,
+      meta: {
+        title: '提现记录'
+      }
+    },
+    {
+      path: '/weika/withdraw',
+      name: 'withdraw',
+      component: withdraw,
+      meta: {
+        title: '提现'
       }
     },
     {
@@ -118,7 +140,7 @@ export default new Router({
     {
       path: '/home/recommend',
       name: 'Recommend',
-      component:Recommend,
+      component: Recommend,
       meta: {
         title: '精品推荐 '
       }
@@ -126,17 +148,46 @@ export default new Router({
     {
       path: '/home/details',
       name: 'Details',
-      component:Details,
+      component: Details,
       meta: {
         title: '商品详情页 '
       }
-    },{
+    }, {
       path: '/home/food',
       name: 'Food',
-      component:Food,
+      component: Food,
       meta: {
         title: '美食'
       }
+    }, {
+      path: '/home/business-details',
+      name: 'BussinessDetails',
+      component: BussinessDetails,
+      meta: {
+        title: '商家详情'
+      }
+    }, {
+      path: '/home/notice',
+      name: 'Notice',
+      component: Notice,
+      meta: {
+        title: '公告'
+      }
+    }, {
+      path: '/home/location',
+      name: 'Location',
+      component: Location,
+      meta: {
+        title: '定位'
+      }
+    }, {
+      path: '/home/map',
+      name: 'Map',
+      component: Map,
+      meta: {
+        title: '地图'
+      }
     }
+
   ]
 })

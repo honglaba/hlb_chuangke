@@ -1,7 +1,7 @@
 <template>
     <header class="y-flex y-ac">
         <div class="add y-flex y-ac">
-            <p>东莞</p>
+            <router-link to="/home/location" tag="p">东莞</router-link>
             <span></span>
         </div>
         <div class="search-box y-flex y-ac">
@@ -9,7 +9,7 @@
             <input type="text" placeholder="搜索附近的吃喝玩乐" />
         </div>
         <div class="screen"></div>
-        <div class="message"></div>
+        <router-link class="message" to="/home/notice" tag="div"></router-link>
     </header>
 </template>
 <script>

@@ -96,6 +96,21 @@ body{
 	padding: 0 .3rem;
 }
 .bmar52{margin-bottom: .52rem;}
+.bmar44{
+	margin-bottom: .44rem;
+}
+.lpad32{
+	padding-left: .32rem;
+}
+.bmar40{
+	margin-bottom: .4rem;
+}
+.tpad40{
+	padding-top: .4rem;
+}
+.bpad12{
+	padding-bottom: .12rem;
+}
 /* 宽高end */
 /* 颜色 */
 .bgf{
@@ -142,6 +157,9 @@ body{
 .lh32{
 	line-height: .32rem;
 }
+.lh40{
+	line-height: .4rem;
+}
 /* 字体end */
 
 /*add by chenghai*/
@@ -153,9 +171,11 @@ body{
 .mt20{margin-top:.2rem}
 .mb20{margin-bottom:.2rem}
 .mb60{margin-bottom:.6rem}
-.btn-aoc{box-sizing:border-box;display:inline-block;margin:0 auto;height:.9rem;width:1.6rem;line-height:.9rem;font-weight:700;font-size:.32rem;text-align:center;color:#fff;background-image:-webkit-linear-gradient(225deg,#f5252d 0,#ff7d32 94%);background-image:linear-gradient(225deg,#f5252d 0,#ff7d32 94%);border-radius:.04rem;border:none;width:100%}
+.mlr20{margin-left:.2rem;margin-right:.2rem}
+.mtb20{margin-top:.2rem;margin-bottom:.2rem}
+.btn-aoc{box-sizing:border-box;display:inline-block;margin:0 auto;height:.9rem;line-height:.9rem;font-weight:700;font-size:.32rem;text-align:center;color:#fff;background-image:-webkit-linear-gradient(225deg,#f5252d 0,#ff7d32 94%);background-image:linear-gradient(225deg,#f5252d 0,#ff7d32 94%);border-radius:.04rem;border:none;width:100%}
 .content img{max-width:100%}
 .base_box{background:#fff}
 .base_box .tit{position:relative;display:flex;align-items:center;justify-content:space-between;font-size:.3rem;height:.8rem}
 .base_box .tit .r{display:flex;align-items:center;color:#999}
-.base_box .tit .r img{margin-left:.1rem}
+.base_box .tit .r img{margin-left:.1rem;width: .16rem; height: .28rem;}
