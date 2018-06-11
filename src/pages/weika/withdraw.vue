@@ -47,7 +47,7 @@
                         <div class="r">提现规则<img src="../../assets/images/you1.png"></div>
                     </div>
                     <group>
-                        <x-input title="￥" :is-type="be2333" placeholder="" @on-focus="onFocus" required style='color:#000;font-weight: bold;font-size: .6rem;'></x-input>
+                        <x-input title="¥" :is-type="be2333" placeholder="" @on-focus="onFocus" required style='color:#000;font-weight: bold;font-size: .6rem;' type="number"></x-input>
                     </group>
                     <p class="mtb20 c999">可提现金额￥300.额外可用作金额￥50.</p>
                     <p class="mb20">
