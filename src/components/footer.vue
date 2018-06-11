@@ -3,7 +3,7 @@
     <tabbar-item link="/home/index" selected>
       <img slot="icon" src="../assets/images/home.png">
       <span slot="label">首页</span>
-    </tabbar-item>
+    </tabbar-item> 
     <tabbar-item link="/shop/index">
       <img slot="icon" src="../assets/images/fujin.png">
       <span slot="label">附近</span>
