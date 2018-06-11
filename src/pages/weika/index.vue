@@ -4,7 +4,7 @@
     <div class="main">
       <div class="content">
         <div class="banner">
-          <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange" :aspect-ratio="460/750" dots-position="center" :show-desc-mask="false"></swiper>
+          <swiper :list="demo01_list" :aspect-ratio="460/750" dots-position="center" :show-desc-mask="false"></swiper>
           <div class="kaitong pd20">
             <router-link to="vip"><span>立即开通</span></router-link>
           </div>
@@ -98,14 +98,6 @@ export default {
   },
   components: {
     Swiper
-  },
-  methods: {
-    onSwiperItemIndexChange (index) {
-      console.log('demo item change', index)
-    },
-    demo01_onIndexChange (index) {
-      this.demo01_index = index
-    }
   }
 }
 </script>
