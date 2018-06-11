@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-link></router-link>
+        <router-link class="back" to="#"></router-link>
         <div id="allmap" class="allmap"></div>
         <section class="bottom-row">
             <div class="location-info">
@@ -25,14 +25,27 @@ export default {
     // 百度地图API功能
     var map = new BMap.Map('allmap') // 创建Map实例
     // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11); // 初始化地图,设置中心点坐标和地图级别
-    map.centerAndZoom(new BMap.Point(113.75, 23.04), 10) // 初始化地图,设置中心点坐标和地图级别
+    map.centerAndZoom(new BMap.Point(113.75, 23.04), 17) // 初始化地图,设置中心点坐标和地图级别
 
-    map.addControl(new BMap.MapTypeControl()) //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl()) // 添加地图类型控件
     map.setCurrentCity('东莞') // 设置地图显示的城市 此项是必须设置的
   }
 }
 </script>
 <style lang="less" scoped>
+.back{
+  display: block;
+  border-radius: .1rem;
+  width: .96rem;
+  height: .96rem;
+  background: #fff url(../../../static/images/top-return-icon.png) no-repeat center;
+  background-size:.2rem;
+  box-shadow: 0 .1rem .2rem rgba(0,0,0,.1);
+  position: fixed;
+  left: .28rem;
+  top: .28rem;
+  z-index: 999;
+}
 .allmap {
   height: 100vh;
 }
@@ -48,6 +61,21 @@ export default {
   background: #fff;
   .location-info {
     width: 5.5rem;
+    padding: .22rem .68rem 0 .24rem;
+    >p:nth-child(1){
+      font-size: .36rem;
+      color:#333;
+      margin-bottom: .18rem;
+      font-weight: bold;
+    }
+    >p:nth-child(2){
+      font-size: .28rem;
+      color: #666;
+      line-height: .36rem;
+      span{
+        color: #f60;
+      }
+    }
   }
   .nav-btn {
     width: 2rem;
@@ -55,8 +83,17 @@ export default {
     background: #f5262d;
     color: #fff;
     font-size: 0.38rem;
+    display: flex;
     justify-content: center;
     align-items: center;
+    >span{
+      display: block;
+      width: .42rem;
+      height: .42rem;
+      background: url(./images/navico.png) no-repeat;
+      background-size:100%;
+      margin-right: .12rem;
+    }
   }
 }
 </style>

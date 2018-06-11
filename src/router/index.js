@@ -20,6 +20,7 @@ import withdraw_log from '@/pages/weika/withdraw_log'// 提现记录
 import Food from '@/pages/home/food'
 import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
+import Pay from '@/pages/home/pay'
 
 Vue.use(Router)
 
@@ -186,6 +187,13 @@ export default new Router({
       component: Map,
       meta: {
         title: '地图'
+      }
+    }, {
+      path: '/home/pay',
+      name: 'Pay',
+      component: Pay,
+      meta: {
+        title: '消费买单'
       }
     }
 
