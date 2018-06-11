@@ -3,9 +3,9 @@
     <Header></Header>
     <div class="main">
       <div class="content">
-        <div class="banner pd20">
-          <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange"></swiper>
-          <div class="kaitong">
+        <div class="banner">
+          <swiper :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange" :aspect-ratio="460/750" dots-position="center" :show-desc-mask="false"></swiper>
+          <div class="kaitong pd20">
             <router-link to="vip"><span>立即开通</span></router-link>
           </div>
         </div>
@@ -80,17 +80,14 @@ const baseList = [
   {
     url: 'javascript:',
     img: require('./images/temp/banner01.jpg'),
-    title: '送你一朵fua'
   },
   {
     url: 'javascript:',
     img: require('./images/temp/banner01.jpg'),
-    title: '送你一辆车'
   },
   {
     url: 'javascript:',
     img: require('./images/temp/banner01.jpg'), // 404
-    title: '送你一次旅行'
   }
 ]
 export default {
