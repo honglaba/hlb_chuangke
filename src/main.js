@@ -11,6 +11,10 @@ import Headerx from "@/components/common/headerx/headerx";
 import Footerx from "@/components/common/footerx/footerx";
 
 fastClick.attach(document.body)
+
+//自定义请求头
+axios.defaults.headers.post["X-Requested-With"]="XMLHttpRequest"
+
 Vue.config.productionTip = false
 Vue.prototype.axios=axios
 //全局组件
