@@ -1,21 +1,28 @@
-import HTTP from './fetch'
+import axios from 'axios'
 
-const Methods = {
-  HTTP_GET_wxident () {
-    let agent = navigator.userAgent
-    let client = 'micro' // 默认pc
-    if (agent.indexOf('iPhone') > 0) {
-      client = 'ios'
-    } else if (agent.indexOf('Android') > 0) {
-      client = 'android'
-    }
-    return HTTP({
-      url: '/api/oauth/wechat',
-      params: {
-        client: client
-      }
-    })
-  }
-}
+let baseURL = process.env.NODE_ENV === 'production' ? 'http://api.ck.honglaba.com' : '/api_proxy'
 
-export default Methods
+// 配置axios对象
+axios.defaults.baseURL = baseURL
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + AccessToken
+
+// 请求拦截器
+axios.interceptors.request.use(config => {
+  // Do something before request is sent
+  return config
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
+
+// 响应拦截器
+axios.interceptors.response.use(response => {
+  // Do something with response data
+  return response.data
+}, error => {
+  // Do something with response error
+  return Promise.reject(error)
+})
+
+export default axios

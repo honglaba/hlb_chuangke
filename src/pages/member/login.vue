@@ -29,16 +29,13 @@
 </template>
 <script>
 import { XInput, Group, Divider } from 'vux'
-import HTTP from '@/api'
 export default {
   data () {
     return {}
   },
   methods: {
     loginWX () { // 微信登录
-      HTTP.HTTP_GET_wxident().then(res => {
-        window.location = res.redirect
-      })
+
     }
   },
   components: {
