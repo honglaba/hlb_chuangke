@@ -175,8 +175,8 @@ body{
 /* 字体end */
 
 /*add by chenghai*/
-.main{position:absolute;top:.9rem;bottom:1rem;overflow:auto;width:7.5rem}
-.main2{position:absolute;top:.9rem;bottom:0;overflow:auto;width:7.5rem}
+.main{position:absolute;top:.88rem;bottom:1rem;overflow:auto;width:7.5rem}
+.main2{position:absolute;top:.88rem;bottom:0;overflow:auto;width:7.5rem}
 .pd20{padding:.2rem}
 .pdlr20{padding-left:.2rem;padding-right:.2rem}
 .pdtb20{padding-top:.2rem;padding-bottom:.2rem}
@@ -191,3 +191,9 @@ body{
 .base_box .tit{position:relative;display:flex;align-items:center;justify-content:space-between;font-size:.3rem;height:.8rem}
 .base_box .tit .r{display:flex;align-items:center;color:#999}
 .base_box .tit .r img{margin-left:.1rem;width: .16rem; height: .28rem;}
+/*定位上下左右居中*/
+.abs-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);-ms-transform: translate(-50%,-50%);  }
+/*上下居中*/
+.abs-topcenter{position:absolute;top:50%;transform:translateY(-50%);-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);}
+/*左右居中*/
+.abs-leftcenter{position:absolute;left:50%;transform:translateX(-50%);-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);}

@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header></Header>
-        <div class="main">
+        <div class="main2">
             <div class="content">
                 <div class="txlist pd20">
                     <ul>
@@ -149,7 +149,6 @@
                 </div>
             </div>
         </div>
-        <Footerx></Footerx>
     </div>
 </template>
 <script>
@@ -173,7 +172,7 @@
       img {
         width: 0.8rem;
         height: 0.8rem;
-        margin-right: 0.2rem;
+        margin-right: 0.1rem;
         border-radius: 1rem;
       }
     }

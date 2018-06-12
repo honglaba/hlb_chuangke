@@ -23,17 +23,17 @@
                                 <li>
                                     <span>可用佣金(元)</span>
                                     <span>65.00</span>
-                                    <span>提现</span>
+                                    <span> <router-link to="withdraw">提现</router-link></span>
                                 </li>
                                 <li>
                                     <span>累计佣金(元)</span>
                                     <span>85.00</span>
-                                    <span>查看</span>
+                                    <span><router-link to="income">查看</router-link></span>
                                 </li>
                                 <li>
                                     <span>我的推荐(人)</span>
                                     <span>105</span>
-                                    <span>查看</span>
+                                    <span><router-link to="recommend_list">查看</router-link></span>
                                 </li>
                             </ul>
                         </div>
@@ -255,6 +255,7 @@ export default {
             padding: 0 0.2rem;
             border-radius: 1rem;
             line-height: 0.38rem;
+            a{ color: #ffffff;}
           }
         }
       }

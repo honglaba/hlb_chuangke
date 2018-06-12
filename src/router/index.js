@@ -18,6 +18,8 @@ import WeikaPay from '@/pages/weika/pay'
 import withdraw from '@/pages/weika/withdraw'// 提现
 import withdraw_log from '@/pages/weika/withdraw_log'// 提现记录
 import recommend_list from '@/pages/weika/recommend_list'// 推荐用户列表
+import income from '@/pages/weika/income'// 佣金首页
+import income_zhanji from '@/pages/weika/income_zhanji'// 查看战绩
 import Food from '@/pages/home/food'
 import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
@@ -97,6 +99,22 @@ export default new Router({
       component: WeikaVip,
       meta: {
         title: '微卡vip首页'
+      }
+    },
+    {
+      path: '/weika/income',
+      name: 'income',
+      component: income,
+      meta: {
+        title: '创客佣金'
+      }
+    },
+    {
+      path: '/weika/income_zhanji',
+      name: 'income_zhanji',
+      component: income_zhanji,
+      meta: {
+        title: '查看战绩'
       }
     },
     {
