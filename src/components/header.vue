@@ -3,17 +3,17 @@
 </template>
 
 <script>
-import { XHeader } from "vux";
+import { XHeader } from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      xtitle: "默认标题"
-    };
+      xtitle: '默认标题'
+    }
   },
   components: {
     XHeader
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -39,7 +39,7 @@ export default {
   width: .2rem !important;
   height: .34rem !important;
   background: url(../../static/images/top-return-icon.png) no-repeat;
-  background-size:100%; 
+  background-size:100%;
   top: 0 !important;
   left: 0 !important;
 }

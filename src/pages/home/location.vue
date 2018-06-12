@@ -1,6 +1,15 @@
 <template>
-  <div id="app">
-    <Headerx></Headerx>
+  <div id="app" :class="{noscorll:maskSeen}">
+    <!-- <Headerx></Headerx> -->
+    <header class="y-flex y-ac" :class="{sp:maskSeen}">
+      <!-- <span class="close" v-if="!maskSeen"></span> -->
+      <router-link tag="span" to="/home/index"  class="close" v-if="!maskSeen"></router-link>
+      <div class="search-box y-flex y-ac">
+        <span></span>
+        <input type="text" placeholder="输入城市名称" v-on:focus="focus" ref="input" v-model="keyword"/>
+      </div>
+      <p class="cancel" v-if="maskSeen" @click="blur">取消</p>
+    </header>
     <section class="tpad40 bpad12 vux-1px-b">
       <dl class="lpad32 bmar40">
         <dt>你所在的地区/历史访问记录</dt>
@@ -81,16 +90,72 @@
         <li>X</li>
         <li>Y</li>
         <li>Z</li>
-
       </ul>
+    </section>
+    <section class="mask" v-if="maskSeen" @click.self="blur">
+      <div class="result" v-if="resultSeen">
+        <ul class="vux-1px-t">
+          <li class="vux-1px-b">
+            <span>城市</span>
+            <p>武汉</p>
+          </li>
+          <li class="vux-1px-b">
+            <span>城市</span>
+            <p>武汉</p>
+          </li>
+        </ul>
+
+        <div class="no-result">
+          <img src="./images/msg_fixed_icon.png" />
+          <p>没有搜索结果</p>
+          <p>换个关键词试试</p>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      maskSeen: false,
+      keyword: '',
+      resultSeen: false
+    }
+  },
+  watch: {
+    keyword: function () {
+      if (this.keyword != '') {
+        this.resultSeen = true
+      } else {
+        this.resultSeen = false
+      }
+    }
+  },
+  methods: {
+    focus: function () {
+      let that = this
+      this.maskSeen = true
+      this.$refs['input'].focus()
+      setTimeout(function () { that.$refs['input'].focus() }, 100)
+    },
+    blur: function () {
+      this.maskSeen = false
+      this.$refs['input'].value = ''
+    }
+  },
+  mounted () {
+    // 进入页面即获取焦点
+    // this.$refs['input'].focus()
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
+.noscorll{
+  height: 100vh;
+  overflow: hidden;
+}
 dt {
   font-size: 0.28rem;
   color: #999;
@@ -163,4 +228,111 @@ dt {
     line-height: 0.5rem;
   }
 }
+header{
+  height: .88rem;
+  background: #fff;
+  .close{
+    width: .32rem;
+    height: .32rem;
+    background: url(./images/fixed_top_close.png) no-repeat;
+    background-size:100%;
+    margin: 0 .39rem;
+  }
+  .search-box{
+    width: 5.68rem;
+    height: .62rem;
+    border-radius: .62rem;
+    background: #f3f3f3;
+    display: flex;
+    >span{
+      display: block;
+      width: .32rem;
+      height: .32rem;
+      background: url(./images/home-top-icon2.png) no-repeat;
+      background-size: 100%;
+      margin-left: .28rem;
+      margin-right: .08rem;
+    }
+    >input{
+      flex: 1;
+      border: 0;
+      height: .6rem;
+      background: none;
+      font-size: .28rem;
+      outline: none;
+      padding-right: .2rem;
+    }
+  }
+}
+.mask{
+  width: 7.5rem;
+  height: calc(100vh - .88rem);
+  position:fixed;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3.75rem;
+  background: rgba(0,0,0,.5);
+  .result{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    padding-left: .24rem;
+    box-sizing: border-box;
+    padding-top: .07rem;
+    >ul{
+      >li{
+        height: .92rem;
+        padding-left: .04rem;
+        display: flex;
+        align-items: center;
+        >span{
+          display: block;
+          margin-right: .16rem;
+          font-size: .16rem;
+          color: #fff;
+          text-align: center;
+          width: .4rem;
+          height: .26rem;
+          line-height: .26rem;
+          background: linear-gradient(45deg,#fa8c16,#f5222d);
+          border-radius: .03rem;
+        }
+        >p{
+          color: #f60;
+          font-size: .28rem;
+        }
+      }
+    }
+  }
+  .no-result{
+    padding-top: 2.4rem;
+    font-size: .28rem;
+    text-align:center;
+    img{
+      width: 1.5rem;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: .48rem;
+    }
+    >:nth-child(2){
+      color: #f60;
+      margin-bottom: .28rem;
+    }
+    >:nth-child(3){
+      color: #999;
+    }
+  }
+}
+ header.sp{
+    padding-left:.32rem;
+    .search-box{
+      width: 5.92rem;
+    }
+    .cancel{
+      flex: 1;
+      text-align: center;
+      font-size: .28rem;
+    }
+  }
+
 </style>

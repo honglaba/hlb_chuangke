@@ -206,7 +206,8 @@
     <section class="vux-1px-tb bmar20 bgf tpad36">
       <div class="lrpad32 til-row bmar52">
         <h3 class="fl">精选商家</h3>
-        <a class="fr" href="#">更多></a>
+        <!-- <a class="fr" href="#">更多></a> -->
+        <router-link class="fr" tag="a" to="/home/choice">更多></router-link>
       </div>
       <div class="y-flex business">
         <router-link tag="a" to="#" class="flex1">

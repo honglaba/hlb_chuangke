@@ -21,6 +21,8 @@ import Food from '@/pages/home/food'
 import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
+import Choice from '@/pages/home/choice'
+import ChoiceDetails from '@/pages/home/choice-details'
 
 Vue.use(Router)
 
@@ -194,6 +196,20 @@ export default new Router({
       component: Pay,
       meta: {
         title: '消费买单'
+      }
+    }, {
+      path: '/home/choice',
+      name: 'Choice',
+      component: Choice,
+      meta: {
+        title: '精选商家'
+      }
+    }, {
+      path: '/home/choice-details',
+      name: 'ChoiceDetails',
+      component: ChoiceDetails,
+      meta: {
+        title: '商家详情'
       }
     }
 
