@@ -3,12 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-import Headerx from '@/components/common/headerx/headerx';
-import Footerx from '@/components/common/footerx/footerx';
+import Header from '@/components/header'
+import Footer from '@/components/footer'
+import Headerx from '@/components/common/headerx/headerx'
+import Footerx from '@/components/common/footerx/footerx'
 
 fastClick.attach(document.body)
 
@@ -27,6 +28,7 @@ Vue.component('Footerx', Footerx)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

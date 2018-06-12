@@ -9,9 +9,15 @@
             </div>
             <div class="right">
               <ul>
-                <li><img src="./images/sm.png"></li>
-                <li><img src="./images/xiaoxi.png"></li>
-                <li><img src="./images/shezhi.png"></li>
+                <li>
+                  <router-link to="/ccc"><img src="./images/sm.png"></router-link>
+                </li>
+                <li>
+                  <router-link to="/ccc"><img src="./images/xiaoxi.png"></router-link>
+                </li>
+                <li>
+                  <router-link to="/options"><img src="./images/shezhi.png"></router-link>
+                </li>
               </ul>
             </div>
           </div>
@@ -20,7 +26,7 @@
               <div class="tx"><img src="./images/mrtx.png"></div>
               <div class="uinfo">
                 <p class="name">化妆的小蜜</p>
-                <p class="tips">创客为您节约了65.00元</p>
+                <p class="tips">创客为您节约了66.00元</p>
               </div>
             </div>
             <div class="right">
@@ -80,8 +86,12 @@
   </div>
 </template>
 <script>
-import { Swiper } from "vux";
-export default {};
+import { Swiper } from 'vux'
+export default {
+  components: {
+    Swiper
+  }
+}
 </script>
 <style lang="less" scoped>
 .main {

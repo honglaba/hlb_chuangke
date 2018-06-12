@@ -31,8 +31,8 @@
   </div>
 </template>
 <script>
-import ListInner from '../../components/common/listInner/listInner';
-import Other from '../../components/common/other/other';
+import ListInner from '../../components/common/listInner/listInner'
+import Other from '../../components/common/other/other'
 
 export default {
   data () {
@@ -129,7 +129,6 @@ export default {
       ]
     }
   },
-  components: { ListInner, Other },
   methods: {
     tabTap: function (index) {
       let tabNavs = document.querySelectorAll('.tab-nav>li')
@@ -145,7 +144,8 @@ export default {
       }
       this.navs[index].active = true
     }
-  }
+  },
+  components: { ListInner, Other }
 }
 </script>
 <style lang="less" scoped>

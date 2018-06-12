@@ -11,12 +11,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/apis': {
+      '/api_proxy': {
         // target: 'http://127.0.0.1:1718',
-        // target: 'http://api.ck.honglaba.com',        
+        target: 'http://api.ck.honglaba.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/apis': ''
+          '^/api_proxy': ''
         }
       }
     },
@@ -32,7 +32,7 @@ module.exports = {
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
-    useEslint: true,
+    useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,
