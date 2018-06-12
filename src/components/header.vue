@@ -3,17 +3,17 @@
 </template>
 
 <script>
-import { XHeader } from "vux";
+import { XHeader } from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      xtitle: "默认标题"
-    };
+      xtitle: '默认标题'
+    }
   },
   components: {
     XHeader
   }
-};
+}
 </script>
 
 <style lang="less">

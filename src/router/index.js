@@ -25,6 +25,11 @@ import Pay from '@/pages/home/pay'
 const Author = () =>
   import('@/components/author')
 
+const OptionsPageSetting = () =>
+  import('@/components/optionPages/index')
+const OptionPageFull = () =>
+  import('@/components/optionPages/settingA')
+
 Vue.use(Router)
 
 export default new Router({
@@ -128,6 +133,14 @@ export default new Router({
     path: '/author',
     name: 'Author',
     component: Author
+  },
+  {
+    path: '/options',
+    component: OptionsPageSetting,
+    children: [{
+      path: '',
+      component: OptionPageFull
+    }]
   },
   {
     path: '/member/reg/reg_step3',

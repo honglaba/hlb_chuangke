@@ -16,7 +16,7 @@
                   <router-link to="/ccc"><img src="./images/xiaoxi.png"></router-link>
                 </li>
                 <li>
-                  <router-link to="/ccc/shezhi"><img src="./images/shezhi.png"></router-link>
+                  <router-link to="/options"><img src="./images/shezhi.png"></router-link>
                 </li>
               </ul>
             </div>
