@@ -26,8 +26,8 @@ export default {
 .vux-header::after {
   display: inline-block;
   position: absolute;
-  left:0;
-  bottom:0;
+  left: 0;
+  bottom: 0;
   content: "";
   width: 100%;
   height: 1px;

@@ -24,6 +24,7 @@ import Food from '@/pages/home/food'
 import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
+const CellBox = () => import('@/pages/member/cellBox')
 
 Vue.use(Router)
 
@@ -147,6 +148,14 @@ export default new Router({
       component: Regstep2,
       meta: {
         title: '填写推荐人信息'
+      }
+    },
+    { // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      path: '/ccc/:id',
+      name: 'cellpage',
+      component: CellBox,
+      meta: {
+        title: '测试盒子'
       }
     },
     {

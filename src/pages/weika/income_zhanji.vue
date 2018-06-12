@@ -96,8 +96,8 @@
   width: 100%;
   .btn-aoc {
     margin: 0 auto;
-    width: 80%;
-    margin-left: 10%;
+    width: 90%;
+    margin-left: 5%;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>
         <group>
-           <x-input label-width="4em" name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" required></x-input>
+          <x-input label-width="4em" name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" required></x-input>
           <x-input placeholder="请输入验证码" class="weui-vcode" required>
             <span slot="right" class="fasong">获取验证码</span>
           </x-input>
@@ -21,24 +21,32 @@
         </div>
         <div class="tongdao">
           <divider>第三方登录</divider>
-          <div class="weixin"><img src="../../assets/images/weixin.png"></div>
+          <div class="weixin"><img src="../../assets/images/weixin.png" @click="loginWX()"></div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { XInput, Group, Divider } from "vux";
+import { XInput, Group, Divider } from 'vux'
+import HTTP from '@/api'
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
+  },
+  methods: {
+    loginWX () { // 微信登录
+      HTTP.HTTP_GET_wxident().then(res => {
+        window.location = res.redirect
+      })
+    }
   },
   components: {
     XInput,
     Group,
     Divider
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .main {
@@ -92,4 +100,3 @@ export default {
   }
 }
 </style>
-
