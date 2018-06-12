@@ -5,19 +5,19 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import fastClick from 'fastclick'
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Headerx from "@/components/common/headerx/headerx";
-import Footerx from "@/components/common/footerx/footerx";
+import Header from '@/components/header'
+import Footer from '@/components/footer'
+import Headerx from '@/components/common/headerx/headerx'
+import Footerx from '@/components/common/footerx/footerx'
 
 fastClick.attach(document.body)
 
-//自定义请求头
-axios.defaults.headers.post["X-Requested-With"]="XMLHttpRequest"
+// 自定义请求头
+axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
 
 Vue.config.productionTip = false
-Vue.prototype.axios=axios
-//全局组件
+Vue.prototype.axios = axios
+// 全局组件
 Vue.component('Header', Header)
 Vue.component('Footer', Footer)
 Vue.component('Headerx', Headerx)
