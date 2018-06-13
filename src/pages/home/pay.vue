@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <Header></Header>
+  <x-header :left-options="{backText: ''}" title="大岗仙庙烧鸡"></x-header>
   <section>
     <router-link class="location-row" tag="a" to="#">
       <span></span>

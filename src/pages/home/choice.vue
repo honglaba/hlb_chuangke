@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <x-header :left-options="{backText: ''}" title="精选商家"></x-header>
     <section class="banner">
       <div class="border-cross">
         <div class="inner">

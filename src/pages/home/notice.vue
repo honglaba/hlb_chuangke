@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-         <Header :til="til"></Header>
+         <x-header :left-options="{backText: ''}" title="消息公告"></x-header>
          <section>
              <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
                 <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>消息</tab-item>
@@ -80,8 +80,7 @@ import { Tab, TabItem } from 'vux'
 export default {
   data () {
     return {
-      nowSeen: '1',
-      til: '消息公告'
+      nowSeen: '1'
     }
   },
   components: {

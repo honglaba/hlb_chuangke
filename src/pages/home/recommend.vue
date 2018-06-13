@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Header :til="til"></Header>
+        <x-header :left-options="{backText: ''}" title="精品推荐"></x-header>
         <section class="recommend-list">
             <ul>
                 <router-link to="/home/details" tag="li" class="vux-1px-b">
@@ -54,7 +54,6 @@
 export default {
   data () {
     return {
-      til: '精品推荐'
     }
   }
 }
