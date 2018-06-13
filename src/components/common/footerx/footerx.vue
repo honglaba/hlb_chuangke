@@ -20,15 +20,15 @@
 </template>
 <script>
 export default {
-    data(){
-        return{
-            active:null
-        }
-    },
-    methods:{
-    },
-    mounted(){
-        this.active=this.$route.fullPath.split("/")[1];
+  data () {
+    return {
+      active: null
+    }
+  },
+  methods: {
+  },
+  mounted () {
+    this.active = this.$route.fullPath.split('/')[1]
     }
 
 }
@@ -52,21 +52,21 @@ export default {
             width: .44rem;
             height: .44rem;
             background: url(./images/navico.png) no-repeat;
-            background-size:1.76rem; 
+            background-size:1.76rem;
             margin: 0 auto;
             margin-bottom: .05rem
         }
         .nav-ico.type1{
-            background-position:0 -.44rem; 
+            background-position:0 -.44rem;
         }
          .nav-ico.type2{
-            background-position:-.44rem -.44rem; 
+            background-position:-.44rem -.44rem;
         }
          .nav-ico.type3{
-            background-position:-.88rem -.44rem; 
+            background-position:-.88rem -.44rem;
         }
          .nav-ico.type4{
-            background-position:-1.32rem -.44rem; 
+            background-position:-1.32rem -.44rem;
         }
         a{
             color: #9a9795
@@ -74,19 +74,17 @@ export default {
         .cur{
             color: #f60;
             .nav-ico.type1{
-                background-position:0 0; 
+                background-position:0 0;
             }
             .nav-ico.type2{
-                background-position:-.44rem 0; 
+                background-position:-.44rem 0;
             }
             .nav-ico.type3{
-                background-position:-.88rem 0; 
+                background-position:-.88rem 0;
             }
             .nav-ico.type4{
-                background-position:-1.32rem 0; 
+                background-position:-1.32rem 0;
             }
         }
     }
 </style>
-
-

@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Header></Header>
+        <Header :til="til"></Header>
         <section class="recommend-list">
             <ul>
                 <router-link to="/home/details" tag="li" class="vux-1px-b">
@@ -52,7 +52,11 @@
 </template>
 <script>
 export default {
-    
+  data () {
+    return {
+      til: '精品推荐'
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -96,7 +100,7 @@ export default {
                     box-sizing: border-box;
                     font-size: .22rem;
                     text-align: center;
-                    line-height: .3rem;   
+                    line-height: .3rem;
                     color:#fa443a;
                     border-radius:.04rem;
                     margin-right:.16rem;
@@ -128,5 +132,3 @@ export default {
     }
 }
 </style>
-
-

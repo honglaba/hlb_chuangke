@@ -24,6 +24,10 @@ export default {
     loginCallback () {
       this.HTTP_WxAccreditSuccess()
     }
+  },
+  mounted () {
+    // 获取url参数
+    console.log(this.$route.query)
   }
 }
 </script>
