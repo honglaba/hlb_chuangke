@@ -104,6 +104,30 @@ const router = new VueRouter({
     }
   },
   {
+    path: '/weika/recommend_list',
+    name: 'recommend_list',
+    component: recommend_list,
+    meta: {
+      title: '我的推荐'
+    }
+  },
+  {
+    path: '/weika/income',
+    name: 'income',
+    component: income,
+    meta: {
+      title: '佣金首页'
+    }
+  },
+  {
+    path: '/weika/income_zhanji',
+    name: 'income_zhanji',
+    component: income_zhanji,
+    meta: {
+      title: '查看战绩'
+    }
+  },
+  {
     path: '/home/index',
     name: 'HomeIndex',
     component: HomeIndex,
