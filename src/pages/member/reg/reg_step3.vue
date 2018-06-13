@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <Header></Header>
+         <x-header :left-options="{backText: ''}" title="填写个人资料"></x-header>
         <div class="main2">
             <div class="content pd20">
                 <group>

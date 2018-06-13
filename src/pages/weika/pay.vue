@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <Header></Header>
+        <x-header :left-options="{backText: ''}" title="微卡购买"></x-header>
         <div class="main">
             <div class="content">
                 <div class="paybox pd20">
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <Footer></Footer>
+        <Footerx></Footerx>
     </div>
 </template>
 <script>
