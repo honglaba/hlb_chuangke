@@ -9,7 +9,7 @@ if (agent.indexOf('iPhone') > 0) {
 }
 
 const actions = {
-  HTTP_WxAccredit ({
+  HTTP_WxAccredit({
     commit
   }) {
     return new Promise((resolve, reject) => {
@@ -23,7 +23,17 @@ const actions = {
       })
     })
   },
-  HTTP_WxAccreditSuccess () {
+  HTTP_WxReq({ commit }, url) {
+    console.log(url)
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_WxAccreditSuccess() {
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/oauth/callback',

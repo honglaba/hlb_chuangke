@@ -6,26 +6,26 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       a: 1
-    }
+    };
   },
   computed: {},
   methods: {
-    ...mapActions(['HTTP_WxAccredit', 'HTTP_WxAccreditSuccess']),
-    loginWX () {
+    ...mapActions(["HTTP_WxAccredit", "HTTP_WxAccreditSuccess", "HTTP_WxReq"]),
+    loginWX() {
       this.HTTP_WxAccredit().then(res => {
-        window.location.href = res
-      })
+        window.location.href = res;
+      });
     },
-    loginCallback () {
-      this.HTTP_WxAccreditSuccess()
+    loginCallback() {
+      this.HTTP_WxAccreditSuccess();
     }
   }
-}
+};
 </script>
 
 <style scoped>
