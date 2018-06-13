@@ -1,4 +1,5 @@
 import HTTP from '@/api' // 配置后的axios
+import Cookies from 'js-cookie'
 
 let agent = navigator.userAgent
 let client = 'micro' // 默认pc
@@ -23,16 +24,30 @@ const actions = {
       })
     })
   },
-  HTTP_WxAccreditSuccess () {
+  HTTP_UserInfo ({
+    commit
+  }) {
     return new Promise((resolve, reject) => {
       HTTP({
-        url: '/api/oauth/callback',
-        params: {
-          client: client
+        url: '/api/user/info',
+        headers: {
+          'Authorization': 'Bearer ' + Cookies.get('access_token')
         }
       }).then(res => {
-        resolve(res)
+        if (res.result_state === 'success') {
+          console.log(res)
+          resolve(res)
+        } else {
+        }
       })
+    })
+  },
+  HTTP_refreshToken () {
+    HTTP({
+      url: '/api/login/refresh',
+      method: 'post'
+    }).then(res => {
+      console.log(res)
     })
   }
 }

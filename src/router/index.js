@@ -21,7 +21,7 @@ import Food from '@/pages/home/food'
 import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
-
+import Cookies from 'js-cookie'
 const Author = () =>
   import('@/components/author')
 
@@ -220,7 +220,13 @@ const router = new VueRouter({
   ]
 })
 
+// ceshi cookie
 router.beforeEach((to, from, next) => {
+  // 判断是否已经登录且前往的页面不是登录页
+  // 判断是否已经登录且前往的是登录页
+  if ((to.path === '/options' || to.path === '/others') && !Cookies.get('access_token')) {
+    next('/author')
+  }
   next()
 })
 
