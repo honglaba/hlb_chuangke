@@ -20,8 +20,8 @@
 </template>
 <script>
 export default {
-    props:["businessList"]
-};
+  props: ['businessList']
+}
 </script>
 <style lang="less" scoped>
     .inner {

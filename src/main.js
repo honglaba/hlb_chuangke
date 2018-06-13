@@ -6,10 +6,9 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
-import Header from '@/components/header'
-import Footer from '@/components/footer'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
+import  {XHeader} from 'vux'
 
 fastClick.attach(document.body)
 
@@ -19,10 +18,9 @@ axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 // 全局组件
-Vue.component('Header', Header)
-Vue.component('Footer', Footer)
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
+Vue.component('x-header', XHeader)
 
 /* eslint-disable no-new */
 new Vue({

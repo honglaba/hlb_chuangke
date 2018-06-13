@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Header></Header>
+     <x-header :left-options="{backText: ''}" title="填写推荐人信息"></x-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="./../images/b1.png"><br>填写推荐人信息</div>

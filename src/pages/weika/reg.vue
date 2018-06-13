@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <Header></Header>
+    <div class="app">
+        <x-header :left-options="{backText: ''}" title="注册微卡"></x-header>
         <div class="main2">
             <div class="content pd20">
                 <div class="boack1">
@@ -38,7 +38,6 @@
                         <button class="btn-aoc">去申请</button>
                     </p>
                 </div>
-
             </div>
         </div>
     </div>

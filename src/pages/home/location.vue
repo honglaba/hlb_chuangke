@@ -125,7 +125,7 @@ export default {
   },
   watch: {
     keyword: function () {
-      if (this.keyword != '') {
+      if (this.keyword) {
         this.resultSeen = true
       } else {
         this.resultSeen = false

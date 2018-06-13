@@ -29,11 +29,17 @@
         </div>
       </div>
     </section>
+
+    <router-link tag="a" to></router-link>
   </div>
 </template>
 <script>
+import store from '../../store'
 export default {
-
+  mounted () {
+    store.commit('increment')
+    console.log(store.state.count)
+  }
 }
 </script>
 

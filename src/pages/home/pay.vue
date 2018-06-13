@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <Header></Header>
+  <x-header :left-options="{backText: ''}" title="大岗仙庙烧鸡"></x-header>
   <section>
     <router-link class="location-row" tag="a" to="#">
       <span></span>
@@ -81,28 +81,38 @@
 </template>
 <script>
 export default {
-  data(){
-    return{
-      binding:false,
-      chuangke:true,
-      commission:true,
-      mask:false
+  data () {
+    return {
+      binding: false,
+      chuangke: true,
+      commission: true,
+      mask: false
     }
   },
- methods:{
-    showTip:function(){
-      this.mask=true
+  methods: {
+    showTip: function () {
+      this.mask = true
     },
-    maskTap:function(){
-      this.mask=false
+    maskTap: function () {
+      this.mask = false
     }
   },
-  mounted () {  
-    // this.axios.post('/apis/api/sms/send', {
-    //     mobile_phone: '18666084272'
+  mounted () {
+    // 获取验证码
+    // this.axios.post('/api/sms/send', {
+    //   mobile_phone: '18666084272'
     // }).then(function (res) {
     //   console.log(res)
     // })
+
+    // 授权
+    this.axios.get('/api/oauth/wechat?client=micro').then(function (res) {
+      console.log(res.redirect)
+      window.location.href = res.redirect
+    })
+
+    // let aa = 'http://localhost:8080/#/author?refresh_token=def50200dbced80175aa0bc2e549b557abae855539116fc8f2fa4550d8acbf096a98681d90cca91ab99d65726c6d5e7d965963e6dc9f1375657e71f62f99435448560b007417d871e580a647c5bc989c5008e3e3ca96f80093b5ffaee1c491b88a2b5b4e43e1572bd8d4ad363823e09f727f0b67604c7b8b3eb1b89b773cf5d49131c5e5a804f28628e5996f9514fa6d8685e4e347d8216ac5483c1af95ab53e4de10f1ae89d7ef0b1a396df42b7685afb5fd154fc4b62becc622a70bf0e9c4b3c03f73b4e85f3812909acaf0ae5be8dbafb9b718419385b3b4f20dd9350ba3755d1de5d9c5d14c8f70f787985f7778501ae176f5c4e12fb9e8879679b5fbbb81ebb315a62765da0778263fcd60782996b130207dc5fdb4f5b386b4c65139e3d50fa9f07a14b15e5a95e80f9eb3a835131f7e32430b73a479d1333b507e57de6b38fb462a211ef106812a1c9a6b3df8abc520ee434d97fa358868fd26b5eb585&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjYxMzJhMzgyNWIxOWRhOGJmMTBjZjE0NDI0MThmNGExMWNlZTZhZDBiYWRmZjE3MjVkZTc1NTNkOGZhMTFiYjA2YTIyNDkzMWVlZTY0MWUyIn0.eyJhdWQiOiIxMSIsImp0aSI6IjYxMzJhMzgyNWIxOWRhOGJmMTBjZjE0NDI0MThmNGExMWNlZTZhZDBiYWRmZjE3MjVkZTc1NTNkOGZhMTFiYjA2YTIyNDkzMWVlZTY0MWUyIiwiaWF0IjoxNTI4ODcxNzU5LCJuYmYiOjE1Mjg4NzE3NTksImV4cCI6MTUyODg3NTM1OSwic3ViIjoiMyIsInNjb3BlcyI6W119.TA1BrRb05NaD9yid0HMq9APhCABidlADRLhdqBKc-6HPhOpq16LEkAHSuR0kedxb-xCCQhqcs_yz6eJQP3UenKNI11imFjfg7VJXbiBkhY9w6HOocHWClueIa9mb-j6Ijvup3WbG5q-wYHL_q24Y2muLI7ZYHHr15RhKIuuXoId6AZBBDx3hpVwCZKC6tWMXMTWhdHVw7d94xLfdRFpZ5zG5z718gopC83jGicfVgpa1i9WQy6pkKsgTNkM_1C19mFoKnwCJfXRUr3D1HZrt0w67TlxW5orlFi3HsXtpXtuxHeENYCwabL80fVn__Bz00bV6jSYsRbCasbSJXG7UtN753jilwmclO3IInvABTlJdeRyNu5g6XCaaKQvjx_dbsM0L34uGBmCfVb3jLWmqLPpKxcru7NeBADJ3Y0myIynOlZ8cjGgt91PMBXa_l81C3mBn0tjApP6y8-Q9Fcq2J9oI_YFAvcQJJ1vY1-DL-lStHc2u-LRhlFqS-ncgswIh0PSWsVwdFj0XehHto29wONvUaqxik-Upj8CKyEUdFk274sUbe97bZs9nIsRYCrR9TIfMBTkafKQTxWAA1Mq1eHwtNb78b-YIYmhFJLXU4gY0QjU7eblHgB0P6tXDna9LjWD7mCElCkoYvDPF2ZwfduJG1sj_zPcSWOFo1zF4Cuc&expires_in=3600&client_id=11&return_state=success&result_state=success&isset_phone=0'
+    // console.log(aa.split('&'))
   }
 }
 </script>
@@ -170,11 +180,11 @@ export default {
       }
       .ico.weixin{
          background: url(../../assets/images/weixin.png) no-repeat;
-         background-size:100%; 
+         background-size:100%;
       }
       .ico.zhifubao{
          background: url(../../assets/images/zhifubao.png) no-repeat;
-         background-size:100%; 
+         background-size:100%;
       }
       .info{
         flex: 1;
@@ -194,9 +204,9 @@ export default {
         }
         .binding-tag{
           font-size:.24rem;
-          color: #999; 
+          color: #999;
           padding-right: .28rem;
-          position: relative;          
+          position: relative;
         }
         .binding-tag:before{
           content: "";
@@ -215,7 +225,7 @@ export default {
     >.cur .select-ico{
       background: url(../../assets/images/radio_on.png) no-repeat;
       background-size:100%;
-      border: none !important; 
+      border: none !important;
     }
     >li:nth-child(last) .info{
       border-bottom: none;
@@ -272,7 +282,7 @@ export default {
         width: .32rem;
         height: .32rem;
         background: url(./images/icon_pay_help.png) no-repeat;
-        background-size:100%; 
+        background-size:100%;
         margin-left: .16rem;
       }
     }
