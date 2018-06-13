@@ -13,6 +13,7 @@
           <img slot="icon" src="~static/images/创客LOGO.png" alt="" @click="loginWX()">
         </grid-item>
       </grid>
+      <button @click="logout()">退出登录</button>
     </div>
   </div>
 </template>
@@ -21,6 +22,7 @@
 import { mapActions } from 'vuex'
 import { Grid, GridItem } from 'vux'
 import Cookies from 'js-cookie'
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -28,11 +30,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['HTTP_WxAccredit', 'HTTP_UserInfo']),
+    ...mapActions(['HTTP_WxAccredit', 'HTTP_UserInfo', 'HTTP_logout', 'HTTP_refreshToken']),
     loginWX () {
       this.HTTP_WxAccredit().then(res => {
-        window.location.href = res
+        window.location.href = res.redirect
       })
+    },
+    logout () {
+      this.HTTP_logout()
     }
   },
   created () {
@@ -46,9 +51,11 @@ export default {
         let items = list[i].split('=')
         hashes[items[0]] = items[1]
       }
+
+      localStorage.setItem('client_id', hashes.client_id)
       // cookie
       Cookies.set('access_token', hashes.access_token, { expires: 1 / 24 }) // 设置一小时过期
-      Cookies.set('refresh_token', hashes.refresh_token, { expires: 10 }) // 设置一小时过期
+      Cookies.set('refresh_token', hashes.refresh_token, { expires: 10 }) // 设置10天过期
       // localStorage
       localStorage.setItem('access_token', hashes.access_token)
       localStorage.setItem('refresh_token', hashes.refresh_token)
@@ -59,7 +66,7 @@ export default {
       this.$store.commit('SET_ACCESS_TOKEN', hashes.refresh_token)
       // get userinfo
       this.HTTP_UserInfo().then(res => {
-        console.log(res)
+        localStorage.setItem('userInfo', res.data)
       })
     }
   },

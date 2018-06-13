@@ -20,7 +20,7 @@ const actions = {
           client: client
         }
       }).then(res => {
-        resolve(res.redirect)
+        resolve(res)
       })
     })
   },
@@ -35,19 +35,37 @@ const actions = {
         }
       }).then(res => {
         if (res.result_state === 'success') {
-          console.log(res)
           resolve(res)
-        } else {
+        }
+      })
+    })
+  },
+  HTTP_logout () {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/logout'
+      }).then(res => {
+        if (res.result_state === 'success') {
+          localStorage.clear()
+          Cookies.remove('access_token')
+          Cookies.remove('refresh_token')
         }
       })
     })
   },
   HTTP_refreshToken () {
-    HTTP({
-      url: '/api/login/refresh',
-      method: 'post'
-    }).then(res => {
-      console.log(res)
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/login/refresh',
+        method: 'post',
+        data: {
+          client_id: localStorage.getItem('client_id')
+        }
+      }).then(res => {
+        if (res.result_state === 'success') {
+          console.log(res)
+        }
+      })
     })
   }
 }
