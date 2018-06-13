@@ -40,15 +40,13 @@
 </template>
 
 <script>
-import wHeader from '@/components/header'
 import { Group, Cell, CellBox, Card } from 'vux'
 export default {
   components: {
     Group,
     Cell,
     CellBox,
-    Card,
-    wHeader
+    Card
   }
 }
 </script>

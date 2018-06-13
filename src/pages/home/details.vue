@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <Header></Header>
+        <x-header :left-options="{backText: ''}" title="商品详情页"></x-header>
         <router-link to="#" class="buy-button">
             立即购买
         </router-link>
@@ -11,7 +11,7 @@
                 <h4>购买商品需要先申请办理创客微卡</h4>
                 <div class="btn-row vux-1px-t">
                     <p class="vux-1px-r">取消</p>
-                    <p>确定</p>                    
+                    <p>确定</p>
                 </div>
             </div>
         </section>
@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-    
+
 }
 </script>
 <style lang="less" scoped>
@@ -36,7 +36,7 @@ export default {
         text-align: center;
         line-height: .9rem;
         background: url(./images/detailed-button-background.png) no-repeat;
-        background-size:100%; 
+        background-size:100%;
         font-size: .32rem;
     }
     .mask{
@@ -52,7 +52,7 @@ export default {
             box-sizing: border-box;
             border-radius: .16rem;
             background:#fff url(./images/frame-inbetweening-img.png) no-repeat;
-            background-size:5.74rem; 
+            background-size:5.74rem;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -92,5 +92,3 @@ export default {
         }
     }
 </style>
-
-

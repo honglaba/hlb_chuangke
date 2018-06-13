@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-         <Header></Header>
+         <x-header :left-options="{backText: ''}" title="消息公告"></x-header>
          <section>
              <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
                 <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>消息</tab-item>
@@ -43,8 +43,6 @@
                     </li>
                 </ul>
 
-
-
                 <ul class="notice-list" v-if="nowSeen==2">
                     <li>
                         <div class="time">2018-05-08 21:08:58</div>
@@ -80,23 +78,22 @@
 <script>
 import { Tab, TabItem } from 'vux'
 export default {
-    data(){
-        return{
-            nowSeen:"1",
-        }
-            
-    },
-    components: {
-        Tab,
-        TabItem
-    },
-    methods:{
-        tab:function(e){
-            console.log(e.target.getAttribute("data-id"))
-
-            this.nowSeen=e.target.getAttribute("data-id")
-        }
+  data () {
+    return {
+      nowSeen: '1'
     }
+  },
+  components: {
+    Tab,
+    TabItem
+  },
+  methods: {
+    tab: function (e) {
+      console.log(e.target.getAttribute('data-id'))
+
+      this.nowSeen = e.target.getAttribute('data-id')
+    }
+  }
 }
 </script>
 <style lang="less">
@@ -162,7 +159,7 @@ export default {
                     height: .4rem;
                     position: absolute;
                     background: url(../../../static/images/enter.png) no-repeat;
-                    background-size:100%; 
+                    background-size:100%;
                     right: 0;
                     top: 50%;
                     margin-top: -.2rem;
@@ -211,4 +208,3 @@ export default {
     }
 }
 </style>
-

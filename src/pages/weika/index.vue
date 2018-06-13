@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Header></Header>
+    <x-header :left-options="{backText: ''}" title="微卡首页"></x-header>
     <div class="main">
       <div class="content">
         <div class="banner">
@@ -79,21 +79,22 @@ import { Swiper } from 'vux'
 const baseList = [
   {
     url: 'javascript:',
-    img: require('./images/temp/banner01.jpg'),
+    img: require('./images/temp/banner01.jpg')
   },
   {
     url: 'javascript:',
-    img: require('./images/temp/banner01.jpg'),
+    img: require('./images/temp/banner01.jpg')
   },
   {
     url: 'javascript:',
-    img: require('./images/temp/banner01.jpg'), // 404
+    img: require('./images/temp/banner01.jpg') // 404
   }
 ]
 export default {
   data () {
     return {
-      demo01_list: baseList
+      demo01_list: baseList,
+      til: '创客微卡'
     }
   },
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Header></Header>
+    <x-header :left-options="{backText: ''}" title="登录"></x-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>
@@ -28,14 +28,18 @@
   </div>
 </template>
 <script>
-import { XInput, Group, Divider } from 'vux'
+import { XInput, Group, Divider } from 'vux';
+import HTTP from '@/api';
 export default {
   data () {
     return {}
   },
   methods: {
-    loginWX () { // 微信登录
-
+    loginWX () {
+      // 微信登录
+      HTTP.HTTP_GET_wxident().then(res => {
+        window.location = res.redirect
+      })
     }
   },
   components: {
