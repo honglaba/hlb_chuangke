@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-       <x-header :left-options="{backText: ''}" title="提现"></x-header>
+       <x-header :left-options="{backText: ''}" title="提现"><router-link to="withdraw_log" slot="right">提现记录</router-link></x-header>
         <div class="main">
             <div class="content">
                 <div class="base_box pd20 mt20">
@@ -44,7 +44,7 @@
                 <div class="base_box pd20 mt20">
                     <div class="tit">
                         <div class="l">提现金额</div>
-                        <div class="r">提现规则<img src="../../assets/images/you1.png"></div>
+                        <div class="r" @click="viewrules">提现规则<img src="../../assets/images/you1.png"></div>
                     </div>
                     <group>
                         <x-input title="¥" :is-type="be2333" placeholder="" @on-focus="onFocus" required style='color:#000;font-weight: bold;font-size: .6rem;' type="number"></x-input>
@@ -85,6 +85,9 @@ export default {
     XInput
   },
   methods: {
+    viewrules:function(){
+        alert('adsad');
+    },
     onFocus(val, $event) {
       console.log("on focus", val, $event);
     }
