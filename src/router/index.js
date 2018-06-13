@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import MemberLogin from '@/pages/member/login'
 import MemberIndex from '@/pages/member/index'
 import HomeIndex from '@/pages/home/index'
@@ -30,9 +30,9 @@ const OptionsPageSetting = () =>
 const OptionPageFull = () =>
   import('@/components/optionPages/settingA')
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+const router = new VueRouter({
   routes: [{
     path: '',
     name: 'HomeIndex',
@@ -219,3 +219,9 @@ export default new Router({
 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  next()
+})
+
+export default router
