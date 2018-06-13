@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <Header></Header>
+    <div class="app">
+       <x-header :left-options="{backText: ''}" title="提现"></x-header>
         <div class="main">
             <div class="content">
                 <div class="base_box pd20 mt20">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header></Header>
+       <x-header :left-options="{backText: ''}" title="我的推荐"></x-header>
         <div class="main2">
             <div class="content">
                 <div class="txlist pd20">

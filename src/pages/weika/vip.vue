@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <Header></Header>
+      <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header>
         <div class="main">
             <div class="content">
                 <div class="wkbg pd20">

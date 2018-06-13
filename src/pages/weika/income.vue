@@ -1,88 +1,94 @@
 <template>
   <div class="app">
-    <Header></Header>
+      <x-header :left-options="{backText: ''}" title="我的佣金"></x-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
           <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>累计佣金</tab-item>
           <tab-item @on-item-click="handler" @click.native="tab" data-id=2>历史获取</tab-item>
         </tab>
-        <div>
-          <div class="leiji-list" v-if="nowSeen==1">
-            <div class="box1 pd20">
-              <div class="box">
-                <div class="left">
-                  <p class="c999">累计佣金（元）</p>
-                  <p>100</p>
-                </div>
-                <div class="right">
-                  <p class="c999">累计可提现佣金（元）</p>
-                  <p>80</p>
-                  <p class="c999">累计可用代用金（元）</p>
-                  <p>20</p>
-                </div>
+
+        <div class="leiji-list" v-if="nowSeen==1">
+          <div class="box1 pd20">
+            <div class="box">
+              <div class="left">
+                <p class="c999">累计佣金（元）</p>
+                <p>100</p>
               </div>
-              <div class="box">
-                <div class="left">
-                  <p class="c999">剩余可用（元）</p>
-                  <p>100</p>
-                </div>
-                <div class="right">
-                  <p class="c999">剩余可提现佣金（元）</p>
-                  <p>80</p>
-                  <p class="c999">剩余可用代用金（元）</p>
-                  <p>20</p>
-                </div>
-              </div>
-              <div class="caozuo">
-                <span>
-                  <router-link to="income_zhanji">查看战绩</router-link>
-                </span>
-                <span>
-                  <a href="#">查看佣金使用明细</a>
-                </span>
+              <div class="right">
+                <p class="c999">累计可提现佣金（元）</p>
+                <p>80</p>
+                <p class="c999">累计可用代用金（元）</p>
+                <p>20</p>
               </div>
             </div>
-            <div class="box2">
-              <div class="tb">
-                <v-chart :data="data">
-                  <v-scale y :options="yOptions" />
-                  <v-tooltip disabled />
-                  <v-pie :radius="0.85" series-field="name" />
-                  <v-legend :options="legendOptions" />
-                </v-chart>
+            <div class="box">
+              <div class="left">
+                <p class="c999">剩余可用（元）</p>
+                <p>100</p>
               </div>
-              <ul class="fenleilist pd20">
-                <li>
-                  <div class="tit">创客新用户邀请佣金
-                    <span>100</span>
-                  </div>
-                  <div class="warper">
-                    <p>
-                      <span>已取现佣金</span>
-                      <span class="c333">80</span>
-                    </p>
-                    <p>
-                      <span>已用代用金</span>
-                      <span class="c333">20</span>
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <div class="tit">邀请的用户平台消费佣金
-                    <span>100</span>
-                  </div>
-                </li>
-                <li>
-                  <div class="tit">额外创客奖励佣金
-                    <span>200</span>
-                  </div>
-                </li>
-              </ul>
+              <div class="right">
+                <p class="c999">剩余可提现佣金（元）</p>
+                <p>80</p>
+                <p class="c999">剩余可用代用金（元）</p>
+                <p>20</p>
+              </div>
+            </div>
+            <div class="caozuo">
+              <span>
+                <router-link to="income_zhanji">查看战绩</router-link>
+              </span>
+              <span>
+                <a href="#">查看佣金使用明细</a>
+              </span>
             </div>
           </div>
-          <div class="lishi-list" v-if="nowSeen==2">
-            3333
+          <div class="box2">
+            <div class="tb">
+              <v-chart :data="data">
+                <v-scale y :options="yOptions" />
+                <v-tooltip disabled />
+                <v-pie :radius="0.85" series-field="name" />
+                <v-legend :options="legendOptions" />
+              </v-chart>
+            </div>
+            <ul class="fenleilist pd20">
+              <li>
+                <div class="tit">创客新用户邀请佣金
+                  <span>100</span>
+                </div>
+                <div class="warper">
+                  <p>
+                    <span>已取现佣金</span>
+                    <span class="c333">80</span>
+                  </p>
+                  <p>
+                    <span>已用代用金</span>
+                    <span class="c333">20</span>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div class="tit">邀请的用户平台消费佣金
+                  <span>100</span>
+                </div>
+              </li>
+              <li>
+                <div class="tit">额外创客奖励佣金
+                  <span>200</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="lishi-list" v-if="nowSeen==2">
+          <div class="tongji">
+            <p class="c999">历史获取总佣金（元）</p>
+            <p>2888.64</p>
+          </div>
+          <div class="mxbox">
+            <p class="c333 pd20">历史获取佣金明细</p>
+            <Accordion v-for="(item,index) in mxdataList" :key="item.id" :title="item" :list="item.mingxi"></Accordion>
           </div>
         </div>
       </div>
@@ -90,6 +96,7 @@
   </div>
 </template>
 <script>
+import Accordion from "../../components/accordion";
 import {
   Tab,
   TabItem,
@@ -124,9 +131,27 @@ export default {
       },
       map,
       data: [
-        { name: "创客新用户邀请佣金", percent: 0.3, a: "1" },
+        { name: "创客新用户邀请佣金", change: 0.3, a: "1" },
         { name: "邀请的用户平台消费佣金", percent: 0.18, a: "1" },
         { name: "额外奖励佣金", percent: 0.52, a: "1" }
+      ],
+      mxdataList: [
+        {
+          riqi: "2018-05-28",
+          mingxi: [
+            { name: "创客新用户邀请佣金", change: "+20" },
+            { name: "邀请的用户平台消费佣金", change: "+30" },
+            { name: "额外奖励佣金", change: "+40" }
+          ]
+        },
+        {
+          riqi: "2017-05-06",
+          mingxi: [
+            { name: "创客新用户邀请佣金", change: "+50" },
+            { name: "邀请的用户平台消费佣金", change: "+60" },
+            { name: "额外奖励佣金", change: "+70" }
+          ]
+        }
       ]
     };
   },
@@ -140,18 +165,21 @@ export default {
     VLegend,
     VBar,
     VPie,
-    VScale
+    VScale,
+    Accordion
   },
   methods: {
+    toggleList: function(e) {
+      this.isDisplay = !this.isDisplay;
+    },
     tab: function(e) {
       console.log(e.target.getAttribute("data-id"));
-
       this.nowSeen = e.target.getAttribute("data-id");
     }
   }
 };
 </script>
-<style lang="less" >
+<style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .leiji-list {
   margin-top: 0.2rem;
@@ -262,6 +290,28 @@ export default {
           }
         }
       }
+    }
+  }
+}
+.lishi-list {
+  margin-top: 0.2rem;
+
+  .tongji {
+    background: #ffffff;
+    padding: 0.2rem;
+    p:nth-child(1) {
+      margin-bottom: 0.2rem;
+      font-size: 0.3rem;
+    }
+    p:nth-child(2) {
+      font-size: 0.48rem;
+    }
+  }
+  .mxbox {
+    p {
+      background: #ffffff;
+      border-bottom: #e6e6e6 solid 1px;
+      font-size: 0.3rem;
     }
   }
 }

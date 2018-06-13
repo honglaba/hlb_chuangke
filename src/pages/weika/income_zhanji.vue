@@ -1,30 +1,30 @@
 <template>
-    <div>
-        <Header></Header>
-        <div class="main2">
-            <div class="content">
-                <div class="zj zj-a1">
-                    ￥886
-                </div>
-                <div class="zj zj-a2">
-                    80名新用户
-                </div>
-                <div class="zj zj-a3">
-                    44578名新用户
-                </div>
-                <div class="zj zj-a4">
-                    365天
-                </div>
-                <div class="zj zj-a5">
-                </div>
-                <div class="zj zj-a6">
-                </div>
-                <div class="wozhidao">
-                    <button class="btn-aoc">我知道了</button>
-                </div>
-            </div>
+  <div class="app">
+    <x-header :left-options="{backText: ''}" title="我的战绩"></x-header>
+    <div class="main2">
+      <div class="content">
+        <div class="zj zj-a1">
+          ￥886
         </div>
+        <div class="zj zj-a2">
+          80名新用户
+        </div>
+        <div class="zj zj-a3">
+          44578名新用户
+        </div>
+        <div class="zj zj-a4">
+          365天
+        </div>
+        <div class="zj zj-a5">
+        </div>
+        <div class="zj zj-a6">
+        </div>
+        <div class="wozhidao">
+          <button class="btn-aoc">我知道了</button>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <style lang="less" scoped>
 .content {
