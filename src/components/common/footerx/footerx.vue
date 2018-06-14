@@ -1,6 +1,6 @@
 <template>
     <footer class="y-flex y-ac vux-1px-t">
-        <router-link to="/home" class="flex1"  v-bind:class="{cur:active=='home'||active==''}">
+        <router-link to="/" class="flex1"  v-bind:class="{cur:active=='home'||active==''}">
             <span class="nav-ico type3"></span>
             <p>首页</p>
         </router-link>

@@ -52,13 +52,14 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 // cookie
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
+import { isNull } from 'util';
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   // 默认首页
   routes: [{
-    path: '',
+    path: '/',
     name: 'HomeIndex',
     component: HomeIndex,
     meta: {
@@ -380,10 +381,14 @@ const router = new VueRouter({
   ]
 })
 
-// ceshi cookie
 router.beforeEach((to, from, next) => {
-  // 判断是否已经登录且前往的页面不是登录页
-  // 判断是否已经登录且前往的是登录页
+  console.log(to)
+  if (isNull(to.name)) { // 路由不存在时跳转home页
+    next('/')
+    return
+  }
+
+
   if ((to.path === '/options' || to.path === '/others')) {
     if (!Cookies.get('accessToken')) {
       apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
