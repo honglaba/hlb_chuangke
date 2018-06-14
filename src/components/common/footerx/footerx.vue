@@ -1,18 +1,18 @@
 <template>
     <footer class="y-flex y-ac vux-1px-t">
-        <router-link to="/home/index" class="flex1"  v-bind:class="{cur:active=='home'||active==''}">
+        <router-link to="/home" class="flex1"  v-bind:class="{cur:active=='home'||active==''}">
             <span class="nav-ico type3"></span>
             <p>首页</p>
         </router-link>
-         <router-link to="/shop/index" class="flex1" v-bind:class="{cur:active=='shop'}">
+         <router-link to="/shop" class="flex1" v-bind:class="{cur:active=='shop'}">
             <span class="nav-ico type2"></span>
             <p>附近</p>
         </router-link >
-         <router-link to="/weika/index" class="flex1" v-bind:class="{cur:active=='weika'}">
+         <router-link to="/weika" class="flex1" v-bind:class="{cur:active=='weika'}">
             <span class="nav-ico type1"></span>
             <p>创客微卡</p>
         </router-link >
-         <router-link to="/member/index" class="flex1"  v-bind:class="{cur:active=='member'}">
+         <router-link to="/member" class="flex1"  v-bind:class="{cur:active=='member'}">
             <span class="nav-ico type4"></span>
             <p>我的</p>
         </router-link >

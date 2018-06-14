@@ -53,14 +53,6 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 
-const Author = () =>
-  import('@/components/author')
-
-const OptionsPageSetting = () =>
-  import('@/components/optionPages/index')
-const OptionPageFull = () =>
-  import('@/components/optionPages/settingA')
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -73,12 +65,12 @@ const router = new VueRouter({
       title: '首页'
     }
   },
-    // 首页
+  // 首页
   {
     path: '/home',
     component: home_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
@@ -159,12 +151,12 @@ const router = new VueRouter({
     }
     ]
   },
-    // 附近商家
+  // 附近商家
   {
     path: '/shop',
     component: shop_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
@@ -172,12 +164,12 @@ const router = new VueRouter({
       }
     }]
   },
-    // 微卡
+  // 微卡
   {
     path: '/weika',
     component: weika_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
@@ -250,7 +242,7 @@ const router = new VueRouter({
     }
     ]
   },
-    // 用户中心
+  // 用户中心
   {
     path: '/member',
     component: member_route,
@@ -263,7 +255,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'index',
+      path: '',
       name: 'MemberIndex',
       component: MemberIndex,
       meta: {
@@ -358,7 +350,7 @@ const router = new VueRouter({
     }
     ]
   },
-    // 文章
+  // 文章
   {
     path: '/article',
     component: article_route,
@@ -383,19 +375,6 @@ const router = new VueRouter({
       meta: {
         title: '问题反馈'
       }
-    }]
-  },
-  {
-    path: '/author',
-    name: 'Author',
-    component: Author
-  },
-  {
-    path: '/options',
-    component: OptionsPageSetting,
-    children: [{
-      path: '',
-      component: OptionPageFull
     }]
   }
   ]
