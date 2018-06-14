@@ -41,44 +41,62 @@
           </div>
           <ul class="myorder">
             <li>
-              <span><img src="./images/daifukuan.png"></span>
-              <span>待付款</span>
-              <span class="num">8</span>
+              <router-link :to="{ path:'/member/myorder/1' }">
+                <span><img src="./images/daifukuan.png"></span>
+                <span>待付款</span>
+                <span class="num">8</span>
+              </router-link>
             </li>
             <li>
-              <span><img src="./images/daishouhuo.png"></span>
-              <span>待收货</span>
+              <router-link :to="{path:'/member/myorder/2'}">
+                <span><img src="./images/daishouhuo.png"></span>
+                <span>待收货</span>
+              </router-link>
             </li>
             <li>
-              <span><img src="./images/daishiyong.png"></span>
-              <span>待使用</span>
+              <router-link :to="{path:'/member/myorder/3'}">
+                <span><img src="./images/daishiyong.png"></span>
+                <span>待使用</span>
+              </router-link>
             </li>
             <li>
-              <span><img src="./images/daipinglun.png"></span>
-              <span>待评论</span>
-              <span class="num">12</span>
+              <router-link :to="{path:'/member/myorder/4'}">
+                <span><img src="./images/daipinglun.png"></span>
+                <span>待评论</span>
+                <span class="num">12</span>
+              </router-link>
             </li>
             <li>
-              <span><img src="./images/daituikuan.png"></span>
-              <span>待退款</span>
+              <router-link :to="{path:'/member/myorder/5'}">
+                <span><img src="./images/daituikuan.png"></span>
+                <span>待退款</span>
+              </router-link>
             </li>
           </ul>
-          <div class="tit">
-            <div class="l">我的积分</div>
-            <div class="r"><img src="./images/you1.png"></div>
-          </div>
-          <div class="tit">
-            <div class="l">我要兑换</div>
-            <div class="r"><img src="./images/you1.png"></div>
-          </div>
-          <div class="tit">
-            <div class="l">我的收藏</div>
-            <div class="r"><img src="./images/you1.png"></div>
-          </div>
-          <div class="tit">
-            <div class="l">帮助中心</div>
-            <div class="r"><img src="./images/you1.png"></div>
-          </div>
+          <router-link to="points">
+            <div class="tit">
+              <div class="l">我的积分</div>
+              <div class="r"><img src="./images/you1.png"></div>
+            </div>
+          </router-link>
+          <router-link to="exchange">
+            <div class="tit">
+              <div class="l">我要兑换</div>
+              <div class="r"><img src="./images/you1.png"></div>
+            </div>
+          </router-link>
+          <router-link to="favourite">
+            <div class="tit">
+              <div class="l">我的收藏</div>
+              <div class="r"><img src="./images/you1.png"></div>
+            </div>
+          </router-link>
+          <router-link :to="{ path: '/article/help_list' }">
+            <div class="tit">
+              <div class="l">帮助中心</div>
+              <div class="r"><img src="./images/you1.png"></div>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -86,12 +104,12 @@
   </div>
 </template>
 <script>
-import { Swiper } from 'vux'
+import { Swiper } from "vux";
 export default {
   components: {
     Swiper
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .main {
