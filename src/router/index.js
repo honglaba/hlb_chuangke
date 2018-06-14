@@ -40,6 +40,9 @@ import points_log from '@/pages/member/points_log' // 积分记录
 import myorder from '@/pages/member/myorder' // 积分记录
 import MemberLogin from '@/pages/member/login' // 登录、注册绑定手机
 import MemberIndex from '@/pages/member/index'
+import phone_update from '@/pages/member/phone_update'// 更改手机号
+import settings from '@/pages/member/settings'// 个人设置
+import myinfo from '@/pages/member/myinfo'// 个人信息
 // 文章
 import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
@@ -324,11 +327,32 @@ const router = new VueRouter({
         title: '积分记录'
       }
     }, {
-      path: 'myorder/:status',
+      path: 'myorder/:id',
       name: 'myorder',
       component: myorder,
       meta: {
         title: '帮助详情'
+      }
+    }, {
+      path: 'phone_update',
+      name: 'phone_update',
+      component: phone_update,
+      meta: {
+        title: '更绑手机号'
+      }
+    }, {
+      path: 'settings',
+      name: 'settings',
+      component: settings,
+      meta: {
+        title: '个人设置'
+      }
+    }, {
+      path: 'myinfo',
+      name: 'myinfo',
+      component: myinfo,
+      meta: {
+        title: '个人信息'
       }
     }
     ]
