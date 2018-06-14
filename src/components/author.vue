@@ -24,13 +24,18 @@ import { Grid, GridItem } from 'vux'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 export default {
-  data() {
+  data () {
     return {
       a: 1
-    };
+    }
   },
   methods: {
-    ...mapActions(['HTTP_WxAccredit', 'HTTP_UserInfo', 'HTTP_logout', 'HTTP_refreshToken']),
+    ...mapActions([
+      'HTTP_WxAccredit',
+      'HTTP_UserInfo',
+      'HTTP_logout',
+      'HTTP_refreshToken'
+    ]),
     loginWX () {
       this.HTTP_WxAccredit().then(res => {
         window.location.href = res.redirect
@@ -42,8 +47,7 @@ export default {
   },
   created () {
     let local = window.location.href
-    if (local.indexOf('?') < 0) {
-    } else {
+    if (local.indexOf('access_token') > 0) {
       // slice
       let list = local.slice(local.indexOf('?') + 1).split('&')
       let hashes = {}
@@ -51,22 +55,31 @@ export default {
         let items = list[i].split('=')
         hashes[items[0]] = items[1]
       }
-
       localStorage.setItem('client_id', hashes.client_id)
+
       // cookie
-      Cookies.set('access_token', hashes.access_token, { expires: 1 / 24 }) // 设置一小时过期
-      Cookies.set('refresh_token', hashes.refresh_token, { expires: 10 }) // 设置10天过期
+      Cookies.set('accessToken', hashes.access_token, { expires: 1 / 24 }) // 设置一小时过期
+      Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
       // localStorage
-      localStorage.setItem('access_token', hashes.access_token)
-      localStorage.setItem('refresh_token', hashes.refresh_token)
-      localStorage.setItem('access_token_expires', new Date().getTime())
-      localStorage.setItem('refresh_token_expires', new Date().getTime())
+      // localStorage.setItem('access_token', hashes.access_token)
+      // localStorage.setItem('refresh_token', hashes.refresh_token)
+      // localStorage.setItem('access_token_expires', new Date().getTime())
+      // localStorage.setItem('refresh_token_expires', new Date().getTime())
       // vuex commit
       this.$store.commit('SET_ACCESS_TOKEN', hashes.access_token)
       this.$store.commit('SET_ACCESS_TOKEN', hashes.refresh_token)
       // get userinfo
       this.HTTP_UserInfo().then(res => {
-        localStorage.setItem('userInfo', res.data)
+        localStorage.setItem('userInfo', JSON.stringify(res.data))
+        axios({
+          url: '/api_proxy/api/login/refresh',
+          method: 'post',
+          data: {
+            client_id: 6
+          }
+        }).then(res => {
+          console.log(res)
+        })
       })
     }
   },
@@ -74,7 +87,7 @@ export default {
     Grid,
     GridItem
   }
-};
+}
 </script>
 
 <style scoped>

@@ -26,7 +26,9 @@ import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
 import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
+
 import Cookies from 'js-cookie'
+import apiList from '@/store/actions'
 
 const Author = () =>
   import('@/components/author')
@@ -268,8 +270,13 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 判断是否已经登录且前往的页面不是登录页
   // 判断是否已经登录且前往的是登录页
-  if ((to.path === '/options' || to.path === '/others') && !Cookies.get('access_token')) {
-    next('/author')
+  if ((to.path === '/options' || to.path === '/others')) {
+    if (!Cookies.get('accessToken')) {
+      apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
+        window.location.href = res.redirect
+      })
+      return
+    }
   }
   next()
 })

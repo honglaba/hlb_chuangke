@@ -1,33 +1,66 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import Utils from '@/config/mUtils'
-import apiList from '@/store/actions'
 
 // 配置axios对象
-axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://api.ck.honglaba.com' : '/api_proxy'
+let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.ck.honglaba.com' : '/api_proxy'
+axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+window.isRefreshing = false
+/* 被挂起的请求数组 */
+let refreshSubscribers = []
+
+/* 刷新请求（refreshSubscribers数组中的请求得到新的token之后会自执行，用新的token去请求数据） */
+function onRrefreshed (token) {
+  refreshSubscribers.map(cb => cb(token))
+}
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
   /* 是否有请求正在刷新token */
-  window.isRefreshing = false
-  // apiList.HTTP_refreshToken()
-  if (localStorage.getItem('userInfo')) {
-    config.headers.Authorization = 'Bearer ' + localStorage.getItem('access_token')
+  if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
+    config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
 
-    if (Utils.isRefreshTokenExpired()) { // 判断refresh_token 是否过期
+    if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
       alert('刷新token过期,请重新登录!')
       // 清空所有cookie,localStorage
       localStorage.clear()
-      Cookies.remove('access_token')
-      Cookies.remove('refresh_token')
-      window.location.href = '#/author' // 重新登录
+      Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
       return
     }
 
-    if (Utils.isTokenExpired()) { // 判断access_token是否过期
+    if (!Cookies.get('accessToken')) { // 判断access_token是否过期
       window.isRefreshing = true
-      // Cookies.set('refresh_token', localStorage.getItem('refresh_token'))
+      let xhr = new XMLHttpRequest()
+      xhr.open('POST', location.origin + '/api_proxy/api/login/refresh')
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify({
+        client_id: localStorage.getItem('client_id')
+      }))
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          window.isRefreshing = false
+          let accessToken = JSON.parse(xhr.response).access_token
+          // Cookies.set('accessToken', accessToken, {
+          //   expires: 1 / 24
+          // })
+          Cookies.set('accessToken', accessToken, {
+            expires: new Date(new Date().getTime() + 6 * 1000)
+          })
+          config.headers.Authorization = 'Bearer ' + accessToken
+          onRrefreshed(accessToken)
+        }
+      }
+      let retry = new Promise((resolve, reject) => {
+        refreshSubscribers.push(accessToken => {
+          config.headers.Authorization = 'Bearer ' + accessToken
+          /* 将请求挂起 */
+          resolve(config)
+        })
+      })
+      return retry
     }
   }
   return config

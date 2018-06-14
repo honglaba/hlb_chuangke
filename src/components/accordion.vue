@@ -9,24 +9,24 @@
 
     </div>
     <ul class="accList">
-      <li v-for="item in list">{{item.name}}
+      <li v-for="(item, index) in list" :key="index">{{item.name}}
         <span>{{item.change}}</span>
       </li>
     </ul>
   </div>
 </template>
- <script>
+<script>
 export default {
-  data() {
+  data () {
     return {
       isDisplay: false
-    };
+    }
   },
   props: {
     title: {
       type: Object,
-      default() {
-        return {};
+      default () {
+        return {}
       }
     },
     list: {
@@ -35,11 +35,11 @@ export default {
     }
   },
   methods: {
-    toggleList: function(e) {
-      this.isDisplay = !this.isDisplay;
+    toggleList: function (e) {
+      this.isDisplay = !this.isDisplay
     }
   }
-};
+}
 </script>
 <style lang="less" scoped >
 .accWrapper {
