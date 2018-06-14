@@ -24,16 +24,7 @@
         </li>
       </ul>
     </div>
-    <!-- <group gutter="0">
-      <cell title="个人信息" is-link :border-intent="false"></cell>
-      <cell title="实名认证" is-link :border-intent="false"></cell>
-      <cell title="管理收货地址" is-link :border-intent="false"></cell>
-      <cell title="社交账号绑定" is-link :border-intent="false"></cell>
-      <cell title="换绑手机" is-link :border-intent="false"></cell>
-      <cell title="支付设置" is-link :border-intent="false"></cell>
-      <cell title="关于创客" is-link :border-intent="false"></cell>
-    </group> -->
-    <div class="option-footer">
+    <div class="option-footer" @click="logout()">
       <span>退出登录</span>
     </div>
   </div>
@@ -41,7 +32,15 @@
 
 <script>
 import { Group, Cell, CellBox, Card } from 'vux'
+import { mapActions } from 'vuex'
 export default {
+  methods: {
+    ...mapActions(['HTTP_logout', 'HTTP_UserInfo', 'HTTP_UpReferrer']),
+    logout () {
+      // this.HTTP_UserInfo()
+      this.HTTP_logout()
+    }
+  },
   components: {
     Group,
     Cell,

@@ -1,34 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// 首页
-import home_route from '@/pages/home/home_route'
+import MemberLogin from '@/pages/member/login'
+import MemberIndex from '@/pages/member/index'
 import HomeIndex from '@/pages/home/index'
 import Recommend from '@/pages/home/recommend'
 import Details from '@/pages/home/details'
 import Notice from '@/pages/home/notice'
 import BussinessDetails from '@/pages/home/business-details'
-import Food from '@/pages/home/food'
-import Location from '@/pages/home/location'
-import Map from '@/pages/home/map'
-import Pay from '@/pages/home/pay'
-import Choice from '@/pages/home/choice'
-import ChoiceDetails from '@/pages/home/choice-details'
-// 附近商家
-import shop_route from '@/pages/shop/shop_route'
 import ShopIndex from '@/pages/shop/index'
-// 微卡
-import weika_route from '@/pages/weika/weika_route'
-import WeikaIndex from '@/pages/weika/index' // 默认首页
-import WeikaVip from '@/pages/weika/vip' // vip首页
-import WeikaReg from '@/pages/weika/reg' // 邀请注册微卡
-import WeikaPay from '@/pages/weika/pay' // 微卡支付
-import withdraw from '@/pages/weika/withdraw' // 提现
-import withdraw_log from '@/pages/weika/withdraw_log' // 提现记录
-import recommend_list from '@/pages/weika/recommend_list' // 推荐用户列表
-import income from '@/pages/weika/income' // 佣金首页
-import income_zhanji from '@/pages/weika/income_zhanji' // 查看战绩
-// 用户中心
-import member_route from '@/pages/member/member_route'
+import WeikaIndex from '@/pages/weika/index'
+import WeikaVip from '@/pages/weika/vip'
+import WeikaReg from '@/pages/weika/reg'
 import Regstep1 from '@/pages/member/reg/reg_step1'
 import Regstep2 from '@/pages/member/reg/reg_step2'
 import Regstep3 from '@/pages/member/reg/reg_step3'
@@ -38,20 +20,21 @@ import exchange_log from '@/pages/member/exchange_log' // 兑换记录
 import points from '@/pages/member/points' // 我的积分
 import points_log from '@/pages/member/points_log' // 积分记录
 import myorder from '@/pages/member/myorder' // 积分记录
-import MemberLogin from '@/pages/member/login' // 登录、注册绑定手机
-import MemberIndex from '@/pages/member/index'
-import phone_update from '@/pages/member/phone_update'// 更改手机号
-import settings from '@/pages/member/settings'// 个人设置
-import myinfo from '@/pages/member/myinfo'// 个人信息
-// 文章
-import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
 import help_detail from '@/pages/article/help_detail' // 帮助详情
-import feedback from '@/pages/article/feedback' // 问题反馈
-
-// cookie
+import WeikaPay from '@/pages/weika/pay'
+import withdraw from '@/pages/weika/withdraw' // 提现
+import withdraw_log from '@/pages/weika/withdraw_log' // 提现记录
+import recommend_list from '@/pages/weika/recommend_list' // 推荐用户列表
+import income from '@/pages/weika/income' // 佣金首页
+import income_zhanji from '@/pages/weika/income_zhanji' // 查看战绩
+import Food from '@/pages/home/food'
+import Location from '@/pages/home/location'
+import Map from '@/pages/home/map'
+import Pay from '@/pages/home/pay'
+import Choice from '@/pages/home/choice'
+import ChoiceDetails from '@/pages/home/choice-details'
 import Cookies from 'js-cookie'
-import apiList from '@/store/actions'
 
 const Author = () =>
   import('@/components/author')
@@ -64,7 +47,6 @@ const OptionPageFull = () =>
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  // 默认首页
   routes: [{
     path: '',
     name: 'HomeIndex',
@@ -73,20 +55,20 @@ const router = new VueRouter({
       title: '首页'
     }
   },
-    // 首页
   {
-    path: '/home',
-    component: home_route,
+    path: '/member',
+    component: member,
     children: [{
-      path: 'index',
+      path: '/home/index',
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
         title: '首页'
       }
     },
+    
     {
-      path: 'recommend',
+      path: '/home/recommend',
       name: 'Recommend',
       component: Recommend,
       meta: {
@@ -94,63 +76,63 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'details',
+      path: '/home/details',
       name: 'Details',
       component: Details,
       meta: {
         title: '商品详情页 '
       }
     }, {
-      path: 'food',
+      path: '/home/food',
       name: 'Food',
       component: Food,
       meta: {
         title: '美食'
       }
     }, {
-      path: 'business-details',
+      path: '/home/business-details',
       name: 'BussinessDetails',
       component: BussinessDetails,
       meta: {
         title: '商家详情'
       }
     }, {
-      path: 'notice',
+      path: '/home/notice',
       name: 'Notice',
       component: Notice,
       meta: {
         title: '公告'
       }
     }, {
-      path: 'location',
+      path: '/home/location',
       name: 'Location',
       component: Location,
       meta: {
         title: '定位'
       }
     }, {
-      path: 'map',
+      path: '/home/map',
       name: 'Map',
       component: Map,
       meta: {
         title: '地图'
       }
     }, {
-      path: 'pay',
+      path: '/home/pay',
       name: 'Pay',
       component: Pay,
       meta: {
         title: '消费买单'
       }
     }, {
-      path: 'choice',
+      path: '/home/choice',
       name: 'Choice',
       component: Choice,
       meta: {
         title: '精选商家'
       }
     }, {
-      path: 'choice-details',
+      path: '/home/choice-details',
       name: 'ChoiceDetails',
       component: ChoiceDetails,
       meta: {
@@ -159,12 +141,11 @@ const router = new VueRouter({
     }
     ]
   },
-    // 附近商家
   {
     path: '/shop',
-    component: shop_route,
+    component: shop,
     children: [{
-      path: 'index',
+      path: '/shop/index',
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
@@ -172,12 +153,11 @@ const router = new VueRouter({
       }
     }]
   },
-    // 微卡
   {
     path: '/weika',
-    component: weika_route,
+    component: weika,
     children: [{
-      path: 'index',
+      path: '/weika/index',
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
@@ -185,7 +165,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'withdraw_log',
+      path: '/weika/withdraw_log',
       name: 'withdraw_log',
       component: withdraw_log,
       meta: {
@@ -193,7 +173,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'withdraw',
+      path: '/weika/withdraw',
       name: 'withdraw',
       component: withdraw,
       meta: {
@@ -201,7 +181,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'vip',
+      path: '/weika/vip',
       name: 'WeikaVip',
       component: WeikaVip,
       meta: {
@@ -209,7 +189,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'recommend_list',
+      path: '/weika/recommend_list',
       name: 'recommend_list',
       component: recommend_list,
       meta: {
@@ -217,7 +197,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'income',
+      path: '/weika/income',
       name: 'income',
       component: income,
       meta: {
@@ -225,7 +205,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'income_zhanji',
+      path: '/weika/income_zhanji',
       name: 'income_zhanji',
       component: income_zhanji,
       meta: {
@@ -234,14 +214,14 @@ const router = new VueRouter({
     },
 
     {
-      path: 'reg',
+      path: '/weika/reg',
       name: 'WeikaReg',
       component: WeikaReg,
       meta: {
         title: '注册创客微卡'
       }
     }, {
-      path: 'pay',
+      path: '/weika/pay',
       name: 'WeikaPay',
       component: WeikaPay,
       meta: {
@@ -250,12 +230,11 @@ const router = new VueRouter({
     }
     ]
   },
-    // 用户中心
   {
     path: '/member',
-    component: member_route,
+    component: member,
     children: [{
-      path: 'login',
+      path: '/member/login',
       name: 'MemberLogin',
       component: MemberLogin,
       meta: {
@@ -263,14 +242,14 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'index',
+      path: '/member/index',
       name: 'MemberIndex',
       component: MemberIndex,
       meta: {
         title: '个人中心'
       }
     }, {
-      path: 'reg/reg_step1',
+      path: '/member/reg/reg_step1',
       name: 'Reg_step1',
       component: Regstep1,
       meta: {
@@ -278,7 +257,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'reg/reg_step2',
+      path: '/member/reg/reg_step2',
       name: 'Reg_step2',
       component: Regstep2,
       meta: {
@@ -286,102 +265,73 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'reg/reg_step3',
+      path: '/member/reg/reg_step3',
       name: 'Reg_step3',
       component: Regstep3,
       meta: {
         title: '填写个人信息'
       }
     }, {
-      path: 'favourite',
+      path: '/member/favourite',
       name: 'favourite',
       component: favourite,
       meta: {
         title: '我的收藏'
       }
     }, {
-      path: 'exchange',
+      path: '/member/exchange',
       name: 'exchange',
       component: exchange,
       meta: {
         title: '我要兑换'
       }
     }, {
-      path: 'exchange_log',
+      path: '/member/exchange_log',
       name: 'exchange_log',
       component: exchange_log,
       meta: {
         title: '兑换记录'
       }
     }, {
-      path: 'points',
+      path: '/member/points',
       name: 'points',
       component: points,
       meta: {
         title: '我的积分'
       }
     }, {
-      path: 'points_log',
+      path: '/member/points_log',
       name: 'points_log',
       component: points_log,
       meta: {
         title: '积分记录'
       }
     }, {
-      path: 'myorder/:id',
+      path: '/member/myorder/:status',
       name: 'myorder',
       component: myorder,
       meta: {
         title: '帮助详情'
       }
-    }, {
-      path: 'phone_update',
-      name: 'phone_update',
-      component: phone_update,
-      meta: {
-        title: '更绑手机号'
-      }
-    }, {
-      path: 'settings',
-      name: 'settings',
-      component: settings,
-      meta: {
-        title: '个人设置'
-      }
-    }, {
-      path: 'myinfo',
-      name: 'myinfo',
-      component: myinfo,
-      meta: {
-        title: '个人信息'
-      }
     }
     ]
   },
-    // 文章
   {
     path: '/article',
-    component: article_route,
+    component: article,
     children: [{
-      path: 'help_list',
+      path: '/article/help_list',
       name: 'help_list',
       component: help_list,
       meta: {
         title: '帮助中心'
       }
     }, {
-      path: 'help_detail/:id',
+      path: '/article/help_detail',
       name: 'help_detail',
       component: help_detail,
       meta: {
         title: '帮助详情'
-      }
-    }, {
-      path: 'feedback',
-      name: 'feedback',
-      component: feedback,
-      meta: {
-        title: '问题反馈'
       }
     }]
   },
@@ -405,13 +355,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 判断是否已经登录且前往的页面不是登录页
   // 判断是否已经登录且前往的是登录页
-  if ((to.path === '/options' || to.path === '/others')) {
-    if (!Cookies.get('accessToken')) {
-      apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
-        window.location.href = res.redirect
-      })
-      return
-    }
+  if ((to.path === '/options' || to.path === '/others') && !Cookies.get('access_token')) {
+    next('/author')
   }
   next()
 })

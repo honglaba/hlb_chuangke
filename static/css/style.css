@@ -210,6 +210,7 @@ body{
 .content img{max-width:100%}
 .base_box{background:#fff}
 .base_box .tit{position:relative;display:flex;align-items:center;justify-content:space-between;font-size:.3rem;height:.8rem}
+.base_box .tit .l{display: flex;align-items: center;}
 .base_box .tit .r{display:flex;align-items:center;color:#999}
 .base_box .tit .r img{margin-left:.1rem;width: .16rem; height: .28rem;}
 /*定位上下左右居中*/
