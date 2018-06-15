@@ -10,17 +10,28 @@ if (agent.indexOf('iPhone') > 0) {
 }
 
 const actions = {
-  HTTP_WxAccredit ({
-    commit
-  }) {
+  HTTP_WxAccredit (redirect) {
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/oauth/wechat',
         params: {
-          client: client
+          client: client,
+          redirect: redirect
         }
       }).then(res => {
         resolve(res)
+      })
+    })
+  },
+  HTTP_UpReferrer () {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/parent'
+      }).then(res => {
+        if (res.result_state === 'success') {
+          console.log('UpReferrer success!!!!!!!', new Date(new Date().getTime() * 1000))
+          resolve(res)
+        }
       })
     })
   },
@@ -31,7 +42,7 @@ const actions = {
       HTTP({
         url: '/api/user/info',
         headers: {
-          'Authorization': 'Bearer ' + Cookies.get('access_token')
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
         }
       }).then(res => {
         if (res.result_state === 'success') {
@@ -49,6 +60,7 @@ const actions = {
           localStorage.clear()
           Cookies.remove('access_token')
           Cookies.remove('refresh_token')
+          this.$route.push('/')
         }
       })
     })
@@ -63,7 +75,7 @@ const actions = {
         }
       }).then(res => {
         if (res.result_state === 'success') {
-          console.log(res)
+
         }
       })
     })

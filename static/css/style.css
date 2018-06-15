@@ -111,6 +111,27 @@ body{
 .bpad12{
 	padding-bottom: .12rem;
 }
+.bmar24{
+	margin-bottom: .24rem;
+}
+.bmar16{
+	margin-bottom: .16rem;
+}
+.rmar25{
+	margin-right: .25rem
+}
+.h80{
+	height: .8rem;
+}
+.h44{
+	height: .44rem;
+}
+.tpad60{
+	padding-top: .6rem;
+}
+.lpad8{
+	padding-left:.08rem; 
+}
 /* 宽高end */
 /* 颜色 */
 .bgf{

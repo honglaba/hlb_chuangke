@@ -56,33 +56,27 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 
 // cookie
 import Cookies from 'js-cookie'
-
-const Author = () =>
-  import('@/components/author')
-
-const OptionsPageSetting = () =>
-  import('@/components/optionPages/index')
-const OptionPageFull = () =>
-  import('@/components/optionPages/settingA')
+import apiList from '@/store/actions'
+import { isNull } from 'util'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   // 默认首页
   routes: [{
-    path: '',
+    path: '/',
     name: 'HomeIndex',
     component: HomeIndex,
     meta: {
       title: '首页'
     }
   },
-    // 首页
+  // 首页
   {
     path: '/home',
     component: home_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
@@ -163,12 +157,12 @@ const router = new VueRouter({
     }
     ]
   },
-    // 附近商家
+  // 附近商家
   {
     path: '/shop',
     component: shop_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
@@ -176,12 +170,12 @@ const router = new VueRouter({
       }
     }]
   },
-    // 微卡
+  // 微卡
   {
     path: '/weika',
     component: weika_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
@@ -254,7 +248,7 @@ const router = new VueRouter({
     }
     ]
   },
-    // 用户中心
+  // 用户中心
   {
     path: '/member',
     component: member_route,
@@ -267,7 +261,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'index',
+      path: '',
       name: 'MemberIndex',
       component: MemberIndex,
       meta: {
@@ -390,7 +384,7 @@ const router = new VueRouter({
     }
     ]
   },
-    // 文章
+  // 文章
   {
     path: '/article',
     component: article_route,
@@ -416,29 +410,35 @@ const router = new VueRouter({
         title: '问题反馈'
       }
     }]
-  },
-  {
-    path: '/author',
-    name: 'Author',
-    component: Author
-  },
-  {
-    path: '/options',
-    component: OptionsPageSetting,
-    children: [{
-      path: '',
-      component: OptionPageFull
-    }]
   }
   ]
 })
 
-// ceshi cookie
 router.beforeEach((to, from, next) => {
-  // 判断是否已经登录且前往的页面不是登录页
-  // 判断是否已经登录且前往的是登录页
-  if ((to.path === '/options' || to.path === '/others') && !Cookies.get('access_token')) {
-    next('/author')
+  let specialPaths = ['/member/settings']
+  let isMatched = false
+
+  if (isNull(to.name)) { // 路由不存在时跳转home页
+    next('/')
+    return
+  }
+
+  if (to.matched.length < 2) {
+    next()
+    return
+  }
+
+  specialPaths.forEach(e => {
+    if (e.match(to.matched[1].regex)) {
+      isMatched = true
+    }
+  })
+
+  if (isMatched && !localStorage.getItem('userInfo')) {
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
+      window.location.href = res.redirect
+    })
+    return
   }
   next()
 })

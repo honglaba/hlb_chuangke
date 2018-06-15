@@ -20,30 +20,237 @@
 
     <section class="info-box">
       <div class="til-row">
-        <div>
+        <div class="til">
           <h3>大岗仙庙烧鸡</h3>
           <div>评分<span class="c60">5.0</span></div>
         </div>
-        <div class="">
+        <div class="follow" v-if="!following" @click="followTap">
+          <img src="./images/icon_details_btn_normal.png" />
+          <span>关注</span>
+        </div>
+        <div class="follow select" v-else  @click="followTap">
+          <img src="./images/icon_details_btn_selected.png" />
+          <span>已关注</span>
+        </div>
+      </div>
+      <!-- 活动推荐 -->
+      <div class="action-box">
+        <div class="y-flex bmar24" v-if="!actionDetail">
+          <div class="small-card">2</div>
+          <div class="small-card">5</div>
+        </div>
+        <div class="big-card-row" v-else>
+          <ul>
+            <li>
+              <div>
+                <span>￥</span>2
+              </div>
+              <p>满35可用</p>
+              <p>有效期至2018.06.04</p>
+            </li>
+            <li>
+              <div>
+                <span>￥</span>5
+              </div>
+              <p>满50可用</p>
+              <p>有效期至2018.06.04</p>
+            </li>
+          </ul>
+        </div>
 
+        <div class="slide-tap y-flex y-ac">
+          <div class="action-info y-flex y-ac">
+            <span class="ico type1"></span>
+            <p>折扣商品7.5折起（不与其他折扣优惠叠加）</p>
+          </div>
+          <div class="btn y-flex y-ac" :class="[{cur:actionDetail}]" @click="slideTap">
+            <p>3个活动</p>
+            <img src="./images/icon_details_open.png" />
+          </div>
+        </div>
+
+        <div class="other-info" v-if="actionDetail">
+          <div class="action-info y-flex y-ac">
+            <span class="ico type2"></span>
+            <p>新用户首单立减5元</p>
+
+          </div>
+          <div class="action-info y-flex y-ac">
+            <span class="ico type3"></span>
+            <p>满30减3元 满60减6元</p>
+          </div>
+          <div class="action-info y-flex y-ac">
+            <span class="ico type4"></span>
+            <p>满一百赠送王老吉一罐</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 活动推荐end -->
+      <div class="other-info bmar16">
+        <div class="y-flex y-ac bmar16">
+          <p class="rmar25 c666">特色菜</p>
+          <p class="c999">人均消费30￥/人</p>
+        </div>
+        <div class="y-flex y-ac y-jc-b">
+          <div class="y-flex y-ac">
+            <p class="rmar25 c666">营业时间：</p>
+            <p class="c999">09:00~21:00</p>
+          </div>
+          <div class="c999" v-if="!actionDetail">已有<span class="cf00">1348</span>人消费</div>
+        </div>
+        <div class="c666 tpad60" v-if="actionDetail">已有<span class="cf00">1348</span>人消费</div>
+        <div class="padding-b" v-if="actionDetail">
+          <div class="slide-up" @click="slideTap"></div>
+        </div>
+      </div>
+
+      <div class="vux-1px-t h80 y-flex y-ac add-row" v-if="!actionDetail">
+        <div class="y-flex y-ac vux-1px-r flex1 h44">
+          <span class="add-ico"></span>
+          <p class="c666">袁屋边大道2号盈峰生活超市二层一号铺</p>
+        </div>
+        <div class="call-btn">
+          <img src="./images/icon_details_iphone.png" />
         </div>
       </div>
     </section>
 
-    <router-link tag="a" to></router-link>
+    <section class="exchange" v-if="!actionDetail">
+      <div class="y-flex y-jc-b til-row">
+        <h3>本店兑换</h3>
+        <router-link to="#" tag="a">更多<span class="lpad8">></span></router-link>
+      </div>
+      <div class="exchange-list">
+        <ul>
+          <router-link tag="li" to="#">
+           <div><img src="./images/details.png" /></div>
+           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+          </router-link>
+          <router-link tag="li" to="#">
+           <div><img src="./images/details.png" /></div>
+           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+          </router-link>
+          <router-link tag="li" to="#">
+           <div><img src="./images/details.png" /></div>
+           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+          </router-link>
+          <router-link tag="li" to="#">
+           <div><img src="./images/details.png" /></div>
+           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+          </router-link>
+        </ul>
+      </div>
+    </section>
+
+    <section class="comment">
+      <div class="top-row y-flex y-jc-b y-ac">
+        <div class="y-flex y-ac">
+          <h3>用户评论</h3>
+          <span>(6000)</span>
+        </div>
+        <router-link to="#" tag="a">
+          评分<span>5.0</span> 去评论<span class="lpad8">></span>
+        </router-link>
+      </div>
+
+      <ul class="comment-list">
+        <li class="vux-1px-b">
+          <div class="y-flex y-jc-b">
+            <div class="y-flex y-ac">
+              <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
+              <div class="s">
+                <p>小米儿溜溜</p>
+                <div class="star">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <p class="time">2018-05-22</p>
+          </div>
+          <div class="comment-content">
+            很好，优惠很多，非常好
+          </div>
+        </li>
+        <li class="vux-1px-b">
+          <div class="y-flex y-jc-b">
+            <div class="y-flex y-ac">
+              <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
+              <div class="s">
+                <p>小米儿溜溜</p>
+                <div class="star">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <p class="time">2018-05-22</p>
+          </div>
+          <div class="comment-content">
+            很好，优惠很多，非常好
+          </div>
+        </li>
+        <li class="vux-1px-b">
+          <div class="y-flex y-jc-b">
+            <div class="y-flex y-ac">
+              <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
+              <div class="s">
+                <p>小米儿溜溜</p>
+                <div class="star">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <p class="time">2018-05-22</p>
+          </div>
+          <div class="comment-content">
+            很好，优惠很多，非常好
+          </div>
+        </li>
+      </ul>
+      <div class="more">
+        <router-link tag="a" to="#">查看更多评论</router-link>
+      </div>
+      <router-link to="#" class="buy-btn" >消费买单</router-link>
+    </section>
   </div>
 </template>
 <script>
-import store from '../../store'
 export default {
+  data () {
+    return {
+      actionDetail: false,
+      following: false
+    }
+  },
+  methods: {
+    slideTap: function () {
+      this.actionDetail = !this.actionDetail
+    },
+    followTap: function () {
+      this.following = !this.following
+    }
+  },
   mounted () {
-    store.commit('increment')
-    console.log(store.state.count)
+    console.log(this.$store.state)
   }
 }
 </script>
 
 <style lang="less" scoped>
+@import "~vux/src/styles/1px.less";
   .banner-box{
     width: 7.5rem;
     height: 4rem;
@@ -121,5 +328,334 @@ export default {
   }
   .info-box{
     background: #fff;
+    padding: 0 .24rem;
+    margin-bottom: .2rem;
+     .til-row{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 1.2rem;
+        margin-bottom: .12rem;
+        .til{
+          display: flex;
+          align-items: center;
+          >h3{
+            font-size: .44rem;
+            margin-right: .08rem;
+          }
+          >div{
+            font-size:.28rem;
+            color: .666rem;
+            >span{
+              color: #f00;
+              font-family: Arial, Helvetica, sans-serif;
+            }
+          }
+        }
+        .follow{
+          width: 1.3rem;
+          height: .52rem;
+          border-radius: .52rem;
+          background: linear-gradient(45deg,#f86a1d,#f5222d);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          >img{
+            width: .26rem;
+            height: .26rem;
+            margin-right: .1rem;
+          }
+          >span{
+            color: #fff;
+            font-size:.26rem;
+          }
+        }
+        .follow.select{
+          background: #cacaca
+        }
+      }
+      .add-row{
+        .add-ico{
+          width:.31rem;
+          height: .36rem;
+          background: url(./images/icon_details_position.png) no-repeat;
+          background-size: 100%;
+          margin-right: .1rem;
+        }
+        .call-btn{
+          width: 1rem;
+          padding-left: .4rem;
+          box-sizing: border-box;
+          >img{
+            width: .38rem;
+            display: block;
+          }
+        }
+      }
+  }
+  .action-box{
+    padding-bottom: .38rem;
+    .small-card{
+      width: .98rem;
+      height: .42rem;
+      background: url(./images/icon2_details_certificate.png) no-repeat;
+      background-size:100%;
+      color: #fb4e44;
+      line-height: .42rem;
+      font-size: .3rem;
+      font-weight: bold;
+      text-indent: .62rem;
+      margin-right: .16rem;
+    }
+    .big-card-row{
+      height: 1.48rem;
+      overflow: hidden;
+      margin-bottom: .4rem;
+      >ul{
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        float: left;
+        overflow-y: hidden;
+        >li{
+          width: 3.64rem;
+          height: 1.48rem;
+          background: url(./images/btn1_details_photo.png) no-repeat;
+          background-size:100%;
+          margin-right: .2rem;
+          position: relative;
+          display: inline-block;
+          color: #fff;
+          padding: .2rem 0 0 .3rem;
+          box-sizing:border-box;
+              vertical-align: middle;
+          >div{
+            font-size: .56rem;
+            font-family: Arial, Helvetica, sans-serif;
+            >span{
+              font-size: .38rem;
+            }
+          }
+          >p{
+            font-size: .22rem;
+          }
+        }
+      }
+    }
+    .slide-tap{
+      justify-content: space-between;
+      .btn{
+        color: #999;
+        font-size: .24rem;
+        >p{
+          margin-right: .08rem;
+        }
+        >img{
+          width: .17rem;
+        }
+      }
+      .btn.cur{
+        >img{
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .other-info{
+      margin-top: .22rem;
+      >.action-info{
+        margin-bottom: .22rem;
+      }
+    }
+    .action-info{
+      .ico{
+        display: block;
+        width: .28rem;
+        height: .28rem;
+        background: url(./images/otherico.png) no-repeat;
+        background-size: 1.18rem;
+        margin-right: .16rem;
+      }
+      .ico.type1{
+        background-position: 0 0;
+      }
+      .ico.type2{
+        background-position: -.3rem 0;
+      }
+      .ico.type3{
+        background-position: -.6rem 0;
+      }
+      .ico.type4{
+        background-position: -.9rem 0;
+      }
+      >P{
+        font-size: .24rem;
+      }
+    }
+  }
+  .padding-b{
+        height: 2.14rem;
+        position: relative;
+        .slide-up{
+          width: .42rem;
+          height: .27rem;
+          background: url(./images/btn_details_bottom_put.png) no-repeat;
+          background-size: 100%;
+          position: absolute;
+          left: 50%;
+          margin-left: -.21rem;
+          bottom: .6rem;
+        }
+      }
+  .exchange{
+    background: #fff;
+    margin-bottom: .2rem;
+    .til-row{
+      height: 1.15rem;
+      padding:0 .24rem;
+      line-height: 1.15rem;
+      h3{
+        font-weight: normal;
+        font-size: .36rem;
+      }
+      a{
+        color: #999;
+        font-size: .28rem;
+      }
+    }
+    .exchange-list{
+      padding-left: .24rem;
+       height: 2.3rem;
+        >ul{
+          width: 100%;
+          white-space: nowrap;
+          overflow-x: scroll;
+          overflow-y: hidden;
+          float: left;
+          >li{
+            width: 2.4rem;
+            height: 2.5rem;
+            position: relative;
+            margin-right: .16rem;
+            display: inline-block;
+            >div{
+              width: 2.4rem;
+              height: 1.88rem;
+              border-radius: .08rem;
+              overflow: hidden;
+              >img{
+                width: 100%;
+                height: 100%;
+              }
+            }
+            >.name{
+              width: 2rem;
+              height: .5rem;
+              line-height: .5rem;
+              background: #fff;
+              border-radius: .5rem;
+              box-shadow: 0 .05rem .1rem rgba(255,102,0,0.1);
+              padding: 0 .2rem;
+              box-sizing: border-box;
+              text-align: center;
+              position: absolute;
+              left: 50%;
+              margin-left: -1rem;
+              top: 1.63rem;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              box-sizing: border-box;
+              font-size: .24rem;
+            }
+          }
+        }
+
+    }
+  }
+  .comment{
+    background: #fff;
+    padding: .2rem .24rem .4rem .2rem;
+    .top-row{
+      height: .75rem;
+      >div{
+        h3{
+          font-size: .36rem;
+        }
+        span{
+          font-size: .28rem;
+          color: #999;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+      }
+      >a{
+        color: #999;
+        >span:nth-child(1){
+          color: #f00;
+          margin-right: .16rem;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+      }
+    }
+    .comment-list{
+      margin-bottom: .6rem;
+      >li{
+        padding-top: .32rem;
+        padding-bottom:.3rem;
+        .comment-img{
+          width: .8rem;
+          height: .8rem;
+          overflow: hidden;
+          border-radius: 50%;
+          margin-right: .2rem;
+          img{
+            height: .8rem;
+            display: block;
+            margin: 0 auto;
+          }
+        }
+        .s{
+          >p{
+            margin: .1rem 0;
+          }
+          .star{
+            overflow: hidden;
+            span{
+              display: block;
+              float: left;
+              width: .25rem;
+              height: .24rem;
+              background: url(./images/icon_details_good.png) no-repeat;
+              background-size:100%;
+            }
+          }
+        }
+        .time{
+          color: #999;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+        .comment-content{
+          padding: .3rem 0 0 1rem;
+        }
+
+      }
+    }
+    .more{
+          text-align: center;
+          margin-bottom: .28rem;
+          a{
+            color: #666;
+          }
+        }
+    .buy-btn{
+      width: 7.02rem;
+      height: .9rem;
+      border-radius: .9rem;
+      background: linear-gradient(to right,#ff7f32,#f5222d);
+      color: #fff;
+      text-align: center;
+      line-height: .9rem;
+      font-size: .32rem;
+      display: block;
+    }
   }
 </style>
