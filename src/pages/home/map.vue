@@ -8,18 +8,35 @@
                 <p>距您
                     <span>375.8</span>米 胜和社区福明大厦北楼102号A铺</p>
             </div>
-            <div class="nav-btn">
+            <div class="nav-btn" @click="useMap">
                 <span></span>
                 <p>导航</p>
             </div>
         </section>
+        <actionsheet v-model="show" :menus="menus" @on-click-menu="click" show-cancel></actionsheet>
     </div>
 </template>
 <script>
+import { Actionsheet } from 'vux'
 export default {
   name: '',
   data () {
-    return {}
+    return {
+      show: false,
+      menus: {
+        menu1: '使用iPhone自带地图',
+        menu2: '使用高德地图',
+        menu3: '使用百度地图'
+      }
+    }
+  },
+  components: {
+    Actionsheet
+  },
+  methods: {
+    useMap: function () {
+      this.show = true
+    }
   },
   mounted () {
     // 百度地图API功能
@@ -32,7 +49,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .back{
   display: block;
   border-radius: .1rem;
@@ -95,5 +112,24 @@ export default {
       margin-right: .12rem;
     }
   }
+}
+//弹窗样式
+.weui-actionsheet__cell{
+  height: 1.24rem !important;
+  padding: 0 !important;
+  line-height: 1.24rem;
+  font-size: .38rem !important;
+  color: #333;
+}
+.weui-actionsheet__action{
+  margin: .01rem !important;
+  .weui-actionsheet__cell{
+    color: #f60 !important;
+  }
+}
+.weui-actionsheet{
+  width: 7.5rem !important;
+  left: 50% !important;
+  margin-left:-3.75rem;
 }
 </style>

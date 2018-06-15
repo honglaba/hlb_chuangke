@@ -13,6 +13,7 @@ import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
 import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
+import Scanning from '@/pages/home/scanning'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
 import ShopIndex from '@/pages/shop/index'
@@ -155,6 +156,13 @@ const router = new VueRouter({
       component: ChoiceDetails,
       meta: {
         title: '商家详情'
+      }
+    }, {
+      path: 'scanning',
+      name: 'Scanning',
+      component: Scanning,
+      meta: {
+        title: '扫一扫'
       }
     }
     ]

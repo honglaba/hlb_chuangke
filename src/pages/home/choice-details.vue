@@ -22,13 +22,15 @@
       <div class="til-row">
         <div class="til">
           <h3>大岗仙庙烧鸡</h3>
-          <div>评分<span class="c60">5.0</span></div>
+          <div>评分
+            <span class="c60">5.0</span>
+          </div>
         </div>
         <div class="follow" v-if="!following" @click="followTap">
           <img src="./images/icon_details_btn_normal.png" />
           <span>关注</span>
         </div>
-        <div class="follow select" v-else  @click="followTap">
+        <div class="follow select" v-else @click="followTap">
           <img src="./images/icon_details_btn_selected.png" />
           <span>已关注</span>
         </div>
@@ -98,9 +100,11 @@
             <p class="rmar25 c666">营业时间：</p>
             <p class="c999">09:00~21:00</p>
           </div>
-          <div class="c999" v-if="!actionDetail">已有<span class="cf00">1348</span>人消费</div>
+          <div class="c999" v-if="!actionDetail">已有
+            <span class="cf00">1348</span>人消费</div>
         </div>
-        <div class="c666 tpad60" v-if="actionDetail">已有<span class="cf00">1348</span>人消费</div>
+        <div class="c666 tpad60" v-if="actionDetail">已有
+          <span class="cf00">1348</span>人消费</div>
         <div class="padding-b" v-if="actionDetail">
           <div class="slide-up" @click="slideTap"></div>
         </div>
@@ -111,7 +115,7 @@
           <span class="add-ico"></span>
           <p class="c666">袁屋边大道2号盈峰生活超市二层一号铺</p>
         </div>
-        <div class="call-btn">
+        <div class="call-btn" @click="showMask">
           <img src="./images/icon_details_iphone.png" />
         </div>
       </div>
@@ -120,25 +124,27 @@
     <section class="exchange" v-if="!actionDetail">
       <div class="y-flex y-jc-b til-row">
         <h3>本店兑换</h3>
-        <router-link to="#" tag="a">更多<span class="lpad8">></span></router-link>
+        <router-link to="#" tag="a">更多
+          <span class="lpad8">></span>
+        </router-link>
       </div>
       <div class="exchange-list">
         <ul>
           <router-link tag="li" to="#">
-           <div><img src="./images/details.png" /></div>
-           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+            <div><img src="./images/details.png" /></div>
+            <div class="name">珀莱雅水动力珀莱雅水动力</div>
           </router-link>
           <router-link tag="li" to="#">
-           <div><img src="./images/details.png" /></div>
-           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+            <div><img src="./images/details.png" /></div>
+            <div class="name">珀莱雅水动力珀莱雅水动力</div>
           </router-link>
           <router-link tag="li" to="#">
-           <div><img src="./images/details.png" /></div>
-           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+            <div><img src="./images/details.png" /></div>
+            <div class="name">珀莱雅水动力珀莱雅水动力</div>
           </router-link>
           <router-link tag="li" to="#">
-           <div><img src="./images/details.png" /></div>
-           <div class="name">珀莱雅水动力珀莱雅水动力</div>
+            <div><img src="./images/details.png" /></div>
+            <div class="name">珀莱雅水动力珀莱雅水动力</div>
           </router-link>
         </ul>
       </div>
@@ -151,7 +157,9 @@
           <span>(6000)</span>
         </div>
         <router-link to="#" tag="a">
-          评分<span>5.0</span> 去评论<span class="lpad8">></span>
+          评分
+          <span>5.0</span> 去评论
+          <span class="lpad8">></span>
         </router-link>
       </div>
 
@@ -223,439 +231,486 @@
       <div class="more">
         <router-link tag="a" to="#">查看更多评论</router-link>
       </div>
-      <router-link to="#" class="buy-btn" >消费买单</router-link>
+      <router-link to="#" class="buy-btn">消费买单</router-link>
     </section>
+
+    <div v-transfer-dom>
+      <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
+        <p style="text-align:center;">(0769)2221 4618</p>
+      </confirm>
+    </div>
   </div>
 </template>
 <script>
+import { Confirm, TransferDomDirective as TransferDom } from 'vux'
 export default {
   data () {
     return {
       actionDetail: false,
-      following: false
+      following: false,
+      show: false
     }
   },
   methods: {
+    showMask: function () {
+      this.show = true
+    },
     slideTap: function () {
       this.actionDetail = !this.actionDetail
     },
     followTap: function () {
       this.following = !this.following
+    },
+    onConfirm (msg) {
+      console.log('on confirm')
+      if (msg) {
+        // window.location.href = msg
+        alert('拨打电话')
+      }
     }
   },
   mounted () {
     console.log(this.$store.state)
+  },
+  directives: {
+    TransferDom
+  },
+  components: {
+    Confirm
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "~vux/src/styles/1px.less";
-  .banner-box{
-    width: 7.5rem;
-    height: 4rem;
-    position: relative;
-    img{
-      width: 100%;
-      height: 100%;
+.banner-box {
+  width: 7.5rem;
+  height: 4rem;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  .top-row {
+    position: absolute;
+    top: 0.4rem;
+    left: 0;
+    width: 100%;
+    height: 0.46rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0.3rem;
+    padding-right: 0.35rem;
+    box-sizing: border-box;
+    > span {
+      width: 0.2rem;
+      height: 0.34rem;
+      background: url(./images/icon_details_ruturn.png) no-repeat;
+      background-size: 100%;
     }
-    .top-row{
-      position: absolute;
-      top: .4rem;
-      left: 0;
-      width: 100%;
-      height: .46rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-left:.3rem;
-      padding-right:.35rem;
-      box-sizing: border-box;
-      >span{
-        width: .2rem;
-        height: .34rem;
-        background: url(./images/icon_details_ruturn.png) no-repeat;
-        background-size:100%;
+    > div {
+      > span:nth-child(1) {
+        width: 0.46rem;
+        height: 0.46rem;
+        background: url(./images/icon_details_Sweep.png) no-repeat;
+        background-size: 100%;
+        margin-right: 0.32rem;
       }
-      >div{
-          >span:nth-child(1){
-            width: .46rem;
-            height: .46rem;
-            background: url(./images/icon_details_Sweep.png) no-repeat;
-            background-size:100%;
-            margin-right: .32rem;
-          }
-          >span:nth-child(2){
-            width: .48rem;
-            height: .12rem;
-            background: url(./images/icon_details_more.png) no-repeat;
-            background-size:100%;
-          }
-        }
+      > span:nth-child(2) {
+        width: 0.48rem;
+        height: 0.12rem;
+        background: url(./images/icon_details_more.png) no-repeat;
+        background-size: 100%;
+      }
     }
-    .bottom-row{
-      position: absolute;
-      width: 100%;
-      height: .69rem;
+  }
+  .bottom-row {
+    position: absolute;
+    width: 100%;
+    height: 0.69rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    bottom: 0.15rem;
+    padding: 0 0.26rem;
+    box-sizing: border-box;
+    > div:nth-child(1) {
+      color: #fff;
+      font-size: 0.28rem;
+      > span {
+        width: 0.68rem;
+        height: 0.69rem;
+        background: url(./images/icon_details_shop.png) no-repeat;
+        background-size: 100%;
+        margin-right: 0.16rem;
+      }
+    }
+    > div:nth-child(2) {
+      width: 1.16rem;
+      height: 0.48rem;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 0.24rem;
+      text-align: center;
+      line-height: 0.48rem;
+      color: #fff;
+      font-size: 0.24rem;
+    }
+  }
+}
+.info-box {
+  background: #fff;
+  padding: 0 0.24rem;
+  margin-bottom: 0.2rem;
+  .til-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 1.2rem;
+    margin-bottom: 0.12rem;
+    .til {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      bottom: .15rem;
-      padding: 0 .26rem;
-      box-sizing: border-box;
-      >div:nth-child(1){
+      > h3 {
+        font-size: 0.44rem;
+        margin-right: 0.08rem;
+      }
+      > div {
+        font-size: 0.28rem;
+        color: 0.666rem;
+        > span {
+          color: #f00;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+      }
+    }
+    .follow {
+      width: 1.3rem;
+      height: 0.52rem;
+      border-radius: 0.52rem;
+      background: linear-gradient(45deg, #f86a1d, #f5222d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > img {
+        width: 0.26rem;
+        height: 0.26rem;
+        margin-right: 0.1rem;
+      }
+      > span {
         color: #fff;
-        font-size: .28rem;
-        >span{
-          width: .68rem;
-          height: .69rem;
-          background: url(./images/icon_details_shop.png) no-repeat;
-          background-size:100%;
-          margin-right: .16rem;
-        }
+        font-size: 0.26rem;
       }
-      >div:nth-child(2){
-        width: 1.16rem;
-        height: .48rem;
-        background: rgba(0,0,0,.5);
-        border-radius: .24rem;
-        text-align: center;
-        line-height: .48rem;
-        color:#fff;
-        font-size: .24rem;
-      }
+    }
+    .follow.select {
+      background: #cacaca;
     }
   }
-  .info-box{
-    background: #fff;
-    padding: 0 .24rem;
-    margin-bottom: .2rem;
-     .til-row{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 1.2rem;
-        margin-bottom: .12rem;
-        .til{
-          display: flex;
-          align-items: center;
-          >h3{
-            font-size: .44rem;
-            margin-right: .08rem;
-          }
-          >div{
-            font-size:.28rem;
-            color: .666rem;
-            >span{
-              color: #f00;
-              font-family: Arial, Helvetica, sans-serif;
-            }
-          }
-        }
-        .follow{
-          width: 1.3rem;
-          height: .52rem;
-          border-radius: .52rem;
-          background: linear-gradient(45deg,#f86a1d,#f5222d);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          >img{
-            width: .26rem;
-            height: .26rem;
-            margin-right: .1rem;
-          }
-          >span{
-            color: #fff;
-            font-size:.26rem;
-          }
-        }
-        .follow.select{
-          background: #cacaca
-        }
-      }
-      .add-row{
-        .add-ico{
-          width:.31rem;
-          height: .36rem;
-          background: url(./images/icon_details_position.png) no-repeat;
-          background-size: 100%;
-          margin-right: .1rem;
-        }
-        .call-btn{
-          width: 1rem;
-          padding-left: .4rem;
-          box-sizing: border-box;
-          >img{
-            width: .38rem;
-            display: block;
-          }
-        }
-      }
-  }
-  .action-box{
-    padding-bottom: .38rem;
-    .small-card{
-      width: .98rem;
-      height: .42rem;
-      background: url(./images/icon2_details_certificate.png) no-repeat;
-      background-size:100%;
-      color: #fb4e44;
-      line-height: .42rem;
-      font-size: .3rem;
-      font-weight: bold;
-      text-indent: .62rem;
-      margin-right: .16rem;
+  .add-row {
+    .add-ico {
+      width: 0.31rem;
+      height: 0.36rem;
+      background: url(./images/icon_details_position.png) no-repeat;
+      background-size: 100%;
+      margin-right: 0.1rem;
     }
-    .big-card-row{
-      height: 1.48rem;
-      overflow: hidden;
-      margin-bottom: .4rem;
-      >ul{
-        width: 100%;
-        white-space: nowrap;
-        overflow-x: scroll;
-        float: left;
-        overflow-y: hidden;
-        >li{
-          width: 3.64rem;
-          height: 1.48rem;
-          background: url(./images/btn1_details_photo.png) no-repeat;
-          background-size:100%;
-          margin-right: .2rem;
-          position: relative;
-          display: inline-block;
-          color: #fff;
-          padding: .2rem 0 0 .3rem;
-          box-sizing:border-box;
-              vertical-align: middle;
-          >div{
-            font-size: .56rem;
-            font-family: Arial, Helvetica, sans-serif;
-            >span{
-              font-size: .38rem;
-            }
-          }
-          >p{
-            font-size: .22rem;
-          }
-        }
-      }
-    }
-    .slide-tap{
-      justify-content: space-between;
-      .btn{
-        color: #999;
-        font-size: .24rem;
-        >p{
-          margin-right: .08rem;
-        }
-        >img{
-          width: .17rem;
-        }
-      }
-      .btn.cur{
-        >img{
-          transform: rotate(180deg);
-        }
-      }
-    }
-    .other-info{
-      margin-top: .22rem;
-      >.action-info{
-        margin-bottom: .22rem;
-      }
-    }
-    .action-info{
-      .ico{
+    .call-btn {
+      width: 1rem;
+      padding-left: 0.4rem;
+      box-sizing: border-box;
+      > img {
+        width: 0.38rem;
         display: block;
-        width: .28rem;
-        height: .28rem;
-        background: url(./images/otherico.png) no-repeat;
-        background-size: 1.18rem;
-        margin-right: .16rem;
-      }
-      .ico.type1{
-        background-position: 0 0;
-      }
-      .ico.type2{
-        background-position: -.3rem 0;
-      }
-      .ico.type3{
-        background-position: -.6rem 0;
-      }
-      .ico.type4{
-        background-position: -.9rem 0;
-      }
-      >P{
-        font-size: .24rem;
       }
     }
   }
-  .padding-b{
-        height: 2.14rem;
+}
+.action-box {
+  padding-bottom: 0.38rem;
+  .small-card {
+    width: 0.98rem;
+    height: 0.42rem;
+    background: url(./images/icon2_details_certificate.png) no-repeat;
+    background-size: 100%;
+    color: #fb4e44;
+    line-height: 0.42rem;
+    font-size: 0.3rem;
+    font-weight: bold;
+    text-indent: 0.62rem;
+    margin-right: 0.16rem;
+  }
+  .big-card-row {
+    height: 1.48rem;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+    > ul {
+      width: 100%;
+      white-space: nowrap;
+      overflow-x: scroll;
+      float: left;
+      overflow-y: hidden;
+      > li {
+        width: 3.64rem;
+        height: 1.48rem;
+        background: url(./images/btn1_details_photo.png) no-repeat;
+        background-size: 100%;
+        margin-right: 0.2rem;
         position: relative;
-        .slide-up{
-          width: .42rem;
-          height: .27rem;
-          background: url(./images/btn_details_bottom_put.png) no-repeat;
-          background-size: 100%;
+        display: inline-block;
+        color: #fff;
+        padding: 0.2rem 0 0 0.3rem;
+        box-sizing: border-box;
+        vertical-align: middle;
+        > div {
+          font-size: 0.56rem;
+          font-family: Arial, Helvetica, sans-serif;
+          > span {
+            font-size: 0.38rem;
+          }
+        }
+        > p {
+          font-size: 0.22rem;
+        }
+      }
+    }
+  }
+  .slide-tap {
+    justify-content: space-between;
+    .btn {
+      color: #999;
+      font-size: 0.24rem;
+      > p {
+        margin-right: 0.08rem;
+      }
+      > img {
+        width: 0.17rem;
+      }
+    }
+    .btn.cur {
+      > img {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .other-info {
+    margin-top: 0.22rem;
+    > .action-info {
+      margin-bottom: 0.22rem;
+    }
+  }
+  .action-info {
+    .ico {
+      display: block;
+      width: 0.28rem;
+      height: 0.28rem;
+      background: url(./images/otherico.png) no-repeat;
+      background-size: 1.18rem;
+      margin-right: 0.16rem;
+    }
+    .ico.type1 {
+      background-position: 0 0;
+    }
+    .ico.type2 {
+      background-position: -0.3rem 0;
+    }
+    .ico.type3 {
+      background-position: -0.6rem 0;
+    }
+    .ico.type4 {
+      background-position: -0.9rem 0;
+    }
+    > p {
+      font-size: 0.24rem;
+    }
+  }
+}
+.padding-b {
+  height: 2.14rem;
+  position: relative;
+  .slide-up {
+    width: 0.42rem;
+    height: 0.27rem;
+    background: url(./images/btn_details_bottom_put.png) no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 50%;
+    margin-left: -0.21rem;
+    bottom: 0.6rem;
+  }
+}
+.exchange {
+  background: #fff;
+  margin-bottom: 0.2rem;
+  .til-row {
+    height: 1.15rem;
+    padding: 0 0.24rem;
+    line-height: 1.15rem;
+    h3 {
+      font-weight: normal;
+      font-size: 0.36rem;
+    }
+    a {
+      color: #999;
+      font-size: 0.28rem;
+    }
+  }
+  .exchange-list {
+    padding-left: 0.24rem;
+    height: 2.3rem;
+    > ul {
+      width: 100%;
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      float: left;
+      > li {
+        width: 2.4rem;
+        height: 2.5rem;
+        position: relative;
+        margin-right: 0.16rem;
+        display: inline-block;
+        > div {
+          width: 2.4rem;
+          height: 1.88rem;
+          border-radius: 0.08rem;
+          overflow: hidden;
+          > img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        > .name {
+          width: 2rem;
+          height: 0.5rem;
+          line-height: 0.5rem;
+          background: #fff;
+          border-radius: 0.5rem;
+          box-shadow: 0 0.05rem 0.1rem rgba(255, 102, 0, 0.1);
+          padding: 0 0.2rem;
+          box-sizing: border-box;
+          text-align: center;
           position: absolute;
           left: 50%;
-          margin-left: -.21rem;
-          bottom: .6rem;
-        }
-      }
-  .exchange{
-    background: #fff;
-    margin-bottom: .2rem;
-    .til-row{
-      height: 1.15rem;
-      padding:0 .24rem;
-      line-height: 1.15rem;
-      h3{
-        font-weight: normal;
-        font-size: .36rem;
-      }
-      a{
-        color: #999;
-        font-size: .28rem;
-      }
-    }
-    .exchange-list{
-      padding-left: .24rem;
-       height: 2.3rem;
-        >ul{
-          width: 100%;
-          white-space: nowrap;
-          overflow-x: scroll;
-          overflow-y: hidden;
-          float: left;
-          >li{
-            width: 2.4rem;
-            height: 2.5rem;
-            position: relative;
-            margin-right: .16rem;
-            display: inline-block;
-            >div{
-              width: 2.4rem;
-              height: 1.88rem;
-              border-radius: .08rem;
-              overflow: hidden;
-              >img{
-                width: 100%;
-                height: 100%;
-              }
-            }
-            >.name{
-              width: 2rem;
-              height: .5rem;
-              line-height: .5rem;
-              background: #fff;
-              border-radius: .5rem;
-              box-shadow: 0 .05rem .1rem rgba(255,102,0,0.1);
-              padding: 0 .2rem;
-              box-sizing: border-box;
-              text-align: center;
-              position: absolute;
-              left: 50%;
-              margin-left: -1rem;
-              top: 1.63rem;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              box-sizing: border-box;
-              font-size: .24rem;
-            }
-          }
-        }
-
-    }
-  }
-  .comment{
-    background: #fff;
-    padding: .2rem .24rem .4rem .2rem;
-    .top-row{
-      height: .75rem;
-      >div{
-        h3{
-          font-size: .36rem;
-        }
-        span{
-          font-size: .28rem;
-          color: #999;
-          font-family: Arial, Helvetica, sans-serif;
-        }
-      }
-      >a{
-        color: #999;
-        >span:nth-child(1){
-          color: #f00;
-          margin-right: .16rem;
-          font-family: Arial, Helvetica, sans-serif;
-        }
-      }
-    }
-    .comment-list{
-      margin-bottom: .6rem;
-      >li{
-        padding-top: .32rem;
-        padding-bottom:.3rem;
-        .comment-img{
-          width: .8rem;
-          height: .8rem;
+          margin-left: -1rem;
+          top: 1.63rem;
           overflow: hidden;
-          border-radius: 50%;
-          margin-right: .2rem;
-          img{
-            height: .8rem;
-            display: block;
-            margin: 0 auto;
-          }
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          box-sizing: border-box;
+          font-size: 0.24rem;
         }
-        .s{
-          >p{
-            margin: .1rem 0;
-          }
-          .star{
-            overflow: hidden;
-            span{
-              display: block;
-              float: left;
-              width: .25rem;
-              height: .24rem;
-              background: url(./images/icon_details_good.png) no-repeat;
-              background-size:100%;
-            }
-          }
-        }
-        .time{
-          color: #999;
-          font-family: Arial, Helvetica, sans-serif;
-        }
-        .comment-content{
-          padding: .3rem 0 0 1rem;
-        }
-
       }
     }
-    .more{
-          text-align: center;
-          margin-bottom: .28rem;
-          a{
-            color: #666;
-          }
-        }
-    .buy-btn{
-      width: 7.02rem;
-      height: .9rem;
-      border-radius: .9rem;
-      background: linear-gradient(to right,#ff7f32,#f5222d);
-      color: #fff;
-      text-align: center;
-      line-height: .9rem;
-      font-size: .32rem;
-      display: block;
+  }
+}
+.comment {
+  background: #fff;
+  padding: 0.2rem 0.24rem 0.4rem 0.2rem;
+  .top-row {
+    height: 0.75rem;
+    > div {
+      h3 {
+        font-size: 0.36rem;
+      }
+      span {
+        font-size: 0.28rem;
+        color: #999;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    }
+    > a {
+      color: #999;
+      > span:nth-child(1) {
+        color: #f00;
+        margin-right: 0.16rem;
+        font-family: Arial, Helvetica, sans-serif;
+      }
     }
   }
+  .comment-list {
+    margin-bottom: 0.6rem;
+    > li {
+      padding-top: 0.32rem;
+      padding-bottom: 0.3rem;
+      .comment-img {
+        width: 0.8rem;
+        height: 0.8rem;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-right: 0.2rem;
+        img {
+          height: 0.8rem;
+          display: block;
+          margin: 0 auto;
+        }
+      }
+      .s {
+        > p {
+          margin: 0.1rem 0;
+        }
+        .star {
+          overflow: hidden;
+          span {
+            display: block;
+            float: left;
+            width: 0.25rem;
+            height: 0.24rem;
+            background: url(./images/icon_details_good.png) no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+      .time {
+        color: #999;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .comment-content {
+        padding: 0.3rem 0 0 1rem;
+      }
+    }
+  }
+  .more {
+    text-align: center;
+    margin-bottom: 0.28rem;
+    a {
+      color: #666;
+    }
+  }
+  .buy-btn {
+    width: 7.02rem;
+    height: 0.9rem;
+    border-radius: 0.9rem;
+    background: linear-gradient(to right, #ff7f32, #f5222d);
+    color: #fff;
+    text-align: center;
+    line-height: 0.9rem;
+    font-size: 0.32rem;
+    display: block;
+  }
+}
+// 弹窗控件样式
+.weui-dialog__btn_primary{
+  color: #f60 !important;
+}
+.weui-dialog{
+  width: 5.9rem !important;
+  border-radius: .06rem !important;
+  max-width: none !important;
+}
+.weui-dialog__bd:first-child{
+  padding: 0 !important;
+  color: #333 !important;
+  font-size: .38rem !important;
+  height: 3rem !important;
+  line-height: 3rem !important;
+
+}
+.weui-dialog__ft{
+  height: 1rem !important;
+  line-height: 1rem !important;
+  font-size: .38rem !important;
+}
+.weui-dialog__btn_default{
+  color: #999 !important;
+}
 </style>
