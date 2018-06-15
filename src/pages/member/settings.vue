@@ -12,13 +12,13 @@
                 <div class="r"><img src="../../assets/images/you1.png"></div>
               </div>
             </router-link>
-            <router-link to="/member/myinfo">
+            <router-link to="/member/realname">
               <div class="tit">
                 <div class="l">实名认证</div>
                 <div class="r"><img src="../../assets/images/you1.png"></div>
               </div>
             </router-link>
-            <router-link to="/member/myinfo">
+            <router-link to="/member/address">
               <div class="tit">
                 <div class="l">管理收货地址</div>
                 <div class="r"><img src="../../assets/images/you1.png"></div>
@@ -30,7 +30,7 @@
                 <div class="r">185****8185<img src="../../assets/images/you1.png"></div>
               </div>
             </router-link>
-            <router-link to="/member/myinfo">
+            <router-link to="/member/paysettings">
               <div class="tit">
                 <div class="l">支付设置</div>
                 <div class="r"><img src="../../assets/images/you1.png"></div>

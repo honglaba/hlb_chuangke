@@ -73,19 +73,19 @@
               </router-link>
             </li>
           </ul>
-          <router-link to="points">
+          <router-link :to="{path:'/member/points'}">
             <div class="tit">
               <div class="l">我的积分</div>
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
-          <router-link to="exchange">
+          <router-link :to="{path:'/member/exchange'}">
             <div class="tit">
               <div class="l">我要兑换</div>
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
-          <router-link to="favourite">
+          <router-link :to="{path:'/member/favourite'}">
             <div class="tit">
               <div class="l">我的收藏</div>
               <div class="r"><img src="./images/you1.png"></div>
@@ -104,12 +104,12 @@
   </div>
 </template>
 <script>
-import { Swiper } from "vux";
+import { Swiper } from 'vux'
 export default {
   components: {
     Swiper
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .main {

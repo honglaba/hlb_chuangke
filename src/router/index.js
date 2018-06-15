@@ -44,6 +44,11 @@ import MemberIndex from '@/pages/member/index'
 import phone_update from '@/pages/member/phone_update'// 更改手机号
 import settings from '@/pages/member/settings'// 个人设置
 import myinfo from '@/pages/member/myinfo'// 个人信息
+import realname from '@/pages/member/realname'// 实名认证
+import paysettings from '@/pages/member/paysettings'// 支付设置
+import address from '@/pages/member/address'// 收货地址管理
+import address_add from '@/pages/member/address_add'// 新增或修改收货地址
+
 // 文章
 import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
@@ -53,33 +58,26 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 // cookie
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
-
-const Author = () =>
-  import('@/components/author')
-
-const OptionsPageSetting = () =>
-  import('@/components/optionPages/index')
-const OptionPageFull = () =>
-  import('@/components/optionPages/settingA')
+import { isNull } from 'util'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   // 默认首页
   routes: [{
-    path: '',
+    path: '/',
     name: 'HomeIndex',
     component: HomeIndex,
     meta: {
       title: '首页'
     }
   },
-    // 首页
+  // 首页
   {
     path: '/home',
     component: home_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
@@ -167,12 +165,12 @@ const router = new VueRouter({
     }
     ]
   },
-    // 附近商家
+  // 附近商家
   {
     path: '/shop',
     component: shop_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
@@ -180,12 +178,12 @@ const router = new VueRouter({
       }
     }]
   },
-    // 微卡
+  // 微卡
   {
     path: '/weika',
     component: weika_route,
     children: [{
-      path: 'index',
+      path: '',
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
@@ -258,7 +256,7 @@ const router = new VueRouter({
     }
     ]
   },
-    // 用户中心
+  // 用户中心
   {
     path: '/member',
     component: member_route,
@@ -271,7 +269,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: 'index',
+      path: '',
       name: 'MemberIndex',
       component: MemberIndex,
       meta: {
@@ -363,10 +361,38 @@ const router = new VueRouter({
       meta: {
         title: '个人信息'
       }
+    }, {
+      path: 'realname',
+      name: 'realname',
+      component: realname,
+      meta: {
+        title: '实名认证'
+      }
+    }, {
+      path: 'paysettings',
+      name: 'paysettings',
+      component: paysettings,
+      meta: {
+        title: '支付设置'
+      }
+    }, {
+      path: 'address',
+      name: 'address',
+      component: address,
+      meta: {
+        title: '收货地址管理'
+      }
+    }, {
+      path: 'address_add',
+      name: 'address_add',
+      component: address_add,
+      meta: {
+        title: '新增或修改收货地址'
+      }
     }
     ]
   },
-    // 文章
+  // 文章
   {
     path: '/article',
     component: article_route,
@@ -392,34 +418,35 @@ const router = new VueRouter({
         title: '问题反馈'
       }
     }]
-  },
-  {
-    path: '/author',
-    name: 'Author',
-    component: Author
-  },
-  {
-    path: '/options',
-    component: OptionsPageSetting,
-    children: [{
-      path: '',
-      component: OptionPageFull
-    }]
   }
   ]
 })
 
-// ceshi cookie
 router.beforeEach((to, from, next) => {
-  // 判断是否已经登录且前往的页面不是登录页
-  // 判断是否已经登录且前往的是登录页
-  if ((to.path === '/options' || to.path === '/others')) {
-    if (!Cookies.get('accessToken')) {
-      apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
-        window.location.href = res.redirect
-      })
-      return
+  let specialPaths = ['/member/settings']
+  let isMatched = false
+
+  if (isNull(to.name)) { // 路由不存在时跳转home页
+    next('/')
+    return
+  }
+
+  if (to.matched.length < 2) {
+    next()
+    return
+  }
+
+  specialPaths.forEach(e => {
+    if (e.match(to.matched[1].regex)) {
+      isMatched = true
     }
+  })
+
+  if (isMatched && !localStorage.getItem('userInfo')) {
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
+      window.location.href = res.redirect
+    })
+    return
   }
   next()
 })

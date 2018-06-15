@@ -65,7 +65,7 @@ export default {
 }
 .tijiao {
   margin-top: 0.2rem;
-  padding: 0.2rem;
+  padding: 0.3rem;
 }
 .fasong {
   color: #333;
