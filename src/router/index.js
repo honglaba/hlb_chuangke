@@ -43,6 +43,11 @@ import MemberIndex from '@/pages/member/index'
 import phone_update from '@/pages/member/phone_update'// 更改手机号
 import settings from '@/pages/member/settings'// 个人设置
 import myinfo from '@/pages/member/myinfo'// 个人信息
+import realname from '@/pages/member/realname'// 实名认证
+import paysettings from '@/pages/member/paysettings'// 支付设置
+import address from '@/pages/member/address'// 收货地址管理
+import address_add from '@/pages/member/address_add'// 新增或修改收货地址
+
 // 文章
 import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
@@ -353,6 +358,34 @@ const router = new VueRouter({
       component: myinfo,
       meta: {
         title: '个人信息'
+      }
+    }, {
+      path: 'realname',
+      name: 'realname',
+      component: realname,
+      meta: {
+        title: '实名认证'
+      }
+    }, {
+      path: 'paysettings',
+      name: 'paysettings',
+      component: paysettings,
+      meta: {
+        title: '支付设置'
+      }
+    }, {
+      path: 'address',
+      name: 'address',
+      component: address,
+      meta: {
+        title: '收货地址管理'
+      }
+    }, {
+      path: 'address_add',
+      name: 'address_add',
+      component: address_add,
+      meta: {
+        title: '新增或修改收货地址'
       }
     }
     ]
