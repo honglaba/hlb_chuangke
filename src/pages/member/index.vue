@@ -104,12 +104,12 @@
   </div>
 </template>
 <script>
-import { Swiper } from "vux";
+import { Swiper } from 'vux'
 export default {
   components: {
     Swiper
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .main {
