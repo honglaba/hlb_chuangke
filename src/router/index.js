@@ -52,7 +52,7 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 // cookie
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
-import { isNull } from 'util';
+import { isNull } from 'util'
 
 Vue.use(VueRouter)
 
@@ -382,20 +382,30 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  let specialPaths = ['/member/settings']
+  let isMatched = false
+
   if (isNull(to.name)) { // 路由不存在时跳转home页
     next('/')
     return
   }
 
+  if (to.matched.length < 2) {
+    next()
+    return
+  }
 
-  if ((to.path === '/options' || to.path === '/others')) {
-    if (!Cookies.get('accessToken')) {
-      apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
-        window.location.href = res.redirect
-      })
-      return
+  specialPaths.forEach(e => {
+    if (e.match(to.matched[1].regex)) {
+      isMatched = true
     }
+  })
+
+  if (isMatched && !localStorage.getItem('userInfo')) {
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
+      window.location.href = res.redirect
+    })
+    return
   }
   next()
 })
