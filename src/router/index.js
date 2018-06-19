@@ -468,10 +468,11 @@ router.beforeEach((To, From, next) => {
         localStorage.setItem('userInfo', JSON.stringify(res.data))
         store.commit('SAVE_USER_INFO', res.data)
         localStorage.removeItem('historyTargetPath') // 移除
-        next(historyTargetPath)
+        next({path: historyTargetPath})
       })
       return
     }
+    return
   }
 
   if (isMatched && !localStorage.getItem('userInfo')) {
