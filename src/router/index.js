@@ -431,18 +431,17 @@ router.beforeEach((To, From, next) => {
   if (!To.name) { // 路由不存在时跳转from页
     next(From.path)
     return
-  }
-
-  if (To.matched.length < 2) {
-    next()
-    return
-  }
-
-  specialPaths.forEach(e => {
-    if (e.match(To.matched[1].regex)) {
-      isMatched = true
+  } else {
+    let Path = To.fullPath
+    if (Path !== '/' && Path.substr(-1, 1) === '/') {
+      Path = Path.slice(0, Path.length - 1)
     }
-  })
+    specialPaths.forEach(e => {
+      if (e === Path) {
+        isMatched = true
+      }
+    })
+  }
 
   if (historyTargetPath) {
     let local = window.location.href
