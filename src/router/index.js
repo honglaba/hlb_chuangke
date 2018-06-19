@@ -460,9 +460,10 @@ router.beforeEach((To, From, next) => {
       localStorage.setItem('client_id', hashes.client_id)
 
       // cookie
-      // Cookies.set('accessToken', hashes.access_token, { expires: 1 / 24 }) // 设置一小时过期
-      Cookies.set('accessToken', hashes.access_token, { expires: new Date(new Date().getTime() + 6 * 1000) })
+      // Cookies.set('accessToken', hashes.access_token, { expires: 1 / 36 })
+      Cookies.set('accessToken', hashes.access_token, { expires: new Date(new Date().getTime() + 5 * 1000) })
       Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
+      // console.log(Cookies.get())
       apiList.HTTP_UserInfo().then(res => {
         localStorage.setItem('userInfo', JSON.stringify(res.data))
         store.commit('SAVE_USER_INFO', res.data)
@@ -471,7 +472,6 @@ router.beforeEach((To, From, next) => {
       })
       return
     }
-    return
   }
 
   if (isMatched && !localStorage.getItem('userInfo')) {
