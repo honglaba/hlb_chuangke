@@ -13,7 +13,7 @@ import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
 import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
-import Scanning from '@/pages/home/scanning'
+// import Scanning from '@/pages/home/scanning'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
 import ShopIndex from '@/pages/shop/index'
@@ -155,14 +155,15 @@ const router = new VueRouter({
       meta: {
         title: '商家详情'
       }
-    }, {
-      path: 'scanning',
-      name: 'Scanning',
-      component: Scanning,
-      meta: {
-        title: '扫一扫'
-      }
     }
+    // {
+    //   path: 'scanning',
+    //   name: 'Scanning',
+    //   component: Scanning,
+    //   meta: {
+    //     title: '扫一扫'
+    //   }
+    // }
     ]
   },
   // 附近商家
@@ -426,7 +427,7 @@ router.beforeEach((to, from, next) => {
   let specialPaths = ['/member/settings']
   let isMatched = false
 
-  if (isNull(to.name)) { // 路由不存在时跳转home页
+  if (!to.name) { // 路由不存在时跳转home页
     next('/')
     return
   }
@@ -443,10 +444,11 @@ router.beforeEach((to, from, next) => {
   })
 
   if (isMatched && !localStorage.getItem('userInfo')) {
-    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
-      window.location.href = res.redirect
-    })
-    return
+    next('auth')
+    // apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
+    //   window.location.href = res.redirect
+    // })
+    // return
   }
   next()
 })
