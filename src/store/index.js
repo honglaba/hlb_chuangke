@@ -7,10 +7,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    access_token: '',
-    refresh_token: ''
+    userInfo: ''
   },
-  getters: {},
+  getters: {
+    userInfoGetter: (state) => {
+      return state.userInfo
+    }
+  },
   actions,
   mutations
 })

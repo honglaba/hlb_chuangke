@@ -51,14 +51,12 @@ export default {
   data () {
     return {}
   },
-  components: {},
   methods: {
     ...mapActions(['HTTP_logout', 'HTTP_UserInfo']),
     _logout () {
-      this.HTTP_UserInfo()
-      // this.HTTP_logout().then(res => {
-      //   this.$router.push('/')
-      // })
+      this.HTTP_logout().then(res => {
+        this.$router.push({path: '/'})
+      })
     }
   }
 }
