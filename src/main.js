@@ -8,7 +8,7 @@ import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
-import  {XHeader} from 'vux'
+import {XHeader} from 'vux'
 
 fastClick.attach(document.body)
 

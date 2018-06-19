@@ -37,7 +37,7 @@
               </div>
             </router-link>
           </div>
-          <div class="logoff">
+          <div class="logoff" @click="_logout()">
             退出登录
           </div>
         </div>
@@ -46,13 +46,21 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   components: {},
-  methods: {}
-};
+  methods: {
+    ...mapActions(['HTTP_logout']),
+    _logout () {
+      this.HTTP_logout().then(res => {
+        this.$router.push('/')
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .settingbox {
