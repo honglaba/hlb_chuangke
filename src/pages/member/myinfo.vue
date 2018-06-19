@@ -8,7 +8,7 @@
         <div class="myinfo">
           <div class="box1">
             <div class="tx"><img src="./images/mrtx.png"></div>
-            <div class="id">ID:28C5AD</div>
+            <div class="id">ID:{{ DataTree.id }}</div>
           </div>
           <div class="box2">
             <group>
@@ -33,17 +33,22 @@ import {
   Datetime,
   Picker,
   Cell
-} from "vux";
+} from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      jiguan: ["广东"],
+      jiguan: ['广东'],
       jiguanList: [
-        ["广东", "广西", "华为", "情怀", "三星", "其他", "不告诉你"]
+        ['广东', '广西', '华为', '情怀', '三星', '其他', '不告诉你']
       ],
-      sex: ["男"],
-      sexList: [["男", "女", "保密"]]
-    };
+      sex: ['男'],
+      sexList: [['男', '女', '保密']]
+    }
+  },
+  props: {
+    DataTree: {
+      type: Object
+    }
   },
   components: {
     XInput,
@@ -54,9 +59,7 @@ export default {
     Picker,
     Cell
   }
-};
-</script>
-</script>
+}
 </script>
 <style lang="less" scoped>
 .myinfo {

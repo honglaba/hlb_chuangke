@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import { XInput, Group, Divider } from "vux";
+import { XInput, Group, Divider } from 'vux'
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   components: {
     XInput,
@@ -30,7 +30,7 @@ export default {
     Divider
   },
   methods: {}
-};
+}
 </script>
 <style lang="less" scoped>
 .tijiao {

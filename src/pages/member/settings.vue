@@ -9,31 +9,31 @@
             <router-link to="/member/myinfo">
               <div class="tit">
                 <div class="l">个人设置</div>
-                <div class="r"><img src="../../assets/images/you1.png"></div>
+                <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
             <router-link to="/member/realname">
               <div class="tit">
                 <div class="l">实名认证</div>
-                <div class="r"><img src="../../assets/images/you1.png"></div>
+                <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
             <router-link to="/member/address">
               <div class="tit">
                 <div class="l">管理收货地址</div>
-                <div class="r"><img src="../../assets/images/you1.png"></div>
+                <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
             <router-link to="/member/phone_update">
               <div class="tit">
                 <div class="l">更绑手机</div>
-                <div class="r">185****8185<img src="../../assets/images/you1.png"></div>
+                <div class="r">{{ DataTree.mobile_phone || '未绑定'}}<img :src="rightArrow"></div>
               </div>
             </router-link>
             <router-link to="/member/paysettings">
               <div class="tit">
                 <div class="l">支付设置</div>
-                <div class="r"><img src="../../assets/images/you1.png"></div>
+                <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
           </div>
@@ -49,7 +49,14 @@
 import { mapActions } from 'vuex'
 export default {
   data () {
-    return {}
+    return {
+      rightArrow: require('../../assets/images/you1.png')
+    }
+  },
+  props: {
+    DataTree: {
+      type: Object
+    }
   },
   methods: {
     ...mapActions(['HTTP_logout', 'HTTP_UserInfo']),

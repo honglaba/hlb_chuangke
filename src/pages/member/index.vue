@@ -10,27 +10,27 @@
             <div class="right">
               <ul>
                 <li>
-                  <router-link to="/ccc"><img src="./images/sm.png"></router-link>
+                  <router-link :to="{path: '/ccc'}"><img src="./images/sm.png"></router-link>
                 </li>
                 <li>
-                  <router-link to="/ccc"><img src="./images/xiaoxi.png"></router-link>
+                  <router-link :to="{path: '/ccc'}"><img src="./images/xiaoxi.png"></router-link>
                 </li>
                 <li>
-                  <router-link to="/member/settings"><img src="./images/shezhi.png"></router-link>
+                  <router-link :to="{path: '/member/settings'}"><img src="./images/shezhi.png"></router-link>
                 </li>
               </ul>
             </div>
           </div>
           <div class="box1">
             <div class="left">
-              <div class="tx"><img src="./images/mrtx.png"></div>
+              <div class="tx"><img :src="DataTree.headimgurl"></div>
               <div class="uinfo">
-                <p class="name">化妆的小蜜</p>
+                <p class="name">{{ DataTree.nickname }}</p>
                 <p class="tips">创客为您节约了66.00元</p>
               </div>
             </div>
             <div class="right">
-              <p><img src="./images/jifen.png">积分：800</p>
+              <p><img src="./images/jifen.png">积分：{{ DataTree.reward_point }}</p>
             </div>
           </div>
         </div>
@@ -105,15 +105,11 @@
 </template>
 <script>
 import { Swiper } from 'vux'
-import { mapGetters } from 'vuex'
 export default {
-  computed: {
-    ...mapGetters({
-      DataTree: 'userInfoGetter'
-    })
-  },
-  created () {
-    console.log(this.DataTree)
+  props: {
+    DataTree: {
+      type: Object
+    }
   },
   components: {
     Swiper
