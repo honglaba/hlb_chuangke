@@ -58,7 +58,7 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 // cookie
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
-import { isNull } from 'util'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -423,32 +423,63 @@ const router = new VueRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  let specialPaths = ['/member/settings']
+router.beforeEach((To, From, next) => {
+  let historyTargetPath = localStorage.getItem('historyTargetPath')
+  let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
-  if (!to.name) { // 路由不存在时跳转home页
-    next('/')
+  if (!To.name) { // 路由不存在时跳转from页
+    next(From.path)
     return
   }
 
-  if (to.matched.length < 2) {
+  if (To.matched.length < 2) {
     next()
     return
   }
 
   specialPaths.forEach(e => {
-    if (e.match(to.matched[1].regex)) {
+    if (e.match(To.matched[1].regex)) {
       isMatched = true
     }
   })
 
+  if (historyTargetPath) {
+    let local = window.location.href
+    if (
+      local.indexOf('access_token') > 0 &&
+      local.indexOf('refresh_token') > 0
+    ) {
+      // 如果url为后台重定向带参形式,则进行用户信息的获取
+      // slice
+      let list = local.slice(local.indexOf('?') + 1).split('&')
+      let hashes = {}
+      for (let i = 0; i < list.length; i++) {
+        let items = list[i].split('=')
+        hashes[items[0]] = items[1]
+      }
+      localStorage.setItem('client_id', hashes.client_id)
+
+      // cookie
+      // Cookies.set('accessToken', hashes.access_token, { expires: 1 / 24 }) // 设置一小时过期
+      Cookies.set('accessToken', hashes.access_token, { expires: new Date(new Date().getTime() + 6 * 1000) })
+      Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
+      apiList.HTTP_UserInfo().then(res => {
+        localStorage.setItem('userInfo', JSON.stringify(res.data))
+        store.commit('SAVE_USER_INFO', res.data)
+        localStorage.removeItem('historyTargetPath') // 移除
+        next(historyTargetPath)
+      })
+      return
+    }
+  }
+
   if (isMatched && !localStorage.getItem('userInfo')) {
-    next('auth')
-    // apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + to.path).then(res => { // aaaaa = #
-    //   window.location.href = res.redirect
-    // })
-    // return
+    localStorage.setItem('historyTargetPath', To.path)
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
+      window.location.href = res.redirect
+    })
+    return
   }
   next()
 })

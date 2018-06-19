@@ -99,6 +99,9 @@ export default {
   },
   components: {
     Swiper
+  },
+  created () {
+    console.log(this.$route)
   }
 }
 </script>

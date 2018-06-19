@@ -1,5 +1,6 @@
 import HTTP from '@/api' // 配置后的axios
 import Cookies from 'js-cookie'
+// import Router from '@/router'
 
 let agent = navigator.userAgent
 let client = 'micro' // 默认pc
@@ -29,15 +30,12 @@ const actions = {
         url: '/api/user/parent'
       }).then(res => {
         if (res.result_state === 'success') {
-          console.log('UpReferrer success!!!!!!!', new Date(new Date().getTime() * 1000))
           resolve(res)
         }
       })
     })
   },
-  HTTP_UserInfo ({
-    commit
-  }) {
+  HTTP_UserInfo () {
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/info',
@@ -58,9 +56,9 @@ const actions = {
       }).then(res => {
         if (res.result_state === 'success') {
           localStorage.clear()
-          Cookies.remove('access_token')
-          Cookies.remove('refresh_token')
-          this.$route.push('/')
+          Cookies.remove('accessToken')
+          Cookies.remove('refreshToken')
+          resolve(res)
         }
       })
     })
