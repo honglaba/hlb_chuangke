@@ -6,10 +6,10 @@ let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.ck.honglaba.com
 axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-window.isRefreshing = false
+// window.isRefreshing = false
 /* 被挂起的请求数组 */
 let refreshSubscribers = []
-
+// let count = 0
 /* 刷新请求（refreshSubscribers数组中的请求得到新的token之后会自执行，用新的token去请求数据） */
 function onRrefreshed (token) {
   refreshSubscribers.map(cb => cb(token))
@@ -20,7 +20,6 @@ axios.interceptors.request.use(config => {
   /* 是否有请求正在刷新token */
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
-
     if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
       alert('刷新token过期,请重新登录!')
       // 清空所有cookie,localStorage
@@ -31,7 +30,7 @@ axios.interceptors.request.use(config => {
     }
 
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
-      window.isRefreshing = true
+      // window.isRefreshing = true
       let xhr = new XMLHttpRequest()
       xhr.open('POST', location.origin + '/api_proxy/api/login/refresh')
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
@@ -41,14 +40,13 @@ axios.interceptors.request.use(config => {
       }))
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
+          // console.log(count++)
           window.isRefreshing = false
           let accessToken = JSON.parse(xhr.response).access_token
           // Cookies.set('accessToken', accessToken, {
-          //   expires: 1 / 24
+          //   expires: 1 / 36
           // })
-          Cookies.set('accessToken', accessToken, {
-            expires: new Date(new Date().getTime() + 6 * 1000)
-          })
+          Cookies.set('accessToken', accessToken, { expires: new Date(new Date().getTime() + 5 * 1000) })
           config.headers.Authorization = 'Bearer ' + accessToken
           onRrefreshed(accessToken)
         }
@@ -63,6 +61,7 @@ axios.interceptors.request.use(config => {
       return retry
     }
   }
+  // console.log(config)
   return config
 }, error => {
   // Do something with request error
