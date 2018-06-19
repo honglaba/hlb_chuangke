@@ -105,7 +105,16 @@
 </template>
 <script>
 import { Swiper } from 'vux'
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    ...mapGetters({
+      DataTree: 'userInfoGetter'
+    })
+  },
+  created () {
+    console.log(this.DataTree)
+  },
   components: {
     Swiper
   }
