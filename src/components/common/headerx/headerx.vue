@@ -14,9 +14,9 @@
 </template>
 <script>
 export default {
-     data(){
-        return {}
-    }
+  data () {
+    return {}
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -37,7 +37,7 @@ export default {
             width: .24rem;
             height: .23rem;
             background: url(./images/home-top-icon1.png) no-repeat;
-            background-size:100%; 
+            background-size:100%;
         }
     }
     .search-box{
@@ -50,14 +50,14 @@ export default {
             width: .32rem;
             height: .32rem;
             background: url(./images/home-top-icon2.png) no-repeat;
-            background-size:100%; 
+            background-size:100%;
             margin-left: .28rem;
             margin-right: .08rem;
         }
         >input{
             border:0;
             background: none;
-            font-size:.28rem; 
+            font-size:.28rem;
             outline: none;
             columns: #666;
         }
@@ -66,15 +66,24 @@ export default {
         width: .48rem;
         height: .48rem;
         background: url(./images/home-top-icon3.png) no-repeat;
-        background-size:100%; 
+        background-size:100%;
         margin:0 .32rem;
     }
     .message{
         width: .48rem;
         height: .48rem;
         background: url(./images/home-top-icon4.png) no-repeat;
-        background-size:100%; 
+        background-size:100%;
+        position: relative;
+        &::before{
+            content: "";
+            width: .16rem;
+            height: .16rem;
+            background: #f00;
+            border-radius: 50%;
+            position:absolute;
+            right: -.04rem;
+            top: -.04rem;
+        }
     }
 </style>
-
-
