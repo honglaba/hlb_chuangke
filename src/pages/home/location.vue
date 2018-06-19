@@ -3,7 +3,7 @@
     <!-- <Headerx></Headerx> -->
     <header class="y-flex y-ac" :class="{sp:maskSeen}">
       <!-- <span class="close" v-if="!maskSeen"></span> -->
-      <router-link tag="span" to="/home/index"  class="close" v-if="!maskSeen"></router-link>
+      <router-link  to="/" tag="a" class="close" v-show="!maskSeen"></router-link>
       <div class="search-box y-flex y-ac">
         <span></span>
         <input type="text" placeholder="输入城市名称" v-on:focus="focus" ref="input" v-model="keyword"/>
@@ -136,12 +136,11 @@ export default {
     focus: function () {
       let that = this
       this.maskSeen = true
-      this.$refs['input'].focus()
       setTimeout(function () { that.$refs['input'].focus() }, 100)
     },
     blur: function () {
       this.maskSeen = false
-      this.$refs['input'].value = ''
+      this.keyword = ''
     }
   },
   mounted () {

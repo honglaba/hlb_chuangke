@@ -1,51 +1,54 @@
 <template>
     <div id="app">
         <x-header :left-options="{backText: ''}" title="精品推荐"></x-header>
-        <section class="recommend-list">
-            <ul>
-                <router-link to="/home/details" tag="li" class="vux-1px-b">
-                    <div class="recommend-img"><img src="./images/recommend-label-img1.png" /></div>
-                    <div class="recommend-info">
-                        <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-                        <div class="mark-row">
-                            <div>包邮</div>
-                            <div></div>
+        <section class="main2">
+            <section class="recommend-list">
+                <ul>
+                    <router-link to="/home/details" tag="li" class="vux-1px-b">
+                        <div class="recommend-img"><img src="./images/recommend-label-img1.png" /></div>
+                        <div class="recommend-info">
+                            <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
+                            <div class="mark-row">
+                                <div>包邮</div>
+                                <div></div>
+                            </div>
+                            <div class="price-row">
+                                <p>￥980</p>
+                                <p>已购3000+</p>
+                            </div>
                         </div>
-                        <div class="price-row">
-                            <p>￥980</p>
-                            <p>已购3000+</p>
+                    </router-link>
+                    <router-link to="/home/details" tag="li" class="vux-1px-b">
+                        <div class="recommend-img"><img src="./images/recommend-label-img2.png" /></div>
+                        <div class="recommend-info">
+                            <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
+                            <div class="mark-row">
+                                <div>包邮</div>
+                                <div></div>
+                            </div>
+                            <div class="price-row">
+                                <p>￥980</p>
+                                <p>已购3000+</p>
+                            </div>
                         </div>
-                    </div>
-                </router-link>
-                <router-link to="/home/details" tag="li" class="vux-1px-b">
-                    <div class="recommend-img"><img src="./images/recommend-label-img2.png" /></div>
-                    <div class="recommend-info">
-                        <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-                        <div class="mark-row">
-                            <div>包邮</div>
-                            <div></div>
+                    </router-link>
+                    <router-link to="/home/details" tag="li" class="vux-1px-b">
+                        <div class="recommend-img"><img src="./images/recommend-label-img3.png" /></div>
+                        <div class="recommend-info">
+                            <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
+                            <div class="mark-row">
+                                <div>包邮</div>
+                                <div></div>
+                            </div>
+                            <div class="price-row">
+                                <p>￥980</p>
+                                <p>已购3000+</p>
+                            </div>
                         </div>
-                        <div class="price-row">
-                            <p>￥980</p>
-                            <p>已购3000+</p>
-                        </div>
-                    </div>
-                </router-link>
-                <router-link to="/home/details" tag="li" class="vux-1px-b">
-                    <div class="recommend-img"><img src="./images/recommend-label-img3.png" /></div>
-                    <div class="recommend-info">
-                        <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-                        <div class="mark-row">
-                            <div>包邮</div>
-                            <div></div>
-                        </div>
-                        <div class="price-row">
-                            <p>￥980</p>
-                            <p>已购3000+</p>
-                        </div>
-                    </div>
-                </router-link>
-            </ul>
+                    </router-link>
+
+                </ul>
+            </section>
         </section>
         <footerx></footerx>
     </div>
@@ -129,5 +132,8 @@ export default {
             }
         }
     }
+}
+.main2{
+    padding-bottom: 1rem;
 }
 </style>
