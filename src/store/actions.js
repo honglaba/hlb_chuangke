@@ -48,12 +48,13 @@ const actions = {
       })
     })
   },
-  HTTP_logout () { // 登出
+  HTTP_logout ({commit}) { // 登出
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/logout'
       }).then(res => {
         if (res.result_state === 'success') {
+          commit('CLEAR_STATE')
           localStorage.clear()
           Cookies.remove('accessToken')
           Cookies.remove('refreshToken')
