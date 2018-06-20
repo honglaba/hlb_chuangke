@@ -7,7 +7,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo: ''
+    userInfo: '',
+    choiceDetails: '',
+    exchange: '',
+    comments: ''
   },
   getters: {
     userInfoGetter: (state) => {

@@ -113,10 +113,10 @@
       </div>
 
       <div class="vux-1px-t h80 y-flex y-ac add-row" v-if="!actionDetail">
-        <div class="y-flex y-ac vux-1px-r flex1 h44">
+        <router-link class="y-flex y-ac vux-1px-r flex1 h44" tag="div" to="/home/map">
           <span class="add-ico"></span>
           <p class="c666">{{details.address}}</p>
-        </div>
+        </router-link>
         <div class="call-btn" @click="showMask">
           <img src="./images/icon_details_iphone.png" />
         </div>
@@ -132,21 +132,9 @@
       </div>
       <div class="exchange-list">
         <ul>
-          <router-link tag="li" to="#">
-            <div><img src="./images/details.png" /></div>
-            <div class="name">珀莱雅水动力珀莱雅水动力</div>
-          </router-link>
-          <router-link tag="li" to="#">
-            <div><img src="./images/details.png" /></div>
-            <div class="name">珀莱雅水动力珀莱雅水动力</div>
-          </router-link>
-          <router-link tag="li" to="#">
-            <div><img src="./images/details.png" /></div>
-            <div class="name">珀莱雅水动力珀莱雅水动力</div>
-          </router-link>
-          <router-link tag="li" to="#">
-            <div><img src="./images/details.png" /></div>
-            <div class="name">珀莱雅水动力珀莱雅水动力</div>
+          <router-link tag="li" to="/aaaaa" v-for="(item,index) in exchange">
+            <div><img :src="item.thumb" /></div>
+            <div class="name">{{item.title}}</div>
           </router-link>
         </ul>
       </div>
@@ -245,13 +233,14 @@
 </template>
 <script>
 import { Confirm, TransferDomDirective as TransferDom } from 'vux'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
+      ...mapState(['choiceDetails', 'exchange', 'comments']),
       actionDetail: false,
       following: false,
-      show: false,
-      details: ''
+      show: false
     }
   },
   methods: {
@@ -270,15 +259,46 @@ export default {
         // window.location.href = msg
         alert('拨打电话')
       }
+    },
+    // 商家信息
+    getInfo () {
+      // console.log(this.$store.state)
+      let that = this
+      this.axios.get('/api/shop?id=1').then(function (res) {
+        that.$store.commit('choiceDetails', res.data)
+      })
+    },
+    // 兑换商品列表
+    getExchange () {
+      let that = this
+      this.axios.get('/api/shop/commodities?sid=1').then(function (res) {
+        that.$store.commit('exchange', res.data)
+      })
+    },
+    // 评论
+    getComments () {
+      let that = this
+      this.axios.get('/api/shop/comments?sid=1').then(function (res) {
+        console.log(res)
+        that.$store.commit('comments', res.data)
+      })
+    }
+  },
+  computed: {
+    details () {
+      return this.$store.state.choiceDetails
+    },
+    exchange () {
+      return this.$store.state.exchange
+    },
+    comments () {
+      return this.$store.state.comments
     }
   },
   mounted () {
-    // console.log(this.$store.state)
-    let that = this
-    this.axios.get('/api/shop?id=1').then(function (res) {
-      console.log(res.data)
-      that.details = res.data
-    })
+    this.getInfo()
+    this.getExchange()
+    this.getComments()
   },
   directives: {
     TransferDom
