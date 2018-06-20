@@ -5,17 +5,14 @@
     </x-header>
     <div class="main2">
       <div class="content">
-        <divider>未添加显示样式</divider>
-        <div class="yjbd">
+        <div class="yjbd" v-if="!equal">
           <p><img src="./images/noaddress.png"></p>
           <p class="tips">您还没有添加收货地址~
           </p>
         </div>
-
-        <divider>已经添加显示样式</divider>
-        <div class="addresslist">
+        <div class="addresslist" v-else>
           <ul>
-            <li>
+            <li v-for="(item, index) in receiverAddressGetter" :key="index">
               <div class="info">
                 <div class="left">
                   <div class="a1">
@@ -36,27 +33,6 @@
                 </span>
               </div>
             </li>
-            <li>
-              <div class="info">
-                <div class="left">
-                  <div class="a1">
-                    <span class="name">创客小妮</span>
-                    <span class="phone">18503088185</span>
-                  </div>
-                  <div class="a2">
-                    东莞市南城区鸿禧中心a606
-                  </div>
-                </div>
-                <div class="right">
-                  <span class="edit">编辑</span>
-                </div>
-              </div>
-              <div class="setting">
-                <span class="">设为默认
-                  <i></i>
-                </span>
-              </div>
-            </li>
           </ul>
         </div>
       </div>
@@ -64,16 +40,34 @@
   </div>
 </template>
 <script>
-import { Divider } from "vux";
+import { Divider } from 'vux'
+import { mapActions, mapGetters } from 'vuex'
 export default {
-  data() {
-    return {};
+  data () {
+    return {
+      equal: false
+    }
+  },
+  computed: {
+    ...mapGetters(['receiverAddressGetter'])
+  },
+  methods: {
+    ...mapActions(['HTTP_receiverAddress'])
+  },
+  created () {
+    let flag = this.receiverAddressGetter
+      ? this.receiverAddressGetter.length !== 0 ? this.receiverAddressGetter : null
+      : false
+    if (flag === false) {
+      this.HTTP_receiverAddress().then(res => {
+        if (res) this.equal = !this.equal
+      })
+    }
   },
   components: {
     Divider
-  },
-  methods: {}
-};
+  }
+}
 </script>
 <style lang="less" scoped>
 .yjbd {
@@ -153,7 +147,7 @@ export default {
         font-size: 0.2rem;
         span {
           display: flex;
-           align-items: center;
+          align-items: center;
           i {
             margin-left: 0.1rem;
             width: 0.28rem;

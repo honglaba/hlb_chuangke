@@ -2,15 +2,17 @@ const mutations = {
   SAVE_USER_INFO (state, val) {
     state.userInfo = val
   },
-  choiceDetails (state, details) {
+  SAVE_RECEIVER_ADDRESS (state, val) {
+    state.receiverAddress = val
+  },
+  CHOICE_DETAILS (state, details) {
     state.choiceDetails = details
   },
-  exchange (state, exchange) {
+  EXCHANHE (state, exchange) {
     state.exchange = exchange
   },
-  comments (state, comments) {
+  COMMENTS (state, comments) {
     state.comments = comments
   }
 }
-
 export default mutations

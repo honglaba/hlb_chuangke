@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo: '',
+    userInfo: /* 用户主要信息 */'',
+    receiverAddress: /* 收货地址 */'',
     choiceDetails: '',
     exchange: '',
     comments: ''
@@ -15,6 +16,9 @@ export default new Vuex.Store({
   getters: {
     userInfoGetter: (state) => {
       return state.userInfo
+    },
+    receiverAddressGetter (state) {
+      return state.receiverAddress
     }
   },
   actions,

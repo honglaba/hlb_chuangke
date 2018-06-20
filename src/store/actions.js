@@ -2,16 +2,15 @@ import HTTP from '@/api' // 配置后的axios
 import Cookies from 'js-cookie'
 // import Router from '@/router'
 
-let agent = navigator.userAgent
-let client = 'micro' // 默认pc
-if (agent.indexOf('iPhone') > 0) {
-  client = 'ios'
-} else if (agent.indexOf('Android') > 0) {
-  client = 'android'
-}
-
 const actions = {
-  HTTP_WxAccredit (redirect) {
+  HTTP_WxAccredit (redirect) { // 微信授权
+    let agent = navigator.userAgent
+    let client = 'micro' // 默认pc
+    if (agent.indexOf('iPhone') > 0) {
+      client = 'ios'
+    } else if (agent.indexOf('Android') > 0) {
+      client = 'android'
+    }
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/oauth/wechat',
@@ -24,7 +23,7 @@ const actions = {
       })
     })
   },
-  HTTP_UpReferrer () {
+  HTTP_UpReferrer () { // 上级推荐人
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/parent'
@@ -35,7 +34,7 @@ const actions = {
       })
     })
   },
-  HTTP_UserInfo () {
+  HTTP_UserInfo () { // 用户信息
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/info',
@@ -49,7 +48,7 @@ const actions = {
       })
     })
   },
-  HTTP_logout () {
+  HTTP_logout () { // 登出
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/logout'
@@ -63,7 +62,7 @@ const actions = {
       })
     })
   },
-  HTTP_refreshToken () {
+  HTTP_refreshToken () { // 刷新请求凭证
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/login/refresh',
@@ -75,6 +74,18 @@ const actions = {
         if (res.result_state === 'success') {
 
         }
+      })
+    })
+  },
+  HTTP_receiverAddress ({
+    commit
+  }) { // 收货地址获取
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/address'
+      }).then(res => {
+        commit('SAVE_RECEIVER_ADDRESS', res.data)
+        resolve(res.data.length !== 0)
       })
     })
   }

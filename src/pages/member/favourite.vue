@@ -138,24 +138,24 @@
   </div>
 </template>
 <script>
-import { Tab, TabItem } from "vux";
+import { Tab, TabItem } from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      nowSeen: "1"
-    };
+      nowSeen: '1'
+    }
   },
   components: {
     Tab,
     TabItem
   },
   methods: {
-    tab: function(e) {
-      console.log(e.target.getAttribute("data-id"));
-      this.nowSeen = e.target.getAttribute("data-id");
+    tab (e) {
+      // console.log(e.target.getAttribute('data-id'))
+      this.nowSeen = e.target.getAttribute('data-id')
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .empty {
@@ -292,4 +292,3 @@ export default {
   }
 }
 </style>
-

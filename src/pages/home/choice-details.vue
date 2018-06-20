@@ -265,14 +265,14 @@ export default {
       // console.log(this.$store.state)
       let that = this
       this.axios.get('/api/shop?id=1').then(function (res) {
-        that.$store.commit('choiceDetails', res.data)
+        that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
     // 兑换商品列表
     getExchange () {
       let that = this
       this.axios.get('/api/shop/commodities?sid=1').then(function (res) {
-        that.$store.commit('exchange', res.data)
+        that.$store.commit('EXCHANHE', res.data)
       })
     },
     // 评论
@@ -280,7 +280,7 @@ export default {
       let that = this
       this.axios.get('/api/shop/comments?sid=1').then(function (res) {
         console.log(res)
-        that.$store.commit('comments', res.data)
+        that.$store.commit('COMMENTS', res.data)
       })
     }
   },
