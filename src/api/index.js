@@ -20,14 +20,14 @@ axios.interceptors.request.use(config => {
   /* 是否有请求正在刷新token */
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
-    // if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
-    //   alert('刷新token过期,请重新登录!')
-    //   // 清空所有cookie,localStorage
-    //   localStorage.clear()
-    //   Cookies.remove('accessToken')
-    //   Cookies.remove('refreshToken')
-    //   return
-    // }
+    if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
+      alert('刷新token过期,请重新登录!')
+      // 清空所有cookie,localStorage
+      localStorage.clear()
+      Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
+      return
+    }
 
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
       // window.isRefreshing = true
@@ -43,11 +43,11 @@ axios.interceptors.request.use(config => {
           // console.log(count++)
           window.isRefreshing = false
           let accessToken = JSON.parse(xhr.response).access_token
-          // Cookies.set('accessToken', accessToken, {
-          //   expires: 1 / 36
-          // })
-          Cookies.set('accessToken', accessToken, { expires: new Date(new Date().getTime() + 5 * 1000) })
           config.headers.Authorization = 'Bearer ' + accessToken
+          Cookies.set('accessToken', accessToken, {
+            expires: 1 / 36
+          })
+          // Cookies.set('accessToken', accessToken, { expires: new Date(new Date().getTime() + 5 * 1000) })
           onRrefreshed(accessToken)
         }
       }

@@ -26,7 +26,7 @@
               <div class="tx"><img :src="DataTree.headimgurl"></div>
               <div class="uinfo">
                 <p class="name">{{ DataTree.nickname }}</p>
-                <p class="tips">创客为您节约了66.00元</p>
+                <p class="tips">Hello,欢迎来到创客</p>
               </div>
             </div>
             <div class="right">
@@ -44,13 +44,14 @@
               <router-link :to="{ path:'/member/myorder/1' }">
                 <span><img src="./images/daifukuan.png"></span>
                 <span>待付款</span>
-                <span class="num">8</span>
+                <span class="num" v-if="false">8</span>
               </router-link>
             </li>
             <li>
               <router-link :to="{path:'/member/myorder/2'}">
                 <span><img src="./images/daishouhuo.png"></span>
                 <span>待收货</span>
+                <span class="num">8</span>
               </router-link>
             </li>
             <li>
