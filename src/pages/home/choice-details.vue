@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <section class="banner-box">
-      <img src="./images/choicepic.png">
+      <!-- <img src="./images/choicepic.png"> -->
+      <img :src="details.banner">
+
       <div class="top-row">
         <span class="back"></span>
         <div class="y-flex y-ac">
@@ -21,7 +23,7 @@
     <section class="info-box">
       <div class="til-row">
         <div class="til">
-          <h3>大岗仙庙烧鸡</h3>
+          <h3>{{details.title}}</h3>
           <div>评分
             <span class="c60">5.0</span>
           </div>
@@ -93,18 +95,18 @@
       <div class="other-info bmar16">
         <div class="y-flex y-ac bmar16">
           <p class="rmar25 c666">特色菜</p>
-          <p class="c999">人均消费30￥/人</p>
+          <p class="c999">人均消费{{details.average_cost}}￥/人</p>
         </div>
         <div class="y-flex y-ac y-jc-b">
           <div class="y-flex y-ac">
             <p class="rmar25 c666">营业时间：</p>
-            <p class="c999">09:00~21:00</p>
+            <p class="c999">{{details.start_time}}~{{details.end_time}}</p>
           </div>
           <div class="c999" v-if="!actionDetail">已有
-            <span class="cf00">1348</span>人消费</div>
+            <span class="cf00">{{details.total_customers}}</span>人消费</div>
         </div>
         <div class="c666 tpad60" v-if="actionDetail">已有
-          <span class="cf00">1348</span>人消费</div>
+          <span class="cf00">{{details.total_customers}}</span>人消费</div>
         <div class="padding-b" v-if="actionDetail">
           <div class="slide-up" @click="slideTap"></div>
         </div>
@@ -113,7 +115,7 @@
       <div class="vux-1px-t h80 y-flex y-ac add-row" v-if="!actionDetail">
         <div class="y-flex y-ac vux-1px-r flex1 h44">
           <span class="add-ico"></span>
-          <p class="c666">袁屋边大道2号盈峰生活超市二层一号铺</p>
+          <p class="c666">{{details.address}}</p>
         </div>
         <div class="call-btn" @click="showMask">
           <img src="./images/icon_details_iphone.png" />
@@ -154,11 +156,11 @@
       <div class="top-row y-flex y-jc-b y-ac">
         <div class="y-flex y-ac">
           <h3>用户评论</h3>
-          <span>(6000)</span>
+          <span>({{details.total_comments}})</span>
         </div>
         <router-link to="#" tag="a">
           评分
-          <span>5.0</span> 去评论
+          <span>{{details.score}}</span> 去评论
           <span class="lpad8">></span>
         </router-link>
       </div>
@@ -236,7 +238,7 @@
 
     <div v-transfer-dom>
       <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
-        <p style="text-align:center;">(0769)2221 4618</p>
+        <p style="text-align:center;">{{details.phone}}</p>
       </confirm>
     </div>
   </div>
@@ -248,7 +250,8 @@ export default {
     return {
       actionDetail: false,
       following: false,
-      show: false
+      show: false,
+      details: ''
     }
   },
   methods: {
@@ -270,7 +273,12 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.state)
+    // console.log(this.$store.state)
+    let that = this
+    this.axios.get('/api/shop?id=1').then(function (res) {
+      console.log(res.data)
+      that.details = res.data
+    })
   },
   directives: {
     TransferDom
