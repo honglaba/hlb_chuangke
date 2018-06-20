@@ -8,6 +8,15 @@ const mutations = {
   CLEAR_STATE (state) { // state 清空
     state.userInfo = ''
     state.receiverAddress = ''
+  },
+  CHOICE_DETAILS (state, details) {
+    state.choiceDetails = details
+  },
+  EXCHANHE (state, exchange) {
+    state.exchange = exchange
+  },
+  COMMENTS (state, comments) {
+    state.comments = comments
   }
 }
 
