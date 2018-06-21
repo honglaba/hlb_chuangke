@@ -86,7 +86,9 @@ export default {
       stack.city_id = area[1]
       stack.borough_id = area[2]
       this.HTTP_receiverAddressAdd(this.userInput).then(res => {
-        this.HTTP_receiverAddress()
+        this.HTTP_receiverAddress().then(res => {
+          this.$router.push({path: '/member/address'})
+        })
       })
     }
   },

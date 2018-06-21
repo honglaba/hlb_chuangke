@@ -12,7 +12,7 @@
         </div>
         <div class="addresslist" v-else>
           <ul>
-            <li v-for="(item, index) in receiverAddressGetter" :key="index">
+            <li v-for="item in receiverAddressGetter" :key="item.id">
               <div class="info">
                 <div class="left">
                   <div class="a1">
@@ -20,16 +20,16 @@
                     <span class="phone">{{ item.mobile_phone }}</span>
                   </div>
                   <div class="a2">
-                    {{ item.province_id + item.city_id + item.borough_id + item.address }}
+                    {{ item.true_name + ' ' + item.address }}
                   </div>
                 </div>
                 <div class="right">
-                  <span class="edit">编辑</span>
+                  <span class="edit" @click="_toEditor(item)">编辑</span>
                 </div>
               </div>
-              <div class="setting">
-                <span class="on">设为默认
-                  <i></i>
+              <div class="setting" @click="_toggleIsDefault(item.id)">
+                <span class="on">{{item.is_default === 1 ? '默认地址' : '设为默认'}}
+                  <i :class="item.is_default === 1 ? 'is-default' : 'un-default'"></i>
                 </span>
               </div>
             </li>
@@ -52,11 +52,19 @@ export default {
     ...mapGetters(['receiverAddressGetter'])
   },
   methods: {
-    ...mapActions(['HTTP_receiverAddress'])
+    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
+    _toggleIsDefault (id) {
+      let data = this.receiverAddressGetter[id - 1]
+      data.is_default = data.is_default === 0 ? 1 : 0
+      this.HTTP_receiverAddressEditor(data).then(res => {
+        this.HTTP_receiverAddress()
+      })
+    }
   },
   created () {
+    console.log(this.receiverAddressGetter)
     let flag = this.receiverAddressGetter
-      ? this.receiverAddressGetter.length !== 0 ? this.receiverAddressGetter : null
+      ? this.receiverAddressGetter.length > 0 ? this.receiverAddressGetter : null
       : false
     if (flag === false) {
       this.HTTP_receiverAddress().then(res => {
@@ -157,8 +165,12 @@ export default {
             background-size: cover;
           }
           &.on {
-            i {
+            .is-default {
               background: url("../../assets/images/radio_on.png") no-repeat;
+              background-size: cover;
+            }
+            .un-default{
+              background: url("../../assets/images/radio_unon.png") no-repeat;
               background-size: cover;
             }
           }

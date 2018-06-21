@@ -78,27 +78,39 @@ const actions = {
       })
     })
   },
-  HTTP_receiverAddress ({
-    commit
-  }) { // 收货地址获取
+  HTTP_receiverAddress ({commit}) { // 收货地址获取
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/address'
       }).then(res => {
-        console.log(res.data)
-        commit('SAVE_RECEIVER_ADDRESS', res.data)
-        resolve(res.data.length !== 0)
+        if (res.result_state === 'error') {
+          resolve(false)
+        } else {
+          resolve(res.data.length !== 0)
+          commit('SAVE_RECEIVER_ADDRESS', res.data)
+        }
       })
     })
   },
-  HTTP_receiverAddressAdd ({commit}, data) {
+  HTTP_receiverAddressAdd ({commit}, data) { // 收货地址添加
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/address',
         method: 'POST',
         data
       }).then(res => {
-        console.log(res)
+        resolve(res)
+      })
+    })
+  },
+  HTTP_receiverAddressEditor ({commit}, data) { // 收货地址修改
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/address/${data.id}`,
+        method: 'PUT',
+        data
+      }).then(res => {
+        resolve(res)
       })
     })
   }
