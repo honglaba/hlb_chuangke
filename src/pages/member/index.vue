@@ -24,9 +24,13 @@
           <div class="box1">
             <div class="left">
               <div class="tx"><img :src="DataTree.headimgurl"></div>
-              <div class="uinfo">
-                <p class="name">{{ DataTree.nickname }}</p>
+              <div class="uinfo" v-if="!DataTree.nickname">
+                <p class="name">立即登录</p>
                 <p class="tips">Hello,欢迎来到创客</p>
+              </div>
+              <div class="uinfo-login" v-else>
+                <p class="name-login">{{ DataTree.nickname }}</p>
+                <p class="tips-login">VIP<span></span></p>
               </div>
             </div>
             <div class="right">
@@ -165,6 +169,7 @@ export default {
       }
     }
     .uinfo {
+      color: #fff;
       .name {
         font-size: 0.3rem;
         display: flex;
@@ -176,8 +181,16 @@ export default {
         }
       }
       .tips {
-        color: #fff;
-        font-size: 0.24rem;
+        font-size: 0.23rem;
+      }
+    }
+    .uinfo-login {
+      color: #FFF;
+      .name-login {
+        font-size: .3rem;
+      }
+      .tips-login {
+        font-size: .23rem;
       }
     }
   }

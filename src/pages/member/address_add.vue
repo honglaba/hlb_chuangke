@@ -6,18 +6,19 @@
     <div class="main2">
       <div class="content">
         <group>
-          <x-input title='收货人姓名' type="text" required></x-input>
-          <x-input title='手机号码' type="text" required></x-input>
-          <popup-picker title="所在地" :data="areaList" :columns="3" v-model="areaDefault"></popup-picker>
-          <x-input title='街道地址' type="text" required></x-input>
+          <x-input title='收货人姓名' type="text" required v-model="userInput.name" ref="refcode1" :is-type="validator.name" @on-change="keyDown"></x-input>
+          <x-input title='手机号码' type="text" required v-model="userInput.phone" ref="refcode2" :is-type="validator.phone" @on-change="keyDown"></x-input>
+          <popup-picker title="所在地" :data="areaList" :columns="3" v-model="userInput.areaDefault" @on-change="keyDown"></popup-picker>
+          <x-input title='街道地址' type="text" required v-model="userInput.address" ref="refcode3" :is-type="validator.address" @on-change="keyDown"></x-input>
         </group>
         <div class="setting">
           <span class="on">设为默认
-            <i></i>
+            <img src="../../assets/images/radio_on.png" class="switch-img" v-if="userInput.switchDefault">
+            <img src="../../assets/images/radio_unon.png" class="switch-img" v-else>
           </span>
         </div>
         <div class="tijiao">
-          <button class="btn-aoc">保存</button>
+          <button class="btn-aoc" @click="_saveEditor()">保存</button>
         </div>
       </div>
     </div>
@@ -28,7 +29,14 @@ import { XInput, Group, Divider, PopupPicker } from 'vux'
 export default {
   data () {
     return {
-      areaDefault: [],
+      userInput: {
+        name: '',
+        phone: '',
+        areaDefault: [],
+        address: '',
+        switchDefault: true
+      },
+      disabled: true,
       areaList: [
         {
           name: '中国',
@@ -100,7 +108,46 @@ export default {
           value: '0006',
           parent: 'usa002'
         }
-      ]
+      ],
+      validator: /* 收货地址 */{
+        name (val) {
+          return {
+            valid: val === 'name',
+            msg: '姓名格式不正确'
+          }
+        },
+        phone (val) {
+          return {
+            valid: val.length === 11,
+            msg: '!!'
+          }
+        },
+        areaDefault (val) {
+          return {
+            valid: val !== '',
+            msg: '!!'
+          }
+        },
+        address (val) {
+          return {
+            valid: val !== '',
+            msg: '!!'
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    keyDown () {
+      let refc = this.$refs
+      if (refc.refcode1.valid && refc.refcode2.valid && refc.refcode3.valid && this.userInput.areaDefault.length > 0) {
+        this.disabled = false
+      } else {
+        this.disabled = true
+      }
+    },
+    _saveEditor () {
+      console.log(this.userInput)
     }
   },
   components: {
@@ -108,8 +155,7 @@ export default {
     Group,
     Divider,
     PopupPicker
-  },
-  methods: {}
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -136,9 +182,14 @@ export default {
       background-size: cover;
     }
     &.on {
-      i {
-        background: url("../../assets/images/radio_on.png") no-repeat;
-        background-size: cover;
+      position: relative;
+      img {
+        position: absolute;
+        width: .28rem;
+        height: .28rem;
+        padding: .1rem;
+        display: block;
+        right: 0;
       }
     }
   }

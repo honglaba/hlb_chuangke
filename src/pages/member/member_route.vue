@@ -21,7 +21,7 @@ export default {
           parent: 0,
           gid: 1,
           mobile_phone: null,
-          nickname: '立即登录',
+          nickname: null,
           headimgurl: require('../../assets/images/mrtx.png'),
           birthday: null,
           address: null,
