@@ -13,7 +13,7 @@
                   <router-link :to="{path: '/ccc'}"><img src="./images/sm.png"></router-link>
                 </li>
                 <li>
-                  <router-link :to="{path: '/ccc'}"><img src="./images/xiaoxi.png"></router-link>
+                  <router-link :to="{path: '/home/notice'}"><img src="./images/xiaoxi.png"></router-link>
                 </li>
                 <li>
                   <router-link :to="{path: '/member/settings'}"><img src="./images/shezhi.png"></router-link>

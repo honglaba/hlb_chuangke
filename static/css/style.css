@@ -2,6 +2,11 @@ body, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, fieldset, legend,
 	margin: 0;
 	padding: 0;
 }
+button {
+	outline: none;
+	border-style: none;
+	padding: 0;
+}
 .fl {
 	float: left;
 }
@@ -208,6 +213,7 @@ body{
 .mlr20{margin-left:.2rem;margin-right:.2rem}
 .mtb20{margin-top:.2rem;margin-bottom:.2rem}
 .btn-aoc{box-sizing:border-box;display:inline-block;margin:0 auto;height:.9rem;line-height:.9rem;font-weight:700;font-size:.32rem;text-align:center;color:#fff;background-image:-webkit-linear-gradient(225deg,#f5252d 0,#ff7d32 94%);background-image:linear-gradient(225deg,#f5252d 0,#ff7d32 94%);border-radius:.04rem;border:none;width:100%}
+.btn-aoc-disble{background-image: none;}
 .content img{max-width:100%}
 .base_box{background:#fff}
 .base_box .tit{position:relative;display:flex;align-items:center;justify-content:space-between;font-size:.3rem;height:.8rem}

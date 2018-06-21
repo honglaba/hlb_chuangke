@@ -85,8 +85,20 @@ const actions = {
       HTTP({
         url: '/api/user/address'
       }).then(res => {
+        console.log(res.data)
         commit('SAVE_RECEIVER_ADDRESS', res.data)
         resolve(res.data.length !== 0)
+      })
+    })
+  },
+  HTTP_receiverAddressAdd ({commit}, data) {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/address',
+        method: 'POST',
+        data
+      }).then(res => {
+        console.log(res)
       })
     })
   }

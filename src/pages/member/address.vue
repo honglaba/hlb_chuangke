@@ -16,11 +16,11 @@
               <div class="info">
                 <div class="left">
                   <div class="a1">
-                    <span class="name">创客小妮</span>
-                    <span class="phone">18503088185</span>
+                    <span class="name">{{ item.name }}</span>
+                    <span class="phone">{{ item.mobile_phone }}</span>
                   </div>
                   <div class="a2">
-                    东莞市南城区鸿禧中心a606
+                    {{ item.province_id + item.city_id + item.borough_id + item.address }}
                   </div>
                 </div>
                 <div class="right">
