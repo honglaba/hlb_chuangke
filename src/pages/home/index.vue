@@ -232,7 +232,7 @@
         <h3>猜你喜欢</h3>
       </div>
       <ul class="guess-list">
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
         </router-link>
       </ul>
@@ -264,11 +264,13 @@ export default {
   components: { ListInner },
   methods: {},
   mounted () {
-    // //首页swiper
-    var bannerSwiper = new Swiper('.banner-swiper', {
-      // loop:true,
+    /* eslint-disable */
+    new Swiper('.banner-swiper', {
+      autopaly: {
+        delay: 3000,
+      },
+      loop:true,
       effect: 'coverflow',
-      grabCursor: true,
       centeredSlides: true,
       slidesPerView: 'auto',
       coverflowEffect: {
@@ -278,8 +280,9 @@ export default {
         modifier: 1,
         slideShadows: true
       }
-    })
-    var navSwiper = new Swiper('.nav-swiper', {
+    }).autoplay.start()
+
+    new Swiper('.nav-swiper', {
       pagination: {
         el: '.swiper-pagination'
       }

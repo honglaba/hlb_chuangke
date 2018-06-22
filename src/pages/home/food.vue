@@ -11,7 +11,7 @@
     </div>
     <section class="screen-row">
       <ul class="screen-tab">
-        <li v-for="(tab,index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}">
+        <li v-for="(tab,index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
           <p>{{tab.name}}</p>
           <span></span>
         </li>
@@ -33,7 +33,7 @@
     </section>
     <section class="business-list">
       <ul>
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>

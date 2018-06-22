@@ -74,12 +74,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
+    ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress', 'HTTP_receiverAddressDel']),
     _switchIsDefault () {
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
     },
     _delMsg () {
-      console.log(this.userInput.id)
+      this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
+        this.HTTP_receiverAddress().then(res => {
+          if (this.userInput.is_default === 1) {
+            alert('请设置默认地址')
+          }
+          this.$router.push({path: '/member/address'})
+        })
+      })
     },
     _saveEditor (e) {
       let stack = this.userInput
@@ -118,7 +125,6 @@ export default {
         this.isEditor = true
         let cItem = JSON.parse(item)
         this.userInput = cItem
-        this.userInput.address = cItem.true_name
         this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
         localStorage.removeItem('ReadyEditorAddressItem')
       }

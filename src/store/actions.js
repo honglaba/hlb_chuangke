@@ -113,6 +113,16 @@ const actions = {
         resolve(res)
       })
     })
+  },
+  HTTP_receiverAddressDel ({commit}, id) { // 收货地址修改
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/address/${id}`,
+        method: 'DELETE'
+      }).then(res => {
+        resolve(res)
+      })
+    })
   }
 }
 
