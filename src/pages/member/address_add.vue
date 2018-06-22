@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="新增收货地址">
-      <img src="./images/shanchu.png" class="shanchu" slot="right">
+    <x-header :left-options="{backText: ''}" :title="isEditor ? '修改收货地址' : '新增收货地址'">
+      <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </x-header>
     <div class="main2">
       <div class="content">
@@ -18,7 +18,7 @@
           </span>
         </div>
         <div class="tijiao">
-          <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="clickAble ? _saveEditor($event) : ''">保存</button>
+          <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="clickAble ? _saveEditor($event) : ''">{{isEditor ? '保存修改' : '保存'}}</button>
         </div>
       </div>
     </div>
@@ -27,10 +27,11 @@
 <script>
 import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      isEditor: /* 是否为编辑状态 */false,
       clickAble: /* 提交按钮是否激活 */ false,
       userInput: {
         name: '',
@@ -63,10 +64,42 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['receiverAddressGetter'])
+  },
+  watch: {
+    '$route' (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      this.$loadInit()
+    }
+  },
   methods: {
-    ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddress']),
+    ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
     _switchIsDefault () {
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
+    },
+    _delMsg () {
+      console.log(this.userInput.id)
+    },
+    _saveEditor (e) {
+      let stack = this.userInput
+      let area = this.areaDefault
+      stack.province_id = area[0]
+      stack.city_id = area[1]
+      stack.borough_id = area[2]
+      if (this.isEditor) {
+        this.HTTP_receiverAddressEditor(this.userInput).then(res => {
+          this.HTTP_receiverAddress().then(res => {
+            this.$router.push({path: '/member/address'})
+          })
+        })
+      } else {
+        this.HTTP_receiverAddressAdd(this.userInput).then(res => {
+          this.HTTP_receiverAddress().then(res => {
+            this.$router.push({path: '/member/address'})
+          })
+        })
+      }
     },
     keyDown () {
       let refc = this.$refs
@@ -79,18 +112,20 @@ export default {
         this.clickAble = true
       }
     },
-    _saveEditor (e) {
-      let stack = this.userInput
-      let area = this.areaDefault
-      stack.province_id = area[0]
-      stack.city_id = area[1]
-      stack.borough_id = area[2]
-      this.HTTP_receiverAddressAdd(this.userInput).then(res => {
-        this.HTTP_receiverAddress().then(res => {
-          this.$router.push({path: '/member/address'})
-        })
-      })
+    $loadInit () {
+      let item = localStorage.getItem('ReadyEditorAddressItem')
+      if (item) {
+        this.isEditor = true
+        let cItem = JSON.parse(item)
+        this.userInput = cItem
+        this.userInput.address = cItem.true_name
+        this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
+        localStorage.removeItem('ReadyEditorAddressItem')
+      }
     }
+  },
+  created () {
+    this.$loadInit()
   },
   components: {
     XInput,

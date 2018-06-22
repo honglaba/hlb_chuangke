@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <x-header :left-options="{backText: ''}" title="收货地址管理">
-      <router-link to="address_add" slot="right">添加地址</router-link>
+      <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
     </x-header>
     <div class="main2">
       <div class="content">
@@ -28,8 +28,8 @@
                 </div>
               </div>
               <div class="setting" @click="_toggleIsDefault(item.id)">
-                <span class="on">{{item.is_default === 1 ? '默认地址' : '设为默认'}}
-                  <i :class="item.is_default === 1 ? 'is-default' : 'un-default'"></i>
+                <span class="on">{{item.id === defaultItemIndex ? '默认地址' : '设为默认'}}
+                  <i :class="item.id === defaultItemIndex ? 'is-default' : 'un-default'"></i>
                 </span>
               </div>
             </li>
@@ -45,7 +45,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      equal: false
+      equal: false,
+      defaultItemIndex: ''
     }
   },
   computed: {
@@ -55,21 +56,33 @@ export default {
     ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
     _toggleIsDefault (id) {
       let data = this.receiverAddressGetter[id - 1]
-      data.is_default = data.is_default === 0 ? 1 : 0
-      this.HTTP_receiverAddressEditor(data).then(res => {
-        this.HTTP_receiverAddress()
+      if (this.defaultItemIndex !== id) {
+        this.defaultItemIndex = id
+        data.is_default = data.is_default === 0 ? 1 : 0
+        this.HTTP_receiverAddressEditor(data)
+      }
+    },
+    _toEditor (item) {
+      localStorage.setItem('ReadyEditorAddressItem', JSON.stringify(item))
+      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    },
+    getInitDefaultIndex () {
+      this.receiverAddressGetter.forEach(cb => {
+        if (cb.is_default === 1) this.defaultItemIndex = cb.id
       })
     }
   },
   created () {
-    console.log(this.receiverAddressGetter)
     let flag = this.receiverAddressGetter
       ? this.receiverAddressGetter.length > 0 ? this.receiverAddressGetter : null
       : false
     if (flag === false) {
       this.HTTP_receiverAddress().then(res => {
+        this.getInitDefaultIndex()
         if (res) this.equal = !this.equal
       })
+    } else if (this.receiverAddressGetter.length > 0) {
+      this.getInitDefaultIndex()
     }
   },
   components: {
