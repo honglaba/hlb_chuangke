@@ -17,6 +17,7 @@
 </template>
 <script>
 import { XInput, Group, Divider } from 'vux'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {}
@@ -26,7 +27,12 @@ export default {
     Group,
     Divider
   },
-  methods: {}
+  methods: {
+    ...mapActions(['HTTP_realNameRegistration']),
+    _submit () {
+      // this.HTTP_realNameRegistration()
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

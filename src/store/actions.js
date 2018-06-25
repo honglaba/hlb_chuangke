@@ -151,7 +151,7 @@ const actions = {
       })
     })
   },
-  HTTP_verification ({commit}, data) { // 验证码绑定新手机
+  HTTP_verification ({commit}, data) { // 绑定新手机 验证码
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/sms/send`,
@@ -164,7 +164,7 @@ const actions = {
       })
     })
   },
-  HTTP_resetPhonePassIdentity ({commit}) { // 验证码重置手机号 第一步认证身份
+  HTTP_resetPhonePassIdentity ({commit}) { // 重置第一步  向原手机发送验证码
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/sms/send/modify-phone`,
@@ -174,13 +174,27 @@ const actions = {
       })
     })
   },
-  HTTP_resetPhonePassIdentityDrop ({commit}, captcha) { // 验证码重置手机号 第一步认证身份
+  HTTP_resetPhonePassIdentityDrop ({commit}, captcha) { // 重置手第二步  认证身份
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/phone-captcha/validate-modify-phone-captcha`,
         method: 'POST',
         data: {
           captcha
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_realNameRegistration ({commit}, data) { // 实名认证
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/certification`,
+        method: 'POST',
+        data: {
+          name: data.name,
+          id_card: data.id_card
         }
       }).then(res => {
         resolve(res)
