@@ -29,6 +29,12 @@ import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  components: {
+    XInput,
+    Group,
+    Divider,
+    PopupPicker
+  },
   data () {
     return {
       isEditor: /* 是否为编辑状态 */false,
@@ -72,6 +78,9 @@ export default {
       Object.assign(this.$data, this.$options.data())
       this.$loadInit()
     }
+  },
+  created () {
+    this.$loadInit()
   },
   methods: {
     ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress', 'HTTP_receiverAddressDel']),
@@ -129,15 +138,6 @@ export default {
         localStorage.removeItem('ReadyEditorAddressItem')
       }
     }
-  },
-  created () {
-    this.$loadInit()
-  },
-  components: {
-    XInput,
-    Group,
-    Divider,
-    PopupPicker
   }
 }
 </script>

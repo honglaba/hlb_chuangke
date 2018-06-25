@@ -8,7 +8,7 @@ import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader} from 'vux'
+import {XHeader, ToastPlugin, ConfirmPlugin} from 'vux'
 
 fastClick.attach(document.body)
 
@@ -21,7 +21,13 @@ Vue.prototype.axios = axios
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
+Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 
+Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
+  if (!val) return '未绑定'
+  return val.slice(0, 3) + '****' + val.slice(7, 12)
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -123,6 +123,69 @@ const actions = {
         resolve(res)
       })
     })
+  },
+  HTTP_bindPhone ({commit}, data) { // 绑定新手机
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/bind-phone`,
+        method: 'POST',
+        data: {
+          mobile_phone: data.phone,
+          captcha: data.code
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhone ({commit}, data) { // 重置手机号
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/phone-captcha/validate-modify-phone-captcha`,
+        method: 'POST',
+        data: {
+          captcha: data
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_verification ({commit}, data) { // 验证码绑定新手机
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/sms/send`,
+        method: 'POST',
+        data: {
+          mobile_phone: data
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhonePassIdentity ({commit}) { // 验证码重置手机号 第一步认证身份
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/sms/send/modify-phone`,
+        method: 'POST'
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhonePassIdentityDrop ({commit}, captcha) { // 验证码重置手机号 第一步认证身份
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/phone-captcha/validate-modify-phone-captcha`,
+        method: 'POST',
+        data: {
+          captcha
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
   }
 }
 

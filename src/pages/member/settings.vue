@@ -27,7 +27,7 @@
             <router-link to="/member/phone_update">
               <div class="tit">
                 <div class="l">更绑手机</div>
-                <div class="r">{{ DataTree.mobile_phone || '未绑定'}}<img :src="rightArrow"></div>
+                <div class="r">{{ DataTree.mobile_phone | mobilePhoneFilter }}<img :src="rightArrow"></div>
               </div>
             </router-link>
             <router-link to="/member/paysettings">
@@ -65,6 +65,9 @@ export default {
         this.$router.push({path: '/'})
       })
     }
+  },
+  created () {
+    // console.log(this.DataTree)
   }
 }
 </script>
