@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <x-header :left-options="{backText: ''}" title="收货地址管理">
-      <router-link to="address_add" slot="right">添加地址</router-link>
+      <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
     </x-header>
     <div class="main2">
       <div class="content">
@@ -12,24 +12,24 @@
         </div>
         <div class="addresslist" v-else>
           <ul>
-            <li v-for="(item, index) in receiverAddressGetter" :key="index">
+            <li v-for="item in receiverAddressGetter" :key="item.id">
               <div class="info">
                 <div class="left">
                   <div class="a1">
-                    <span class="name">创客小妮</span>
-                    <span class="phone">18503088185</span>
+                    <span class="name">{{ item.name }}</span>
+                    <span class="phone">{{ item.mobile_phone }}</span>
                   </div>
                   <div class="a2">
-                    东莞市南城区鸿禧中心a606
+                    {{ item.true_name + ' ' + item.address }}
                   </div>
                 </div>
                 <div class="right">
-                  <span class="edit">编辑</span>
+                  <span class="edit" @click="_toEditor(item)">编辑</span>
                 </div>
               </div>
-              <div class="setting">
-                <span class="on">设为默认
-                  <i></i>
+              <div class="setting" @click="_toggleIsDefault(item)">
+                <span class="on">{{item.is_default === 1 ? '默认地址' : '设为默认'}}
+                  <i :class="item.is_default === 1 ? 'is-default' : 'un-default'"></i>
                 </span>
               </div>
             </li>
@@ -52,13 +52,32 @@ export default {
     ...mapGetters(['receiverAddressGetter'])
   },
   methods: {
-    ...mapActions(['HTTP_receiverAddress'])
+    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
+    _toggleIsDefault (item) {
+      if (item.is_default === 0) {
+        this.receiverAddressGetter.forEach(cb => {
+          if (cb.is_default === 1) {
+            cb.is_default = 0
+          } else if (cb.id === item.id) {
+            cb.is_default = 1
+            this.HTTP_receiverAddressEditor(cb)
+          }
+        })
+      }
+    },
+    _toEditor (item) {
+      localStorage.setItem('ReadyEditorAddressItem', JSON.stringify(item))
+      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    }
   },
   created () {
     let flag = this.receiverAddressGetter
-      ? this.receiverAddressGetter.length !== 0 ? this.receiverAddressGetter : null
-      : false
-    if (flag === false) {
+
+    if (flag) {
+      if (flag.length > 0) {
+        this.equal = !this.equal
+      }
+    } else {
       this.HTTP_receiverAddress().then(res => {
         if (res) this.equal = !this.equal
       })
@@ -157,8 +176,12 @@ export default {
             background-size: cover;
           }
           &.on {
-            i {
+            .is-default {
               background: url("../../assets/images/radio_on.png") no-repeat;
+              background-size: cover;
+            }
+            .un-default{
+              background: url("../../assets/images/radio_unon.png") no-repeat;
               background-size: cover;
             }
           }

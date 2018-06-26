@@ -1,9 +1,13 @@
 const mutations = {
-  SAVE_USER_INFO (state, val) {
+  SAVE_USER_INFO (state, val) { // 用户主要信息
     state.userInfo = val
   },
-  SAVE_RECEIVER_ADDRESS (state, val) {
+  SAVE_RECEIVER_ADDRESS (state, val) { // 物流地址
     state.receiverAddress = val
+  },
+  CLEAR_STATE (state) { // state 清空
+    state.userInfo = ''
+    state.receiverAddress = ''
   },
   CHOICE_DETAILS (state, details) {
     state.details = details
@@ -15,4 +19,5 @@ const mutations = {
     state.comments = comments
   }
 }
+
 export default mutations

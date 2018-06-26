@@ -48,12 +48,13 @@ const actions = {
       })
     })
   },
-  HTTP_logout () { // 登出
+  HTTP_logout ({commit}) { // 登出
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/logout'
       }).then(res => {
         if (res.result_state === 'success') {
+          commit('CLEAR_STATE')
           localStorage.clear()
           Cookies.remove('accessToken')
           Cookies.remove('refreshToken')
@@ -77,15 +78,126 @@ const actions = {
       })
     })
   },
-  HTTP_receiverAddress ({
-    commit
-  }) { // 收货地址获取
+  HTTP_receiverAddress ({commit}) { // 收货地址获取
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/user/address'
       }).then(res => {
-        commit('SAVE_RECEIVER_ADDRESS', res.data)
-        resolve(res.data.length !== 0)
+        if (res.result_state === 'error') {
+          resolve(false)
+        } else {
+          resolve(res.data.length !== 0)
+          commit('SAVE_RECEIVER_ADDRESS', res.data)
+        }
+      })
+    })
+  },
+  HTTP_receiverAddressAdd ({commit}, data) { // 收货地址添加
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/address',
+        method: 'POST',
+        data
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_receiverAddressEditor ({commit}, data) { // 收货地址修改
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/address/${data.id}`,
+        method: 'PUT',
+        data
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_receiverAddressDel ({commit}, id) { // 收货地址修改
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/address/${id}`,
+        method: 'DELETE'
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_bindPhone ({commit}, data) { // 绑定新手机
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/bind-phone`,
+        method: 'POST',
+        data: {
+          mobile_phone: data.phone,
+          captcha: data.code
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhone ({commit}, data) { // 重置手机号
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/phone-captcha/validate-modify-phone-captcha`,
+        method: 'POST',
+        data: {
+          captcha: data
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_verification ({commit}, data) { // 绑定新手机 验证码
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/sms/send`,
+        method: 'POST',
+        data: {
+          mobile_phone: data
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhonePassIdentity ({commit}) { // 重置第一步  向原手机发送验证码
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/sms/send/modify-phone`,
+        method: 'POST'
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_resetPhonePassIdentityDrop ({commit}, captcha) { // 重置手第二步  认证身份
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/phone-captcha/validate-modify-phone-captcha`,
+        method: 'POST',
+        data: {
+          captcha
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
+  HTTP_realNameRegistration ({commit}, data) { // 实名认证
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/certification`,
+        method: 'POST',
+        data: {
+          name: data.name,
+          id_card: data.id_card
+        }
+      }).then(res => {
+        resolve(res)
       })
     })
   }

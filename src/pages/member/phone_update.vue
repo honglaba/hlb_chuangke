@@ -1,49 +1,178 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="更改手机号">
+    <x-header :left-options="{backText: ''}" :title="DataTree.mobile_phone ? '更改手机号' : '更绑新手机'">
     </x-header>
     <div class="main2">
-      <div class="content">
-        <divider>已经绑定显示样式</divider>
-        <div class="yjbd">
+
+      <div class="content-a" v-if="switchWindow">
+
+        <div class="yjbd" v-if="switchWindow">
           <p><img src="./images/phone_update.png"></p>
           <p class="tips">您的账户当前绑定的手机为
-            <span>185****8585</span>
+            <span>{{ DataTree.mobile_phone | mobilePhoneFilter }}</span>
             如果需要修改绑定手机号，需要进行身份验证
           </p>
         </div>
-        <div class="tijiao">
-          <button class="btn-aoc">更换绑定</button>
+        <div class="tijiao" v-if="switchWindow">
+          <button class="btn-aoc" @click="_changePhone">
+            <span v-if="!isLoading">更换绑定</span>
+            <spinner type="ripple" size="40px" v-else></spinner>
+          </button>
         </div>
-
-        <divider>未绑定或者更换绑定</divider>
+      </div>
+      <div class="content-b" v-else>
         <group>
-          <x-input label-width="4em" name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" required></x-input>
-          <x-input placeholder="请输入验证码" class="weui-vcode" required>
-            <span slot="right" class="fasong">获取验证码</span>
+          <x-input label-width="4em" name="mobile" v-model="my_mobile_phone" placeholder="请输入手机号码" ref="refPhone" keyboard="number" @on-change="keydown" is-type="china-mobile" required></x-input>
+          <x-input placeholder="请输入验证码" class="weui-vcode" ref="refValidator" v-model="verification_code" @on-change="keydown" :is-type="validator_verification" required>
+            <span slot="right" class="fasong" @click="_getVerificationCode">
+              {{ countDown ? `&nbsp;&nbsp;${countDown}&nbsp;&nbsp;` : '获取验证码' }}
+            </span>
           </x-input>
         </group>
         <div class="tijiao">
-          <button class="btn-aoc">确认绑定</button>
+          <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="_lastToBind">
+            {{ DataTree.mobile_phone ? '确认绑定' : '验证后绑定新手机'}}
+          </button>
         </div>
       </div>
+
     </div>
   </div>
 </template>
+
 <script>
-import { XInput, Group, Divider } from 'vux'
+import { XInput, Group, Divider, Spinner } from 'vux'
+import { mapActions } from 'vuex'
 export default {
+  props: {
+    DataTree: {
+      type: Object
+    }
+  },
   data () {
-    return {}
+    return {
+      isLoading: false,
+      switchWindow: false,
+      clickAble: /* 提交按钮是否可点击 */ false,
+      sendAble: /* 验证码是否可发送 */ false,
+      countDown: /* 验证码倒计时 */ null,
+      my_mobile_phone: '',
+      verification_code: '',
+      validator_verification: val => {
+        return {
+          valid: !!val.match(/^[0-9]{5}$/),
+          msg: '姓名格式不正确!'
+        }
+      }
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      if (this.DataTree.mobile_phone) {
+        this.switchWindow = true
+      }
+    }
   },
   components: {
     XInput,
     Group,
-    Divider
+    Divider,
+    Spinner
   },
-  methods: {}
+  created () {
+    this.switchWindow = !!this.DataTree.mobile_phone
+  },
+  methods: {
+    ...mapActions(['HTTP_verification', 'HTTP_bindPhone', 'HTTP_UserInfo', 'HTTP_resetPhonePassIdentity', 'HTTP_resetPhonePassIdentityDrop']),
+    keydown () {
+      this.sendAble = this.$refs.refPhone.valid
+      this.clickAble = this.$refs.refValidator.valid
+    },
+    _getVerificationCode () {
+      if (this.sendAble) {
+        this.$vux.toast.hide()
+        this.$vux.toast.show({
+          text: '验证码已发送',
+          type: 'text',
+          time: 1000
+        })
+        this.countDown = 60
+        let timer = setInterval(() => {
+          if (this.countDown === 0) {
+            this.countDown = null
+            clearInterval(timer)
+            return
+          }
+          this.countDown--
+        }, 1000)
+        this.HTTP_verification(this.my_mobile_phone)
+      } else {
+        this.$vux.toast.hide()
+        this.$vux.toast.show({
+          text: '请填写正确的手机号',
+          type: 'text',
+          width: '12em',
+          time: 1000
+        })
+      }
+    },
+    _lastToBind () {
+      if (this.clickAble) {
+        this.HTTP_bindPhone({
+          phone: this.my_mobile_phone,
+          code: this.verification_code
+        }).then(res => {
+          if (res.result_state === 'success') {
+            this.HTTP_UserInfo().then(res => {
+              this.$store.commit('SAVE_USER_INFO', res.data)
+              localStorage.setItem('userInfo', JSON.stringify(res.data))
+              this.$router.push({path: '/member/settings'})
+            })
+            this.$vux.toast.show({
+              text: '绑定成功',
+              type: 'text',
+              time: 1000
+            })
+          } else {
+            this.$vux.toast.show({
+              text: '验证码不正确',
+              type: 'text',
+              time: 1000
+            })
+          }
+        })
+      }
+    },
+    _changePhone () {
+      this.HTTP_resetPhonePassIdentity()
+      const _this = this
+      this.isLoading = true
+      this.$vux.toast.show({
+        text: '验证码已发送',
+        type: 'text',
+        time: 1000
+      })
+      this.$vux.confirm.show({
+        title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
+        showInput: true,
+        closeOnConfirm: false,
+        onConfirm (val) {
+          if (val.match(/^[0-9]{5}$/)) {
+            _this.HTTP_resetPhonePassIdentityDrop(val).then(res => {
+              if (res.result_state === 'success') {
+                _this.$vux.confirm.hide()
+                _this.switchWindow = false
+              }
+            })
+          }
+        }
+      })
+    }
+  }
 }
 </script>
+
 <style lang="less" scoped>
 .yjbd {
   background: #ffffff;

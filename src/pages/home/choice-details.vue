@@ -132,7 +132,7 @@
       </div>
       <div class="exchange-list">
         <ul>
-          <router-link tag="li" to="/aaaaa" v-for="(item,index) in exchange">
+          <router-link tag="li" to="/aaaaa" v-for="(item,index) in exchange" :key="index">
             <div><img :src="item.thumb" /></div>
             <div class="name">{{item.title}}</div>
           </router-link>
