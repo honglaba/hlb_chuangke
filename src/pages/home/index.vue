@@ -2,7 +2,7 @@
   <div id="app">
     <Headerx></Headerx>
 
-    <section class="bgf bmar20 vux-1px-b bpad26 tpad27">
+    <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
 
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
@@ -92,7 +92,7 @@
       </div>
     </section>
 
-    <section class="vux-1px-tb bmar20 bgf tpad36">
+    <section class="vux-1px-tb bmar20 bgf tpad36" key="2">
       <div class="lrpad32 til-row bmar56">
         <h3 class="fl">精选推荐</h3>
         <router-link to="/home/recommend" class="fr">更多></router-link>
@@ -203,7 +203,7 @@
 
     </section>
 
-    <section class="vux-1px-tb bmar20 bgf tpad36">
+    <section class="vux-1px-tb bmar20 bgf tpad36" key="3">
       <div class="lrpad32 til-row bmar52">
         <h3 class="fl">精选商家</h3>
         <!-- <a class="fr" href="#">更多></a> -->
@@ -227,7 +227,7 @@
       </div>
     </section>
 
-    <section class="vux-1px-tb bmar20 bgf guess">
+    <section class="vux-1px-tb bmar20 bgf guess" key="4">
       <div class="til-row1 vux-1px-b">
         <h3>猜你喜欢</h3>
       </div>
@@ -237,7 +237,7 @@
         </router-link>
       </ul>
     </section>
-    <Footerx></Footerx>
+
   </div>
 </template>
 
@@ -249,6 +249,7 @@ export default {
   name: 'App',
   data () {
     return {
+      transitionName: 'slide-right',
       businessList: [
         {
           name: '良记甜品',
@@ -265,14 +266,14 @@ export default {
   methods: {},
   mounted () {
     /* eslint-disable */
-    new Swiper('.banner-swiper', {
+    new Swiper(".banner-swiper", {
       autopaly: {
-        delay: 3000,
+        delay: 3000
       },
-      loop:true,
-      effect: 'coverflow',
+      loop: true,
+      effect: "coverflow",
       centeredSlides: true,
-      slidesPerView: 'auto',
+      slidesPerView: "auto",
       coverflowEffect: {
         rotate: 50,
         stretch: 0,
@@ -280,18 +281,18 @@ export default {
         modifier: 1,
         slideShadows: true
       }
-    }).autoplay.start()
+    }).autoplay.start();
 
-    new Swiper('.nav-swiper', {
+    new Swiper(".nav-swiper", {
       pagination: {
-        el: '.swiper-pagination'
+        el: ".swiper-pagination"
       }
-    })
+    });
   }
-}
+};
 </script>
 
-<style lang="less" >
+<style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
 #app {

@@ -66,13 +66,9 @@ const router = new VueRouter({
   // 默认首页
   routes: [{
     path: '/',
-    name: 'HomeIndex',
-    component: HomeIndex,
-    meta: {
-      title: '首页'
-    }
+    redirect: '/home'
   },
-  // 首页
+    // 首页
   {
     path: '/home',
     component: home_route,
@@ -81,7 +77,8 @@ const router = new VueRouter({
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
-        title: '首页'
+        title: '首页',
+        index: 1
       }
     },
     {
@@ -89,7 +86,7 @@ const router = new VueRouter({
       name: 'Recommend',
       component: Recommend,
       meta: {
-        title: '精品推荐 '
+        title: '精品推荐'
       }
     },
     {
@@ -97,7 +94,7 @@ const router = new VueRouter({
       name: 'Details',
       component: Details,
       meta: {
-        title: '商品详情页 '
+        title: '商品详情页'
       }
     }, {
       path: 'food',
@@ -156,17 +153,17 @@ const router = new VueRouter({
         title: '商家详情'
       }
     }
-    // {
-    //   path: 'scanning',
-    //   name: 'Scanning',
-    //   component: Scanning,
-    //   meta: {
-    //     title: '扫一扫'
-    //   }
-    // }
+      // {
+      //   path: 'scanning',
+      //   name: 'Scanning',
+      //   component: Scanning,
+      //   meta: {
+      //     title: '扫一扫'
+      //   }
+      // }
     ]
   },
-  // 附近商家
+    // 附近商家
   {
     path: '/shop',
     component: shop_route,
@@ -175,11 +172,12 @@ const router = new VueRouter({
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
-        title: '附近商家'
+        title: '附近商家',
+        index: 2
       }
     }]
   },
-  // 微卡
+    // 微卡
   {
     path: '/weika',
     component: weika_route,
@@ -188,7 +186,8 @@ const router = new VueRouter({
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
-        title: '微卡首页'
+        title: '微卡首页',
+        index: 3
       }
     },
     {
@@ -212,7 +211,8 @@ const router = new VueRouter({
       name: 'WeikaVip',
       component: WeikaVip,
       meta: {
-        title: '微卡vip首页'
+        title: '微卡vip首页',
+        index: 6 // special
       }
     },
     {
@@ -257,143 +257,145 @@ const router = new VueRouter({
     }
     ]
   },
-  // 用户中心
+    // 用户中心
   {
     path: '/member',
     component: member_route,
-    children: [{
-      path: 'login',
-      name: 'MemberLogin',
-      component: MemberLogin,
-      meta: {
-        title: '登录'
+    children: [
+      {
+        path: '',
+        name: 'MemberIndex',
+        component: MemberIndex,
+        meta: {
+          title: '个人中心',
+          index: 4
+        }
+      }, {
+        path: 'login',
+        name: 'MemberLogin',
+        component: MemberLogin,
+        meta: {
+          title: '登录'
+        }
+      },
+      {
+        path: 'reg/reg_step1',
+        name: 'Reg_step1',
+        component: Regstep1,
+        meta: {
+          title: '注册创客-第一步'
+        }
+      },
+      {
+        path: 'reg/reg_step2',
+        name: 'Reg_step2',
+        component: Regstep2,
+        meta: {
+          title: '填写推荐人信息'
+        }
+      },
+      {
+        path: 'reg/reg_step3',
+        name: 'Reg_step3',
+        component: Regstep3,
+        meta: {
+          title: '填写个人信息'
+        }
+      }, {
+        path: 'favourite',
+        name: 'favourite',
+        component: favourite,
+        meta: {
+          title: '我的收藏'
+        }
+      }, {
+        path: 'exchange',
+        name: 'exchange',
+        component: exchange,
+        meta: {
+          title: '我要兑换'
+        }
+      }, {
+        path: 'exchange_log',
+        name: 'exchange_log',
+        component: exchange_log,
+        meta: {
+          title: '兑换记录'
+        }
+      }, {
+        path: 'points',
+        name: 'points',
+        component: points,
+        meta: {
+          title: '我的积分'
+        }
+      }, {
+        path: 'points_log',
+        name: 'points_log',
+        component: points_log,
+        meta: {
+          title: '积分记录'
+        }
+      }, {
+        path: 'myorder/:id',
+        name: 'myorder',
+        component: myorder,
+        meta: {
+          title: '帮助详情'
+        }
+      }, {
+        path: 'phone_update',
+        name: 'phone_update',
+        component: phone_update,
+        meta: {
+          title: '更绑手机号'
+        }
+      }, {
+        path: 'settings',
+        name: 'settings',
+        component: settings,
+        meta: {
+          title: '个人设置'
+        }
+      }, {
+        path: 'myinfo',
+        name: 'myinfo',
+        component: myinfo,
+        meta: {
+          title: '个人信息'
+        }
+      }, {
+        path: 'realname',
+        name: 'realname',
+        component: realname,
+        meta: {
+          title: '实名认证'
+        }
+      }, {
+        path: 'paysettings',
+        name: 'paysettings',
+        component: paysettings,
+        meta: {
+          title: '支付设置'
+        }
+      }, {
+        path: 'address',
+        name: 'address',
+        component: address,
+        meta: {
+          title: '收货地址管理'
+        }
+      }, {
+        path: 'address_add',
+        name: 'address_add',
+        component: address_add,
+        meta: {
+          title: '新增或修改收货地址'
+        }
       }
-    },
-    {
-      path: '',
-      name: 'MemberIndex',
-      component: MemberIndex,
-      meta: {
-        title: '个人中心'
-      }
-    }, {
-      path: 'reg/reg_step1',
-      name: 'Reg_step1',
-      component: Regstep1,
-      meta: {
-        title: '注册创客-第一步'
-      }
-    },
-    {
-      path: 'reg/reg_step2',
-      name: 'Reg_step2',
-      component: Regstep2,
-      meta: {
-        title: '填写推荐人信息'
-      }
-    },
-    {
-      path: 'reg/reg_step3',
-      name: 'Reg_step3',
-      component: Regstep3,
-      meta: {
-        title: '填写个人信息'
-      }
-    }, {
-      path: 'favourite',
-      name: 'favourite',
-      component: favourite,
-      meta: {
-        title: '我的收藏'
-      }
-    }, {
-      path: 'exchange',
-      name: 'exchange',
-      component: exchange,
-      meta: {
-        title: '我要兑换'
-      }
-    }, {
-      path: 'exchange_log',
-      name: 'exchange_log',
-      component: exchange_log,
-      meta: {
-        title: '兑换记录'
-      }
-    }, {
-      path: 'points',
-      name: 'points',
-      component: points,
-      meta: {
-        title: '我的积分'
-      }
-    }, {
-      path: 'points_log',
-      name: 'points_log',
-      component: points_log,
-      meta: {
-        title: '积分记录'
-      }
-    }, {
-      path: 'myorder/:id',
-      name: 'myorder',
-      component: myorder,
-      meta: {
-        title: '帮助详情'
-      }
-    }, {
-      path: 'phone_update',
-      name: 'phone_update',
-      component: phone_update,
-      meta: {
-        title: '更绑手机号'
-      }
-    }, {
-      path: 'settings',
-      name: 'settings',
-      component: settings,
-      meta: {
-        title: '个人设置'
-      }
-    }, {
-      path: 'myinfo',
-      name: 'myinfo',
-      component: myinfo,
-      meta: {
-        title: '个人信息'
-      }
-    }, {
-      path: 'realname',
-      name: 'realname',
-      component: realname,
-      meta: {
-        title: '实名认证'
-      }
-    }, {
-      path: 'paysettings',
-      name: 'paysettings',
-      component: paysettings,
-      meta: {
-        title: '支付设置'
-      }
-    }, {
-      path: 'address',
-      name: 'address',
-      component: address,
-      meta: {
-        title: '收货地址管理'
-      }
-    }, {
-      path: 'address_add',
-      name: 'address_add',
-      component: address_add,
-      meta: {
-        title: '新增或修改收货地址'
-      }
-    }
     ]
   },
-  // 文章
+    // 文章
   {
     path: '/article',
     component: article_route,

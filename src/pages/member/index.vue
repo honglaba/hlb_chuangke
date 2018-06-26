@@ -30,7 +30,9 @@
               </div>
               <div class="uinfo-login" v-else>
                 <p class="name-login">{{ DataTree.nickname }}</p>
-                <p class="tips-login">VIP<span></span></p>
+                <p class="tips-login">VIP
+                  <span></span>
+                </p>
               </div>
             </div>
             <div class="right">
@@ -105,7 +107,6 @@
         </div>
       </div>
     </div>
-    <Footerx></Footerx>
   </div>
 </template>
 <script>
@@ -185,12 +186,12 @@ export default {
       }
     }
     .uinfo-login {
-      color: #FFF;
+      color: #fff;
       .name-login {
-        font-size: .3rem;
+        font-size: 0.3rem;
       }
       .tips-login {
-        font-size: .23rem;
+        font-size: 0.23rem;
       }
     }
   }
