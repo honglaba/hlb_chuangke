@@ -344,6 +344,7 @@ export default {
     bottom: 0.15rem;
     padding: 0 0.26rem;
     box-sizing: border-box;
+    background: none;
     > div:nth-child(1) {
       color: #fff;
       font-size: 0.28rem;
