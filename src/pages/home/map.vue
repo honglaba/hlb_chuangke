@@ -4,9 +4,9 @@
         <div id="allmap" class="allmap"></div>
         <section class="bottom-row">
             <div class="location-info">
-                <p>大岗仙庙烧鸡</p>
+                <p>{{detailsGetter.title}}</p>
                 <p>距您
-                    <span>375.8</span>米 胜和社区福明大厦北楼102号A铺</p>
+                    <span>{{distance}}</span>米 {{detailsGetter.address}}</p>
             </div>
             <div class="nav-btn" @click="useMap">
                 <span></span>
@@ -18,6 +18,7 @@
 </template>
 <script>
 import { Actionsheet } from 'vux'
+import {mapGetters} from 'vuex'
 export default {
   name: '',
   data () {
@@ -27,8 +28,12 @@ export default {
         menu1: '使用iPhone自带地图',
         menu2: '使用高德地图',
         menu3: '使用百度地图'
-      }
+      },
+      distance: 0
     }
+  },
+  computed: {
+    ...mapGetters(['detailsGetter'])
   },
   components: {
     Actionsheet
@@ -39,16 +44,49 @@ export default {
     }
   },
   mounted () {
+    let that = this
+    // 取目的地坐标值
+    let coordinate = []
+    if (this.detailsGetter) {
+      coordinate.push(this.detailsGetter.longitude)
+      coordinate.push(this.detailsGetter.latitude)
+    } else {
+      coordinate = ['116.404844', '39.91582']
+    }
+
     // 百度地图API功能
     var map = new BMap.Map('allmap') // 创建Map实例
-    // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11); // 初始化地图,设置中心点坐标和地图级别
-    // map.centerAndZoom(new BMap.Point(113.75, 23.04), 17) // 初始化地图,设置中心点坐标和地图级别
-    map.centerAndZoom(new BMap.Point(this.$store.state.choiceDetails.longitude, this.$store.state.choiceDetails.latitude), 17)
+    map.centerAndZoom(new BMap.Point(coordinate[0], coordinate[1]), 20) // 初始化地图,设置中心点坐标和地图级别
 
     map.addControl(new BMap.MapTypeControl()) // 添加地图类型控件
     map.setCurrentCity('东莞') // 设置地图显示的城市 此项是必须设置的
 
-    console.log(this.$store.state.choiceDetails.longitude, this.$store.state.choiceDetails.latitude)
+    // 用经纬度设置地图中心点
+    function theLocation () {
+      map.clearOverlays()
+      var new_point = new BMap.Point(coordinate[0], coordinate[1])
+      var marker = new BMap.Marker(new_point) // 创建标注
+      map.addOverlay(marker) // 将标注添加到地图中
+      map.panTo(new_point)
+    }
+    theLocation()
+
+    // 获取自身定位
+    var my_point = []
+    var geolocation = new BMap.Geolocation()
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        var mk = new BMap.Marker(r.point)
+        map.addOverlay(mk)
+        map.panTo(r.point)
+        // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+        let pointeA = new BMap.Point(r.point.lng, r.point.lat)// 当前位置
+        let pointeB = new BMap.Point(coordinate[0], coordinate[1])// 目标位置
+        that.distance = (map.getDistance(pointeA, pointeB)).toFixed(2)// 计算距离
+      } else {
+        alert('failed' + this.getStatus())
+      }
+    }, {enableHighAccuracy: true})
   }
 }
 </script>

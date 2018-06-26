@@ -93,6 +93,11 @@ export default {
 
       this.nowSeen = e.target.getAttribute('data-id')
     }
+  },
+  mounted () {
+    this.axios.get('/api/message?type=2').then(res => {
+      console.log(res)
+    })
   }
 }
 </script>

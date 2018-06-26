@@ -1,18 +1,20 @@
 <template>
     <div class="inner">
         <div class="business-img">
-            <img :src="businessList.pic" />
+            <!-- <img :src="businessList.pic" /> -->
+            <img :src="businessList.logo" />
         </div>
         <div class="business-info">
             <div class="til-row">
-                <h4>{{businessList.name}}</h4>
+                <!-- <h4>{{businessList.name}}</h4> -->
+                <h4>{{businessList.title}}</h4>
                 <p>创客推荐</p>
             </div>
             <span class="mark">到店直换</span>
-            <p class="tsc">特色菜</p>
+            <p class="tsc">{{businessList.genres_of_food}}</p>
             <div class="price-row">
-                <div><span>4.9</span>分</div>
-                <p>(118条评价)</p>
+                <div><span>{{businessList.score}}</span>分</div>
+                <p>({{businessList.total_comments}}条评价)</p>
             </div>
         </div>
         <p>20Km</p>

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <scroller :on-infinite="infinite" ref="myscroller">
     <Headerx></Headerx>
     <div class="swiper-container banner-swiper" v-if="!seen">
       <div class="swiper-wrapper">
@@ -18,7 +18,7 @@
       </ul>
       <section class="screen-inner" v-if="seen" @click.self="maskTap">
         <ul>
-          <li>全部</li>
+          <!-- <li>全部</li>
           <li>甜品饮品</li>
           <li>火锅</li>
           <li>生日蛋糕</li>
@@ -27,19 +27,26 @@
           <li>日韩料理</li>
           <li>西餐</li>
           <li>聚餐宴席</li>
-          <li>烧烤烤肉</li>
+          <li>烧烤烤肉</li> -->
+
+           <li v-for="(item,index) in category" :data-category="item.id" @click="switchCategory">{{item.title}}</li>
         </ul>
       </section>
     </section>
     <section class="business-list">
       <ul>
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+        <!-- <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+          <ListInner :businessList="item"></ListInner>
+          <Other></Other>
+        </router-link> -->
+
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>
       </ul>
     </section>
-  </div>
+  </scroller>
 </template>
 <script>
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
@@ -69,11 +76,20 @@ export default {
           active: false
         },
         {
-          name: '只能排序',
+          name: '智能排序',
           active: false
         }
       ],
-      tabTemp: null
+      tabTemp: null,
+      category: [],
+      shopList: [],
+      lastPage: null,
+      nextPageUrl: '',
+      currentPage: null,
+      shopTotal: null,
+      offset: 0,
+      tempArr: [],
+      moveList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     }
   },
   components: { ListInner, Other },
@@ -102,6 +118,109 @@ export default {
       for (let i = 0, len = screenTab.length; i < len; i++) {
         this.screenTab[i].active = false
       }
+    },
+    getCategory: function () { // 分类
+      this.axios.get(' /api/shop-category/children?id=1').then(res => {
+        console.log(res)
+        this.category = res.data
+      })
+    },
+    getCategoryShop: function () { // 分类下商店
+      this.axios.get('/api/shop-category/shops?cid=1').then(res => {
+        console.log(res)
+        this.lastPage = res.last_page
+        this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+        this.currentPage = res.current_page
+        this.shopTotal = res.total
+        delete res.data.result_state
+        delete res.data.return_state
+        for (let i in res.data) {
+          this.shopList.push(res.data[i])
+        }
+      })
+    },
+    switchCategory: function (e) { // 切换分类
+      let categoryId = e.target.getAttribute('data-category')
+      this.axios.get('/api/shop-category/shops?cid=' + categoryId).then(res => {
+        console.log(res)
+      })
+    },
+
+    infinite (done) {
+      if (this.noData) {
+        setTimeout(() => {
+          this.$refs.myscroller.finishInfinite(2)
+        })
+        return
+      }
+      let self = this// this指向问题
+      let start = this.shopList.length
+      // let start = this.moveList.length
+
+      setTimeout(() => {
+        console.log(this.nextPageUrl)
+        this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
+          this.tempArr = []
+          console.log(res.next_page_url)
+
+          this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+          delete res.data.result_state
+          delete res.data.return_state
+          for (let i in res.data) {
+            this.tempArr.push(res.data[i])
+          }
+          // this.shopList = this.shopList.concat(tempArr)
+        })
+        console.log(this.tempArr)
+        // for (let i = start + 1; i < start + 10; i++) {
+        //   self.moveList.push(i)
+        // }
+        this.shopList = this.shopList.concat(this.tempArr)
+        if (start > this.shopTotal) {
+          self.noData = '没有更多数据'
+        }
+        self.$refs.myscroller.resize()
+        done()
+      }, 500)
+    },
+    // infinite (done) {
+    //   if (this.noData) {
+    //     setTimeout(() => {
+    //       this.$refs.myscroller.finishInfinite(2)
+    //     })
+    //     return
+    //   }
+    //   let self = this// this指向问题
+    //   let start = this.moveList.length
+
+    //   setTimeout(() => {
+    //     for (let i = start + 1; i < start + 10; i++) {
+    //       self.moveList.push(i)
+    //     }
+    //     if (start > 30) {
+    //       self.noData = '没有更多数据'
+
+    //       this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
+    //         this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+    //         delete res.data.result_state
+    //         delete res.data.return_state
+    //         let tempArr = []
+    //         for (let i in res.data) {
+    //           tempArr.push(res.data[i])
+    //         }
+    //         this.shopList = this.shopList.concat(tempArr)
+    //       })
+    //     }
+    //     self.$refs.myscroller.resize()
+    //     done()
+    //   }, 500)
+    // },
+
+    // done()表示这次异步加载数据完成，加载下一次
+    // 因为这个是同步的，加了setTimeout就是异步加载数据；
+    // 因为涉及到this指向问题，所以将他放在一个变量里。
+    refresh () {
+      console.log('refresh')
     }
   },
   mounted () {
@@ -110,7 +229,18 @@ export default {
         el: '.swiper-pagination'
       }
     })
+
+    this.getCategory()
+    this.getCategoryShop()
+
+    this.axios.get('/api/shop-category?id=1').then(res => {
+      console.log(res)
+    })
+    this.axios.get('/api/shop?id=1').then(function (res) {
+      console.log(res)
+    })
   }
+
 }
 </script>
 <style lang="less">

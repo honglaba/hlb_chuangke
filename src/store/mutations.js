@@ -6,7 +6,7 @@ const mutations = {
     state.receiverAddress = val
   },
   CHOICE_DETAILS (state, details) {
-    state.choiceDetails = details
+    state.details = details
   },
   EXCHANHE (state, exchange) {
     state.exchange = exchange

@@ -154,7 +154,7 @@
       </div>
 
       <ul class="comment-list">
-        <li class="vux-1px-b">
+        <!-- <li class="vux-1px-b">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
               <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
@@ -174,13 +174,14 @@
           <div class="comment-content">
             很好，优惠很多，非常好
           </div>
-        </li>
-        <li class="vux-1px-b">
+        </li> -->
+
+        <li class="vux-1px-b" v-for="(item,index) in comments">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
-              <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
+              <div class="comment-img"><img :src="item.userInfo.headimgurl" /></div>
               <div class="s">
-                <p>小米儿溜溜</p>
+                <p>{{item.userInfo.nickname}}</p>
                 <div class="star">
                   <span></span>
                   <span></span>
@@ -190,31 +191,10 @@
                 </div>
               </div>
             </div>
-            <p class="time">2018-05-22</p>
+            <p class="time">{{item.created_at}}</p>
           </div>
           <div class="comment-content">
-            很好，优惠很多，非常好
-          </div>
-        </li>
-        <li class="vux-1px-b">
-          <div class="y-flex y-jc-b">
-            <div class="y-flex y-ac">
-              <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
-              <div class="s">
-                <p>小米儿溜溜</p>
-                <div class="star">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <p class="time">2018-05-22</p>
-          </div>
-          <div class="comment-content">
-            很好，优惠很多，非常好
+            {{item.content}}
           </div>
         </li>
       </ul>
@@ -237,7 +217,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      ...mapState(['choiceDetails', 'exchange', 'comments']),
       actionDetail: false,
       following: false,
       show: false
@@ -278,22 +257,23 @@ export default {
     // 评论
     getComments () {
       let that = this
-      this.axios.get('/api/shop/comments?sid=1').then(function (res) {
-        console.log(res)
+      this.axios.get('/api/shop/comments?sid=3').then(function (res) {
+        console.log(res.data)
         that.$store.commit('COMMENTS', res.data)
       })
     }
   },
   computed: {
-    details () {
-      return this.$store.state.choiceDetails
-    },
-    exchange () {
-      return this.$store.state.exchange
-    },
-    comments () {
-      return this.$store.state.comments
-    }
+    // details () {
+    //   return this.$store.state.details
+    // },
+    // exchange () {
+    //   return this.$store.state.exchange
+    // },
+    // comments () {
+    //   return this.$store.state.comments
+    // }
+    ...mapState(['details', 'exchange', 'comments'])
   },
   mounted () {
     this.getInfo()

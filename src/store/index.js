@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     userInfo: /* 用户主要信息 */'',
     receiverAddress: /* 收货地址 */'',
-    choiceDetails: '',
+    details: '',
     exchange: '',
     comments: ''
   },
@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     receiverAddressGetter (state) {
       return state.receiverAddress
+    },
+    detailsGetter (state) {
+      return state.details
     }
   },
   actions,
