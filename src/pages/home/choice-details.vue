@@ -244,6 +244,7 @@ export default {
       // console.log(this.$store.state)
       let that = this
       this.axios.get('/api/shop?id=1').then(function (res) {
+        console.log(res)
         that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
