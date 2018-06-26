@@ -83,13 +83,8 @@ export default {
       tabTemp: null,
       category: [],
       shopList: [],
-      lastPage: null,
       nextPageUrl: '',
-      currentPage: null,
-      shopTotal: null,
-      offset: 0,
-      tempArr: [],
-      moveList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      tempArr: []
     }
   },
   components: { ListInner, Other },
@@ -127,11 +122,7 @@ export default {
     },
     getCategoryShop: function () { // 分类下商店
       this.axios.get('/api/shop-category/shops?cid=1').then(res => {
-        console.log(res)
-        this.lastPage = res.last_page
         this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
-        this.currentPage = res.current_page
-        this.shopTotal = res.total
         delete res.data.result_state
         delete res.data.return_state
         for (let i in res.data) {
@@ -145,8 +136,7 @@ export default {
         console.log(res)
       })
     },
-
-    infinite (done) {
+    infinite (done) { // 下拉加载vue-scroll
       if (this.noData) {
         setTimeout(() => {
           this.$refs.myscroller.finishInfinite(2)
@@ -154,67 +144,24 @@ export default {
         return
       }
       let self = this// this指向问题
-      let start = this.shopList.length
-      // let start = this.moveList.length
-
       setTimeout(() => {
-        console.log(this.nextPageUrl)
         this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
           this.tempArr = []
-          console.log(res.next_page_url)
-
-          this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+          res.next_page_url == null ? this.nextPageUrl = null : this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
           delete res.data.result_state
           delete res.data.return_state
           for (let i in res.data) {
             this.tempArr.push(res.data[i])
           }
-          // this.shopList = this.shopList.concat(tempArr)
         })
-        console.log(this.tempArr)
-        // for (let i = start + 1; i < start + 10; i++) {
-        //   self.moveList.push(i)
-        // }
         this.shopList = this.shopList.concat(this.tempArr)
-        if (start > this.shopTotal) {
+        if (this.nextPageUrl == null) {
           self.noData = '没有更多数据'
         }
         self.$refs.myscroller.resize()
         done()
       }, 500)
     },
-    // infinite (done) {
-    //   if (this.noData) {
-    //     setTimeout(() => {
-    //       this.$refs.myscroller.finishInfinite(2)
-    //     })
-    //     return
-    //   }
-    //   let self = this// this指向问题
-    //   let start = this.moveList.length
-
-    //   setTimeout(() => {
-    //     for (let i = start + 1; i < start + 10; i++) {
-    //       self.moveList.push(i)
-    //     }
-    //     if (start > 30) {
-    //       self.noData = '没有更多数据'
-
-    //       this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
-    //         this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
-    //         delete res.data.result_state
-    //         delete res.data.return_state
-    //         let tempArr = []
-    //         for (let i in res.data) {
-    //           tempArr.push(res.data[i])
-    //         }
-    //         this.shopList = this.shopList.concat(tempArr)
-    //       })
-    //     }
-    //     self.$refs.myscroller.resize()
-    //     done()
-    //   }, 500)
-    // },
 
     // done()表示这次异步加载数据完成，加载下一次
     // 因为这个是同步的，加了setTimeout就是异步加载数据；
@@ -232,13 +179,6 @@ export default {
 
     this.getCategory()
     this.getCategoryShop()
-
-    this.axios.get('/api/shop-category?id=1').then(res => {
-      console.log(res)
-    })
-    this.axios.get('/api/shop?id=1').then(function (res) {
-      console.log(res)
-    })
   }
 
 }
