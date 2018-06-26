@@ -1,20 +1,19 @@
 <template>
   <div id="app">
     <headerx></headerx>
-    <footerx></footerx>
     <section class="banner">
       <p>今日推荐</p>
       <img src="./images/nearby-banner.png" />
     </section>
     <section class="tab">
       <ul class="tab-nav">
-        <li v-for="(tab,index) in tabNavs" @click="tabTap(index)" :class="{cur:tab.active}">
+        <li v-for="(tab,index) in tabNavs" @click="tabTap(index)" :class="{cur:tab.active}" :key="index">
           {{tab.name}}
         </li>
       </ul>
       <div class="tab-con">
         <ul>
-          <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}">
+          <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
             {{nav.name}}
           </li>
         </ul>
@@ -22,7 +21,7 @@
     </section>
     <section class="business-list">
       <ul>
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>
@@ -35,8 +34,12 @@ import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
 
 export default {
+  watch: {
+    $route (val, oldval) {}
+  },
   data () {
     return {
+      transitionName: '',
       tabNavs: [
         {
           name: '附近商家',

@@ -71,7 +71,6 @@
         </div>
       </div>
     </div>
-    <Footerx></Footerx>
   </div>
 </template>
 <script>

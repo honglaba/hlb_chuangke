@@ -1,165 +1,170 @@
 <template>
-    <div class="app">
-      <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header>
-        <div class="main">
-            <div class="content">
-                <div class="wkbg pd20">
-                    <div class="wkbox">
-                        <div class="box1">
-                            <div class="left">
-                                <div class="tx"><img src="http://thirdwx.qlogo.cn/mmopen/odejae0mVFZnfY3M68PlfkwhHJStxviahZO8oLsKxmeQv50LEibdBbqvc3tGtSibZib814ms21yVPCUPhYCQ90b8dlr6bC57rgKw/132"></div>
-                                <div class="uinfo">
-                                    <p class="name">化妆的小蜜<img src="./images/vip1.png"></p>
-                                    <p class="tips">创客为您节约了65.00元</p>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <p class="a1">推广ID</p>
-                                <p class="a2">28C5AP</p>
-                            </div>
-                        </div>
-                        <div class="box2">
-                            <ul>
-                                <li>
-                                    <span>可用佣金(元)</span>
-                                    <span>65.00</span>
-                                    <span> <router-link to="withdraw">提现</router-link></span>
-                                </li>
-                                <li>
-                                    <span>累计佣金(元)</span>
-                                    <span>85.00</span>
-                                    <span><router-link to="income">查看</router-link></span>
-                                </li>
-                                <li>
-                                    <span>我的推荐(人)</span>
-                                    <span>105</span>
-                                    <span><router-link to="recommend_list">查看</router-link></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+  <div class="app">
+    <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header>
+    <div class="main">
+      <div class="content">
+        <div class="wkbg pd20">
+          <div class="wkbox">
+            <div class="box1">
+              <div class="left">
+                <div class="tx"><img src="http://thirdwx.qlogo.cn/mmopen/odejae0mVFZnfY3M68PlfkwhHJStxviahZO8oLsKxmeQv50LEibdBbqvc3tGtSibZib814ms21yVPCUPhYCQ90b8dlr6bC57rgKw/132"></div>
+                <div class="uinfo">
+                  <p class="name">化妆的小蜜<img src="./images/vip1.png"></p>
+                  <p class="tips">创客为您节约了65.00元</p>
                 </div>
-                <div class="fuwu">
-                    <div class="fuwu_tab">
-                        <div class="left">创客微卡VIP1权益</div>
-                        <div class="right">
-                            <a href="#">全部权益</a>
-                        </div>
-                    </div>
-                    <div class="fuwu_con">
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a1.png"></span>
-                                    <span>优惠购物</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a2.png"></span>
-                                    <span>线下消费</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a3.png"></span>
-                                    <span>分享赚钱</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a4.png"></span>
-                                    <span>1元疯抢</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a5.png"></span>
-                                    <span>免费体验</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a6.png"></span>
-                                    <span>我要领券</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a7.png"></span>
-                                    <span>专享活动</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/a8.png"></span>
-                                    <span>邀请有礼</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="fuwu jingli">
-                    <div class="fuwu_tab">
-                        <div class="left">您的专属客服经理</div>
-                        <div class="right">
-                            <a href="#">工作时间9:00-21:00</a>
-                        </div>
-                    </div>
-                    <div class="fuwu_con">
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/vip1-1.png"></span>
-                                    <span>您的客服经理</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/vip1-2.png"></span>
-                                    <span>专属经理微信</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span><img src="./images/vip1-3.png"></span>
-                                    <span>专属经理电话</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="fuwu duihuan">
-                    <div class="fuwu_tab">
-                        <div class="left">会员专享精品兑换</div>
-                        <div class="right">
-                            <a href="#">可用积分:500</a>
-                        </div>
-                    </div>
-                    <div class="fuwu_con">
-                        <scroller lock-y scrollbar-x>
-                            <div class="dhbox">
-                                <div class="dhbox-item" v-for="i in 7">
-                                    <span>{{' ' + i + ' '}}</span>
-                                </div>
-                            </div>
-                        </scroller>
-
-                    </div>
-                </div>
+              </div>
+              <div class="right">
+                <p class="a1">推广ID</p>
+                <p class="a2">28C5AP</p>
+              </div>
             </div>
+            <div class="box2">
+              <ul>
+                <li>
+                  <span>可用佣金(元)</span>
+                  <span>65.00</span>
+                  <span>
+                    <router-link to="withdraw">提现</router-link>
+                  </span>
+                </li>
+                <li>
+                  <span>累计佣金(元)</span>
+                  <span>85.00</span>
+                  <span>
+                    <router-link to="income">查看</router-link>
+                  </span>
+                </li>
+                <li>
+                  <span>我的推荐(人)</span>
+                  <span>105</span>
+                  <span>
+                    <router-link to="recommend_list">查看</router-link>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-     <Footerx></Footerx>
+        <div class="fuwu">
+          <div class="fuwu_tab">
+            <div class="left">创客微卡VIP1权益</div>
+            <div class="right">
+              <a href="#">全部权益</a>
+            </div>
+          </div>
+          <div class="fuwu_con">
+            <ul>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a1.png"></span>
+                  <span>优惠购物</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a2.png"></span>
+                  <span>线下消费</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a3.png"></span>
+                  <span>分享赚钱</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a4.png"></span>
+                  <span>1元疯抢</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a5.png"></span>
+                  <span>免费体验</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a6.png"></span>
+                  <span>我要领券</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a7.png"></span>
+                  <span>专享活动</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/a8.png"></span>
+                  <span>邀请有礼</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="fuwu jingli">
+          <div class="fuwu_tab">
+            <div class="left">您的专属客服经理</div>
+            <div class="right">
+              <a href="#">工作时间9:00-21:00</a>
+            </div>
+          </div>
+          <div class="fuwu_con">
+            <ul>
+              <li>
+                <a href="#">
+                  <span><img src="./images/vip1-1.png"></span>
+                  <span>您的客服经理</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/vip1-2.png"></span>
+                  <span>专属经理微信</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span><img src="./images/vip1-3.png"></span>
+                  <span>专属经理电话</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="fuwu duihuan">
+          <div class="fuwu_tab">
+            <div class="left">会员专享精品兑换</div>
+            <div class="right">
+              <a href="#">可用积分:500</a>
+            </div>
+          </div>
+          <div class="fuwu_con">
+            <scroller lock-y scrollbar-x>
+              <div class="dhbox">
+                <div class="dhbox-item" v-for="i in 7" :key="i">
+                  <span>{{' ' + i + ' '}}</span>
+                </div>
+              </div>
+            </scroller>
+
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import { Scroller } from "vux";
+import { Scroller } from 'vux'
 
 export default {
   components: {
     Scroller
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .wkbg {
@@ -255,7 +260,9 @@ export default {
             padding: 0 0.2rem;
             border-radius: 1rem;
             line-height: 0.38rem;
-            a{ color: #ffffff;}
+            a {
+              color: #ffffff;
+            }
           }
         }
       }

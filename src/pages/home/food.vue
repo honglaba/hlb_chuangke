@@ -11,7 +11,7 @@
     </div>
     <section class="screen-row">
       <ul class="screen-tab">
-        <li v-for="(tab,index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
+        <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
           <p>{{tab.name}}</p>
           <span></span>
         </li>
@@ -29,7 +29,7 @@
           <li>聚餐宴席</li>
           <li>烧烤烤肉</li> -->
 
-           <li v-for="(item,index) in category" :data-category="item.id" @click="switchCategory">{{item.title}}</li>
+          <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li>
         </ul>
       </section>
     </section>
@@ -40,7 +40,7 @@
           <Other></Other>
         </router-link> -->
 
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList">
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>
@@ -89,21 +89,42 @@ export default {
       shopTotal: null,
       offset: 0,
       tempArr: [],
-      moveList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      moveList: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
     }
   },
   components: { ListInner, Other },
   methods: {
     screenTap: function (index) {
       let screenTab = document.querySelectorAll('.screen-tab>li')
-      if (this.tabTemp == null || this.tabTemp != index) {
+      if (this.tabTemp == null || this.tabTemp !== index) {
         this.tabTemp = index
         for (let i = 0, len = screenTab.length; i < len; i++) {
           this.screenTab[i].active = false
         }
         this.screenTab[index].active = true
         this.seen = true
-      } else if (this.tabTemp == index) {
+      } else if (this.tabTemp === index) {
         for (let i = 0, len = screenTab.length; i < len; i++) {
           this.screenTab[i].active = false
         }
@@ -119,17 +140,21 @@ export default {
         this.screenTab[i].active = false
       }
     },
-    getCategory: function () { // 分类
+    getCategory: function () {
+      // 分类
       this.axios.get(' /api/shop-category/children?id=1').then(res => {
         console.log(res)
         this.category = res.data
       })
     },
-    getCategoryShop: function () { // 分类下商店
+    getCategoryShop: function () {
+      // 分类下商店
       this.axios.get('/api/shop-category/shops?cid=1').then(res => {
         console.log(res)
         this.lastPage = res.last_page
-        this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+        this.nextPageUrl = res.next_page_url
+          .split('http://api.ck.honglaba.com')
+          .join('')
         this.currentPage = res.current_page
         this.shopTotal = res.total
         delete res.data.result_state
@@ -139,7 +164,8 @@ export default {
         }
       })
     },
-    switchCategory: function (e) { // 切换分类
+    switchCategory: function (e) {
+      // 切换分类
       let categoryId = e.target.getAttribute('data-category')
       this.axios.get('/api/shop-category/shops?cid=' + categoryId).then(res => {
         console.log(res)
@@ -153,7 +179,7 @@ export default {
         })
         return
       }
-      let self = this// this指向问题
+      let self = this // this指向问题
       let start = this.shopList.length
       // let start = this.moveList.length
 
@@ -163,7 +189,9 @@ export default {
           this.tempArr = []
           console.log(res.next_page_url)
 
-          this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+          this.nextPageUrl = res.next_page_url
+            .split('http://api.ck.honglaba.com')
+            .join('')
           delete res.data.result_state
           delete res.data.return_state
           for (let i in res.data) {
@@ -240,7 +268,6 @@ export default {
       console.log(res)
     })
   }
-
 }
 </script>
 <style lang="less">
