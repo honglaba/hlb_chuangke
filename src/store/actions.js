@@ -43,6 +43,7 @@ const actions = {
         }
       }).then(res => {
         if (res.result_state === 'success') {
+          localStorage.setItem('userInfo', JSON.stringify(res.data))
           resolve(res)
         }
       })
@@ -141,10 +142,11 @@ const actions = {
   HTTP_resetPhone ({commit}, data) { // 重置手机号
     return new Promise((resolve, reject) => {
       HTTP({
-        url: `/api/phone-captcha/validate-modify-phone-captcha`,
+        url: `/api/user/rebind-phone`,
         method: 'POST',
         data: {
-          captcha: data
+          mobile_phone: data.mobile_phone,
+          captcha: data.captcha
         }
       }).then(res => {
         resolve(res)
@@ -201,6 +203,8 @@ const actions = {
       })
     })
   }
+  // PayPassword
+  // HTTP_pay
 }
 
 export default actions

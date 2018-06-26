@@ -1,52 +1,54 @@
 <template>
-  <scroller :on-infinite="infinite" ref="myscroller">
-    <Headerx></Headerx>
-    <div class="swiper-container banner-swiper" v-if="!seen">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-        <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-        <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
+  <div>
+    <scroller :on-infinite="infinite" ref="myscroller">
+      <Headerx></Headerx>
+      <div class="swiper-container banner-swiper" v-if="!seen">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
+          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
+          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
+        </div>
+        <div class="swiper-pagination"></div>
       </div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <section class="screen-row">
-      <ul class="screen-tab">
-        <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
-          <p>{{tab.name}}</p>
-          <span></span>
-        </li>
-      </ul>
-      <section class="screen-inner" v-if="seen" @click.self="maskTap">
-        <ul>
-          <!-- <li>全部</li>
-          <li>甜品饮品</li>
-          <li>火锅</li>
-          <li>生日蛋糕</li>
-          <li class="cur">自助餐</li>
-          <li>小吃快餐</li>
-          <li>日韩料理</li>
-          <li>西餐</li>
-          <li>聚餐宴席</li>
-          <li>烧烤烤肉</li> -->
-
-          <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li>
+      <section class="screen-row">
+        <ul class="screen-tab">
+          <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
+            <p>{{tab.name}}</p>
+            <span></span>
+          </li>
         </ul>
+        <section class="screen-inner" v-if="seen" @click.self="maskTap">
+          <ul>
+            <!-- <li>全部</li>
+            <li>甜品饮品</li>
+            <li>火锅</li>
+            <li>生日蛋糕</li>
+            <li class="cur">自助餐</li>
+            <li>小吃快餐</li>
+            <li>日韩料理</li>
+            <li>西餐</li>
+            <li>聚餐宴席</li>
+            <li>烧烤烤肉</li> -->
+
+            <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li>
+          </ul>
+        </section>
       </section>
-    </section>
-    <section class="business-list">
-      <ul>
-        <!-- <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
+      <section class="business-list">
+        <ul>
+          <!-- <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link> -->
 
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
-          <ListInner :businessList="item"></ListInner>
-          <Other></Other>
-        </router-link>
-      </ul>
-    </section>
-  </scroller>
+          <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
+            <ListInner :businessList="item"></ListInner>
+            <Other></Other>
+          </router-link>
+        </ul>
+      </section>
+    </scroller>
+  </div>
 </template>
 <script>
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
@@ -116,7 +118,7 @@ export default {
     },
     getCategory: function () {
       // 分类
-      this.axios.get(' /api/shop-category/children?id=1').then(res => {
+      this.axios.get('/api/shop-category/children?id=1').then(res => {
         console.log(res)
         this.category = res.data
       })
@@ -124,7 +126,9 @@ export default {
     getCategoryShop: function () {
       // 分类下商店
       this.axios.get('/api/shop-category/shops?cid=1').then(res => {
-        this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+        this.nextPageUrl = res.next_page_url
+          .split('http://api.hlbck.com')
+          .join('')
         delete res.data.result_state
         delete res.data.return_state
         for (let i in res.data) {
@@ -139,18 +143,23 @@ export default {
         console.log(res)
       })
     },
-    infinite (done) { // 下拉加载vue-scroll
+    infinite (done) {
+      // 下拉加载vue-scroll
       if (this.noData) {
         setTimeout(() => {
           this.$refs.myscroller.finishInfinite(2)
         })
         return
       }
-      let self = this// this指向问题
+      let self = this // this指向问题
       setTimeout(() => {
         this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
           this.tempArr = []
-          res.next_page_url == null ? this.nextPageUrl = null : this.nextPageUrl = res.next_page_url.split('http://api.ck.honglaba.com').join('')
+          res.next_page_url == null
+            ? (this.nextPageUrl = null)
+            : (this.nextPageUrl = res.next_page_url
+              .split('http://api.hlbck.com')
+              .join(''))
           delete res.data.result_state
           delete res.data.return_state
           for (let i in res.data) {
@@ -165,7 +174,6 @@ export default {
         done()
       }, 500)
     },
-
     // done()表示这次异步加载数据完成，加载下一次
     // 因为这个是同步的，加了setTimeout就是异步加载数据；
     // 因为涉及到this指向问题，所以将他放在一个变量里。
@@ -179,7 +187,6 @@ export default {
         el: '.swiper-pagination'
       }
     })
-
     this.getCategory()
     this.getCategoryShop()
   }

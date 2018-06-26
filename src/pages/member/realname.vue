@@ -5,11 +5,11 @@
     <div class="main2">
       <div class="content">
         <group>
-           <x-input title='真实姓名' type="text" required></x-input>
-            <x-input title='身份证号码' type="text" required></x-input>
+          <x-input title='真实姓名' type="text" ref="name" v-model="value.name" :is-type="valid.name" @on-change="_keydown" required></x-input>
+          <x-input title='身份证号码' type="text" ref="identCard" v-model="value.identCard" :is-type="valid.identCard" @on-change="_keydown" required></x-input>
         </group>
         <div class="tijiao">
-          <button class="btn-aoc">确认</button>
+          <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="_submit">确认</button>
         </div>
       </div>
     </div>
@@ -20,7 +20,29 @@ import { XInput, Group, Divider } from 'vux'
 import { mapActions } from 'vuex'
 export default {
   data () {
-    return {}
+    return {
+      clickAble: false,
+      valid: {
+        name (val) {
+          return {
+            valid: !!val.match(/^[\u4e00-\u9fa5]{2,5}$/),
+            msg: '格式不正确'
+          }
+        },
+        identCard (val) {
+          return {
+            valid: !!val.match(
+              /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X|x)$/
+            ),
+            msg: '格式不正确'
+          }
+        }
+      },
+      value: {
+        name: '',
+        identCard: ''
+      }
+    }
   },
   components: {
     XInput,
@@ -28,9 +50,21 @@ export default {
     Divider
   },
   methods: {
-    ...mapActions(['HTTP_realNameRegistration']),
+    ...mapActions(['HTTP_realNameRegistration', 'HTTP_UserInfo']),
+    _keydown () {
+      this.clickAble = this.$refs.name.valid && this.$refs.identCard.valid
+    },
     _submit () {
-      // this.HTTP_realNameRegistration()
+      this.HTTP_realNameRegistration({
+        name: this.value.name,
+        id_card: this.value.identCard
+      })
+        .then(res => {
+          if (res.result_state === 'success') {
+            this.HTTP_UserInfo()
+            this.$vux.toast.text('实名认证成功', 'top')
+          }
+        })
     }
   }
 }
