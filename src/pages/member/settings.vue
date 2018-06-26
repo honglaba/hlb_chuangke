@@ -15,7 +15,11 @@
             <router-link to="/member/realname">
               <div class="tit">
                 <div class="l">实名认证</div>
-                <div class="r"><img :src="rightArrow"></div>
+                <div class="r">
+                  <span v-if="DataTree.real_name">已认证</span>
+                  <span v-else>未认证</span>
+                  <img :src="rightArrow">
+                </div>
               </div>
             </router-link>
             <router-link to="/member/address">
@@ -65,9 +69,6 @@ export default {
         this.$router.push({path: '/'})
       })
     }
-  },
-  created () {
-    // console.log(this.DataTree)
   }
 }
 </script>

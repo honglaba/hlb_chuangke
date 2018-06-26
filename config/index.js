@@ -12,7 +12,7 @@ module.exports = {
     proxyTable: {
       '/api_proxy': {
         // target: 'http://127.0.0.1:1718',
-        target: 'http://api.ck.honglaba.com',
+        target: 'http://api.hlbck.com/',
         changeOrigin: true,
         pathRewrite: {
           '^/api_proxy': ''
