@@ -2,7 +2,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 // 配置axios对象
-let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.ck.honglaba.com' : '/api_proxy'
+let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'
 axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
