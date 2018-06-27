@@ -26,6 +26,7 @@ export default {
   },
   created () {
     this.linkOption = this.$route.fullPath.split('/')[1]
+    this.hasFooter = !!this.$route.meta.index
     if (!localStorage.getItem('userInfo')) return
     this.$store.commit(
       'SAVE_USER_INFO',
@@ -39,6 +40,7 @@ export default {
 .Router {
   position: absolute;
   width: 100%;
+  height: 100vh;
   transition: all 0.3s ease;
 }
 

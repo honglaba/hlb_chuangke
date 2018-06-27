@@ -201,7 +201,7 @@
       <div class="more">
         <router-link tag="a" to="#">查看更多评论</router-link>
       </div>
-      <router-link to="#" class="buy-btn">消费买单</router-link>
+      <router-link to="/home/pay" class="buy-btn">消费买单</router-link>
     </section>
 
     <div v-transfer-dom>
@@ -244,7 +244,7 @@ export default {
       // console.log(this.$store.state)
       let that = this
       this.axios.get('/api/shop?id=1').then(function (res) {
-        console.log(res)
+        console.log(res.data.longitude, res.data.latitude)
         that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
@@ -259,7 +259,6 @@ export default {
     getComments () {
       let that = this
       this.axios.get('/api/shop/comments?sid=3').then(function (res) {
-        console.log(res.data)
         that.$store.commit('COMMENTS', res.data)
       })
     }

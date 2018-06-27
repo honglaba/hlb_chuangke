@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-link class="back" to="#"></router-link>
+        <router-link class="back" to="/home/choice-details"></router-link>
         <div id="allmap" class="allmap"></div>
         <section class="bottom-row">
             <div class="location-info">
@@ -29,7 +29,9 @@ export default {
         menu2: '使用高德地图',
         menu3: '使用百度地图'
       },
-      distance: 0
+      distance: 0,
+      lng: 0,
+      lat: 0
     }
   },
   computed: {
@@ -71,7 +73,7 @@ export default {
     }
     theLocation()
 
-    // 获取自身定位
+    // 获取自身定位并计算两点距离 有bug
     var my_point = []
     var geolocation = new BMap.Geolocation()
     geolocation.getCurrentPosition(function (r) {
