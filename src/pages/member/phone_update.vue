@@ -84,7 +84,14 @@ export default {
     this.switchWindow = !!this.DataTree.mobile_phone
   },
   methods: {
-    ...mapActions(['HTTP_verification', 'HTTP_bindPhone', 'HTTP_UserInfo', 'HTTP_resetPhonePassIdentity', 'HTTP_resetPhonePassIdentityDrop']),
+    ...mapActions([
+      'HTTP_verification',
+      'HTTP_bindPhone',
+      'HTTP_UserInfo',
+      'HTTP_resetPhonePassIdentity',
+      'HTTP_resetPhonePassIdentityDrop',
+      'HTTP_resetPhone'
+    ]),
     keydown () {
       this.sendAble = this.$refs.refPhone.valid
       this.clickAble = this.$refs.refValidator.valid
@@ -119,29 +126,49 @@ export default {
     },
     _lastToBind () {
       if (this.clickAble) {
-        this.HTTP_bindPhone({
-          phone: this.my_mobile_phone,
-          code: this.verification_code
-        }).then(res => {
-          if (res.result_state === 'success') {
-            this.HTTP_UserInfo().then(res => {
-              this.$store.commit('SAVE_USER_INFO', res.data)
-              localStorage.setItem('userInfo', JSON.stringify(res.data))
-              this.$router.push({path: '/member/settings'})
+        if (this.DataTree.mobile_phone) {
+          this.HTTP_resetPhone({
+            mobile_phone: this.my_mobile_phone,
+            captcha: this.verification_code
+          })
+            .then(res => {
+              if (res.result_state === 'success') {
+                this.HTTP_UserInfo().then(res => {
+                  this.$store.commit('SAVE_USER_INFO', res.data)
+                  this.$router.push({path: '/member/settings'})
+                })
+                this.$vux.toast.show({
+                  text: '更换手机号完成',
+                  type: 'text',
+                  time: 1000
+                })
+              }
             })
-            this.$vux.toast.show({
-              text: '绑定成功',
-              type: 'text',
-              time: 1000
+        } else {
+          this.HTTP_bindPhone({
+            phone: this.my_mobile_phone,
+            code: this.verification_code
+          })
+            .then(res => {
+              if (res.result_state === 'success') {
+                this.HTTP_UserInfo().then(res => {
+                  this.$store.commit('SAVE_USER_INFO', res.data)
+                  this.$router.push({path: '/member/settings'})
+                })
+                this.$vux.toast.show({
+                  text: '绑定成功',
+                  type: 'text',
+                  time: 1000
+                })
+              } else {
+                this.$vux.toast.show({
+                  text: '验证码不正确',
+                  type: 'text',
+                  time: 1000
+                })
+              }
             })
-          } else {
-            this.$vux.toast.show({
-              text: '验证码不正确',
-              type: 'text',
-              time: 1000
-            })
-          }
-        })
+        }
       }
     },
     _changePhone () {

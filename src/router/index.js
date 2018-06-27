@@ -376,6 +376,9 @@ const router = new VueRouter({
         path: 'realname',
         name: 'realname',
         component: realname,
+        beforeEnter: (to, from, next) => {
+          JSON.parse(localStorage.getItem('userInfo')).real_name ? next({path: from.fullPath}) : next()
+        },
         meta: {
           title: '实名认证'
         }

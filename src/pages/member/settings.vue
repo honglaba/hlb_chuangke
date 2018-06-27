@@ -17,8 +17,8 @@
                 <div class="l">实名认证</div>
                 <div class="r">
                   <span v-if="DataTree.real_name">已认证</span>
-                  <span v-else>未认证</span>
-                  <img :src="rightArrow">
+                  <span v-else class="disable-font">未认证</span>
+                  <img :src="rightArrow" v-if="!DataTree.real_name">
                 </div>
               </div>
             </router-link>
@@ -73,6 +73,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.disable-font {
+  color: #f5222d;
+  font-size: .30rem;
+}
 .settingbox {
   background: transparent;
   .shezhi {

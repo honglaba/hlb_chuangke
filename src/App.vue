@@ -9,11 +9,12 @@
 <script>
 export default {
   watch: {
-    '$route' (val, oldval) {
+    $route (val, oldval) {
       this.linkOption = this.$route.fullPath.split('/')[1]
       this.hasFooter = !!val.meta.index
       if (this.hasFooter) {
-        this.transitionName = val.meta.index > oldval.meta.index ? 'slide-left' : 'slide-right'
+        this.transitionName =
+          val.meta.index > oldval.meta.index ? 'slide-left' : 'slide-right'
       }
     }
   },
@@ -38,7 +39,6 @@ export default {
 
 <style lang="less" scoped>
 .Router {
-  position: absolute;
   width: 100%;
   height: 100vh;
   transition: all 0.3s ease;
