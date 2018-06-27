@@ -379,7 +379,8 @@ const router = new VueRouter({
         name: 'paysettings',
         component: paysettings,
         meta: {
-          title: '支付设置'
+          title: '支付设置',
+          type: ''
         }
       }, {
         path: 'address',
@@ -432,7 +433,6 @@ router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath')
   let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
-
   if (!To.name) { // 路由不存在时跳转from页
     next(From.path)
     return

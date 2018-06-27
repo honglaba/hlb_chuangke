@@ -14,9 +14,6 @@ export default {
       DataTree: 'userInfoGetter'
     })
   },
-  // created () {
-  //   console.log(this.DataTree)
-  // },
   data () {
     return {
       defaultData: {
