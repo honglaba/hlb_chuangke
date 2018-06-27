@@ -1,5 +1,4 @@
 <template>
-  <div>
     <scroller :on-infinite="infinite" ref="myscroller">
       <Headerx></Headerx>
       <div class="swiper-container banner-swiper" v-if="!seen">
@@ -20,15 +19,15 @@
         <section class="screen-inner" v-if="seen" @click.self="maskTap">
           <ul>
             <!-- <li>全部</li>
-            <li>甜品饮品</li>
-            <li>火锅</li>
-            <li>生日蛋糕</li>
-            <li class="cur">自助餐</li>
-            <li>小吃快餐</li>
-            <li>日韩料理</li>
-            <li>西餐</li>
-            <li>聚餐宴席</li>
-            <li>烧烤烤肉</li> -->
+          <li>甜品饮品</li>
+          <li>火锅</li>
+          <li>生日蛋糕</li>
+          <li class="cur">自助餐</li>
+          <li>小吃快餐</li>
+          <li>日韩料理</li>
+          <li>西餐</li>
+          <li>聚餐宴席</li>
+          <li>烧烤烤肉</li> -->
 
             <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li>
           </ul>
@@ -48,7 +47,6 @@
         </ul>
       </section>
     </scroller>
-  </div>
 </template>
 <script>
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
@@ -119,7 +117,6 @@ export default {
     getCategory: function () {
       // 分类
       this.axios.get('/api/shop-category/children?id=1').then(res => {
-        console.log(res)
         this.category = res.data
       })
     },
@@ -127,8 +124,7 @@ export default {
       // 分类下商店
       this.axios.get('/api/shop-category/shops?cid=1').then(res => {
         this.nextPageUrl = res.next_page_url
-          .split('http://api.hlbck.com')
-          .join('')
+          .split('http://api.hlbck.com').join('')
         delete res.data.result_state
         delete res.data.return_state
         for (let i in res.data) {
