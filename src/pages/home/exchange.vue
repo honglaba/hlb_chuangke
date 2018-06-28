@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <x-header :left-options="{backText: ''}" title="精品推荐"></x-header>
+    <x-header :left-options="{backText: ''}" title="大岗仙庙烧鸡-兑换商品">
+       <router-link to="#" slot="right">
+        <img src="./images/more.png" class="more-btn">
+      </router-link>
+    </x-header>
     <section class="main2">
       <section class="recommend-list">
         <ul>
@@ -8,13 +12,10 @@
             <div class="recommend-img"><img src="./images/recommend-label-img1.png" /></div>
             <div class="recommend-info">
               <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-              <div class="mark-row">
-                <div>包邮</div>
-                <div></div>
-              </div>
+              <p class="original">￥980</p>
               <div class="price-row">
-                <p>￥980</p>
-                <p>已购3000+</p>
+                <p>298积分</p>
+                <div class="buy-btn">立即购买</div>
               </div>
             </div>
           </router-link>
@@ -22,13 +23,10 @@
             <div class="recommend-img"><img src="./images/recommend-label-img2.png" /></div>
             <div class="recommend-info">
               <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-              <div class="mark-row">
-                <div>包邮</div>
-                <div></div>
-              </div>
+              <p class="original">￥980</p>
               <div class="price-row">
-                <p>￥980</p>
-                <p>已购3000+</p>
+                <p>298积分</p>
+                <div class="buy-btn">立即购买</div>
               </div>
             </div>
           </router-link>
@@ -36,13 +34,10 @@
             <div class="recommend-img"><img src="./images/recommend-label-img3.png" /></div>
             <div class="recommend-info">
               <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
-              <div class="mark-row">
-                <div>包邮</div>
-                <div></div>
-              </div>
+              <p class="original">￥980</p>
               <div class="price-row">
-                <p>￥980</p>
-                <p>已购3000+</p>
+                <p>298积分</p>
+                <div class="buy-btn">立即购买</div>
               </div>
             </div>
           </router-link>
@@ -65,6 +60,7 @@ export default {
   padding-bottom: 1rem;
 }
 .recommend-list {
+  margin-top: .2rem;
   background: #fff;
   padding-bottom: .65rem;
   > ul > li {
@@ -117,6 +113,12 @@ export default {
           background-size: 100%;
         }
       }
+      .original{
+        position: absolute;
+        bottom:.8rem;
+        color: #999;
+        text-decoration: line-through;
+      }
       .price-row {
         position: absolute;
         width: 100%;
@@ -132,11 +134,25 @@ export default {
           font-size: 0.26rem;
           color: #999;
         }
+        .buy-btn{
+          width: 1.6rem;
+          height: .6rem;
+          color: #fff;
+          border-radius: .08rem;
+          background: linear-gradient(to right,#ff7f32,#f5272d);
+          text-align: center;
+          line-height: .6rem;
+        }
       }
     }
   }
 }
 .main2 {
   padding-bottom: 1rem;
+}
+.more-btn{
+  width: .48rem;
+  position: relative;
+  top: 50%;
 }
 </style>

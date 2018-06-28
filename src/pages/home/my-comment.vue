@@ -3,9 +3,9 @@
     <x-header :left-options="{backText: ''}" title="我的评论"></x-header>
     <section class="top">
       <div class="img">
-        <img src="./images/home-like-img1.png" />
+        <img :src="detailsGetter.logo" />
       </div>
-      <p>东莞特产休闲食品店</p>
+      <p>{{detailsGetter.title}}</p>
     </section>
     <section class="comment-inner">
       <h3>本次服务</h3>
@@ -21,13 +21,14 @@
         <span>(可一次上传多张)</span>
       </div>
       <div class="upload-btn">
-        <input type="file" id="upload-input"/>
+        <!-- <input type="file" id="upload-input"/> -->
       </div>
     </section>
     <input type="submit" value="提交评论" class="submit-btn"/>
   </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
@@ -62,18 +63,14 @@ export default {
       for (let i = 0; i < index; i++) {
         this.scoreStar[i].active = true
       }
-    },
-    test: function () {
-      console.log(11)
-      this.$emit('test')
-    },
-    shout: function () {
-      console.log(11)
     }
+  },
+  computed: {
+    ...mapGetters(['detailsGetter'])
   },
   mounted () {
     document.getElementsByClassName('upload-btn')[0].onclick = function () {
-      document.getElementById('upload-input').onclick()
+      // document.getElementById('upload-input').onclick()
     }
   }
 }
@@ -147,6 +144,7 @@ export default {
   }
   .upload-til{
     text-align: left;
+    margin-bottom: .2rem;
     span:nth-child(1){
       color: #333;
       font-size: .3rem
@@ -162,7 +160,7 @@ export default {
     background: #fafafa url(./images/j.png) no-repeat center;
     background-size: .39rem;
     input{
-      margin-top: .58rem;
+      // margin-top: .58rem;
     }
   }
 }

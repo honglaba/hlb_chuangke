@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Headerx></Headerx>
-
+    <div id="allmap" class="allmap" style="display:none"></div>
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
 
       <div class="swiper-container banner-swiper">
@@ -288,7 +288,26 @@ export default {
         el: ".swiper-pagination"
       }
     });
+
+    // 百度地图API功能
+    var map = new BMap.Map('allmap') // 创建Map实例
+     // 获取自身定位并存入sessionStorage
+    var my_point = []
+    var geolocation = new BMap.Geolocation()
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        var mk = new BMap.Marker(r.point)
+        map.addOverlay(mk)
+        map.panTo(r.point)
+        // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+        sessionStorage.lng=r.point.lng
+        sessionStorage.lat=r.point.lat        
+      } else {
+        alert('failed' + this.getStatus())
+      }
+    }, {enableHighAccuracy: true})
   }
+  
 };
 </script>
 
