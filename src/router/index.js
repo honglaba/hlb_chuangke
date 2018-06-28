@@ -47,7 +47,9 @@ import phone_update from '@/pages/member/phone_update'// 更改手机号
 import settings from '@/pages/member/settings'// 个人设置
 import myinfo from '@/pages/member/myinfo'// 个人信息
 import realname from '@/pages/member/realname'// 实名认证
-import paysettings from '@/pages/member/paysettings'// 支付设置
+
+import paySetting from '@/pages/member/pay-setting' // 支付设置
+
 import address from '@/pages/member/address'// 收货地址管理
 import address_add from '@/pages/member/address_add'// 新增或修改收货地址
 
@@ -391,9 +393,9 @@ const router = new VueRouter({
           title: '实名认证'
         }
       }, {
-        path: 'paysettings',
-        name: 'paysettings',
-        component: paysettings,
+        path: 'paysetting/:id',
+        name: 'paysetting',
+        component: paySetting,
         meta: {
           title: '支付设置'
         }
@@ -448,7 +450,6 @@ router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath')
   let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
-
   if (!To.name) { // 路由不存在时跳转from页
     next(From.path)
     return
