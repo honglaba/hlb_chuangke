@@ -1,6 +1,10 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="设置">
+    <x-header
+    title="设置"
+    :left-options="{backText: '', preventGoBack: true}"
+    @on-click-back="routeBack"
+    >
     </x-header>
     <div class="main2">
       <div class="content">
@@ -68,6 +72,9 @@ export default {
       this.HTTP_logout().then(res => {
         this.$router.push({path: '/'})
       })
+    },
+    routeBack () { // 顶部返回按钮事件
+      this.$router.push({path: '/member'})
     }
   }
 }
