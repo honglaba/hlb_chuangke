@@ -74,21 +74,26 @@ export default {
     theLocation()
 
     // 获取自身定位并计算两点距离 有bug
-    var my_point = []
-    var geolocation = new BMap.Geolocation()
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        var mk = new BMap.Marker(r.point)
-        map.addOverlay(mk)
-        map.panTo(r.point)
-        // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-        let pointeA = new BMap.Point(r.point.lng, r.point.lat)// 当前位置
-        let pointeB = new BMap.Point(coordinate[0], coordinate[1])// 目标位置
-        that.distance = (map.getDistance(pointeA, pointeB)).toFixed(2)// 计算距离
-      } else {
-        alert('failed' + this.getStatus())
-      }
-    }, {enableHighAccuracy: true})
+    // var my_point = []
+    // var geolocation = new BMap.Geolocation()
+    // geolocation.getCurrentPosition(function (r) {
+    //   if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //     var mk = new BMap.Marker(r.point)
+    //     map.addOverlay(mk)
+    //     map.panTo(r.point)
+    //     // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+    //     let pointeA = new BMap.Point(r.point.lng, r.point.lat)// 当前位置
+    //     let pointeB = new BMap.Point(coordinate[0], coordinate[1])// 目标位置
+    //     that.distance = (map.getDistance(pointeA, pointeB)).toFixed(2)// 计算距离
+    //   } else {
+    //     alert('failed' + this.getStatus())
+    //   }
+    // }, {enableHighAccuracy: true})
+
+    // 从sessionStorage读取坐标计算距离
+    let pointeA = new BMap.Point(sessionStorage.lng, sessionStorage.lat)// 当前位置
+    let pointeB = new BMap.Point(coordinate[0], coordinate[1])// 目标位置
+    that.distance = (map.getDistance(pointeA, pointeB)).toFixed(2)// 计算距离
   }
 }
 </script>

@@ -126,7 +126,7 @@
     <section class="exchange" v-if="!actionDetail">
       <div class="y-flex y-jc-b til-row">
         <h3>本店兑换</h3>
-        <router-link to="#" tag="a">更多
+        <router-link to="/home/exchange" tag="a">更多
           <span class="lpad8">></span>
         </router-link>
       </div>
@@ -146,7 +146,7 @@
           <h3>用户评论</h3>
           <span>({{details.total_comments}})</span>
         </div>
-        <router-link to="#" tag="a">
+        <router-link to="/home/my-comment" tag="a">
           评分
           <span>{{details.score}}</span> 去评论
           <span class="lpad8">></span>
@@ -244,7 +244,7 @@ export default {
       // console.log(this.$store.state)
       let that = this
       this.axios.get('/api/shop?id=1').then(function (res) {
-        console.log(res.data.longitude, res.data.latitude)
+        console.log(res)
         that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
@@ -316,6 +316,7 @@ export default {
       height: 0.34rem;
       background: url(./images/icon_details_ruturn.png) no-repeat;
       background-size: 100%;
+      position: initial
     }
     > div {
       > span:nth-child(1) {

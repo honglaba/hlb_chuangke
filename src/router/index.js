@@ -14,6 +14,7 @@ import Pay from '@/pages/home/pay'
 import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
 import MyComment from '@/pages/home/my-comment'
+import Exchange from '@/pages/home/exchange'
 // import Scanning from '@/pages/home/scanning'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
@@ -159,6 +160,13 @@ const router = new VueRouter({
       component: MyComment,
       meta: {
         title: '我的评论'
+      }
+    }, {
+      path: 'exchange',
+      name: 'Exchange',
+      component: Exchange,
+      meta: {
+        title: '本店兑换'
       }
     }
       // {
