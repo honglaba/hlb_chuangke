@@ -8,11 +8,11 @@ const moduleA = {
     User_PayPwdConf ({commit}, data) { // 首次设置支付密码
       let defaultUrl = ''
       switch (data[2]) { // 不同情况的设置
-        case 'first': defaultUrl = '/api/user/set-pay-password'
+        case '1': defaultUrl = '/api/user/set-pay-password' // 首次设置
           break
-        case 'phone': defaultUrl = '/api/user/reset-pay-password-via-phone'
+        case '2': defaultUrl = '/api/user/reset-pay-password-via-phone' // 通过手机号重置
           break
-        case 'paypwd': defaultUrl = '/api/user/reset-pay-password-via-pay-password'
+        case '4': defaultUrl = '/api/user/reset-pay-password-via-pay-password' // 通过支付密码重置
           break
         default:
           defaultUrl = '/api/user/set-pay-password'
@@ -70,7 +70,9 @@ const moduleA = {
           }
         }).then(res => {
           if (res.result_state === 'success') {
-            resolve(res)
+            resolve(true)
+          } else {
+            resolve(false)
           }
         })
       })

@@ -34,7 +34,7 @@
                 <div class="r">{{ DataTree.mobile_phone | mobilePhoneFilter }}<img :src="rightArrow"></div>
               </div>
             </router-link>
-            <router-link to="/member/paysettings">
+            <router-link :to="{path: '/member/paysetting/1', query: {t: +new Date()}}">
               <div class="tit">
                 <div class="l">支付设置</div>
                 <div class="r"><img :src="rightArrow"></div>

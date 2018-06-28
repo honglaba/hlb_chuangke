@@ -8,7 +8,7 @@ import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader, ToastPlugin, ConfirmPlugin} from 'vux'
+import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin} from 'vux'
 import VueScroller from 'vue-scroller'
 
 Vue.use(VueScroller)
@@ -25,6 +25,7 @@ Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
 
 Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'

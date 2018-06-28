@@ -1,15 +1,21 @@
 <template>
   <div class="app">
-    <loading :show="isWaiting" text=""></loading>
+    <!-- <loading :show="isWaiting" text=""></loading> -->
     <x-header :left-options="{backText: ''}" :title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"></x-header>
-    <group v-if="isReset">
-      <span class="ident-title">身份验证</span>
-      <cell title="手机验证" @click="checkType(1)"></cell>
-      <cell title="支付密码验证" @click="checkType(2)"></cell>
-    </group>
+    <div class="pay-ident" v-if="interFaceToggle">
+      <span class="pay-ident-item" @click="checkType(2)">
+        忘记6位数字支付密码
+        <img class="pay-ident-icon" src="static/images/enter.png">
+      </span>
+      <span class="pay-ident-item" @click="checkType(3)">
+        修改6位数字支付密码
+        <img class="pay-ident-icon" src="static/images/enter.png">
+      </span>
+    </div>
+
     <div class="pay-contain" v-else>
       <div class="pay-num">
-        <span class="pay-text">{{paytitle}}</span>
+        <span class="pay-text">{{ paytitle }}</span>
         <ul class="pay-num-group">
           <li class="pay-num-item">{{ numVal.length > 0 ? '·' : ''}}</li>
           <li class="pay-num-item">{{ numVal.length > 1 ? '·' : ''}}</li>
@@ -60,27 +66,54 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import { Loading, Cell, Group } from 'vux'
+import { Loading } from 'vux'
 export default {
   props: {
     DataTree: {
       type: Object
     }
   },
+  watch: {
+    '$route' (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      this.resetType = this.$route.params.id
+    },
+    resetType (val, oldval) {
+      switch (val) {
+        case '1':
+          console.log('1')
+          break
+        case '2':
+          console.log('2')
+          break
+        case '3':
+          this.paytitle = '请输入支付密码,验证身份'
+          break
+        case '4':
+          console.log('4')
+          break
+        default:
+          return false
+      }
+    }
+  },
   components: {
-    Loading,
-    Group,
-    Cell
+    Loading
+  },
+  computed: {
+    interFaceToggle () {
+      return this.isReset && this.resetType === '1'
+    }
   },
   data () {
     return {
       paytitle: '请设置密码,用于支付验证',
-      paybackspace: require('../../../static/images/paycutbtn.png'),
+      paybackspace: require('static/images/paycutbtn.png'),
       numVal: [],
       numComfirm: [],
       isWaiting: false,
       isReset: true, // 是否为重置密码
-      resetType: 'first' // 验证身份的方式
+      resetType: '1' // 目前界面所处的状态
     }
   },
   created () {
@@ -88,66 +121,107 @@ export default {
   },
   methods: {
     ...mapActions([
-      'User_PayPwdconf',
       'HTTP_UserInfo',
+      'User_PayPwdConf',
+      'User_PayPwdPass',
       'User_PayResetPhoneVerificationGet',
       'User_PayResetPhoneVerificationPass'
     ]),
-    kayval (val) {
-      if (this.paytitle === '两次输入不一致') this.paytitle = '请再次输入,以确认密码'
+    kayval (val) { // 筛选不同的按键类型,假设有多种,目前只有两种
       let numlist = this.numVal
-      if (val !== 'back') {
-        if (numlist.length !== 5) {
-          this.numVal.push(val)
+      switch (val) {
+        case 'back':
+          if (numlist.length > 0) this.numVal.pop()
+          break
+        default:
+          this.keyMapHandle(val)
+      }
+    },
+    keyMapHandle (val) {
+      let _this = this
+      let numlist = this.numVal
+      if (numlist.length !== 5) {
+        this.numVal.push(val)
+      } else {
+        this.numVal.push(val)
+        if (this.resetType === '3') { // 如果当前是在进行身份认证(支付密码), 则在第一次确认后直接请求
+          this.$vux.loading.show()
+          let str = ''
+          this.numVal.map(r => {
+            str += r
+          })
+          this.User_PayPwdPass({pay_password: str, action: 'modify_pay_password'}).then(res => {
+            if (res) {
+              this.$vux.loading.hide()
+              this.$router.push({path: '/member/paysetting/4'})
+            } else {
+              this.$vux.loading.hide()
+              this.$vux.confirm.show({
+                showCancelButton: false,
+                title: '提示',
+                content: '请输入正确的支付密码',
+                onHide () {
+                  _this.numVal = []
+                }
+              })
+            }
+          })
         } else {
-          this.numVal.push(val)
           if (this.numComfirm.length > 0) {
             this._checkoutCode() // 开始检查两次的结果
           } else {
+            this.$vux.loading.show()
             this.numComfirm = numlist
             this.paytitle = '请再次输入,以确认密码'
             this.numVal = []
+            setTimeout(() => {
+              this.$vux.loading.hide()
+            })
           }
-        }
-      } else {
-        if (numlist.length > 0) {
-          this.numVal.pop()
         }
       }
     },
-    _checkoutCode () {
+    _checkoutCode () { // (最后确认的一步)--将数组转化为字符串并发送请求
       let flag = true
-      this.numVal.forEach((n, index) => {
+      let str1 = ''
+      let str2 = ''
+      this.numVal.forEach((n, index) => { // 判断两次结果是否相等
+        str1 += this.numVal[index]
+        str2 += this.numComfirm[index]
         if (n !== this.numComfirm[index]) {
           flag = false
         }
       })
       if (flag) {
-        let str1 = ''
-        let str2 = ''
-        for (let i = 0; i < this.numVal.length; i++) {
-          str1 += this.numVal[i]
-          str2 += this.numComfirm[i]
-        }
         this.isWaiting = true
+        this.$vux.loading.show()
         this.User_PayPwdConf(
           [str1, str2, this.resetType] /* type is important */
         ).then(res => {
           this.isWaiting = false
           this.HTTP_UserInfo().then(res => {
-            this.$Store.commit('SAVE_USER_INFO', res.data)
+            this.$vux.loading.hide()
+            // show-cancel-button
+            this.$vux.confirm.show({
+              showCancelButton: false,
+              title: '提示',
+              content: '支付密码修改成功!'
+            })
+            this.$store.commit('SAVE_USER_INFO', res.data)
+            this.$router.push({path: '/member/settings'})
           })
         })
       } else {
-        this.paytitle = '两次输入不一致'
-        this.numVal = []
+        this.$vux.loading.show()
+        setTimeout(() => {
+          this.paytitle = '两次输入不一致'
+          this.numVal = []
+        })
       }
     },
-    checkType (c) {
-      console.log(c)
+    checkType (c) { // 选择验证身份的方式
       let _this = this
-      if (c === 1) {
-        this.resetType = 'phone'
+      if (c === 2) {
         this.User_PayResetPhoneVerificationGet()
         this.$vux.confirm.show({
           title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
@@ -155,17 +229,23 @@ export default {
           closeOnConfirm: false,
           onConfirm (val) {
             if (val.match(/^[0-9]{5}$/)) {
+              _this.$vux.loading.show()
               _this.User_PayResetPhoneVerificationPass(val).then(res => {
+                _this.resetType = '2'
                 if (res.result_state === 'success') {
                   _this.$vux.confirm.hide()
-                  _this.isReset = false
+                  _this.$vux.loading.hide()
                 }
               })
             }
           }
         })
-      } else if (c === 2) {
-        this.resetType = 'paypwd'
+      } else if (c === 3) {
+        this.$vux.loading.show()
+        setTimeout(() => {
+          this.resetType = '3'
+          this.$vux.loading.hide()
+        }, 500)
       }
     }
   }
@@ -174,9 +254,31 @@ export default {
 <style lang="less" scoped>
 .ident-title {
   padding-left: 14px;
-  font-size: .18rem;
+  font-size: 0.18rem;
   color: #666;
 }
+.pay-ident {
+  .pay-ident-item {
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.3rem;
+    padding-left: 0.2rem;
+    background-color: #fff;
+    display: block;
+  }
+  .pay-ident-icon {
+    width: .6rem;
+    height: .6rem;
+    float: right;
+    margin-top: .2rem;
+    margin-right: .2rem;
+  }
+  .pay-ident-item:nth-child(2) {
+  border-top: 2px solid #f0f0f0;
+}
+}
+
 .pay-contain {
   .pay-num {
     width: 80%;
