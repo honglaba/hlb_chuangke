@@ -238,6 +238,7 @@
       </ul>
     </section>
 
+    <Footerx></Footerx>
   </div>
 </template>
 

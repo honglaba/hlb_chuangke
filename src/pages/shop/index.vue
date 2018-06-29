@@ -27,6 +27,7 @@
         </router-link>
       </ul>
     </section>
+    <Footerx></Footerx>
   </div>
 </template>
 <script>

@@ -55,14 +55,30 @@ export default {
       this.clickAble = this.$refs.name.valid && this.$refs.identCard.valid
     },
     _submit () {
+      let _this = this
       this.HTTP_realNameRegistration({
         name: this.value.name,
         id_card: this.value.identCard
       })
         .then(res => {
           if (res.result_state === 'success') {
-            this.HTTP_UserInfo()
-            this.$vux.toast.text('实名认证成功', 'top')
+            this.HTTP_UserInfo().then(res => {
+              this.$store.commit('SAVE_USER_INFO', res.data)
+              this.$vux.confirm.show({
+                showCancelButton: false,
+                title: '提示',
+                content: '实名认证成功',
+                onHide () {
+                  _this.$router.push({path: '/member/settings'})
+                }
+              })
+            })
+          } else {
+            this.$vux.confirm.show({
+              showCancelButton: false,
+              title: '提示',
+              content: '姓名与身份证号不匹配!'
+            })
           }
         })
     }

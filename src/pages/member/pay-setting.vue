@@ -105,7 +105,6 @@ export default {
   },
   computed: {
     interFaceToggle () {
-      // console.log(this.isReset)
       return this.isReset && this.resetType === '1'
     }
   },

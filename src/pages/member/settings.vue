@@ -1,9 +1,9 @@
 <template>
   <div class="app">
     <x-header
-    title="设置"
-    :left-options="{backText: '', preventGoBack: true}"
-    @on-click-back="routeBack"
+      title="设置"
+      :left-options="{backText: '', preventGoBack: true}"
+      @on-click-back="routeBack"
     >
     </x-header>
     <div class="main2">
@@ -29,7 +29,9 @@
             <router-link to="/member/address">
               <div class="tit">
                 <div class="l">管理收货地址</div>
-                <div class="r"><img :src="rightArrow"></div>
+                <div class="r">
+                  <img :src="rightArrow">
+                </div>
               </div>
             </router-link>
             <router-link to="/member/phone_update">
@@ -45,7 +47,7 @@
               </div>
             </router-link>
           </div>
-          <div class="logoff" @click="_logout()">
+          <div class="logoff" v-if="userAgenForButton" @click="_logout()">
             退出登录
           </div>
         </div>
@@ -58,6 +60,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
+      userAgenForButton: false,
       rightArrow: require('../../assets/images/you1.png')
     }
   },
@@ -65,6 +68,9 @@ export default {
     DataTree: {
       type: Object
     }
+  },
+  created () {
+
   },
   methods: {
     ...mapActions(['HTTP_logout', 'HTTP_UserInfo']),

@@ -81,8 +81,7 @@ const router = new VueRouter({
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
-        title: '首页',
-        index: 1
+        title: '首页'
       }
     },
     {
@@ -190,8 +189,7 @@ const router = new VueRouter({
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
-        title: '附近商家',
-        index: 2
+        title: '附近商家'
       }
     }]
   },
@@ -204,8 +202,7 @@ const router = new VueRouter({
       name: 'WeikaIndex',
       component: WeikaIndex,
       meta: {
-        title: '微卡首页',
-        index: 3
+        title: '微卡首页'
       }
     },
     {
@@ -229,8 +226,7 @@ const router = new VueRouter({
       name: 'WeikaVip',
       component: WeikaVip,
       meta: {
-        title: '微卡vip首页',
-        index: 6 // special
+        title: '微卡vip首页'
       }
     },
     {
@@ -285,8 +281,7 @@ const router = new VueRouter({
         name: 'MemberIndex',
         component: MemberIndex,
         meta: {
-          title: '个人中心',
-          index: 4
+          title: '个人中心'
         }
       }, {
         path: 'login',
@@ -447,22 +442,36 @@ const router = new VueRouter({
 })
 
 router.beforeEach((To, From, next) => {
+  // console.log(To)
   let historyTargetPath = localStorage.getItem('historyTargetPath')
-  let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
+  let specialPaths = ['/member', '/member/settings'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
-  if (!To.name) { // 路由不存在时跳转from页
-    next(From.path)
-    return
-  } else {
-    let Path = To.fullPath
-    if (Path !== '/' && Path.substr(-1, 1) === '/') {
-      Path = Path.slice(0, Path.length - 1)
-    }
-    specialPaths.forEach(e => {
-      if (e === Path) {
-        isMatched = true
+
+  if (!window.navigator.userAgent.match(/MicroMessenger/i)) { // 不是微信浏览器
+    if (!To.name) { // 路由不存在时跳转from页
+      next(From.path)
+      return
+    } else {
+      let Path = To.fullPath
+      if (Path !== '/' && Path.substr(-1, 1) === '/') {
+        Path = Path.slice(0, Path.length - 1)
       }
+      specialPaths.forEach(e => {
+        if (e === Path) {
+          isMatched = true
+        }
+      })
+    }
+    if (isMatched && !localStorage.getItem('userInfo')) {
+      // code to route login
+      return
+    }
+  } else if (!localStorage.getItem('userInfo') && !historyTargetPath) { // 是微信浏览器, 且没有用户信息
+    localStorage.setItem('historyTargetPath', To.path)
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
+      window.location.href = res.redirect
     })
+    return
   }
 
   if (historyTargetPath) {
@@ -496,13 +505,6 @@ router.beforeEach((To, From, next) => {
     }
   }
 
-  if (isMatched && !localStorage.getItem('userInfo')) {
-    localStorage.setItem('historyTargetPath', To.path)
-    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
-      window.location.href = res.redirect
-    })
-    return
-  }
   next()
 })
 

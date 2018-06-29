@@ -28,8 +28,8 @@
   </div>
 </template>
 <script>
-import { XInput, Group, Divider } from 'vux';
-import HTTP from '@/api';
+import { XInput, Group, Divider } from 'vux'
+import HTTP from '@/api'
 export default {
   data () {
     return {}

@@ -1,18 +1,18 @@
 <template>
   <footer class="y-flex y-ac vux-1px-t">
-    <router-link to="/" class="flex1" v-bind:class="{cur:linkOption === 'home' || linkOption ===''}">
+    <router-link to="/" class="flex1" v-bind:class="{cur:evenRoute === 'home' || evenRoute ===''}">
       <span class="nav-ico type3"></span>
       <p>首页</p>
     </router-link>
-    <router-link to="/shop" class="flex1" v-bind:class="{cur:linkOption === 'shop'}">
+    <router-link to="/shop" class="flex1" v-bind:class="{cur:evenRoute === 'shop'}">
       <span class="nav-ico type2"></span>
       <p>附近</p>
     </router-link>
-    <router-link to="/weika" class="flex1" v-bind:class="{cur:linkOption === 'weika'}">
+    <router-link to="/weika" class="flex1" v-bind:class="{cur:evenRoute === 'weika'}">
       <span class="nav-ico type1"></span>
       <p>创客微卡</p>
     </router-link>
-    <router-link to="/member" class="flex1" v-bind:class="{cur:linkOption === 'member'}">
+    <router-link to="/member" class="flex1" v-bind:class="{cur:evenRoute === 'member'}">
       <span class="nav-ico type4"></span>
       <p>我的</p>
     </router-link>
@@ -22,6 +22,11 @@
 export default {
   props: {
     linkOption: String
+  },
+  computed: {
+    evenRoute () {
+      return this.$route.fullPath.split('/')[1]
+    }
   }
 }
 </script>
