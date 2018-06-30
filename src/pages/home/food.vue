@@ -52,6 +52,7 @@
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import Other from '../../components/common/other/other'
 import ListInner from '../../components/common/listInner/listInner'
+import {mapActions} from 'vuex'
 export default {
   data () {
     return {
@@ -89,6 +90,7 @@ export default {
   },
   components: { ListInner, Other },
   methods: {
+    ...mapActions(['HTTP_GetCategory', 'HTTP_GetCategoryShop', 'HTTP_SwitchCategory']),
     screenTap: function (index) {
       let screenTab = document.querySelectorAll('.screen-tab>li')
       if (this.tabTemp == null || this.tabTemp !== index) {
@@ -116,7 +118,10 @@ export default {
     },
     getCategory: function () {
       // 分类
-      this.axios.get('/api/shop-category/children?id=1').then(res => {
+      // this.axios.get('/api/shop-category/children?id=1').then(res => {
+      //   this.category = res.data
+      // })
+      this.HTTP_GetCategory().then(res => {
         this.category = res.data
       })
     },
@@ -135,7 +140,10 @@ export default {
     switchCategory: function (e) {
       // 切换分类
       let categoryId = e.target.getAttribute('data-category')
-      this.axios.get('/api/shop-category/shops?cid=' + categoryId).then(res => {
+      // this.axios.get('/api/shop-category/shops?cid=' + categoryId).then(res => {
+      //   console.log(res)
+      // })
+      this.HTTP_SwitchCategory(categoryId).then(res => {
         console.log(res)
       })
     },
@@ -166,7 +174,7 @@ export default {
         if (this.nextPageUrl == null) {
           self.noData = '没有更多数据'
         }
-        self.$refs.myscroller.resize()
+        // self.$refs.myscroller.resize()
         done()
       }, 500)
     },

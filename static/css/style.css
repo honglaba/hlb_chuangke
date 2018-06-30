@@ -202,8 +202,8 @@ body{
 /* 字体end */
 
 /*add by chenghai*/
-.main{position:absolute;width:7.5rem} /* lby has changed*/
-.main2{position:absolute;width:7.5rem}
+.main{position:absolute;top:.88rem;bottom:1rem;overflow:auto;width:7.5rem}
+.main2{position:absolute;top:.88rem;bottom:0;overflow:auto;width:7.5rem}
 /* .main2{position:absolute;top:.88rem;bottom:0;overflow:auto;width:7.5rem} */
 .pd20{padding:.2rem}
 .pdlr20{padding-left:.2rem;padding-right:.2rem}

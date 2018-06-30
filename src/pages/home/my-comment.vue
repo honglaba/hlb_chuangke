@@ -7,24 +7,26 @@
       </div>
       <p>{{detailsGetter.title}}</p>
     </section>
-    <section class="comment-inner">
-      <h3>本次服务</h3>
-      <div class="score">
-        <ul>
-          <li v-for="(item,index) in scoreStar" :data-id="index+1" :class="{cur:item.active}" @click="score"></li>
-        </ul>
-        <p>{{scoreStar[scoreIndex].txt}}</p>
-      </div>
-      <textarea placeholder="分享商家消费体验给小伙伴吧！"></textarea>
-      <div class="upload-til">
-        <span>晒图</span>
-        <span>(可一次上传多张)</span>
-      </div>
-      <div class="upload-btn">
-        <!-- <input type="file" id="upload-input"/> -->
-      </div>
-    </section>
-    <input type="submit" value="提交评论" class="submit-btn"/>
+    <!-- <form action="/api/shop/comments?sid=1" method="POST"> -->
+      <section class="comment-inner">
+        <h3>本次服务</h3>
+        <div class="score">
+          <ul>
+            <li v-for="(item,index) in scoreStar" :data-id="index+1" :class="{cur:item.active}" @click="score"></li>
+          </ul>
+          <p>{{scoreStar[scoreIndex].txt}}</p>
+        </div>
+        <textarea placeholder="分享商家消费体验给小伙伴吧！" v-model="myComment"></textarea>
+        <div class="upload-til">
+          <span>晒图</span>
+          <span>(可一次上传多张)</span>
+        </div>
+        <div class="upload-btn">
+          <!-- <input type="file" id="upload-input"/> -->
+        </div>
+      </section>
+      <input type="button" value="提交评论" class="submit-btn" @click="submitComment"/>
+    <!-- </form> -->
   </div>
 </template>
 <script>
@@ -50,12 +52,15 @@ export default {
           txt: '非常满意'
         }
       ],
-      scoreIndex: 2
+      scoreIndex: 2,
+      myComment: '',
+      myScore: 3
     }
   },
   methods: {
     score: function (e) {
       let index = e.target.getAttribute('data-id')
+      this.myScore = index
       this.scoreIndex = index - 1
       for (let i = 0; i < 5; i++) {
         this.scoreStar[i].active = false
@@ -63,15 +68,30 @@ export default {
       for (let i = 0; i < index; i++) {
         this.scoreStar[i].active = true
       }
+    },
+    submitComment: function () {
+      let that = this
+      if (this.myComment) {
+        this.axios.post('/api/shop/comments', {
+          sid: 7,
+          content: that.myComment,
+          score: that.myScore
+        }).then(res => {
+          console.log(res)
+          if (res.result_state == 'success') {
+            alert('评论成功')
+          } else {
+            alert('评论失败')
+          }
+        })
+      }
     }
   },
   computed: {
     ...mapGetters(['detailsGetter'])
   },
   mounted () {
-    document.getElementsByClassName('upload-btn')[0].onclick = function () {
-      // document.getElementById('upload-input').onclick()
-    }
+
   }
 }
 </script>
