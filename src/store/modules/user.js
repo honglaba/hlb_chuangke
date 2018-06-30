@@ -1,7 +1,7 @@
 import HTTP from '@/api' // 配置后的axios
 // import Cookies from 'js-cookie'
 
-const moduleA = {
+const moduleUser = {
   state: {},
   mutations: {},
   actions: {
@@ -76,9 +76,36 @@ const moduleA = {
           }
         })
       })
+    },
+    User_collectList ({commit}) {
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: '/api/user/favorite-goods',
+          method: 'GET'
+        }).then(res => {
+          if (res.result_state === 'success') {
+            resolve(true)
+          }
+        })
+      })
+    },
+    User_collectGoods ({commit}, gid) {
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: '/api/user/favorite-goods',
+          method: 'POST',
+          data: {
+            gid
+          }
+        }).then(res => {
+          if (res.result_state === 'success') {
+            resolve(true)
+          }
+        })
+      })
     }
   },
   getters: {}
 }
 
-export default moduleA
+export default moduleUser

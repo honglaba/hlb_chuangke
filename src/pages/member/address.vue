@@ -4,12 +4,14 @@
       <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
     </x-header>
     <div class="main2">
-      <div class="content">
+
+      <div class="content" v-if="contentFlag">
         <div class="yjbd" v-if="!equal">
           <p><img src="./images/noaddress.png"></p>
           <p class="tips">您还没有添加收货地址~
           </p>
         </div>
+
         <div class="addresslist" v-else>
           <ul>
             <li v-for="item in receiverAddressGetter" :key="item.id">
@@ -45,7 +47,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      equal: false
+      equal: false,
+      contentFlag: false
     }
   },
   computed: {
@@ -77,9 +80,11 @@ export default {
       if (flag.length > 0) {
         this.equal = !this.equal
       }
+      this.contentFlag = true
     } else {
       this.HTTP_receiverAddress().then(res => {
         if (res) this.equal = !this.equal
+        this.contentFlag = true
       })
     }
   },

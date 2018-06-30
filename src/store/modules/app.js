@@ -1,6 +1,6 @@
 import HTTP from '@/api' // 配置后的axios
 
-const moduleCat = {
+const moduleApp = {
   state: {},
   mutations: {},
   actions: {
@@ -53,4 +53,4 @@ const moduleCat = {
   getters: {}
 }
 
-export default moduleCat
+export default moduleApp

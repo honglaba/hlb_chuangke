@@ -1,7 +1,10 @@
 <template>
   <div class="app">
-    <!-- <loading :show="isWaiting" text=""></loading> -->
-    <x-header :left-options="{backText: ''}" :title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"></x-header>
+    <x-header
+      :left-options="{backText: '', preventGoBack: true}"
+      :title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"
+      @on-click-back="routeBack"
+      ></x-header>
     <div class="pay-ident" v-if="interFaceToggle">
       <span class="pay-ident-item" @click="checkType(2)">
         忘记6位数字支付密码
@@ -81,16 +84,16 @@ export default {
     resetType (val, oldval) {
       switch (val) {
         case '1':
-          console.log('1')
+          // console.log('1')
           break
         case '2':
-          console.log('2')
+          // console.log('2')
           break
         case '3':
           this.paytitle = '请输入支付密码,验证身份'
           break
         case '4':
-          console.log('4')
+          // console.log('4')
           break
         default:
           return false
@@ -185,6 +188,7 @@ export default {
       let flag = true
       let str1 = ''
       let str2 = ''
+      let _this = this
       this.numVal.forEach((n, index) => { // 判断两次结果是否相等
         str1 += this.numVal[index]
         str2 += this.numComfirm[index]
@@ -214,8 +218,16 @@ export default {
       } else {
         this.$vux.loading.show()
         setTimeout(() => {
-          this.paytitle = '两次输入不一致'
           this.numVal = []
+          this.$vux.loading.hide()
+        }, 300)
+        this.$vux.confirm.show({
+          showCancelButton: false,
+          title: '提示',
+          content: '两次输入不一致!',
+          onHide () {
+            _this.numVal = []
+          }
         })
       }
     },
@@ -247,6 +259,9 @@ export default {
           this.$vux.loading.hide()
         }, 500)
       }
+    },
+    routeBack () { // 顶部返回按钮事件
+      this.$router.push({path: '/member/settings'})
     }
   }
 }

@@ -30,19 +30,19 @@
   </div>
 </template>
 <script>
-import { Tab, TabItem } from "vux";
+import { Tab, TabItem } from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      nowSeen: "1"
-    };
+      nowSeen: '1'
+    }
   },
   components: {
     Tab,
     TabItem
   },
   methods: {}
-};
+}
 </script>
 <style lang="less" scoped>
 .jfbox {
@@ -84,4 +84,3 @@ export default {
   }
 }
 </style>
-
