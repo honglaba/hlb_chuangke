@@ -49,6 +49,7 @@ const moduleApp = {
         })
       })
     }
+    
   },
   getters: {}
 }

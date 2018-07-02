@@ -8,13 +8,13 @@
     <section class="tab">
       <ul class="tab-nav">
         <li v-for="(tab,index) in tabNavs" @click="tabTap(index)" :class="{cur:tab.active}" :key="index">
-          {{tab.name}}
+          {{tab.title}}
         </li>
       </ul>
       <div class="tab-con">
         <ul>
           <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
-            {{nav.name}}
+            {{nav.title}}
           </li>
         </ul>
       </div>
@@ -43,113 +43,170 @@ export default {
       transitionName: '',
       tabNavs: [
         {
-          name: '附近商家',
+          title: '附近商家',
           active: true
         },
         {
-          name: '美食',
+          title: '美食',
           active: false
         },
         {
-          name: '酒店',
+          title: '酒店',
           active: false
         },
         {
-          name: '娱乐',
+          title: '娱乐',
           active: false
         },
         {
-          name: '电影',
+          title: '电影',
           active: false
         },
         {
-          name: '丽人',
+          title: '丽人',
           active: false
         },
         {
-          name: '附近商家',
+          title: '附近商家',
           active: false
         },
         {
-          name: '美食',
+          title: '美食',
           active: false
         },
         {
-          name: '酒店',
+          title: '酒店',
           active: false
         },
         {
-          name: '娱乐',
+          title: '娱乐',
           active: false
         },
         {
-          name: '电影',
+          title: '电影',
           active: false
         },
         {
-          name: '丽人',
+          title: '丽人',
           active: false
         }
       ],
       navs: [
         {
-          name: '全部',
+          title: '全部',
           active: true
         },
         {
-          name: '甜点饮品',
+          title: '甜点饮品',
           active: false
         },
         {
-          name: '生日蛋糕',
+          title: '生日蛋糕',
           active: false
         },
         {
-          name: '火锅',
+          title: '火锅',
           active: false
         },
         {
-          name: '自助餐',
+          title: '自助餐',
           active: false
         },
         {
-          name: '小吃快餐',
+          title: '小吃快餐',
           active: false
         },
         {
-          name: '日韩料理',
+          title: '日韩料理',
           active: false
         }
       ],
-      businessList: [
-        {
-          name: '良记甜品',
-          pic: '../../../static/images/nearby-label-img1.png'
-        },
-        {
-          name: '肯德基宅急送',
-          pic: '../../../static/images/nearby-label-img2.png'
-        }
-      ]
+      businessList: []
+      // businessList: [
+      //   {
+      //     // name: '良记甜品',
+      //     // pic: '../../../static/images/nearby-label-img1.png'
+      //     title: '良记甜品',
+      //     logo: '../../../static/images/nearby-label-img1.png'
+      //   },
+      //   {
+      //     // name: '肯德基宅急送',
+      //     // pic: '../../../static/images/nearby-label-img2.png'
+      //     title: '肯德基宅急送',
+      //     logo: '../../../static/images/nearby-label-img2.png'
+      //   }
+      // ]
     }
   },
   methods: {
     tabTap: function (index) {
+      // 1级分类切换
       let tabNavs = document.querySelectorAll('.tab-nav>li')
       for (let i = 0, len = tabNavs.length; i < len; i++) {
         this.tabNavs[i].active = false
       }
       this.tabNavs[index].active = true
+      this.getCategoryChildren(index + 1)
     },
     navTap: function (index) {
+      // 2级分类切换
+      let that = this
       let navs = document.querySelectorAll('.tab-con li')
       for (let i = 0, len = navs.length; i < len; i++) {
-        this.navs[i].active = false
+        that.navs[i].active = false
       }
-      this.navs[index].active = true
+      that.navs[index].active = true
+      this.getCategoryShop(index)
+    },
+    getCategory: function () {
+      // 1级分类
+      this.axios.get('/api/shop-category?parent=0').then(res => {
+        console.log(res)
+        for (let i = 0, len = res.data.length; i < len; i++) {
+          res.data[i].active = false
+        }
+        res.data[0].active = true
+        this.tabNavs = res.data
+      })
+    },
+    getCategoryChildren: function (id) {
+      // 2级分类
+      id ? id = id : id = 1
+      this.axios.get('/api/shop-category?parent=' + id).then(res => {
+        console.log(res)
+        for (let i = 0, len = res.data.length; i < len; i++) {
+          res.data[i].active = false
+        }
+        res.data[0].active = true
+        this.navs = res.data
+      })
+    },
+    getCategoryShop: function (id) {
+      // 分类下商店
+      // this.HTTP_GetCategoryShop().then(res => {
+      id ? id = id : id = 1
+      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+        console.log(res)
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('')
+        } else {
+          this.nextPageUrl = null
+        }
+        delete res.data.result_state
+        delete res.data.return_state
+        this.businessList = []
+        for (let i in res.data) {
+          this.businessList.push(res.data[i])
+        }
+      })
     }
   },
-  components: { ListInner, Other }
+  components: { ListInner, Other },
+  mounted () {
+    this.getCategory()
+    this.getCategoryChildren()
+    this.getCategoryShop()
+  }
 }
 </script>
 <style lang="less" scoped>
