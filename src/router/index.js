@@ -442,39 +442,22 @@ const router = new VueRouter({
 })
 
 router.beforeEach((To, From, next) => {
-  // console.log(To)
   let historyTargetPath = localStorage.getItem('historyTargetPath')
   let specialPaths = ['/member', '/member/settings'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
-  if (!window.navigator.userAgent.match(/MicroMessenger/i)) { // 不是微信浏览器
-    if (!To.name) { // 路由不存在时跳转from页
-      next(From.path)
-      return
-    } else {
-      let Path = To.fullPath
-      if (Path !== '/' && Path.substr(-1, 1) === '/') {
-        Path = Path.slice(0, Path.length - 1)
-      }
-      specialPaths.forEach(e => {
-        if (e === Path) {
-          isMatched = true
-        }
-      })
-    }
-    if (isMatched && !localStorage.getItem('userInfo')) {
-      // code to route login
-      return
-    }
-  } else if (!localStorage.getItem('userInfo') && !historyTargetPath) { // 是微信浏览器, 且没有用户信息
-    localStorage.setItem('historyTargetPath', To.path)
+  function getRedirectUrl () {
     apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
       window.location.href = res.redirect
     })
+  }
+
+  if (!To.name) { // 路由不存在时跳转from页
+    next(From.path)
     return
   }
 
-  if (historyTargetPath) {
+  if (historyTargetPath) { // 如果存在历史跳转地址,说明当前为授权状态,处理url
     let local = window.location.href
     if (
       local.indexOf('access_token') > 0 &&
@@ -505,7 +488,31 @@ router.beforeEach((To, From, next) => {
     }
   }
 
-  next()
+  if (!localStorage.getItem('userInfo')) { // 没有用户信息
+    if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
+      localStorage.setItem('historyTargetPath', To.path)
+      getRedirectUrl()
+      return
+    } else {
+      let Path = To.fullPath
+
+      if (Path !== '/' && Path.substr(-1, 1) === '/') {
+        Path = Path.slice(0, Path.length - 1)
+      }
+      specialPaths.forEach(e => {
+        if (e === Path) {
+          isMatched = true
+        }
+      })
+
+      if (isMatched) {
+        // 未定
+        return
+      }
+    }
+  }
+
+  next() // 无阻碍直接跳转
 })
 
 export default router

@@ -48,6 +48,16 @@ const moduleApp = {
           resolve(res)
         })
       })
+    },
+    APP_collectCommodityList () { // 收藏商品列表
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: '/api/user/favorite-goods'
+        }).then(res => {
+          console.group(res)
+          resolve(res)
+        })
+      })
     }
   },
   getters: {}

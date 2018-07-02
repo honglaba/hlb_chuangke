@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="积分记录"></x-header>
+    <x-header title="积分记录" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
@@ -93,25 +93,28 @@
   </div>
 </template>
 <script>
-import Accordion from "../../components/accordion";
-import { Tab, TabItem } from "vux";
+// import Accordion from '../../components/accordion'
+import { Tab, TabItem } from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      nowSeen: "1"
-    };
+      nowSeen: '1'
+    }
   },
   components: {
     Tab,
     TabItem
   },
   methods: {
-    tab: function(e) {
-      console.log(e.target.getAttribute("data-id"));
-      this.nowSeen = e.target.getAttribute("data-id");
+    tab (e) {
+      console.log(e.target.getAttribute('data-id'))
+      this.nowSeen = e.target.getAttribute('data-id')
+    },
+    routeBack () {
+      this.$router.push({path: '/member'})
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
@@ -165,4 +168,3 @@ export default {
   margin-top: 0.2rem;
 }
 </style>
-

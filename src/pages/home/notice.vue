@@ -89,7 +89,8 @@ export default {
   },
   methods: {
     routeBack () {
-      window.webkit.messageHandlers.show.postMessage('hello，world')
+      // window.webkit.messageHandlers.show.postMessage('hello，world') // ios callback
+      this.$router.push({path: '/home'})
     },
     tab: function (e) {
       this.nowSeen = e.target.getAttribute('data-id')

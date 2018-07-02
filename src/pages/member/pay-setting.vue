@@ -234,6 +234,15 @@ export default {
     checkType (c) { // 选择验证身份的方式
       let _this = this
       if (c === 2) {
+        if (!this.DataTree.mobile_phone) {
+          this.$vux.confirm.show({
+            title: '提示',
+            content: '请先绑定手机号!',
+            onConfirm (val) {
+              _this.$router.push({path: '/member/phone_update'})
+            }
+          })
+        }
         this.User_PayResetPhoneVerificationGet()
         this.$vux.confirm.show({
           title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),

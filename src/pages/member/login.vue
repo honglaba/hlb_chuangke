@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="登录"></x-header>
+    <x-header title="登录" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>
@@ -40,6 +40,9 @@ export default {
       HTTP.HTTP_GET_wxident().then(res => {
         window.location = res.redirect
       })
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   },
   components: {
