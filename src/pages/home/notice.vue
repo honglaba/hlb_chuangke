@@ -94,6 +94,7 @@ export default {
     },
     tab: function (e) {
       this.nowSeen = e.target.getAttribute('data-id')
+      window.location = 'http://baidu.com'
     }
   },
   mounted () {

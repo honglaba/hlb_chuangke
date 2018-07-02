@@ -17,19 +17,52 @@
           </li>
         </ul>
         <section class="screen-inner" v-if="seen" @click.self="maskTap">
-          <ul>
-            <!-- <li>全部</li>
-          <li>甜品饮品</li>
-          <li>火锅</li>
-          <li>生日蛋糕</li>
-          <li class="cur">自助餐</li>
-          <li>小吃快餐</li>
-          <li>日韩料理</li>
-          <li>西餐</li>
-          <li>聚餐宴席</li>
-          <li>烧烤烤肉</li> -->
+          <ul v-if="tabTemp==0">
+            <li>全部</li>
+            <li>甜品饮品</li>
+            <li>火锅</li>
+            <li>生日蛋糕</li>
+            <li class="cur">自助餐</li>
+            <li>小吃快餐</li>
+            <li>日韩料理</li>
+            <li>西餐</li>
+            <li>聚餐宴席</li>
+            <li>烧烤烤肉</li>
 
-            <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li>
+            <!-- <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li> -->
+          </ul>
+          <div v-if="tabTemp==1" class="lr">
+            <ul class="left-nav">
+              <li>
+                <span>附近</span>
+                <span></span>
+              </li>
+               <li>
+                <span>推荐商圈</span>
+                <span></span>
+              </li>
+               <li>
+                <span>南城区</span>
+                <span></span>
+              </li>
+               <li>
+                <span>东城区</span>
+                <span></span>
+              </li>
+            </ul>
+            <ul class="right-inner">
+              <li>全部</li>
+              <li>第一国际/汇一城</li>
+              <li>富民步行街</li>
+              <li>洪福路口</li>
+              <li>景湖时代城</li>
+            </ul>
+          </div>
+          <ul v-if="tabTemp==2">
+            <li>智能排序</li>
+            <li>离我最近</li>
+            <li>好评优先</li>
+            <li>人气最高</li>
           </ul>
         </section>
       </section>
@@ -93,6 +126,7 @@ export default {
     ...mapActions(['HTTP_GetCategory', 'HTTP_GetCategoryShop', 'HTTP_SwitchCategory']),
     screenTap: function (index) {
       let screenTab = document.querySelectorAll('.screen-tab>li')
+      console.log(index)
       if (this.tabTemp == null || this.tabTemp !== index) {
         this.tabTemp = index
         for (let i = 0, len = screenTab.length; i < len; i++) {
@@ -127,9 +161,14 @@ export default {
     },
     getCategoryShop: function () {
       // 分类下商店
+      // this.HTTP_GetCategoryShop().then(res => {
       this.axios.get('/api/shop-category/shops?cid=1').then(res => {
-        this.nextPageUrl = res.next_page_url
-          .split('http://api.hlbck.com').join('')
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('')
+        } else {
+          this.nextPageUrl = null
+        }
+
         delete res.data.result_state
         delete res.data.return_state
         for (let i in res.data) {
