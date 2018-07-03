@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="我的积分">
+    <x-header title="帮助中心" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
       <router-link to="#" slot="right">
         <img src="../../assets/images/kefu.png" class="kefu">
       </router-link>
@@ -44,8 +44,11 @@ export default {
   data () {
     return {}
   },
-  components: {},
-  methods: {}
+  methods: {
+    routeBack () {
+      this.$router.push({path: '/member'})
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

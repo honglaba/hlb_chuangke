@@ -1,10 +1,10 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" :title="isEditor ? '修改收货地址' : '新增收货地址'">
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </x-header>
     <div class="main2">
-      <div class="content">
+      <div class="content" v-if="initEnd">
         <group>
           <x-input title='收货人姓名' type="text" required v-model="userInput.name" ref="refcode1" :is-type="validator.name" @on-change="keyDown"></x-input>
           <x-input title='手机号码' type="text" required v-model="userInput.mobile_phone" ref="refcode2" is-type="china-mobile" @on-change="keyDown"></x-input>
@@ -37,6 +37,7 @@ export default {
   },
   data () {
     return {
+      initEnd: false,
       isEditor: /* 是否为编辑状态 */false,
       clickAble: /* 提交按钮是否激活 */ false,
       userInput: {
@@ -76,6 +77,7 @@ export default {
   watch: {
     '$route' (to, from) {
       Object.assign(this.$data, this.$options.data())
+      this.initEnd = true
       this.$loadInit()
     }
   },
@@ -136,7 +138,11 @@ export default {
         this.userInput = cItem
         this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
         localStorage.removeItem('ReadyEditorAddressItem')
+        this.initEnd = true
       }
+    },
+    routeBack () {
+      this.$router.push({path: '/member/address'})
     }
   }
 }

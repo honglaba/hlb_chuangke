@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="实名认证">
+    <x-header title="实名认证" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
     </x-header>
     <div class="main2">
       <div class="content">
@@ -81,6 +81,9 @@ export default {
             })
           }
         })
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   }
 }

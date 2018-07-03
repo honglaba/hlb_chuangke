@@ -31,6 +31,7 @@ Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'
   return val.slice(0, 3) + '****' + val.slice(7, 12)
 })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

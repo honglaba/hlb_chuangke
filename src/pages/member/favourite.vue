@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="我的收藏"></x-header>
+    <x-header title="我的收藏" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
@@ -139,21 +139,29 @@
 </template>
 <script>
 import { Tab, TabItem } from 'vux'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
       nowSeen: '1'
     }
   },
-  components: {
-    Tab,
-    TabItem
+  async created () {
+    await this.APP_collectCommodityList()
   },
   methods: {
+    ...mapActions(['APP_collectCommodityList']),
     tab (e) {
       // console.log(e.target.getAttribute('data-id'))
       this.nowSeen = e.target.getAttribute('data-id')
+    },
+    routeBack () {
+      this.$router.push({path: '/member'})
     }
+  },
+  components: {
+    Tab,
+    TabItem
   }
 }
 </script>

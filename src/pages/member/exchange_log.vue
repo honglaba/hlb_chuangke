@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="兑换记录">
+    <x-header title="兑换记录" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
     </x-header>
     <div class="main2">
       <div class="content">
@@ -52,7 +52,10 @@ export default {
     return {}
   },
   components: {},
-  methods: {}
+  methods: {
+    routeBack () {
+      this.$router.push({path: '/member/exchange'})
+    }}
 }
 </script>
 <style lang="less" scoped>

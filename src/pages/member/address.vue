@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="收货地址管理">
+    <x-header title="收货地址管理" :left-options="{backText: '', preventGoBack: true}"  @on-click-back="routeBack">
       <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
     </x-header>
     <div class="main2">
@@ -71,6 +71,9 @@ export default {
     _toEditor (item) {
       localStorage.setItem('ReadyEditorAddressItem', JSON.stringify(item))
       this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   },
   created () {

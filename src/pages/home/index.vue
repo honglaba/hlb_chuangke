@@ -268,8 +268,8 @@ export default {
   mounted () {
     /* eslint-disable */
     new Swiper(".banner-swiper", {
-      autopaly: {
-        delay: 3000
+      autoplay: {
+        delay: 8000
       },
       loop: true,
       effect: "coverflow",
@@ -282,7 +282,7 @@ export default {
         modifier: 1,
         slideShadows: true
       }
-    }).autoplay.start();
+    })
 
     new Swiper(".nav-swiper", {
       pagination: {
@@ -291,24 +291,26 @@ export default {
     });
 
     // 百度地图API功能
-    var map = new BMap.Map('allmap') // 创建Map实例
-     // 获取自身定位并存入sessionStorage
-    var my_point = []
-    var geolocation = new BMap.Geolocation()
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        var mk = new BMap.Marker(r.point)
-        map.addOverlay(mk)
-        map.panTo(r.point)
-        // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-        sessionStorage.lng=r.point.lng
-        sessionStorage.lat=r.point.lat        
-      } else {
-        alert('failed' + this.getStatus())
-      }
-    }, {enableHighAccuracy: true})
+    var map = new BMap.Map("allmap"); // 创建Map实例
+    // 获取自身定位并存入sessionStorage
+    var my_point = [];
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(
+      function(r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          var mk = new BMap.Marker(r.point);
+          map.addOverlay(mk);
+          map.panTo(r.point);
+          // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+          sessionStorage.lng = r.point.lng;
+          sessionStorage.lat = r.point.lat;
+        } else {
+          alert("failed" + this.getStatus());
+        }
+      },
+      { enableHighAccuracy: true }
+    );
   }
-  
 };
 </script>
 

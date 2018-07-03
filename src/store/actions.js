@@ -89,6 +89,7 @@ const actions = {
         } else {
           resolve(res.data.length !== 0)
           commit('SAVE_RECEIVER_ADDRESS', res.data)
+          localStorage.setItem('userAddress', JSON.stringify(res.data))
         }
       })
     })

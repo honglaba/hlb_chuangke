@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="个人信息">
+    <x-header title="个人信息" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
       <span slot="right" @click="_save">保存</span>
     </x-header>
     <div class="main2">
@@ -52,7 +52,10 @@ export default {
   },
   methods: {
     _save () {
-      console.log(this.DataTree)
+      // console.log(this.DataTree)
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   },
   components: {

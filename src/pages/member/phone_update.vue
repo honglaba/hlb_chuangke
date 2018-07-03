@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" :title="DataTree.mobile_phone ? '更改手机号' : '更绑新手机'">
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="DataTree.mobile_phone ? '更改手机号' : '绑定手机号'">
     </x-header>
     <div class="main2">
 
@@ -20,6 +20,7 @@
           </button>
         </div>
       </div>
+
       <div class="content-b" v-else>
         <group>
           <x-input label-width="4em" name="mobile" v-model="my_mobile_phone" placeholder="请输入手机号码" ref="refPhone" keyboard="number" @on-change="keydown" is-type="china-mobile" required></x-input>
@@ -195,6 +196,9 @@ export default {
           }
         }
       })
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   }
 }

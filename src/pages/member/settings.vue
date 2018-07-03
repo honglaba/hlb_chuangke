@@ -36,7 +36,7 @@
             </router-link>
             <router-link to="/member/phone_update">
               <div class="tit">
-                <div class="l">更绑手机</div>
+                <div class="l">{{ DataTree.mobile_phone ? '已绑定手机号' : '绑定手机号' }}</div>
                 <div class="r">{{ DataTree.mobile_phone | mobilePhoneFilter }}<img :src="rightArrow"></div>
               </div>
             </router-link>
