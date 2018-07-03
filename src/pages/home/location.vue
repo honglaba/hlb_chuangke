@@ -74,7 +74,7 @@
         </div>
       </div>
     </section>
-    <div class="alp-shadow">A</div>
+    <!-- <div class="alp-shadow">A</div> -->
   </div>
 </template>
 <script>
