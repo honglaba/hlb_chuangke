@@ -31,7 +31,7 @@
 
             <!-- <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory" :key="index">{{item.title}}</li> -->
           </ul>
-          <div v-if="tabTemp==1" class="lr">
+          <div v-if="tabTemp==1" class="lr-part">
             <ul class="left-nav">
               <li>
                 <span>附近</span>
@@ -313,6 +313,27 @@ export default {
       }
       .cur {
         color: #f60;
+      }
+    }
+    .lr-part{
+       background: #fff;
+      padding-left: 0.6rem;
+      box-sizing: border-box;
+      display: flex;
+        > ul {
+        background: #fff;
+        box-sizing: border-box;
+        li {
+          height: 0.9rem;
+          line-height: 0.9rem;
+          font-size: 0.28rem;
+        }
+        .cur {
+          color: #f60;
+        }
+      }
+      ul:nth-child(1){
+        width: 3.05rem;
       }
     }
   }
