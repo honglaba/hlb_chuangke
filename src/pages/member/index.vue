@@ -4,9 +4,9 @@
       <div class="content">
         <div class="topbg pd20">
           <div class="topbar">
-            <div class="left">
+            <router-link to="/home" tag="div" class="left">
               <img src="./images/fanhui.png">
-            </div>
+            </router-link>
             <div class="right">
               <ul>
                 <li>

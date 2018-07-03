@@ -87,9 +87,9 @@ const actions = {
         if (res.result_state === 'error') {
           resolve(false)
         } else {
-          resolve(res.data.length !== 0)
           commit('SAVE_RECEIVER_ADDRESS', res.data)
           localStorage.setItem('userAddress', JSON.stringify(res.data))
+          resolve(res.data.length !== 0)
         }
       })
     })

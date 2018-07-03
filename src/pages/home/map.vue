@@ -115,7 +115,7 @@ export default {
   height: 100vh;
 }
 #app {
-  position: relative;
+  // position: relative;
 }
 .bottom-row {
   position: fixed;

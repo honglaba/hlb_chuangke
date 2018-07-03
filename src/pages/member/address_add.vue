@@ -3,6 +3,7 @@
     <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </x-header>
+
     <div class="main2">
       <div class="content" v-if="initEnd">
         <group>
@@ -82,6 +83,7 @@ export default {
     }
   },
   created () {
+    this.initEnd = true
     this.$loadInit()
   },
   methods: {
@@ -93,7 +95,7 @@ export default {
       this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
         this.HTTP_receiverAddress().then(res => {
           if (this.userInput.is_default === 1) {
-            alert('请设置默认地址')
+            // alert('请设置默认地址')
           }
           this.$router.push({path: '/member/address'})
         })
@@ -138,7 +140,6 @@ export default {
         this.userInput = cItem
         this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
         localStorage.removeItem('ReadyEditorAddressItem')
-        this.initEnd = true
       }
     },
     routeBack () {

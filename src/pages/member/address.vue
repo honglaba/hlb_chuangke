@@ -14,7 +14,7 @@
 
         <div class="addresslist" v-else>
           <ul>
-            <li v-for="item in receiverAddressGetter" :key="item.id">
+            <li v-for="item in receiverAddress" :key="item.id">
               <div class="info">
                 <div class="left">
                   <div class="a1">
@@ -38,12 +38,14 @@
           </ul>
         </div>
       </div>
+      <!-- <div v-if="contentFlag">fsdafsdafsdadsfsafsadfsa</div>
+      <button @click="contentFlag = !contentFlag">aaaaaaaaaaaaaa</button> -->
     </div>
   </div>
 </template>
 <script>
 import { Divider } from 'vux'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -51,8 +53,18 @@ export default {
       contentFlag: false
     }
   },
+  watch: {
+    '$route' (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      this.contentFlag = true
+      console.log(this.contentFlag)
+      if (this.receiverAddress.length > 0) {
+        this.equal = true
+      }
+    }
+  },
   computed: {
-    ...mapGetters(['receiverAddressGetter'])
+    ...mapState(['receiverAddress'])
   },
   methods: {
     ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
@@ -77,7 +89,7 @@ export default {
     }
   },
   created () {
-    let flag = this.receiverAddressGetter
+    let flag = this.receiverAddress
 
     if (flag) {
       if (flag.length > 0) {

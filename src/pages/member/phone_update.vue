@@ -97,7 +97,7 @@ export default {
       this.sendAble = this.$refs.refPhone.valid
       this.clickAble = this.$refs.refValidator.valid
     },
-    _getVerificationCode () {
+    _getVerificationCode () { // 获取验证码
       if (this.sendAble) {
         this.$vux.toast.hide()
         this.$vux.toast.show({
@@ -162,6 +162,7 @@ export default {
                   time: 1000
                 })
               } else {
+                this.verification_code = ''
                 this.$vux.toast.show({
                   text: '验证码不正确',
                   type: 'text',

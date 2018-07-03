@@ -5,8 +5,8 @@ import Cookies from 'js-cookie'
 let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'
 axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-// 请求过期时间 6s
-axios.defaults.timeout = 6000
+// 请求过期时间 8s
+axios.defaults.timeout = 8000
 
 // window.isRefreshing = false
 /* 被挂起的请求数组 */
