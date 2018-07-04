@@ -63,7 +63,6 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -491,8 +490,12 @@ router.beforeEach((To, From, next) => {
   }
 
   if (!localStorage.getItem('userInfo')) { // 没有用户信息
+    /* 初始化 */
+    Cookies.remove('refreshToken')
+    Cookies.remove('accessToken')
+    localStorage.clear()
+
     if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
-      localStorage.clear()
       localStorage.setItem('historyTargetPath', To.path)
       getRedirectUrl()
       return

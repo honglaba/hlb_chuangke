@@ -18,6 +18,7 @@
 <script>
 import { XInput, Group, Divider } from 'vux'
 import { mapActions } from 'vuex'
+import { Toast } from 'mint-ui'
 export default {
   data () {
     return {
@@ -56,6 +57,11 @@ export default {
     },
     _submit () {
       let _this = this
+      if (!this.$refs.name.valid || !this.$refs.identCard.valid) {
+        Toast('请填写正确的信息')
+        return
+      }
+
       this.HTTP_realNameRegistration({
         name: this.value.name,
         id_card: this.value.identCard
@@ -74,7 +80,6 @@ export default {
               })
             })
           } else {
-            console.log(res)
             this.$vux.confirm.show({
               showCancelButton: false,
               title: '提示',

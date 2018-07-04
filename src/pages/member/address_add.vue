@@ -29,6 +29,7 @@
 import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
 import { mapActions, mapGetters } from 'vuex'
+import { Toast, MessageBox } from 'mint-ui'
 export default {
   components: {
     XInput,
@@ -93,12 +94,18 @@ export default {
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
     },
     _delMsg () {
-      this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
-        this.HTTP_receiverAddress().then(res => {
-          if (this.userInput.is_default === 1) {
-            // alert('请设置默认地址')
-          }
-          this.$router.push({path: '/member/address'})
+      MessageBox({
+        title: '提示',
+        message: '确定执行此操作?',
+        showCancelButton: true
+      }).then(res => {
+        this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
+          this.HTTP_receiverAddress().then(res => {
+            if (this.userInput.is_default === 1) {
+              Toast('请设置一个默认地址!')
+            }
+            this.$router.push({path: '/member/address'})
+          })
         })
       })
     },
@@ -111,12 +118,14 @@ export default {
       if (this.isEditor) {
         this.HTTP_receiverAddressEditor(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
+            Toast('修改成功!')
             this.$router.push({path: '/member/address'})
           })
         })
       } else {
         this.HTTP_receiverAddressAdd(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
+            Toast('添加成功!')
             this.$router.push({path: '/member/address'})
           })
         })

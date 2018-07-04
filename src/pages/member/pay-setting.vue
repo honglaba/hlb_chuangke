@@ -148,7 +148,7 @@ export default {
       } else {
         this.numVal.push(val)
         if (this.resetType === '3') { // 如果当前是在进行身份认证(支付密码), 则在第一次确认后直接请求
-          this.$vux.loading.show()
+          // this.$vux.loading.show()
           let str = ''
           this.numVal.map(r => {
             str += r
@@ -158,7 +158,7 @@ export default {
               this.$vux.loading.hide()
               this.$router.push({path: '/member/paysetting/4'})
             } else {
-              this.$vux.loading.hide()
+              // this.$vux.loading.hide()
               this.$vux.confirm.show({
                 showCancelButton: false,
                 title: '提示',
