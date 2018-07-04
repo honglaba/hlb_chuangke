@@ -64,29 +64,6 @@ export default {
   computed: {
     ...mapState(['receiverAddress'])
   },
-  methods: {
-    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
-    _toggleIsDefault (item) {
-      console.log()
-      if (item.is_default === 0) {
-        this.receiverAddress.forEach(cb => {
-          if (cb.is_default === 1) {
-            cb.is_default = 0
-          } else if (cb.id === item.id) {
-            cb.is_default = 1
-            this.HTTP_receiverAddressEditor(cb)
-          }
-        })
-      }
-    },
-    _toEditor (item) {
-      localStorage.setItem('ReadyEditorAddressItem', JSON.stringify(item))
-      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
-    },
-    routeBack () {
-      this.$router.push({path: '/member/settings'})
-    }
-  },
   created () {
     let flag = this.receiverAddress
 
@@ -100,6 +77,30 @@ export default {
         if (res) this.equal = !this.equal
         this.contentFlag = true
       })
+    }
+  },
+  methods: {
+    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
+    _toggleIsDefault (item) {
+      if (item.is_default === 0) {
+        this.receiverAddress.forEach(cb => {
+          if (cb.is_default === 1) {
+            cb.is_default = 0
+          } else if (cb.id === item.id) {
+            cb.is_default = 1
+            this.HTTP_receiverAddressEditor(cb).then(res => {
+              this.HTTP_receiverAddress()
+            })
+          }
+        })
+      }
+    },
+    _toEditor (item) {
+      localStorage.setItem('beingEditorAddress', JSON.stringify(item))
+      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   },
   components: {

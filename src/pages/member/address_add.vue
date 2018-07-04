@@ -5,7 +5,7 @@
     </x-header>
 
     <div class="main2">
-      <div class="content" v-if="initEnd">
+      <div class="content" v-if="winLock">
         <group>
           <x-input title='收货人姓名' type="text" required v-model="userInput.name" ref="refcode1" :is-type="validator.name" @on-change="keyDown"></x-input>
           <x-input title='手机号码' type="text" required v-model="userInput.mobile_phone" ref="refcode2" is-type="china-mobile" @on-change="keyDown"></x-input>
@@ -39,7 +39,7 @@ export default {
   },
   data () {
     return {
-      initEnd: false,
+      winLock: false,
       isEditor: /* 是否为编辑状态 */false,
       clickAble: /* 提交按钮是否激活 */ false,
       userInput: {
@@ -80,17 +80,16 @@ export default {
   watch: {
     '$route' (to, from) {
       Object.assign(this.$data, this.$options.data())
-      this.initEnd = true
       this.$loadInit()
     }
   },
   created () {
-    this.initEnd = true
     this.$loadInit()
   },
   methods: {
     ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress', 'HTTP_receiverAddressDel']),
     _switchIsDefault () {
+      this.keyDown()
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
     },
     _delMsg () {
@@ -101,8 +100,10 @@ export default {
       }).then(res => {
         this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
           this.HTTP_receiverAddress().then(res => {
-            if (this.userInput.is_default === 1) {
+            if (this.userInput.is_default === 1 && res) {
               Toast('请设置一个默认地址!')
+            } else if (!res) {
+              Toast('您还没有添加收货地址!')
             }
             this.$router.push({path: '/member/address'})
           })
@@ -143,13 +144,14 @@ export default {
       }
     },
     $loadInit () {
-      let item = localStorage.getItem('ReadyEditorAddressItem')
+      let item = localStorage.getItem('beingEditorAddress')
+      this.winLock = true
       if (item) {
+        let x = JSON.parse(item)
         this.isEditor = true
-        let cItem = JSON.parse(item)
-        this.userInput = cItem
-        this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
-        localStorage.removeItem('ReadyEditorAddressItem')
+        this.userInput = x
+        this.areaDefault = ['' + x.province_id, '' + x.city_id, '' + x.borough_id]
+        localStorage.removeItem('beingEditorAddress')
       }
     },
     routeBack () {
