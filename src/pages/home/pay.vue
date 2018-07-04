@@ -53,7 +53,7 @@
             <span class="select-ico"></span>
           </div>
         </li>
-         <li>
+         <!-- <li>
             <span class="ico zhifubao"></span>
             <div class="info">
               <p>支付宝</p>
@@ -62,7 +62,7 @@
                 未绑定，先去绑定
               </router-link>
             </div>
-          </li>
+          </li> -->
       </ul>
     </section>
   </section>
@@ -80,16 +80,19 @@
 </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+import Cookies from 'js-cookie'
 export default {
   data () {
     return {
       binding: false,
-      chuangke: true,
+      chuangke: false,
       commission: true,
       mask: false
     }
   },
   methods: {
+    ...mapActions(['HTTP_pay']),
     showTip: function () {
       this.mask = true
     },
@@ -113,6 +116,51 @@ export default {
 
     // let aa = 'http://localhost:8080/#/author?refresh_token=def50200dbced80175aa0bc2e549b557abae855539116fc8f2fa4550d8acbf096a98681d90cca91ab99d65726c6d5e7d965963e6dc9f1375657e71f62f99435448560b007417d871e580a647c5bc989c5008e3e3ca96f80093b5ffaee1c491b88a2b5b4e43e1572bd8d4ad363823e09f727f0b67604c7b8b3eb1b89b773cf5d49131c5e5a804f28628e5996f9514fa6d8685e4e347d8216ac5483c1af95ab53e4de10f1ae89d7ef0b1a396df42b7685afb5fd154fc4b62becc622a70bf0e9c4b3c03f73b4e85f3812909acaf0ae5be8dbafb9b718419385b3b4f20dd9350ba3755d1de5d9c5d14c8f70f787985f7778501ae176f5c4e12fb9e8879679b5fbbb81ebb315a62765da0778263fcd60782996b130207dc5fdb4f5b386b4c65139e3d50fa9f07a14b15e5a95e80f9eb3a835131f7e32430b73a479d1333b507e57de6b38fb462a211ef106812a1c9a6b3df8abc520ee434d97fa358868fd26b5eb585&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjYxMzJhMzgyNWIxOWRhOGJmMTBjZjE0NDI0MThmNGExMWNlZTZhZDBiYWRmZjE3MjVkZTc1NTNkOGZhMTFiYjA2YTIyNDkzMWVlZTY0MWUyIn0.eyJhdWQiOiIxMSIsImp0aSI6IjYxMzJhMzgyNWIxOWRhOGJmMTBjZjE0NDI0MThmNGExMWNlZTZhZDBiYWRmZjE3MjVkZTc1NTNkOGZhMTFiYjA2YTIyNDkzMWVlZTY0MWUyIiwiaWF0IjoxNTI4ODcxNzU5LCJuYmYiOjE1Mjg4NzE3NTksImV4cCI6MTUyODg3NTM1OSwic3ViIjoiMyIsInNjb3BlcyI6W119.TA1BrRb05NaD9yid0HMq9APhCABidlADRLhdqBKc-6HPhOpq16LEkAHSuR0kedxb-xCCQhqcs_yz6eJQP3UenKNI11imFjfg7VJXbiBkhY9w6HOocHWClueIa9mb-j6Ijvup3WbG5q-wYHL_q24Y2muLI7ZYHHr15RhKIuuXoId6AZBBDx3hpVwCZKC6tWMXMTWhdHVw7d94xLfdRFpZ5zG5z718gopC83jGicfVgpa1i9WQy6pkKsgTNkM_1C19mFoKnwCJfXRUr3D1HZrt0w67TlxW5orlFi3HsXtpXtuxHeENYCwabL80fVn__Bz00bV6jSYsRbCasbSJXG7UtN753jilwmclO3IInvABTlJdeRyNu5g6XCaaKQvjx_dbsM0L34uGBmCfVb3jLWmqLPpKxcru7NeBADJ3Y0myIynOlZ8cjGgt91PMBXa_l81C3mBn0tjApP6y8-Q9Fcq2J9oI_YFAvcQJJ1vY1-DL-lStHc2u-LRhlFqS-ncgswIh0PSWsVwdFj0XehHto29wONvUaqxik-Upj8CKyEUdFk274sUbe97bZs9nIsRYCrR9TIfMBTkafKQTxWAA1Mq1eHwtNb78b-YIYmhFJLXU4gY0QjU7eblHgB0P6tXDna9LjWD7mCElCkoYvDPF2ZwfduJG1sj_zPcSWOFo1zF4Cuc&expires_in=3600&client_id=11&return_state=success&result_state=success&isset_phone=0'
     // console.log(aa.split('&'))
+
+    // 原始
+    // this.axios.post('/api/pay-order',
+    //   {
+    //     price: '0.01',
+    //     sid: '1',
+    //     trade_type: 'jsapi'
+    //   }, {
+    //     headers: {
+    //       'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlkODU4ZjQ5MmFmYWJkMjVkMTEwMDAyZjNmMjdmMDU4MjQ4NjY3ZDExY2U5YWFhNzQ5MGU3ODQzYWNmMTA5OGExMWFiOTExMTVkNTFiY2YwIn0.eyJhdWQiOiIxMiIsImp0aSI6IjlkODU4ZjQ5MmFmYWJkMjVkMTEwMDAyZjNmMjdmMDU4MjQ4NjY3ZDExY2U5YWFhNzQ5MGU3ODQzYWNmMTA5OGExMWFiOTExMTVkNTFiY2YwIiwiaWF0IjoxNTMwNjczNTExLCJuYmYiOjE1MzA2NzM1MTEsImV4cCI6MTUzMDY4NDMxMSwic3ViIjoiNCIsInNjb3BlcyI6W119.cVmyVVFgwOqKGzhMxIRa-g6dIRUw7rKs1IculPB1R3lMDSARe5o3LMvXc7N8C-XmqNa40sPBuIsAWNU8IWlDSH_1UKvvcnPx0idyn9RovEsksSJCaFGKwgmWkcLiv_EoOzKIXpYvmfrrgw-VS9lAopL4HNEw87-oa23oOX88zwFDKGGRgzG6rqgRtqVJB4CJU2ITl-r2JO9qgQgUGkBG1G6SAlXVsIfFWqVvJUuGnNu5hy4UxIdbqYOZGUF5zoxy_YCeuuTXrE2Wv9a5RSRa_MEd9N1SGcSt_3xM4a8g6UbfEWFKUe_hDspLwEfk_KzOeY0i2iJSLdtTMdWuAKUnCRqxpUlZBrLBZ6yVJ0WKs-kYd106bMRITBEbhbjkynqfWNt9QzH-0bmbVS2dGhlmA1syzOjuAOiY2TpGBapa1l-zjmPPg_sHzdZ2RZoKqGf6hLYciOx0AMH49wf0JlV3PxkH-hd-u--0JdxTqqLU2tgdQpoF1znMmDq4Mh0hj8En82JB_S30gorZmA5LgyiMl7n4P33U8kFMU_IJaKGEuNrEQ8CYvSXGA8_j3K674P2hXib0yfhqxUub5x9nGTBOJC77hKleL67DQDKmKdFewdjnTkzgRWB0lIRvpGfmPtcEBU8SEOeGMMPMg0krEBAgYifTMxfvxQJFA2iUAnoFAFI'
+    //     }
+    //   }).then(res => {
+    //   console.log(res)
+
+    //   let result = res.data
+    //   result.prepay_id = result.package.split('prepay_id=').join('')
+    //   WeixinJSBridge.invoke(
+    //     'getBrandWCPayRequest', {
+    //       'appId': result.appId,
+    //       'timeStamp': result.timeStamp,
+    //       'nonceStr': result.nonceStr,
+    //       'package': result.prepay_id,
+    //       'signType': result.signType,
+    //       'paySign': result.paySign
+    //     }, function (res) {
+    //       alert(res.errMsg)
+    //     })
+    // })
+
+    // vuex方式
+    this.HTTP_pay().then(res => {
+      let result = res.data
+      result.prepay_id = result.package.split('prepay_id=').join('')
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          'appId': result.appId,
+          'timeStamp': result.timeStamp,
+          'nonceStr': result.nonceStr,
+          'package': result.prepay_id,
+          'signType': result.signType,
+          'paySign': result.paySign
+        }, function (res) {
+          alert(res.errMsg)
+        })
+    })
   }
 }
 </script>
