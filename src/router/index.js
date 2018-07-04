@@ -65,7 +65,6 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -458,11 +457,16 @@ const router = new VueRouter({
 })
 
 router.beforeEach((To, From, next) => {
-  let historyTargetPath = localStorage.getItem('historyTargetPath')
+  let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
   let specialPaths = ['/member', '/member/settings'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
   function getRedirectUrl () {
+    /* 初始化 */
+    Cookies.remove('refreshToken')
+    Cookies.remove('accessToken')
+    localStorage.clear()
+    localStorage.setItem('historyTargetPath', To.path)
     apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
       window.location.href = res.redirect
     })
@@ -473,8 +477,10 @@ router.beforeEach((To, From, next) => {
     return
   }
 
-  if (historyTargetPath) { // 如果存在历史跳转地址,说明当前为授权状态,处理url
+  if (historyTargetPath && !localStorage.getItem('userInfo')) { // 如果存在历史跳转地址且没有用户信息时,说明当前为授权状态,处理url
     let local = window.location.href
+    let hisUrl = historyTargetPath
+    localStorage.clear() // 授权状态全部初始化
     if (
       local.indexOf('access_token') > 0 &&
       local.indexOf('refresh_token') > 0
@@ -487,6 +493,7 @@ router.beforeEach((To, From, next) => {
         let items = list[i].split('=')
         hashes[items[0]] = items[1]
       }
+
       localStorage.setItem('client_id', hashes.client_id)
 
       // cookie
@@ -497,36 +504,63 @@ router.beforeEach((To, From, next) => {
         .then(res => {
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SAVE_USER_INFO', res.data)
-          localStorage.removeItem('historyTargetPath') // 移除
-          next({path: historyTargetPath})
+          next({path: hisUrl})
         })
       return
     }
   }
 
-  if (!localStorage.getItem('userInfo')) { // 没有用户信息
-    if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
-      localStorage.setItem('historyTargetPath', To.path)
+  if (window.navigator.userAgent.match(/MicroMessenger/i)) {
+    if (!localStorage.getItem('userInfo')) {
+      // 清空所有数据, 再请求
+      getRedirectUrl()
+    }
+  } else {
+    let Path = To.fullPath
+
+    if (Path !== '/' && Path.substr(-1, 1) === '/') {
+      Path = Path.slice(0, Path.length - 1)
+    }
+    specialPaths.forEach(e => {
+      if (e === Path) {
+        isMatched = true
+      }
+    })
+
+    if (isMatched) {
       getRedirectUrl()
       return
-    } else {
-      let Path = To.fullPath
-
-      if (Path !== '/' && Path.substr(-1, 1) === '/') {
-        Path = Path.slice(0, Path.length - 1)
-      }
-      specialPaths.forEach(e => {
-        if (e === Path) {
-          isMatched = true
-        }
-      })
-
-      if (isMatched) {
-        // 未定
-        return
-      }
     }
   }
+
+  // if (!localStorage.getItem('userInfo')) { // 没有用户信息
+  //   /* 初始化 */
+  //   Cookies.remove('refreshToken')
+  //   Cookies.remove('accessToken')
+  //   localStorage.clear()
+
+  //   if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
+  //     localStorage.setItem('historyTargetPath', To.path)
+  //     getRedirectUrl()
+  //     return
+  //   } else {
+  //     let Path = To.fullPath
+
+  //     if (Path !== '/' && Path.substr(-1, 1) === '/') {
+  //       Path = Path.slice(0, Path.length - 1)
+  //     }
+  //     specialPaths.forEach(e => {
+  //       if (e === Path) {
+  //         isMatched = true
+  //       }
+  //     })
+
+  //     if (isMatched) {
+  //       // 未定
+  //       return
+  //     }
+  //   }
+  // }
 
   next() // 无阻碍直接跳转
 })

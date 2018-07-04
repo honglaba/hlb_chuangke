@@ -173,7 +173,6 @@ export default {
       // 2级分类
       id ? id = id : id = 1
       this.axios.get('/api/shop-category?parent=' + id).then(res => {
-        console.log(res)
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
@@ -185,7 +184,7 @@ export default {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
       id ? id = id : id = 1
-      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + id).then(res => {
         console.log(res)
         if (res.next_page_url != null) {
           this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('')
@@ -282,6 +281,9 @@ export default {
     float: left;
     margin-right: 0.2rem;
     margin-bottom: 0.18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .cur {
     color: #f60;

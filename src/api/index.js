@@ -1,14 +1,14 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { MessageBox } from 'mint-ui'
 
 // 配置axios对象
 let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'
 axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-// 请求过期时间 6s
-axios.defaults.timeout = 6000
+// 请求过期时间 8s
+axios.defaults.timeout = 8000
 
-// window.isRefreshing = false
 /* 被挂起的请求数组 */
 let refreshSubscribers = []
 // let count = 0
@@ -23,18 +23,22 @@ axios.interceptors.request.use(config => {
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
     if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
-      alert('刷新token过期,请重新登录!')
-      // 清空所有cookie,localStorage
-      localStorage.clear()
-      Cookies.remove('accessToken')
-      Cookies.remove('refreshToken')
+      MessageBox({
+        title: '提示',
+        message: '登录超时'
+      }).then(res => {
+        // 清空所有cookie,localStorage
+        localStorage.clear()
+        Cookies.remove('accessToken')
+        location.reload()
+        // Cookies.remove('refreshToken')
+      })
       return
     }
 
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
-      // window.isRefreshing = true
       let xhr = new XMLHttpRequest()
-      xhr.open('POST', location.origin + '/api_proxy/api/login/refresh')
+      xhr.open('POST', EnvUrl + '/api/login/refresh')
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({
@@ -42,15 +46,25 @@ axios.interceptors.request.use(config => {
       }))
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          // console.log(count++)
-          window.isRefreshing = false
-          let accessToken = JSON.parse(xhr.response).access_token
-          config.headers.Authorization = 'Bearer ' + accessToken
-          Cookies.set('accessToken', accessToken, {
-            expires: 1 / 36
-          })
-          // Cookies.set('accessToken', accessToken, { expires: new Date(new Date().getTime() + 5 * 1000) })
-          onRrefreshed(accessToken)
+          let responseJSON = JSON.parse(xhr.response)
+          if (responseJSON.result_state === 'success') { // 请求成功code值
+            let accessToken = responseJSON.data.access_token
+            config.headers.Authorization = 'Bearer ' + accessToken
+            Cookies.set('accessToken', accessToken, {
+              expires: 1 / 36
+            })
+            onRrefreshed(accessToken)
+          } else if (responseJSON.result_state === 'error') {
+            MessageBox({
+              title: '提示',
+              message: '登录超时'
+            }).then(res => {
+              Cookies.remove('refreshToken')
+              Cookies.remove('accessToken')
+              localStorage.clear()
+              location.reload()
+            })
+          }
         }
       }
       let retry = new Promise((resolve, reject) => {
@@ -63,7 +77,6 @@ axios.interceptors.request.use(config => {
       return retry
     }
   }
-  // console.log(config)
   return config
 }, error => {
   // Do something with request error

@@ -3,8 +3,9 @@
     <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </x-header>
+
     <div class="main2">
-      <div class="content" v-if="initEnd">
+      <div class="content" v-if="winLock">
         <group>
           <x-input title='收货人姓名' type="text" required v-model="userInput.name" ref="refcode1" :is-type="validator.name" @on-change="keyDown"></x-input>
           <x-input title='手机号码' type="text" required v-model="userInput.mobile_phone" ref="refcode2" is-type="china-mobile" @on-change="keyDown"></x-input>
@@ -28,6 +29,7 @@
 import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
 import { mapActions, mapGetters } from 'vuex'
+import { Toast, MessageBox } from 'mint-ui'
 export default {
   components: {
     XInput,
@@ -37,7 +39,7 @@ export default {
   },
   data () {
     return {
-      initEnd: false,
+      winLock: false,
       isEditor: /* 是否为编辑状态 */false,
       clickAble: /* 提交按钮是否激活 */ false,
       userInput: {
@@ -54,10 +56,11 @@ export default {
       validator: {
         // 验证
         name (val) {
+          let pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
           // 收货人姓名
           let realVal = val.replace(' ', '')
           return {
-            valid: !!realVal.match(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/),
+            valid: !pattern.test(realVal),
             msg: '姓名格式不正确!'
           }
         },
@@ -77,7 +80,6 @@ export default {
   watch: {
     '$route' (to, from) {
       Object.assign(this.$data, this.$options.data())
-      this.initEnd = true
       this.$loadInit()
     }
   },
@@ -87,15 +89,24 @@ export default {
   methods: {
     ...mapActions(['HTTP_receiverAddressAdd', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress', 'HTTP_receiverAddressDel']),
     _switchIsDefault () {
+      this.keyDown()
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
     },
     _delMsg () {
-      this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
-        this.HTTP_receiverAddress().then(res => {
-          if (this.userInput.is_default === 1) {
-            alert('请设置默认地址')
-          }
-          this.$router.push({path: '/member/address'})
+      MessageBox({
+        title: '提示',
+        message: '确定执行此操作?',
+        showCancelButton: true
+      }).then(res => {
+        this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
+          this.HTTP_receiverAddress().then(res => {
+            if (this.userInput.is_default === 1 && res) {
+              Toast('请设置一个默认地址!')
+            } else if (!res) {
+              Toast('您还没有添加收货地址!')
+            }
+            this.$router.push({path: '/member/address'})
+          })
         })
       })
     },
@@ -108,12 +119,14 @@ export default {
       if (this.isEditor) {
         this.HTTP_receiverAddressEditor(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
+            Toast('修改成功!')
             this.$router.push({path: '/member/address'})
           })
         })
       } else {
         this.HTTP_receiverAddressAdd(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
+            Toast('添加成功!')
             this.$router.push({path: '/member/address'})
           })
         })
@@ -131,14 +144,14 @@ export default {
       }
     },
     $loadInit () {
-      let item = localStorage.getItem('ReadyEditorAddressItem')
+      let item = localStorage.getItem('beingEditorAddress')
+      this.winLock = true
       if (item) {
+        let x = JSON.parse(item)
         this.isEditor = true
-        let cItem = JSON.parse(item)
-        this.userInput = cItem
-        this.areaDefault = ['' + cItem.province_id, '' + cItem.city_id, '' + cItem.borough_id]
-        localStorage.removeItem('ReadyEditorAddressItem')
-        this.initEnd = true
+        this.userInput = x
+        this.areaDefault = ['' + x.province_id, '' + x.city_id, '' + x.borough_id]
+        localStorage.removeItem('beingEditorAddress')
       }
     },
     routeBack () {

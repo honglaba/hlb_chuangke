@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="DataTree.mobile_phone ? '更改手机号' : '绑定手机号'">
-    </x-header>
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="DataTree.mobile_phone ? '更改手机号' : '绑定手机号'"></x-header>
     <div class="main2">
 
       <div class="content-a" v-if="switchWindow">
@@ -44,6 +43,7 @@
 <script>
 import { XInput, Group, Divider, Spinner } from 'vux'
 import { mapActions } from 'vuex'
+import { Toast } from 'mint-ui'
 export default {
   props: {
     DataTree: {
@@ -56,13 +56,14 @@ export default {
       switchWindow: false,
       clickAble: /* 提交按钮是否可点击 */ false,
       sendAble: /* 验证码是否可发送 */ false,
+      isGetVerificationCode: /* 验证码是否已发送 */false,
       countDown: /* 验证码倒计时 */ null,
       my_mobile_phone: '',
       verification_code: '',
       validator_verification: val => {
         return {
-          valid: !!val.match(/^[0-9]{5}$/),
-          msg: '姓名格式不正确!'
+          valid: !!val.match(/^[0-9]/),
+          msg: '格式不正确!'
         }
       }
     }
@@ -95,38 +96,33 @@ export default {
     ]),
     keydown () {
       this.sendAble = this.$refs.refPhone.valid
-      this.clickAble = this.$refs.refValidator.valid
+      this.clickAble = this.$refs.refValidator.valid && this.isGetVerificationCode
     },
-    _getVerificationCode () {
+    _getVerificationCode () { // 获取验证码
+      this.isGetVerificationCode = true
       if (this.sendAble) {
-        this.$vux.toast.hide()
-        this.$vux.toast.show({
-          text: '验证码已发送',
-          type: 'text',
-          time: 1000
-        })
+        Toast('验证码已发送!')
         this.countDown = 60
         let timer = setInterval(() => {
           if (this.countDown === 0) {
             this.countDown = null
             clearInterval(timer)
-            return
+          } else {
+            this.countDown--
           }
-          this.countDown--
         }, 1000)
         this.HTTP_verification(this.my_mobile_phone)
       } else {
-        this.$vux.toast.hide()
-        this.$vux.toast.show({
-          text: '请填写正确的手机号',
-          type: 'text',
-          width: '12em',
-          time: 1000
-        })
+        Toast('请填写正确的手机号!')
       }
     },
     _lastToBind () {
-      if (this.clickAble) {
+      if (!this.$refs.refPhone.valid || !this.$refs.refValidator.valid) {
+        Toast('请填写正确的格式!')
+        return
+      }
+
+      if (this.clickAble && this.sendAble && this.isGetVerificationCode) {
         if (this.DataTree.mobile_phone) {
           this.HTTP_resetPhone({
             mobile_phone: this.my_mobile_phone,
@@ -162,6 +158,7 @@ export default {
                   time: 1000
                 })
               } else {
+                this.verification_code = ''
                 this.$vux.toast.show({
                   text: '验证码不正确',
                   type: 'text',

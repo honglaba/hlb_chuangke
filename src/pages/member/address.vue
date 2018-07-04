@@ -14,7 +14,7 @@
 
         <div class="addresslist" v-else>
           <ul>
-            <li v-for="item in receiverAddressGetter" :key="item.id">
+            <li v-for="item in receiverAddress" :key="item.id">
               <div class="info">
                 <div class="left">
                   <div class="a1">
@@ -38,12 +38,13 @@
           </ul>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 <script>
 import { Divider } from 'vux'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -51,33 +52,20 @@ export default {
       contentFlag: false
     }
   },
-  computed: {
-    ...mapGetters(['receiverAddressGetter'])
-  },
-  methods: {
-    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
-    _toggleIsDefault (item) {
-      if (item.is_default === 0) {
-        this.receiverAddressGetter.forEach(cb => {
-          if (cb.is_default === 1) {
-            cb.is_default = 0
-          } else if (cb.id === item.id) {
-            cb.is_default = 1
-            this.HTTP_receiverAddressEditor(cb)
-          }
-        })
+  watch: {
+    '$route' (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      this.contentFlag = true
+      if (this.receiverAddress.length > 0) {
+        this.equal = true
       }
-    },
-    _toEditor (item) {
-      localStorage.setItem('ReadyEditorAddressItem', JSON.stringify(item))
-      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
-    },
-    routeBack () {
-      this.$router.push({path: '/member/settings'})
     }
   },
+  computed: {
+    ...mapState(['receiverAddress'])
+  },
   created () {
-    let flag = this.receiverAddressGetter
+    let flag = this.receiverAddress
 
     if (flag) {
       if (flag.length > 0) {
@@ -89,6 +77,30 @@ export default {
         if (res) this.equal = !this.equal
         this.contentFlag = true
       })
+    }
+  },
+  methods: {
+    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
+    _toggleIsDefault (item) {
+      if (item.is_default === 0) {
+        this.receiverAddress.forEach(cb => {
+          if (cb.is_default === 1) {
+            cb.is_default = 0
+          } else if (cb.id === item.id) {
+            cb.is_default = 1
+            this.HTTP_receiverAddressEditor(cb).then(res => {
+              this.HTTP_receiverAddress()
+            })
+          }
+        })
+      }
+    },
+    _toEditor (item) {
+      localStorage.setItem('beingEditorAddress', JSON.stringify(item))
+      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    },
+    routeBack () {
+      this.$router.push({path: '/member/settings'})
     }
   },
   components: {

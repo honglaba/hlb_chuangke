@@ -9,7 +9,9 @@
           <div class="swiper-slide"><img src="./images/home-banner-img1.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img2.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img3.png" /></div>
+          <!-- <div class="swiper-slide" v-for="item in banner" :key="item.id"><img :src="item.img_path"></div> -->
         </div>
+
       </div>
 
       <div class="swiper-container nav-swiper">
@@ -245,11 +247,12 @@
 <script>
 import ListInner from '../../components/common/listInner/listInner'
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'App',
   data () {
     return {
+      banner: '',
       transitionName: 'slide-right',
       businessList: [
         {
@@ -264,7 +267,17 @@ export default {
     }
   },
   components: { ListInner },
-  methods: {},
+  methods: {
+    ...mapActions(['APP_Banner'])
+  },
+  created () {
+    // this.APP_Banner('nearby').then(res => {
+    //   console.log(res, 'nearby')
+    // })
+    this.APP_Banner('index').then(res => {
+      this.banner = res.data
+    })
+  },
   mounted () {
     /* eslint-disable */
     new Swiper(".banner-swiper", {

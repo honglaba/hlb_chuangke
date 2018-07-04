@@ -90,7 +90,7 @@ export default {
           // console.log('2')
           break
         case '3':
-          this.paytitle = '请输入支付密码,验证身份'
+          this.paytitle = '请输入原支付密码,验证身份'
           break
         case '4':
           // console.log('4')
@@ -148,7 +148,7 @@ export default {
       } else {
         this.numVal.push(val)
         if (this.resetType === '3') { // 如果当前是在进行身份认证(支付密码), 则在第一次确认后直接请求
-          this.$vux.loading.show()
+          // this.$vux.loading.show()
           let str = ''
           this.numVal.map(r => {
             str += r
@@ -158,11 +158,11 @@ export default {
               this.$vux.loading.hide()
               this.$router.push({path: '/member/paysetting/4'})
             } else {
-              this.$vux.loading.hide()
+              // this.$vux.loading.hide()
               this.$vux.confirm.show({
                 showCancelButton: false,
                 title: '提示',
-                content: '请输入正确的支付密码',
+                content: '请输入正确的原支付密码',
                 onHide () {
                   _this.numVal = []
                 }
