@@ -5,6 +5,9 @@ const mutations = {
   SAVE_RECEIVER_ADDRESS (state, val) { // 物流地址
     state.receiverAddress = val
   },
+  SAVE_BEING_EDITOR_ADDRESS (state, val) {
+    state.beingEditorAddress = val
+  },
   CLEAR_STATE (state) { // state 清空
     state.userInfo = ''
     state.receiverAddress = ''

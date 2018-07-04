@@ -63,7 +63,6 @@ import feedback from '@/pages/article/feedback' // 问题反馈
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -447,6 +446,11 @@ router.beforeEach((To, From, next) => {
   let isMatched = false
 
   function getRedirectUrl () {
+    /* 初始化 */
+    Cookies.remove('refreshToken')
+    Cookies.remove('accessToken')
+    localStorage.clear()
+    localStorage.setItem('historyTargetPath', To.path)
     apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
       window.location.href = res.redirect
     })
@@ -490,30 +494,57 @@ router.beforeEach((To, From, next) => {
     }
   }
 
-  if (!localStorage.getItem('userInfo')) { // 没有用户信息
-    if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
-      localStorage.clear()
-      localStorage.setItem('historyTargetPath', To.path)
+  if (window.navigator.userAgent.match(/MicroMessenger/i)) {
+    if (!localStorage.getItem('userInfo')) {
+      // 清空所有数据, 再请求
+      getRedirectUrl()
+    }
+  } else {
+    let Path = To.fullPath
+
+    if (Path !== '/' && Path.substr(-1, 1) === '/') {
+      Path = Path.slice(0, Path.length - 1)
+    }
+    specialPaths.forEach(e => {
+      if (e === Path) {
+        isMatched = true
+      }
+    })
+
+    if (isMatched) {
       getRedirectUrl()
       return
-    } else {
-      let Path = To.fullPath
-
-      if (Path !== '/' && Path.substr(-1, 1) === '/') {
-        Path = Path.slice(0, Path.length - 1)
-      }
-      specialPaths.forEach(e => {
-        if (e === Path) {
-          isMatched = true
-        }
-      })
-
-      if (isMatched) {
-        // 未定
-        return
-      }
     }
   }
+
+  // if (!localStorage.getItem('userInfo')) { // 没有用户信息
+  //   /* 初始化 */
+  //   Cookies.remove('refreshToken')
+  //   Cookies.remove('accessToken')
+  //   localStorage.clear()
+
+  //   if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
+  //     localStorage.setItem('historyTargetPath', To.path)
+  //     getRedirectUrl()
+  //     return
+  //   } else {
+  //     let Path = To.fullPath
+
+  //     if (Path !== '/' && Path.substr(-1, 1) === '/') {
+  //       Path = Path.slice(0, Path.length - 1)
+  //     }
+  //     specialPaths.forEach(e => {
+  //       if (e === Path) {
+  //         isMatched = true
+  //       }
+  //     })
+
+  //     if (isMatched) {
+  //       // 未定
+  //       return
+  //     }
+  //   }
+  // }
 
   next() // 无阻碍直接跳转
 })
