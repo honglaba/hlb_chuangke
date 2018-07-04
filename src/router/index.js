@@ -24,6 +24,7 @@ import weika_route from '@/pages/weika/weika_route'
 import WeikaIndex from '@/pages/weika/index' // 默认首页
 import WeikaVip from '@/pages/weika/vip' // vip首页
 import WeikaReg from '@/pages/weika/reg' // 邀请注册微卡
+import choosegoods from '@/pages/weika/choosegoods' // 选择微卡商品
 import WeikaPay from '@/pages/weika/pay' // 微卡支付
 import withdraw from '@/pages/weika/withdraw' // 提现
 import withdraw_log from '@/pages/weika/withdraw_log' // 提现记录
@@ -40,7 +41,8 @@ import exchange from '@/pages/member/exchange' // 我要兑换
 import exchange_log from '@/pages/member/exchange_log' // 兑换记录
 import points from '@/pages/member/points' // 我的积分
 import points_log from '@/pages/member/points_log' // 积分记录
-import myorder from '@/pages/member/myorder' // 积分记录
+import order_list from '@/pages/member/order/order_list' // 订单列表
+import order_detail from '@/pages/member/order/order_detail' // 订单详情
 import MemberLogin from '@/pages/member/login' // 登录、注册绑定手机
 import MemberIndex from '@/pages/member/index'
 import phone_update from '@/pages/member/phone_update'// 更改手机号
@@ -268,6 +270,13 @@ const router = new VueRouter({
       meta: {
         title: '微卡支付'
       }
+    }, {
+      path: 'choosegoods',
+      name: 'choosegoods',
+      component: choosegoods,
+      meta: {
+        title: '选择微卡商品'
+      }
     }
     ]
   },
@@ -350,9 +359,16 @@ const router = new VueRouter({
           title: '积分记录'
         }
       }, {
-        path: 'myorder/:id',
-        name: 'myorder',
-        component: myorder,
+        path: 'order/order_list/:status',
+        name: 'order_list',
+        component: order_list,
+        meta: {
+          title: '帮助详情'
+        }
+      }, {
+        path: 'order/order_detail/:id',
+        name: 'order_detail',
+        component: order_detail,
         meta: {
           title: '帮助详情'
         }
