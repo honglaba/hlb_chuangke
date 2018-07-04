@@ -492,6 +492,7 @@ router.beforeEach((To, From, next) => {
 
   if (!localStorage.getItem('userInfo')) { // 没有用户信息
     if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
+      localStorage.clear()
       localStorage.setItem('historyTargetPath', To.path)
       getRedirectUrl()
       return

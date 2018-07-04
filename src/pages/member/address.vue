@@ -38,8 +38,7 @@
           </ul>
         </div>
       </div>
-      <!-- <div v-if="contentFlag">fsdafsdafsdadsfsafsadfsa</div>
-      <button @click="contentFlag = !contentFlag">aaaaaaaaaaaaaa</button> -->
+
     </div>
   </div>
 </template>
@@ -57,7 +56,6 @@ export default {
     '$route' (to, from) {
       Object.assign(this.$data, this.$options.data())
       this.contentFlag = true
-      console.log(this.contentFlag)
       if (this.receiverAddress.length > 0) {
         this.equal = true
       }
@@ -69,8 +67,9 @@ export default {
   methods: {
     ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
     _toggleIsDefault (item) {
+      console.log()
       if (item.is_default === 0) {
-        this.receiverAddressGetter.forEach(cb => {
+        this.receiverAddress.forEach(cb => {
           if (cb.is_default === 1) {
             cb.is_default = 0
           } else if (cb.id === item.id) {

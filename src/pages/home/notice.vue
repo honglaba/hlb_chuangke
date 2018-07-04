@@ -3,104 +3,105 @@
     <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" title="消息公告"></x-header>
     <section>
       <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
-        <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>消息</tab-item>
-        <tab-item @on-item-click="handler" @click.native="tab" data-id=2>公告</tab-item>
+        <tab-item @click.native="nowSeen = 1" selected>消息</tab-item>
+        <tab-item @click.native="nowSeen = 2">公告</tab-item>
       </tab>
-      <div>
-        <ul class="notice-list" v-if="nowSeen==1">
-          <li>
-            <div class="time">2018-05-08 21:08:58</div>
-            <div class="inner type1">
-              <div class="bmar20">
-                <div class="y-flex y-ac">
-                  <span class="activeico">活动</span>
-                  <p>5.15创客开启新航信之旅，奖励翻倍</p>
-                </div>
-                <div class="pic"><img src="./images/notice-banner.png" /></div>
-                <p class="fz26 c999 lh40">5.15创客开启新航信之旅，奖励翻倍5.15创客开启新航线之旅，奖励翻倍</p>
-              </div>
-              <router-link to="#" class="vux-1px-t">
-                立即查看
-                <span></span>
-              </router-link>
-            </div>
-          </li>
-          <li>
-            <div class="time">2018-05-08 21:08:58</div>
-            <div class="inner type1">
-              <div class="bmar20">
-                <div class="y-flex y-ac bmar44">
-                  <span class="sysico">系统</span>
-                  <p>5.15创客开启新航信之旅，奖励翻倍</p>
-                </div>
-                <p class="fz26 c999 lh40">5.15创客开启新航信之旅，奖励翻倍5.15创客开启新航线之旅，奖励翻倍</p>
-              </div>
-              <router-link to="#" class="vux-1px-t">
-                立即查看
-                <span></span>
-              </router-link>
-            </div>
-          </li>
-        </ul>
+      <div class="tab-content" v-if="flag">
 
-        <ul class="notice-list" v-if="nowSeen==2">
-          <li>
-            <div class="time">2018-05-08 21:08:58</div>
-            <div class="inner">
-              <div class="txt">
-                <p>优惠券即将到期通知</p>
-                <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+        <!-- 没有信息时显示的图片 -->
+        <div class="no-message-img" v-if="(nowSeen === 1 && StatuA.data.length === 0) || (nowSeen === 2 && StatuB.data.length === 0)">
+          <img src="~static/images/noMessage.png">
+          <span>哎呦呦! 这里还没有任何信息哦~</span>
+        </div>
+
+        <div v-if="nowSeen === 1 && StatuA.data.length > 0">
+          <ul class="notice-list">
+            <li>
+              <div class="time">2018-05-08 21:08:58</div>
+              <div class="inner type1">
+                <div class="bmar20">
+                  <div class="y-flex y-ac">
+                    <span class="activeico">活动</span>
+                    <p>5.15创客开启新航信之旅，奖励翻倍</p>
+                  </div>
+                  <div class="pic"><img src="./images/notice-banner.png" /></div>
+                  <p class="fz26 c999 lh40">5.15创客开启新航信之旅，奖励翻倍5.15创客开启新航线之旅，奖励翻倍</p>
+                </div>
+                <router-link to="#" class="vux-1px-t">
+                  立即查看
+                  <span></span>
+                </router-link>
               </div>
-              <router-link to="#" class="vux-1px-t">
-                立即查看
-                <span></span>
-              </router-link>
-            </div>
-          </li>
-          <li class="sp">
-            <div class="time">2018-05-08 21:08:58</div>
-            <div class="inner">
-              <div class="txt">
-                <p>优惠券即将到期通知</p>
-                <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="nowSeen === 2 && StatuB.data.length > 0">
+          <ul class="notice-list">
+            <li>
+              <div class="time">2018-05-08 21:08:58</div>
+              <div class="inner">
+                <div class="txt">
+                  <p>优惠券即将到期通知</p>
+                  <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+                </div>
+                <router-link to="#" class="vux-1px-t">
+                  立即查看
+                  <span></span>
+                </router-link>
               </div>
-              <router-link to="#" class="vux-1px-t">
-                立即查看
-                <span></span>
-              </router-link>
-            </div>
-          </li>
-        </ul>
+            </li>
+            <li class="sp">
+              <div class="time">2018-05-08 21:08:58</div>
+              <div class="inner">
+                <div class="txt">
+                  <p>优惠券即将到期通知</p>
+                  <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+                </div>
+                <router-link to="#" class="vux-1px-t">
+                  立即查看
+                  <span></span>
+                </router-link>
+              </div>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </section>
   </div>
 </template>
 <script>
 import { Tab, TabItem } from 'vux'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      nowSeen: '1'
+      flag: false,
+      nowSeen: 1,
+      StatuA: {},
+      StatuB: {}
     }
   },
   components: {
     Tab,
     TabItem
   },
+  async created () {
+    await this.User_Message(1).then(res => {
+      this.flag = true
+      this.StatuA = res
+    })
+    await this.User_Message(2).then(res => {
+      this.StatuB = res
+    })
+  },
   methods: {
+    ...mapActions(['User_Message']),
     routeBack () {
       // window.webkit.messageHandlers.show.postMessage('hello，world') // ios callback
-      this.$router.push({path: '/home'})
-    },
-    tab: function (e) {
-      this.nowSeen = e.target.getAttribute('data-id')
-      window.location = 'http://baidu.com'
+      this.$router.push({ path: '/home' })
     }
-  },
-  mounted () {
-    this.axios.get('/api/message?type=2').then(res => {
-      console.log(res)
-    })
   }
 }
 </script>
@@ -122,6 +123,22 @@ export default {
     }
   }
 }
+
+// 没有数据显示的图片
+.no-message-img {
+  width: 5.5rem;
+  margin: 1.8rem auto;
+  color: #999999;
+  font-size: .3rem;
+  text-align: center;
+  img {
+    width: 3rem;
+    display: block;
+    margin: 0 auto;
+    padding-bottom: .4rem;
+  }
+}
+
 .notice-list {
   padding-top: 0.4rem;
   > li {

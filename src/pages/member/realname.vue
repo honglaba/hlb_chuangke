@@ -74,6 +74,7 @@ export default {
               })
             })
           } else {
+            console.log(res)
             this.$vux.confirm.show({
               showCancelButton: false,
               title: '提示',

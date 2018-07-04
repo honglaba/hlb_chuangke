@@ -55,10 +55,11 @@ export default {
       validator: {
         // 验证
         name (val) {
+          let pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
           // 收货人姓名
           let realVal = val.replace(' ', '')
           return {
-            valid: !!realVal.match(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/),
+            valid: !pattern.test(realVal),
             msg: '姓名格式不正确!'
           }
         },

@@ -54,12 +54,19 @@ const moduleApp = {
         HTTP({
           url: '/api/user/favorite-goods'
         }).then(res => {
-          console.group(res)
+          resolve(res)
+        })
+      })
+    },
+    APP_Banner ({commit}, where) { // 展示图片
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: `/api/banner?key=${where}`
+        }).then(res => {
           resolve(res)
         })
       })
     }
-    
   },
   getters: {}
 }
