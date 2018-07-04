@@ -242,6 +242,7 @@ export default {
               _this.$router.push({path: '/member/phone_update'})
             }
           })
+          return
         }
         this.User_PayResetPhoneVerificationGet()
         this.$vux.confirm.show({
