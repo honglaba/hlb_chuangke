@@ -10,6 +10,7 @@ import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
 import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin} from 'vux'
 import VueScroller from 'vue-scroller'
+import 'swiper/dist/css/swiper.css'
 
 Vue.use(VueScroller)
 fastClick.attach(document.body)

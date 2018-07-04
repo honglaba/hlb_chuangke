@@ -3,15 +3,12 @@
     <Headerx></Headerx>
     <div id="allmap" class="allmap" style="display:none"></div>
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
-
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide"><img src="./images/home-banner-img1.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img2.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img3.png" /></div>
-          <!-- <div class="swiper-slide" v-for="item in banner" :key="item.id"><img :src="item.img_path"></div> -->
         </div>
-
       </div>
 
       <div class="swiper-container nav-swiper">
@@ -246,7 +243,9 @@
 
 <script>
 import ListInner from '../../components/common/listInner/listInner'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
+// import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions } from 'vuex'
 export default {
   name: 'App',
@@ -266,7 +265,7 @@ export default {
       ]
     }
   },
-  components: { ListInner },
+  components: { ListInner, swiper, swiperSlide },
   methods: {
     ...mapActions(['APP_Banner'])
   },
@@ -281,9 +280,7 @@ export default {
   mounted () {
     /* eslint-disable */
     new Swiper(".banner-swiper", {
-      autoplay: {
-        delay: 8000
-      },
+      autoplay: 8000,
       loop: true,
       effect: "coverflow",
       centeredSlides: true,
@@ -295,7 +292,7 @@ export default {
         modifier: 1,
         slideShadows: true
       }
-    })
+    });
 
     new Swiper(".nav-swiper", {
       pagination: {
@@ -330,6 +327,7 @@ export default {
 <style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
+// @import url("../../../static/swiper/swiper.min.css");
 #app {
   padding-bottom: 1rem;
 }

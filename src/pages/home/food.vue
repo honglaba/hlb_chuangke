@@ -266,7 +266,7 @@ export default {
     },
     getArea: function () {
       this.axios.get('/api/areas?latitude=23.0148260&longitude=113.7451960').then(res => {
-        console.log(res.data)
+        // console.log(res.data)
 
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
@@ -274,7 +274,7 @@ export default {
         res.data[0].active = true
         this.region = res.data
         this.areas = res.data[0].children
-        console.log(this.region)
+        // console.log(this.region)
       })
     },
     sort: function (index) { // 排序
@@ -326,12 +326,11 @@ export default {
     // done()表示这次异步加载数据完成，加载下一次
     // 因为这个是同步的，加了setTimeout就是异步加载数据；
     // 因为涉及到this指向问题，所以将他放在一个变量里。
-    refresh () {
-      console.log('refresh')
-    }
+    refresh () {}
   },
   mounted () {
-    var newSwiper = new Swiper('.banner-swiper', {
+    /* eslint-disable */
+    new Swiper('.banner-swiper', {
       pagination: {
         el: '.swiper-pagination'
       }
