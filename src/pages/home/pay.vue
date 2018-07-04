@@ -147,20 +147,29 @@ export default {
 
     // vuex方式
     this.HTTP_pay().then(res => {
+      console.log(res.data)
       let result = res.data
-      result.prepay_id = result.package.split('prepay_id=').join('')
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
           'appId': result.appId,
           'timeStamp': result.timeStamp,
           'nonceStr': result.nonceStr,
-          'package': result.prepay_id,
+          'package': result.package,
           'signType': result.signType,
           'paySign': result.paySign
         }, function (res) {
           alert(res.errMsg)
         })
     })
+
+    // this.HTTP_pay().then(res => {
+    //   console.log(res.data)
+    //   wx.chooseWXPay({
+    //     success: function (res) {
+    //       // 支付成功后的回调函数
+    //     }
+    //   })
+    // })
   }
 }
 </script>

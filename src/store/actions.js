@@ -57,7 +57,8 @@ const actions = {
         data: {
           price: '0.01',
           sid: '1',
-          trade_type: 'jsapi'
+          trade_type: 'WeixinJSBridge'
+          // trade_type: 'jsapi'
         },
         headers: {
           'Authorization': 'Bearer ' + Cookies.get('accessToken')
