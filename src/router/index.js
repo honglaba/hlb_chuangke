@@ -442,7 +442,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((To, From, next) => {
-  let historyTargetPath = localStorage.getItem('historyTargetPath')
+  let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
   let specialPaths = ['/member', '/member/settings'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
@@ -457,8 +457,10 @@ router.beforeEach((To, From, next) => {
     return
   }
 
-  if (historyTargetPath) { // 如果存在历史跳转地址,说明当前为授权状态,处理url
+  if (historyTargetPath && !localStorage.getItem('userInfo')) { // 如果存在历史跳转地址且没有用户信息时,说明当前为授权状态,处理url
     let local = window.location.href
+    let hisUrl = historyTargetPath
+    localStorage.clear() // 授权状态全部初始化
     if (
       local.indexOf('access_token') > 0 &&
       local.indexOf('refresh_token') > 0
@@ -471,6 +473,7 @@ router.beforeEach((To, From, next) => {
         let items = list[i].split('=')
         hashes[items[0]] = items[1]
       }
+
       localStorage.setItem('client_id', hashes.client_id)
 
       // cookie
@@ -481,8 +484,7 @@ router.beforeEach((To, From, next) => {
         .then(res => {
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SAVE_USER_INFO', res.data)
-          localStorage.removeItem('historyTargetPath') // 移除
-          next({path: historyTargetPath})
+          next({path: hisUrl})
         })
       return
     }
@@ -490,6 +492,7 @@ router.beforeEach((To, From, next) => {
 
   if (!localStorage.getItem('userInfo')) { // 没有用户信息
     if (window.navigator.userAgent.match(/MicroMessenger/i)) { // wxchat
+      localStorage.clear()
       localStorage.setItem('historyTargetPath', To.path)
       getRedirectUrl()
       return

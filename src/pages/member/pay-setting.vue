@@ -90,7 +90,7 @@ export default {
           // console.log('2')
           break
         case '3':
-          this.paytitle = '请输入支付密码,验证身份'
+          this.paytitle = '请输入原支付密码,验证身份'
           break
         case '4':
           // console.log('4')
@@ -162,7 +162,7 @@ export default {
               this.$vux.confirm.show({
                 showCancelButton: false,
                 title: '提示',
-                content: '请输入正确的支付密码',
+                content: '请输入正确的原支付密码',
                 onHide () {
                   _this.numVal = []
                 }

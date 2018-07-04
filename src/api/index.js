@@ -5,8 +5,8 @@ import Cookies from 'js-cookie'
 let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'
 axios.defaults.baseURL = EnvUrl
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-// 请求过期时间 6s
-axios.defaults.timeout = 6000
+// 请求过期时间 8s
+axios.defaults.timeout = 8000
 
 // window.isRefreshing = false
 /* 被挂起的请求数组 */
@@ -34,7 +34,7 @@ axios.interceptors.request.use(config => {
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
       // window.isRefreshing = true
       let xhr = new XMLHttpRequest()
-      xhr.open('POST', location.origin + '/api_proxy/api/login/refresh')
+      xhr.open('POST', EnvUrl + '/api/login/refresh')
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({
@@ -42,14 +42,13 @@ axios.interceptors.request.use(config => {
       }))
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          // console.log(count++)
           window.isRefreshing = false
           let accessToken = JSON.parse(xhr.response).access_token
+          console.log(JSON.parse(xhr.response))
           config.headers.Authorization = 'Bearer ' + accessToken
           Cookies.set('accessToken', accessToken, {
             expires: 1 / 36
           })
-          // Cookies.set('accessToken', accessToken, { expires: new Date(new Date().getTime() + 5 * 1000) })
           onRrefreshed(accessToken)
         }
       }

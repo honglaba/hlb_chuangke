@@ -2,8 +2,6 @@ import HTTP from '@/api' // 配置后的axios
 // import Cookies from 'js-cookie'
 
 const moduleUser = {
-  state: {},
-  mutations: {},
   actions: {
     User_PayPwdConf ({commit}, data) { // 首次设置支付密码
       let defaultUrl = ''
@@ -103,9 +101,19 @@ const moduleUser = {
           }
         })
       })
+    },
+    User_Message ({commit}, type) { // 获取消息或公告
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: `/api/message?type=${type}`
+        }).then(res => {
+          if (res.result_state === 'success') {
+            resolve(res)
+          }
+        })
+      })
     }
-  },
-  getters: {}
+  }
 }
 
 export default moduleUser

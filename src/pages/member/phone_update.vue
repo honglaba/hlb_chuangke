@@ -61,8 +61,8 @@ export default {
       verification_code: '',
       validator_verification: val => {
         return {
-          valid: !!val.match(/^[0-9]{5}$/),
-          msg: '姓名格式不正确!'
+          valid: !!val.match(/^[0-9]/),
+          msg: '格式不正确!'
         }
       }
     }
@@ -97,7 +97,7 @@ export default {
       this.sendAble = this.$refs.refPhone.valid
       this.clickAble = this.$refs.refValidator.valid
     },
-    _getVerificationCode () {
+    _getVerificationCode () { // 获取验证码
       if (this.sendAble) {
         this.$vux.toast.hide()
         this.$vux.toast.show({
@@ -110,9 +110,9 @@ export default {
           if (this.countDown === 0) {
             this.countDown = null
             clearInterval(timer)
-            return
+          } else {
+            this.countDown--
           }
-          this.countDown--
         }, 1000)
         this.HTTP_verification(this.my_mobile_phone)
       } else {
@@ -162,6 +162,7 @@ export default {
                   time: 1000
                 })
               } else {
+                this.verification_code = ''
                 this.$vux.toast.show({
                   text: '验证码不正确',
                   type: 'text',
