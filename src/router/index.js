@@ -23,7 +23,7 @@ import ShopIndex from '@/pages/shop/index'
 import weika_route from '@/pages/weika/weika_route'
 import WeikaIndex from '@/pages/weika/index' // 默认首页
 import WeikaVip from '@/pages/weika/vip' // vip首页
-import WeikaReg from '@/pages/weika/reg' // 邀请注册微卡
+import freereg from '@/pages/weika/freereg' // 免邀请码注册微卡
 import choosegoods from '@/pages/weika/choosegoods' // 选择微卡商品
 import WeikaPay from '@/pages/weika/pay' // 微卡支付
 import withdraw from '@/pages/weika/withdraw' // 提现
@@ -256,11 +256,11 @@ const router = new VueRouter({
     },
 
     {
-      path: 'reg',
-      name: 'WeikaReg',
-      component: WeikaReg,
+      path: 'freereg',
+      name: 'freereg',
+      component: freereg,
       meta: {
-        title: '注册创客微卡'
+        title: '免邀请码注册微卡'
       }
     }, {
       path: 'pay',
