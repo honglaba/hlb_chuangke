@@ -49,6 +49,24 @@ const actions = {
       })
     })
   },
+  HTTP_pay () { // 支付试验
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/pay-order',
+        method: 'post',
+        data: {
+          price: '0.01',
+          sid: '1',
+          trade_type: 'jsapi'
+        },
+        headers: {
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
+        }
+      }).then(res => {
+        resolve(res)
+      })
+    })
+  },
   HTTP_logout ({commit}) { // 登出
     return new Promise((resolve, reject) => {
       HTTP({

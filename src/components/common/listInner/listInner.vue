@@ -17,7 +17,7 @@
                 <p>({{businessList.total_comments}}条评价)</p>
             </div>
         </div>
-        <p>20Km</p>
+        <p>{{businessList.distance}}Km</p>
     </div>
 </template>
 <script>
