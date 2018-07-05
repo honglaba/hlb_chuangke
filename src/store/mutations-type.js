@@ -1,0 +1,3 @@
+export const SET_USER_INFO = 'SET_USER_INFO'
+
+export const SET_WEIKA_INVID = 'SET_WEIKA_INVID'

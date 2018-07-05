@@ -1,6 +1,5 @@
 import HTTP from '@/api' // 配置后的axios
 import Cookies from 'js-cookie'
-// import Router from '@/router'
 
 const actions = {
   HTTP_WxAccredit (redirect) { // 微信授权

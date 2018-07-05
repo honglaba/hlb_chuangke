@@ -1,15 +1,14 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="选择推荐人"></x-header> -->
     <div class="main2">
       <div class="content pd20">
         <div class="xuanze">
           <ul>
             <li>
-              <a href="#"><img src="../images/you.png"><br>我有推荐人</a>
+              <router-link :to="{path: '/weika/step2'}" tag="img" :src="imgs.A"></router-link><br>我有推荐人
             </li>
             <li>
-              <a href="#"><img src="../images/meiyou.png"><br>我没有推荐人</a>
+              <router-link :to="{path: '/weika/no_inv'}" tag="img" :src="imgs.B"></router-link><br>我没有推荐人
             </li>
           </ul>
         </div>
@@ -19,7 +18,14 @@
 </template>
 <script>
 export default {
-
+  data () {
+    return {
+      imgs: {
+        A: require('../images/you.png'),
+        B: require('../images/meiyou.png')
+      }
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -27,11 +33,9 @@ export default {
   color: #333;
   ul {
     li {
-      a {
-        color: #333;
-        display: block;
-        font-size: 0.4rem;
-      }
+      color: #333;
+      display: block;
+      font-size: 0.4rem;
       text-align: center;
       img {
         width: 1.8rem;

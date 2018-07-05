@@ -35,13 +35,22 @@
           <p class="c999">创客平台申请剩余人数
             <span class="c333">560</span>人（共1000人）</p>
           <p>
-            <button class="btn-aoc">去申请</button>
+            <button class="btn-aoc" @click="_invCodePass">去申请</button>
           </p>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    _invCodePass () {
+      this.$router.push({path: '/weika/choose_products'})
+    }
+  }
+}
+</script>
 <style lang="less" scoped>
 body {
   background: #fff;

@@ -9,8 +9,6 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  created () {
-  },
   computed: {
     ...mapGetters(['userInfoGetter']),
     routeTitle () {

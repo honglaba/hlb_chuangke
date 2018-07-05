@@ -280,18 +280,13 @@ export default new VueRouter({
       path: 'step1',
       name: 'step1',
       component: WkReg1,
+      beforeEnter: (to, from, next) => {
+        !JSON.parse(localStorage.getItem('userInfo')).real_name ? next('/member/realname') : next()
+      },
       meta: {
         title: '注册创客-第一步'
       }
     },
-    // {
-    //   path: 'step2',
-    //   name: 'step2',
-    //   component: WkReg2,
-    //   meta: {
-    //     title: '填写推荐人信息'
-    //   }
-    // },
     {
       path: 'step2',
       name: 'step2',

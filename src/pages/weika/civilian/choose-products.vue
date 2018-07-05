@@ -11,11 +11,11 @@
             <p class="p2">选购完成后自动开通创客微卡</p>
           </div>
           <div class="wkgoodslist">
-            <scroller lock-y scrollbar-x>
+            <scroller lock-y scrollbar-x v-if="goodList.length > 0">
               <div class="dhbox">
-                <div class="dhbox-item" v-for="i in 3" :key="i">
-                  <div class="name">康路宝K600-T路宝K路宝</div>
-                  <div class="price">特价：￥599</div>
+                <div class="dhbox-item" v-for="(item, index) in goodList" :key="index" :class="chooseIndex === index ? 'on' : ''" @click="chooseIndex = index">
+                  <div class="name">{{ item.name }}</div>
+                  <div class="price">特价：￥{{ item.price }}</div>
                   <div class="beizhu">赠送创客微卡</div>
                   <div class="look">
                     <span>查看详情</span>
@@ -26,12 +26,9 @@
           </div>
           <div class="pd20">
             <div class="tijiao">
-              <button class="btn-aoc">确认购买</button>
+              <button class="btn-aoc" @click="toBuy">确认购买</button>
             </div>
             <div class="tips">
-              <p>开通即视为同意
-                <span><<创客微卡会员用户协议>></span>
-              </p>
             </div>
           </div>
         </div>
@@ -99,7 +96,73 @@
 </template>
 <script>
 import { Scroller } from 'vux'
+import { mapActions, mapGetters } from 'vuex'
 export default {
+  data () {
+    return {
+      chooseIndex: 0,
+      goodList: []
+    }
+  },
+  created () {
+    this.Wk_GoodList().then(res => {
+      this.goodList = res.data
+    })
+  },
+  computed: {
+    ...mapGetters(['WkInvGetter'])
+  },
+  methods: {
+    ...mapActions(['Wk_GoodList', 'Wk_Buy', 'HTTP_pay']),
+    toBuy () {
+      let bf = this.goodList[this.chooseIndex]
+      let inbObj = {
+        goods_id: bf.id,
+        is_invite: 0,
+        trade_type: 'weixinjsbridge'
+      }
+      if (this.WkInvGetter) {
+        inbObj.is_invite = 1
+        inbObj.invite_id = this.WkInvGetter
+      }
+      console.log(inbObj)
+      this.Wk_Buy(inbObj).then(res => {
+        localStorage.removeItem('invite_id')
+        this.$store.commit('SET_WEIKA_INVID', '')
+        this.weixinPay()
+        // this.$router.push({path: '/weika/pay'})
+      })
+    },
+    onBridgeReady () {
+      this.HTTP_pay().then(res => {
+        let result = res.data
+        window.WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            'appId': result.appId,
+            'timeStamp': result.timeStamp,
+            'nonceStr': result.nonceStr,
+            'package': result.package,
+            'signType': result.signType,
+            'paySign': result.paySign
+          }, (res) => {
+            alert('成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          })
+      })
+    },
+    weixinPay () {
+      let that = this
+      if (typeof WeixinJSBridge === 'undefined') {
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false)
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady)
+          document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady)
+        }
+      } else {
+        that.onBridgeReady()
+      }
+    }
+  },
   components: {
     Scroller
   }
@@ -197,17 +260,17 @@ export default {
 }
 .dhbox {
   position: relative;
-  width: 470px;
-  min-height: 194px;
+  width: 9.4rem;
+  min-height: 3.88rem;
 }
 .dhbox-item {
-  width: 128px;
-  height: 158px;
+  width: 2.56rem;
+  height: 3.16rem;
   display: inline-block;
   border: #fff solid 1px;
   box-shadow: 0 3px 12px rgba(21, 0, 71, 0.16);
   border-radius: 5px;
-  margin-left: 10px;
+  margin-left: .1rem;
   background: #fff;
   float: left;
   padding: 0.2rem;

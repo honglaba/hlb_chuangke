@@ -6,7 +6,7 @@
         <div class="banner">
           <swiper :list="demo01_list" :aspect-ratio="460/750" dots-position="center" :show-desc-mask="false"></swiper>
           <div class="kaitong pd20">
-            <router-link :to="{ path: '/weika/vip' }"><span>立即开通</span></router-link>
+            <router-link :to="{ path: '/weika/step1' }"><span>立即开通</span></router-link>
           </div>
         </div>
         <div class="fuwu">
