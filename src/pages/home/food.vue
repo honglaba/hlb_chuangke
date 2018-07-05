@@ -59,7 +59,7 @@
                 <li>洪福路口</li>
                 <li>景湖时代城</li> -->
 
-                <li v-for="(item,index) in areas">
+                <li v-for="(item,index) in areas" :class="{cur:item.active}" @click="switchAreas(index)">
                   {{item.region_name}}
                 </li>
               </ul>
@@ -175,7 +175,9 @@ export default {
         {title: '离我最近', active: false},
         {title: '好评优先', active: false},
         {title: '人气最高', active: false}
-      ]
+      ],
+      region: [],
+      areas: []
     }
   },
   components: { ListInner, Other },
@@ -258,23 +260,23 @@ export default {
       this.screenTab[0].name = this.category[index].title
       this.maskTap()// 相同逻辑收起下拉
     },
-    getRegion: function () { // 附近筛选
-      this.axios.get('/api/region?parent=79').then(res => { // 79是东莞
-        // console.log(res.data)
-        this.areas = res.data
-      })
-    },
+    // getRegion: function () { // 附近筛选
+    //   this.axios.get('/api/region?parent=79').then(res => { // 79是东莞
+    //     // console.log(res.data)
+    //     this.areas = res.data
+    //   })
+    // },
     getArea: function () {
       this.axios.get('/api/areas?latitude=23.0148260&longitude=113.7451960').then(res => {
-        console.log(res.data)
-
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
+        for (let j = 0, len = res.data[0].children.length; j < len; j++) {
+          res.data[0].children[j].active = false
+        }
         res.data[0].active = true
         this.region = res.data
-        this.areas = res.data[0].children
-        console.log(this.region)
+        this.areas = res.data[0].children // 默认首个街道
       })
     },
     sort: function (index) { // 排序
@@ -285,12 +287,22 @@ export default {
       this.screenTab[2].name = this.sortTxt[index].title
       this.maskTap()
     },
-    switchRegion: function (index) {
+    switchRegion: function (index) { // 切换区
       for (let i = 0, len = this.region.length; i < len; i++) {
         this.region[i].active = false
       }
       this.region[index].active = true
-      console.log(this.region)
+      this.axios.get('/api/areas?latitude=23.0148260&longitude=113.7451960').then(res => {
+        this.areas = res.data[index].children
+      })
+    },
+    switchAreas: function (index) { // 切换街道
+      for (let i = 0, len = this.areas.length; i < len; i++) {
+        this.areas[i].active = false
+      }
+      this.areas[index].active = true
+      this.screenTab[1].name = this.areas[index].region_name
+      this.maskTap()// 相同逻辑收起下拉
     },
     infinite (done) {
       // 下拉加载vue-scroll
@@ -383,6 +395,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
       > span {
         border-top: 0.08rem solid #888;
         border-left: 0.07rem solid #fff;
@@ -391,6 +404,9 @@ export default {
       > p {
         color: #333;
         margin-right: 0.07rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
     > .cur {
@@ -441,6 +457,9 @@ export default {
           height: 0.9rem;
           line-height: 0.9rem;
           font-size: 0.28rem;
+          overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         }
         .cur {
           color: #f60;
