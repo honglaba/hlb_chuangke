@@ -1,13 +1,12 @@
 <template>
   <div class="app">
-     <x-header :left-options="{backText: ''}" title="填写推荐人信息"></x-header>
     <div class="main2">
       <div class="content pd20">
-        <div class="logo"><img src="./../images/b1.png"><br>填写推荐人信息</div>
+        <div class="logo"><img src="../images/b1.png"><br>填写推荐人信息</div>
         <group>
-          <x-input label-width="4em" placeholder="推荐人信息" required></x-input>
-          <x-input label-width="4em" placeholder="推荐人手机" required></x-input>
-           <x-input label-width="4em" placeholder="邀请码" required></x-input>
+          <!-- <x-input label-width="4em" placeholder="推荐人信息" required></x-input>
+          <x-input label-width="4em" placeholder="推荐人手机" required></x-input> -->
+          <x-input label-width="4em" placeholder="邀请码" required></x-input>
           <!-- <x-input placeholder="请输入验证码" class="weui-vcode" required>
             <span slot="right" class="fasong">获取验证码</span>
           </x-input> -->
@@ -20,16 +19,16 @@
   </div>
 </template>
 <script>
-import { XInput, Group } from "vux";
+import { XInput, Group } from 'vux'
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   components: {
     XInput,
     Group
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .logo {
@@ -49,4 +48,3 @@ export default {
   }
 }
 </style>
-

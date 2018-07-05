@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header>
+    <!-- <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header> -->
     <div class="main">
       <div class="content">
         <div class="wkbg pd20">
@@ -9,7 +9,7 @@
               <div class="left">
                 <div class="tx"><img src="http://thirdwx.qlogo.cn/mmopen/odejae0mVFZnfY3M68PlfkwhHJStxviahZO8oLsKxmeQv50LEibdBbqvc3tGtSibZib814ms21yVPCUPhYCQ90b8dlr6bC57rgKw/132"></div>
                 <div class="uinfo">
-                  <p class="name">化妆的小蜜<img src="./images/vip1.png"></p>
+                  <p class="name">化妆的小蜜<img src="../images/vip1.png"></p>
                   <p class="tips">创客为您节约了65.00元</p>
                 </div>
               </div>
@@ -56,49 +56,49 @@
             <ul>
               <li>
                 <a href="#">
-                  <span><img src="./images/a1.png"></span>
+                  <span><img src="../images/a1.png"></span>
                   <span>优惠购物</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a2.png"></span>
+                  <span><img src="../images/a2.png"></span>
                   <span>线下消费</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a3.png"></span>
+                  <span><img src="../images/a3.png"></span>
                   <span>分享赚钱</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a4.png"></span>
+                  <span><img src="../images/a4.png"></span>
                   <span>1元疯抢</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a5.png"></span>
+                  <span><img src="../images/a5.png"></span>
                   <span>免费体验</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a6.png"></span>
+                  <span><img src="../images/a6.png"></span>
                   <span>我要领券</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a7.png"></span>
+                  <span><img src="../images/a7.png"></span>
                   <span>专享活动</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/a8.png"></span>
+                  <span><img src="../images/a8.png"></span>
                   <span>邀请有礼</span>
                 </a>
               </li>
@@ -116,19 +116,19 @@
             <ul>
               <li>
                 <a href="#">
-                  <span><img src="./images/vip1-1.png"></span>
+                  <span><img src="../images/vip1-1.png"></span>
                   <span>您的客服经理</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/vip1-2.png"></span>
+                  <span><img src="../images/vip1-2.png"></span>
                   <span>专属经理微信</span>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <span><img src="./images/vip1-3.png"></span>
+                  <span><img src="../images/vip1-3.png"></span>
                   <span>专属经理电话</span>
                 </a>
               </li>

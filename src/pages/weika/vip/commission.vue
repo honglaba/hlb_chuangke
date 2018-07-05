@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-      <x-header :left-options="{backText: ''}" title="我的佣金"></x-header>
+      <!-- <x-header :left-options="{backText: ''}" title="我的佣金"></x-header> -->
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
@@ -88,7 +88,7 @@
           </div>
           <div class="mxbox">
             <p class="c333 pd20">历史获取佣金明细</p>
-            <Accordion v-for="(item,index) in mxdataList" :key="item.id" :title="item" :list="item.mingxi"></Accordion>
+            <Accordion v-for="(item, index) in mxdataList" :key="index" :title="item" :list="item.mingxi"></Accordion>
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import Accordion from "../../components/accordion";
+import Accordion from 'components/accordion'
 import {
   Tab,
   TabItem,
@@ -108,52 +108,52 @@ import {
   VBar,
   VPie,
   VScale
-} from "vux";
+} from 'vux'
 const map = {
-  创客新用户邀请佣金: "30%",
-  邀请的用户平台消费佣金: "18%",
-  额外奖励佣金: "52%"
-};
+  创客新用户邀请佣金: '30%',
+  邀请的用户平台消费佣金: '18%',
+  额外奖励佣金: '52%'
+}
 export default {
-  data() {
+  data () {
     return {
-      nowSeen: "1",
+      nowSeen: '1',
       legendOptions: {
-        position: "right",
-        itemFormatter(val) {
-          return val + "  " + map[val];
+        position: 'right',
+        itemFormatter (val) {
+          return val + '  ' + map[val]
         }
       },
       yOptions: {
-        formatter(val) {
-          return val * 100 + "%";
+        formatter (val) {
+          return val * 100 + '%'
         }
       },
       map,
       data: [
-        { name: "创客新用户邀请佣金", change: 0.3, a: "1" },
-        { name: "邀请的用户平台消费佣金", percent: 0.18, a: "1" },
-        { name: "额外奖励佣金", percent: 0.52, a: "1" }
+        { name: '创客新用户邀请佣金', change: 0.3, a: '1' },
+        { name: '邀请的用户平台消费佣金', percent: 0.18, a: '1' },
+        { name: '额外奖励佣金', percent: 0.52, a: '1' }
       ],
       mxdataList: [
         {
-          riqi: "2018-05-28",
+          riqi: '2018-05-28',
           mingxi: [
-            { name: "创客新用户邀请佣金", change: "+20" },
-            { name: "邀请的用户平台消费佣金", change: "+30" },
-            { name: "额外奖励佣金", change: "+40" }
+            { name: '创客新用户邀请佣金', change: '+20' },
+            { name: '邀请的用户平台消费佣金', change: '+30' },
+            { name: '额外奖励佣金', change: '+40' }
           ]
         },
         {
-          riqi: "2017-05-06",
+          riqi: '2017-05-06',
           mingxi: [
-            { name: "创客新用户邀请佣金", change: "+50" },
-            { name: "邀请的用户平台消费佣金", change: "+60" },
-            { name: "额外奖励佣金", change: "+70" }
+            { name: '创客新用户邀请佣金', change: '+50' },
+            { name: '邀请的用户平台消费佣金', change: '+60' },
+            { name: '额外奖励佣金', change: '+70' }
           ]
         }
       ]
-    };
+    }
   },
   components: {
     Tab,
@@ -169,15 +169,15 @@ export default {
     Accordion
   },
   methods: {
-    toggleList: function(e) {
-      this.isDisplay = !this.isDisplay;
+    toggleList: function (e) {
+      this.isDisplay = !this.isDisplay
     },
-    tab: function(e) {
-      console.log(e.target.getAttribute("data-id"));
-      this.nowSeen = e.target.getAttribute("data-id");
+    tab: function (e) {
+      console.log(e.target.getAttribute('data-id'))
+      this.nowSeen = e.target.getAttribute('data-id')
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
@@ -262,7 +262,7 @@ export default {
             content: "";
             width: 0.3rem;
             height: 0.3rem;
-            background: url("images/yonghu.png") center no-repeat;
+            background: url("../images/yonghu.png") center no-repeat;
             background-size: contain;
           }
           span {
@@ -270,14 +270,14 @@ export default {
           }
         }
         &:nth-child(2) .tit::before {
-          background: url("images/pingtai.png") center no-repeat;
+          background: url("../images/pingtai.png") center no-repeat;
           background-size: contain;
         }
         &:nth-child(3) .tit {
           border-bottom: none;
         }
         &:nth-child(3) .tit::before {
-          background: url("images/erwai.png") no-repeat;
+          background: url("../images/erwai.png") no-repeat;
           background-size: contain;
         }
         .warper {
@@ -316,4 +316,3 @@ export default {
   }
 }
 </style>
-

@@ -19,23 +19,8 @@ import Exchange from '@/pages/home/exchange'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
 import ShopIndex from '@/pages/shop/index'
-// 微卡
-import weika_route from '@/pages/weika/weika_route'
-import WeikaIndex from '@/pages/weika/index' // 默认首页
-import WeikaVip from '@/pages/weika/vip' // vip首页
-import freereg from '@/pages/weika/freereg' // 免邀请码注册微卡
-import choosegoods from '@/pages/weika/choosegoods' // 选择微卡商品
-import WeikaPay from '@/pages/weika/pay' // 微卡支付
-import withdraw from '@/pages/weika/withdraw' // 提现
-import withdraw_log from '@/pages/weika/withdraw_log' // 提现记录
-import recommend_list from '@/pages/weika/recommend_list' // 推荐用户列表
-import income from '@/pages/weika/income' // 佣金首页
-import income_zhanji from '@/pages/weika/income_zhanji' // 查看战绩
 // 用户中心
 import member_route from '@/pages/member/member_route'
-import Regstep1 from '@/pages/member/reg/reg_step1'
-import Regstep2 from '@/pages/member/reg/reg_step2'
-import Regstep3 from '@/pages/member/reg/reg_step3'
 import favourite from '@/pages/member/favourite' // 我的收藏
 import exchange from '@/pages/member/exchange' // 我要兑换
 import exchange_log from '@/pages/member/exchange_log' // 兑换记录
@@ -49,17 +34,34 @@ import phone_update from '@/pages/member/phone_update'// 更改手机号
 import settings from '@/pages/member/settings'// 个人设置
 import myinfo from '@/pages/member/myinfo'// 个人信息
 import realname from '@/pages/member/realname'// 实名认证
-
 import paySetting from '@/pages/member/pay-setting' // 支付设置
-
 import address from '@/pages/member/address'// 收货地址管理
 import address_add from '@/pages/member/address_add'// 新增或修改收货地址
-
 // 文章
 import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
 import help_detail from '@/pages/article/help_detail' // 帮助详情
 import feedback from '@/pages/article/feedback' // 问题反馈
+
+// ---------------------= 微 卡 =------------------
+const WkMain = () => import(/* 根组件 */ '@/pages/weika')
+
+/* 平民 */
+const WkCivilian = () => import(/* 首页-平民 */ '@/pages/weika/civilian/civilian')
+const WkNoInv = () => import(/* 免邀请码注册 */ '@/pages/weika/civilian/no-invitation')
+const WkChooseProducts = () => import(/* 选择微卡商品 */ '@/pages/weika/civilian/choose-products')
+const WkPay = () => import(/* 微卡支付 */ '@/pages/weika/civilian/pay')
+const WkReg1 = () => import(/*  */ '@/pages/weika/civilian/step1')
+const WkReg2 = () => import(/*  */ '@/pages/weika/civilian/step2')
+// const WkReg3 = () => import(/*  */ '@/pages/weika/civilian/reg/step3')
+
+/* vip */
+const WkVip = () => import(/* 首页-VIP */ '@/pages/weika/vip/vip')
+const WkWithdraw = () => import(/* 提现 */ '@/pages/weika/vip/withdraw')
+const WkWithdrawLog = () => import(/* 提现记录 */ '@/pages/weika/vip/withdraw-log')
+const WkRecommendList = () => import(/* 推荐用户列表 */ '@/pages/weika/vip/recommend-list')
+const WkCommission = () => import(/* 佣金首页 */ '@/pages/weika/vip/commission')
+const WkRecord = () => import(/* 查看战绩 */ '@/pages/weika/vip/record')
 
 Vue.use(VueRouter)
 
@@ -193,11 +195,14 @@ export default new VueRouter({
     // 微卡
   {
     path: '/weika',
-    component: weika_route,
+    component: WkMain,
     children: [{
       path: '',
-      name: 'WeikaIndex',
-      component: WeikaIndex,
+      name: 'wk_index',
+      component: WkCivilian,
+      beforeEnter: (to, from, next) => {
+        JSON.parse(localStorage.getItem('userInfo')).is_weika === 1 ? next({path: '/weika/vip'}) : next()
+      },
       meta: {
         title: '微卡首页'
       }
@@ -205,7 +210,7 @@ export default new VueRouter({
     {
       path: 'withdraw_log',
       name: 'withdraw_log',
-      component: withdraw_log,
+      component: WkWithdrawLog,
       meta: {
         title: '提现记录'
       }
@@ -213,15 +218,15 @@ export default new VueRouter({
     {
       path: 'withdraw',
       name: 'withdraw',
-      component: withdraw,
+      component: WkWithdraw,
       meta: {
         title: '提现'
       }
     },
     {
       path: 'vip',
-      name: 'WeikaVip',
-      component: WeikaVip,
+      name: 'vip',
+      component: WkVip,
       meta: {
         title: '微卡vip首页'
       }
@@ -229,48 +234,70 @@ export default new VueRouter({
     {
       path: 'recommend_list',
       name: 'recommend_list',
-      component: recommend_list,
+      component: WkRecommendList,
       meta: {
         title: '我的推荐'
       }
     },
     {
-      path: 'income',
-      name: 'income',
-      component: income,
+      path: 'commission',
+      name: 'commission',
+      component: WkCommission,
       meta: {
         title: '佣金首页'
       }
     },
     {
-      path: 'income_zhanji',
-      name: 'income_zhanji',
-      component: income_zhanji,
+      path: 'record',
+      name: 'record',
+      component: WkRecord,
       meta: {
         title: '查看战绩'
       }
-    },
-
-    {
-      path: 'freereg',
-      name: 'freereg',
-      component: freereg,
+    }, {
+      path: 'no_inv',
+      name: 'no_inv',
+      component: WkNoInv,
       meta: {
         title: '免邀请码注册微卡'
       }
     }, {
       path: 'pay',
-      name: 'WeikaPay',
-      component: WeikaPay,
+      name: 'pay',
+      component: WkPay,
       meta: {
         title: '微卡支付'
       }
     }, {
-      path: 'choosegoods',
-      name: 'choosegoods',
-      component: choosegoods,
+      path: 'choose_products',
+      name: 'choose_products',
+      component: WkChooseProducts,
       meta: {
         title: '选择微卡商品'
+      }
+    },
+    {
+      path: 'step1',
+      name: 'step1',
+      component: WkReg1,
+      meta: {
+        title: '注册创客-第一步'
+      }
+    },
+    // {
+    //   path: 'step2',
+    //   name: 'step2',
+    //   component: WkReg2,
+    //   meta: {
+    //     title: '填写推荐人信息'
+    //   }
+    // },
+    {
+      path: 'step2',
+      name: 'step2',
+      component: WkReg2,
+      meta: {
+        title: '填写个人信息'
       }
     }
     ]
@@ -293,30 +320,6 @@ export default new VueRouter({
         component: MemberLogin,
         meta: {
           title: '登录'
-        }
-      },
-      {
-        path: 'reg/reg_step1',
-        name: 'Reg_step1',
-        component: Regstep1,
-        meta: {
-          title: '注册创客-第一步'
-        }
-      },
-      {
-        path: 'reg/reg_step2',
-        name: 'Reg_step2',
-        component: Regstep2,
-        meta: {
-          title: '填写推荐人信息'
-        }
-      },
-      {
-        path: 'reg/reg_step3',
-        name: 'Reg_step3',
-        component: Regstep3,
-        meta: {
-          title: '填写个人信息'
         }
       }, {
         path: 'favourite',

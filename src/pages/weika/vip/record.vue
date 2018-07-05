@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="我的战绩"></x-header>
+    <!-- <x-header :left-options="{backText: ''}" title="我的战绩"></x-header> -->
     <div class="main2">
       <div class="content">
         <div class="zj zj-a1">
@@ -38,7 +38,7 @@
   font-size: 0.38rem;
 }
 .zj-a1 {
-  background: url("images/zj_01.png") center no-repeat;
+  background: url("../images/zj_01.png") center no-repeat;
   background-size: contain;
   top: 0.4rem;
   right: 0.6rem;
@@ -47,7 +47,7 @@
   line-height: 2.57rem;
 }
 .zj-a2 {
-  background: url("images/zj_02.png") center no-repeat;
+  background: url("../images/zj_02.png") center no-repeat;
   background-size: contain;
   top: 1.1rem;
   left: 0.4rem;
@@ -56,7 +56,7 @@
   line-height: 3.23rem;
 }
 .zj-a3 {
-  background: url("images/zj_03.png") center no-repeat;
+  background: url("../images/zj_03.png") center no-repeat;
   background-size: contain;
   top: 3.3rem;
   right: 0.4rem;
@@ -65,7 +65,7 @@
   line-height: 4.19rem;
 }
 .zj-a4 {
-  background: url("images/zj_04.png") center no-repeat;
+  background: url("../images/zj_04.png") center no-repeat;
   background-size: contain;
   top: 6.7rem;
   left: 0.7rem;
@@ -74,7 +74,7 @@
   line-height: 2.89rem;
 }
 .zj-a5 {
-  background: url("images/zj_05.png") center no-repeat;
+  background: url("../images/zj_05.png") center no-repeat;
   background-size: contain;
   top: 4.8rem;
   left: 0.95rem;
@@ -82,7 +82,7 @@
   height: 1.37rem;
 }
 .zj-a6 {
-  background: url("images/zj_06.png") center no-repeat;
+  background: url("../images/zj_06.png") center no-repeat;
   background-size: contain;
   top: 8.6rem;
   right: 1.4rem;

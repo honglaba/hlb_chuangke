@@ -6,7 +6,7 @@ import store from '@/store'
 
 router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
-  let specialPaths = ['/member/settings'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
+  let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
   function getRedirectUrl () {
