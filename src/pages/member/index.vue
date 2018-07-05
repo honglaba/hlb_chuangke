@@ -47,34 +47,34 @@
           </div>
           <ul class="myorder">
             <li>
-              <router-link :to="{ path:'/member/myorder/1' }">
+              <router-link :to="{ path:'/member/order/order_list/1' }">
                 <span><img src="./images/daifukuan.png"></span>
                 <span>待付款</span>
                 <span class="num" v-if="false">8</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{path:'/member/myorder/2'}">
+              <router-link :to="{path:'/member/order/order_list/2'}">
                 <span><img src="./images/daishouhuo.png"></span>
                 <span>待收货</span>
                 <span class="num">8</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{path:'/member/myorder/3'}">
+              <router-link :to="{path:'/member/order/order_list/3'}">
                 <span><img src="./images/daishiyong.png"></span>
                 <span>待使用</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{path:'/member/myorder/4'}">
+              <router-link :to="{path:'/member/order/order_list/4'}">
                 <span><img src="./images/daipinglun.png"></span>
                 <span>待评论</span>
                 <span class="num">12</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{path:'/member/myorder/5'}">
+              <router-link :to="{path:'/member/order/order_list/5'}">
                 <span><img src="./images/daituikuan.png"></span>
                 <span>待退款</span>
               </router-link>

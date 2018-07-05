@@ -65,12 +65,8 @@ export default {
     ...mapState(['receiverAddress'])
   },
   created () {
-    let flag = this.receiverAddress
-
-    if (flag) {
-      if (flag.length > 0) {
-        this.equal = !this.equal
-      }
+    if (this.receiverAddress.length > 0) {
+      this.equal = !this.equal
       this.contentFlag = true
     } else {
       this.HTTP_receiverAddress().then(res => {

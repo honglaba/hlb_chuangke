@@ -338,12 +338,11 @@ export default {
     // done()表示这次异步加载数据完成，加载下一次
     // 因为这个是同步的，加了setTimeout就是异步加载数据；
     // 因为涉及到this指向问题，所以将他放在一个变量里。
-    refresh () {
-      console.log('refresh')
-    }
+    refresh () {}
   },
   mounted () {
-    var newSwiper = new Swiper('.banner-swiper', {
+    /* eslint-disable */
+    new Swiper('.banner-swiper', {
       pagination: {
         el: '.swiper-pagination'
       }

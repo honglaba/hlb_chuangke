@@ -6,7 +6,6 @@
         <span></span>
         <span class="ico"></span>
       </div>
-
     </div>
     <ul class="accList">
       <li v-for="(item, index) in list" :key="index">{{item.name}}
