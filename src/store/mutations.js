@@ -25,6 +25,7 @@ const mutations = {
   },
 
   [types.SET_WEIKA_INVID] (state, val) {
+    if (!val) localStorage.removeItem('invite_id')
     state.WkInv = val
   }
 }

@@ -101,12 +101,11 @@ export default {
   data () {
     return {
       chooseIndex: 0,
-      goodList: [],
-      incluObj: {}
+      goodList: []
     }
   },
   created () {
-    this.Wk_GoodList().then(res => {
+    this.Wk_GoodList('aaaaa').then(res => {
       this.goodList = res.data
     })
   },
@@ -126,31 +125,18 @@ export default {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter
       }
-      this.incluObj = inbObj
-      this.weixinPay(inbObj)
-      // this.$router.push({path: '/weika/pay', params: { userId: 123 }})
-    },
-    weixinPay (nb) {
-      let that = this
-      if (typeof WeixinJSBridge === 'undefined') {
-        if (document.addEventListener) {
-          document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady.call(this, nb), false)
-        } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady.call(this, nb))
-          document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady.call(this, nb))
-        }
-      } else {
-        that.onBridgeReady(nb)
-      }
+      this.$router.push({name: 'pay', params: inbObj})
     },
     onBridgeReady (val) {
       this.Wk_Buy(val).then(res => {
         let result = res.data
-        localStorage.removeItem('invite_id')
         this.$store.commit('SET_WEIKA_INVID', '')
+        localStorage.removeItem('invite_id')
         window.WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', result, (res) => {
-            alert('成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          'getBrandWCPayRequest',
+          result,
+          res => {
+            alert('调取微信支付成功')
           })
       })
     }

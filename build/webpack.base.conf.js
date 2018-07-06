@@ -41,7 +41,8 @@ const webpackConfig = {
       '@': resolve('src'),
       'static': resolve('static'),
       'assets': resolve('src/assets'),
-      'components': resolve('src/components')
+      'components': resolve('src/components'),
+      'tools': resolve('src/tools')
     }
   },
   module: {

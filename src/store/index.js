@@ -6,13 +6,15 @@ import actions from './actions'
 import mutations from './mutations'
 import userModule from './modules/user' // 用户系列
 import appModule from './modules/app' // 商城系列
+import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
-const strict = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
-  strict/* 严格模式 */,
+  strict: debug/* 严格模式-更改状态时一定要Mutation */,
+  plugins: debug ? [createLogger()] : [],
   state,
   getters,
   actions,

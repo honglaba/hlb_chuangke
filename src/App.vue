@@ -21,7 +21,7 @@ export default {
       )
     }
 
-    if (localStorage.getItem('invite_id')) {
+    if (localStorage.getItem('invite_id')) { // 邀请码
       this.$store.commit(
         'SET_WEIKA_INVID',
         localStorage.getItem('invite_id')

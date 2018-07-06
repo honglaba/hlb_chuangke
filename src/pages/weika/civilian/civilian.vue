@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="微卡首页"></x-header> -->
     <div class="main">
       <div class="content">
         <div class="banner">

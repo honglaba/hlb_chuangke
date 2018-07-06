@@ -23,7 +23,7 @@
     </section>
     <section class="business-list">
       <ul>
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+        <router-link tag="li" to="javascript:;" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>

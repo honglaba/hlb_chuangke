@@ -87,7 +87,7 @@
         <a href="#">
           <!-- <img src="./images/home-news-text.png" /> -->
         </a>
-        <a href="#" class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
+        <a href="javascript:;" class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
       </div>
     </section>
 
@@ -97,7 +97,7 @@
         <router-link to="/home/recommend" class="fr">更多></router-link>
       </div>
       <div class="y-flex ad-type-one">
-        <router-link tag="a" to="#">
+        <router-link tag="a" to="javascript:;">
           <img src="./images/home-recommend-img1.png" />
           <div class="lpad26">
             <div class="txt1">
@@ -209,14 +209,14 @@
         <router-link class="fr" tag="a" to="/home/choice">更多></router-link>
       </div>
       <div class="y-flex business">
-        <router-link tag="a" to="#" class="flex1">
+        <router-link tag="a" to="javascript:;" class="flex1">
           <div class="img-box">
             <img src="./images/home-seller-img1.png" />
             <img src="./images/home-seller-logo1.png" />
           </div>
           <p class="business-name">沙拉低卡</p>
         </router-link>
-        <router-link tag="a" to="#" class="flex1">
+        <router-link tag="a" to="javascript:;" class="flex1">
           <div class="img-box">
             <img src="./images/home-seller-img2.png" />
             <img src="./images/home-seller-logo2.png" />
@@ -231,7 +231,7 @@
         <h3>猜你喜欢</h3>
       </div>
       <ul class="guess-list">
-        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+        <router-link tag="li" to="javascript:;" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
         </router-link>
       </ul>

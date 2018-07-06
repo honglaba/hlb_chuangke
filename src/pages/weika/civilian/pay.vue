@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="微卡购买"></x-header> -->
     <div class="main">
       <div class="content">
         <div class="paybox pd20">
@@ -94,6 +93,8 @@
   </div>
 </template>
 <script>
+import { wxpay } from 'tools/util'
+import { mapMutations, mapActions } from 'vuex'
 import {
   XInput,
   Selector,
@@ -111,13 +112,24 @@ export default {
       paytypeList: ['微信', '支付宝']
     }
   },
-  created () {
-    console.log(this.$route)
-  },
   methods: {
     _pay () {
-
-    }
+      wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.params) // 调起微信支付
+    },
+    onBridgeReady (val) {
+      this.Wk_Buy(val).then(res => {
+        let result = res.data
+        this.invId(null) // clear
+        window.WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',
+          result,
+          res => {
+            alert('调取微信支付成功')
+          })
+      })
+    },
+    ...mapMutations({invId: 'SET_WEIKA_INVID'}),
+    ...mapActions(['Wk_Buy'])
   },
   components: {
     XInput,

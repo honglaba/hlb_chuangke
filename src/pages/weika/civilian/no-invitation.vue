@@ -43,11 +43,16 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 export default {
+  created () {
+    this.invId(null) // 进入删除邀请码
+  },
   methods: {
     _invCodePass () {
       this.$router.push({path: '/weika/choose_products'})
-    }
+    },
+    ...mapMutations({invId: 'SET_WEIKA_INVID'})
   }
 }
 </script>
