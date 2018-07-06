@@ -1,6 +1,7 @@
 <template>
   <!-- <mt-loadmore id="app" :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange" ref="loadmore"> -->
-<div class="app">
+<div style="overflow:scroll">
+  <div class="main" style="top:0">
   <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false">
     <headerx></headerx>
     <section class="banner">
@@ -23,14 +24,17 @@
     </section>
     <section class="business-list">
       <ul>
-        <router-link tag="li" to="javascript:;" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+        <!-- <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index"> -->
+        <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
           <Other></Other>
         </router-link>
       </ul>
     </section>
+
   </mt-loadmore>
   <Footerx></Footerx>
+  </div>
   </div>
 </template>
 <script>
@@ -153,10 +157,16 @@ export default {
       })
     },
     loadBottom () {
-      this.allLoaded = true// 若数据已全部获取完毕
-      this.$refs.loadmore.onBottomLoaded()
+      // this.$refs.loadmore.onBottomLoaded()
       this.axios.get(this.nextPageUrl).then(res => {
         this.businessList = this.businessList.concat(res.data)
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.allLoaded = true// 若数据已全部获取完毕
+          this.nextPageUrl = null
+        }
+        console.log(this.nextPageUrl)
       })
     },
     // loadmore
@@ -197,11 +207,9 @@ export default {
       // 获取2级分类
       id ? id = id : id = 1
       this.axios.get('/api/shop-category?parent=' + id).then(res => {
-        // console.log(res)
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
-        // res.data[0].active = true
         this.navs = res.data
         this.navs.unshift({title: '全部', active: true, id: 0})
       })

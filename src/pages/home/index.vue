@@ -268,7 +268,7 @@
         <h3>猜你喜欢</h3>
       </div>
       <ul class="guess-list">
-        <router-link tag="li" to="javascript:;" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+        <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
           <ListInner :businessList="item"></ListInner>
         </router-link>
       </ul>
@@ -349,6 +349,7 @@ export default {
         this.businessList = []
         for (let i in res.data) {
           this.businessList.push(res.data[i])
+          console.log(this.businessList[i].id)
         }
       })
     }

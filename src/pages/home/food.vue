@@ -76,6 +76,7 @@
       </section>
     </div>
     <scroller :on-infinite="infinite" ref="myscroller" :noDataText='aaa'>
+      <!-- <div> -->
       <Headerx></Headerx>
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
@@ -126,7 +127,7 @@
           <Other></Other>
         </router-link> -->
 
-          <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
+          <router-link tag="li" :to="{path:'/home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
           </router-link>
@@ -269,6 +270,7 @@ export default {
           for (let i in res.data) {
             this.shopList.push(res.data[i])
           }
+          console.log(this.shopList[0].id)
         })
     },
     switchCategory: function (index, event) {

@@ -2,7 +2,7 @@
   <div id="app">
     <section class="banner-box">
       <!-- <img src="./images/choicepic.png"> -->
-      <img :src="details.banner">
+      <img :src="details.logo">
 
       <div class="top-row">
         <span class="back"></span>
@@ -25,7 +25,7 @@
         <div class="til">
           <h3>{{details.title}}</h3>
           <div>评分
-            <span class="c60">5.0</span>
+            <span class="c60">{{details.score}}</span>
           </div>
         </div>
         <div class="follow" v-if="!following" @click="followTap">
@@ -123,7 +123,8 @@
       </div>
     </section>
 
-    <section class="exchange" v-if="!actionDetail">
+    <!-- 兑换商品 -->
+    <!-- <section class="exchange" v-if="!actionDetail">
       <div class="y-flex y-jc-b til-row">
         <h3>本店兑换</h3>
         <router-link to="/home/exchange" tag="a">更多
@@ -138,7 +139,7 @@
           </router-link>
         </ul>
       </div>
-    </section>
+    </section> -->
 
     <section class="comment">
       <div class="top-row y-flex y-jc-b y-ac">
@@ -206,7 +207,7 @@
 
     <div v-transfer-dom>
       <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
-        <p style="text-align:center;">{{details.phone}}</p>
+        <p style="text-align:center;">{{details.mobile_phone}}</p>
       </confirm>
     </div>
   </div>
@@ -243,8 +244,7 @@ export default {
     getInfo () {
       // console.log(this.$store.state)
       let that = this
-      this.axios.get('/api/shop?id=1').then(function (res) {
-        console.log(res)
+      this.axios.get('/api/shop?id=' + this.$route.query.id).then(function (res) {
         that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
@@ -252,6 +252,7 @@ export default {
     getExchange () {
       let that = this
       this.axios.get('/api/shop/commodities?sid=1').then(function (res) {
+        console.log(res.data)
         that.$store.commit('EXCHANHE', res.data)
       })
     },
