@@ -28,8 +28,10 @@ export default {
       > li {
         display: flex;
         align-items: center;
-        padding-top: 0.22rem;
-        padding-bottom: 0.26rem;
+        padding-top: .2rem;
+        &:last-child{
+           padding-bottom: .2rem;
+        }
         > span {
           display: block;
           background: url(./images/otherico.png) no-repeat;

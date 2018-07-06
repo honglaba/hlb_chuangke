@@ -60,12 +60,12 @@
                 <span class="num">8</span>
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link :to="{path:'/member/order/order_list/3'}">
                 <span><img src="./images/daishiyong.png"></span>
                 <span>待使用</span>
               </router-link>
-            </li>
+            </li> -->
             <li>
               <router-link :to="{path:'/member/order/order_list/4'}">
                 <span><img src="./images/daipinglun.png"></span>
@@ -86,12 +86,12 @@
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
-          <router-link :to="{path:'/member/exchange'}">
+          <!-- <router-link :to="{path:'/member/exchange'}">
             <div class="tit">
               <div class="l">我要兑换</div>
               <div class="r"><img src="./images/you1.png"></div>
             </div>
-          </router-link>
+          </router-link> -->
           <router-link :to="{path:'/member/favourite'}">
             <div class="tit">
               <div class="l">我的收藏</div>
