@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
+  <!-- <mt-loadmore id="app" :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange" ref="loadmore"> -->
+<div class="app">
+  <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false">
     <headerx></headerx>
     <section class="banner">
       <p>今日推荐</p>
@@ -27,16 +29,19 @@
         </router-link>
       </ul>
     </section>
-    <Footerx></Footerx>
+  </mt-loadmore>
+  <Footerx></Footerx>
   </div>
 </template>
 <script>
 import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
-
+import { Loadmore } from 'mint-ui'
 export default {
   watch: {
-    $route (val, oldval) {}
+    '$route' (val, oldval) {
+
+    }
   },
   data () {
     return {
@@ -121,7 +126,8 @@ export default {
           active: false
         }
       ],
-      businessList: []
+      businessList: [],
+      allLoaded: false
       // businessList: [
       //   {
       //     // name: '良记甜品',
@@ -139,6 +145,25 @@ export default {
     }
   },
   methods: {
+    loadTop () {
+      this.$refs.loadmore.onTopLoaded()
+      this.axios.get(this.nextPageUrl).then(res => {
+        console.log(res)
+        console.log(this.businessList)
+      })
+    },
+    loadBottom () {
+      this.allLoaded = true// 若数据已全部获取完毕
+      this.$refs.loadmore.onBottomLoaded()
+      this.axios.get(this.nextPageUrl).then(res => {
+        this.businessList = this.businessList.concat(res.data)
+      })
+    },
+    // loadmore
+    /// ////////////////////
+    handleTopChange (status) {
+      this.topStatus = status
+    },
     tabTap: function (index) {
       // 1级分类切换
       let tabNavs = document.querySelectorAll('.tab-nav>li')
@@ -146,22 +171,21 @@ export default {
         this.tabNavs[i].active = false
       }
       this.tabNavs[index].active = true
-      this.getCategoryChildren(index + 1)
+      this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
+      this.getCategoryShop(this.tabNavs[index].id)
     },
     navTap: function (index) {
       // 2级分类切换
-      let that = this
       let navs = document.querySelectorAll('.tab-con li')
       for (let i = 0, len = navs.length; i < len; i++) {
-        that.navs[i].active = false
+        this.navs[i].active = false
       }
-      that.navs[index].active = true
-      this.getCategoryShop(index)
+      this.navs[index].active = true
+      this.getCategoryShop(this.navs[index].id)
     },
     getCategory: function () {
-      // 1级分类
+      // 获取1级分类
       this.axios.get('/api/shop-category?parent=0').then(res => {
-        console.log(res)
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
@@ -170,24 +194,28 @@ export default {
       })
     },
     getCategoryChildren: function (id) {
-      // 2级分类
+      // 获取2级分类
       id ? id = id : id = 1
       this.axios.get('/api/shop-category?parent=' + id).then(res => {
+        // console.log(res)
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
-        res.data[0].active = true
+        // res.data[0].active = true
         this.navs = res.data
+        this.navs.unshift({title: '全部', active: true, id: 0})
       })
     },
     getCategoryShop: function (id) {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
-      id ? id = id : id = 1
-      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + id).then(res => {
+      // id ? id = id : id = 0 // 0即为全部
+      id ? id = '&cid=' + id : id = ''
+      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960' + id).then(res => {
+      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
         console.log(res)
         if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('')
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
         } else {
           this.nextPageUrl = null
         }
@@ -197,21 +225,27 @@ export default {
         for (let i in res.data) {
           this.businessList.push(res.data[i])
         }
+
+        console.log(this.nextPageUrl)
       })
     }
   },
-  components: { ListInner, Other },
+  components: { ListInner, Other, 'mt-loadmore': Loadmore},
   mounted () {
     this.getCategory()
     this.getCategoryChildren()
     this.getCategoryShop()
+
+    // window.addEventListener('scroll', function () {
+    //   console.log(window.scrollY)
+    // })
   }
 }
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-#app {
-  padding-bottom: 1rem;
+.app {
+  padding-bottom: 1.2rem;
 }
 .banner {
   width: 100%;

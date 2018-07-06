@@ -54,7 +54,7 @@ const actions = {
         url: '/api/pay-order',
         method: 'post',
         data: {
-          price: '0.01',
+          price: '2',
           sid: '1',
           trade_type: 'WeixinJSBridge'
         },

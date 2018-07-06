@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div id="food-content">
     <div class="copy-block" v-if="seen">
       <Headerx></Headerx>
       <section class="screen-row">
-          <ul class="screen-tab">
-            <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
-              <p>{{tab.name}}</p>
-              <span></span>
-            </li>
-          </ul>
-          <section class="screen-inner"  @click.self="maskTap">
-            <ul v-if="tabTemp==0" class="screen-li">
-              <!-- <li>全部</li>
+        <ul class="screen-tab">
+          <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
+            <p>{{tab.name}}</p>
+            <span></span>
+          </li>
+        </ul>
+        <section class="screen-inner" @click.self="maskTap">
+          <ul v-if="tabTemp==0" class="screen-li">
+            <!-- <li>全部</li>
               <li>甜品饮品</li>
               <li>火锅</li>
               <li>生日蛋糕</li>
@@ -26,11 +26,11 @@
               <li>西餐</li>
               <li>聚餐宴席</li>
               <li>烧烤烤肉</li> -->
-              <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory(index,$event)" :key="index" :class="{cur:item.active}">{{item.title}}</li>
-            </ul>
-            <div v-if="tabTemp==1" class="lr-part">
-              <ul class="left-nav">
-                <!-- <li class="cur">
+            <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory(index,$event)" :key="index" :class="{cur:item.active}">{{item.title}}</li>
+          </ul>
+          <div v-if="tabTemp==1" class="lr-part">
+            <ul class="left-nav">
+              <!-- <li class="cur">
                   <span>附近</span>
                   <span></span>
                 </li>
@@ -47,37 +47,37 @@
                   <span></span>
                 </li> -->
 
-                <li v-for="(item,index) in region" :class="{cur:item.active}" @click="switchRegion(index)">
-                  <span>{{item.region_name}}</span>
-                  <span></span>
-                </li>
-              </ul>
-              <ul class="right-inner">
-                <!-- <li>全部</li>
+              <li v-for="(item,index) in region" :class="{cur:item.active}" @click="switchRegion(index)">
+                <span>{{item.region_name}}</span>
+                <span></span>
+              </li>
+            </ul>
+            <ul class="right-inner">
+              <!-- <li>全部</li>
                 <li class="cur">第一国际/汇一城</li>
                 <li>富民步行街</li>
                 <li>洪福路口</li>
                 <li>景湖时代城</li> -->
 
-                <li v-for="(item,index) in areas" :class="{cur:item.active}" @click="switchAreas(index)">
-                  {{item.region_name}}
-                </li>
-              </ul>
-            </div>
-            <ul v-if="tabTemp==2" class="screen-li sort">
-              <!-- <li>智能排序</li>
+              <li v-for="(item,index) in areas" :class="{cur:item.active}" @click="switchAreas(index)">
+                {{item.region_name}}
+              </li>
+            </ul>
+          </div>
+          <ul v-if="tabTemp==2" class="screen-li sort">
+            <!-- <li>智能排序</li>
               <li>离我最近</li>
               <li>好评优先</li>
               <li>人气最高</li> -->
 
-              <li v-for="(item,index) in sortTxt" :class="{cur:item.active}" @click="sort(index)">{{item.title}}</li>
-            </ul>
-          </section>
+            <li v-for="(item,index) in sortTxt" :class="{cur:item.active}" @click="sort(index)">{{item.title}}</li>
+          </ul>
         </section>
+      </section>
     </div>
-    <scroller :on-infinite="infinite" ref="myscroller" >
+    <scroller :on-infinite="infinite" ref="myscroller" :noDataText='aaa'>
       <Headerx></Headerx>
-      <div class="swiper-container banner-swiper" v-if="!seen">
+      <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
           <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
@@ -130,13 +130,13 @@
 
       </section>
     </scroller>
-    </div>
+  </div>
 </template>
 <script>
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import Other from '../../components/common/other/other'
 import ListInner from '../../components/common/listInner/listInner'
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -171,22 +171,30 @@ export default {
       nextPageUrl: '',
       tempArr: [],
       sortTxt: [
-        {title: '智能排序', active: true},
-        {title: '离我最近', active: false},
-        {title: '好评优先', active: false},
-        {title: '人气最高', active: false}
+        { title: '智能排序', active: true },
+        { title: '离我最近', active: false },
+        { title: '好评优先', active: false },
+        { title: '人气最高', active: false }
       ],
       region: [],
-      areas: []
+      areas: [],
+      aaa: 'haha'
     }
   },
   components: { ListInner, Other },
   methods: {
-    ...mapActions(['HTTP_GetCategory', 'HTTP_GetCategoryShop', 'HTTP_SwitchCategory']),
-    bindTap: function (index) { // 模拟绑定点击
+    ...mapActions([
+      'HTTP_GetCategory',
+      'HTTP_GetCategoryShop',
+      'HTTP_SwitchCategory'
+    ]),
+    bindTap: function (index) {
+      // 模拟绑定点击
       this.screenTap(index)
     },
-    screenTap: function (index) { // 顶部筛选切换
+    screenTap: function (index) {
+      // 顶部筛选切换
+      console.log(this.$refs.myscroller.scroller.__scrollTop)
       // let screenTab = document.querySelectorAll('.screen-tab>li')
       if (this.tabTemp == null || this.tabTemp !== index) {
         this.tabTemp = index
@@ -203,7 +211,8 @@ export default {
         this.seen = false
       }
     },
-    maskTap: function () { // 遮罩层点击
+    maskTap: function () {
+      // 遮罩层点击
       this.seen = false
       this.tabTemp = null
       let screenTab = document.querySelectorAll('.screen-tab>li')
@@ -218,6 +227,8 @@ export default {
           res.data[i].active = false
         }
         this.category = res.data
+        this.category.unshift({ title: '全部', id: 0, active: true })
+        console.log(this.category)
       })
       // this.HTTP_GetCategory().then(res => {
       //   this.category = res.data
@@ -226,23 +237,31 @@ export default {
     getCategoryShop: function (id) {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
-      id ? id = id : id = 0
-      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + id).then(res => {
-        if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('')
-        } else {
-          this.nextPageUrl = null
-        }
+      id ? (id = id) : (id = 0)
+      this.axios
+        .get(
+          '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' +
+            id
+        )
+        .then(res => {
+          if (res.next_page_url != null) {
+            this.nextPageUrl = res.next_page_url
+              .split('http://api.hlbck.com')
+              .join('')
+          } else {
+            this.nextPageUrl = null
+          }
 
-        delete res.data.result_state
-        delete res.data.return_state
-        this.shopList = []
-        for (let i in res.data) {
-          this.shopList.push(res.data[i])
-        }
-      })
+          delete res.data.result_state
+          delete res.data.return_state
+          this.shopList = []
+          for (let i in res.data) {
+            this.shopList.push(res.data[i])
+          }
+        })
     },
-    switchCategory: function (index, event) { // 切换分类
+    switchCategory: function (index, event) {
+      // 切换分类
       let categoryId = event.target.getAttribute('data-category')
       // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + categoryId).then(res => {
       //   console.log(res)
@@ -258,7 +277,7 @@ export default {
       }
       this.category[index].active = true
       this.screenTab[0].name = this.category[index].title
-      this.maskTap()// 相同逻辑收起下拉
+      this.maskTap() // 相同逻辑收起下拉
     },
     // getRegion: function () { // 附近筛选
     //   this.axios.get('/api/region?parent=79').then(res => { // 79是东莞
@@ -267,19 +286,22 @@ export default {
     //   })
     // },
     getArea: function () {
-      this.axios.get('/api/areas?latitude=23.0148260&longitude=113.7451960').then(res => {
-        for (let i = 0, len = res.data.length; i < len; i++) {
-          res.data[i].active = false
-        }
-        for (let j = 0, len = res.data[0].children.length; j < len; j++) {
-          res.data[0].children[j].active = false
-        }
-        res.data[0].active = true
-        this.region = res.data
-        this.areas = res.data[0].children // 默认首个街道
-      })
+      this.axios
+        .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
+        .then(res => {
+          for (let i = 0, len = res.data.length; i < len; i++) {
+            res.data[i].active = false
+          }
+          for (let j = 0, len = res.data[0].children.length; j < len; j++) {
+            res.data[0].children[j].active = false
+          }
+          res.data[0].active = true
+          this.region = res.data
+          this.areas = res.data[0].children // 默认首个街道
+        })
     },
-    sort: function (index) { // 排序
+    sort: function (index) {
+      // 排序
       for (let i = 0, len = this.sortTxt.length; i < len; i++) {
         this.sortTxt[i].active = false
       }
@@ -287,22 +309,26 @@ export default {
       this.screenTab[2].name = this.sortTxt[index].title
       this.maskTap()
     },
-    switchRegion: function (index) { // 切换区
+    switchRegion: function (index) {
+      // 切换区
       for (let i = 0, len = this.region.length; i < len; i++) {
         this.region[i].active = false
       }
       this.region[index].active = true
-      this.axios.get('/api/areas?latitude=23.0148260&longitude=113.7451960').then(res => {
-        this.areas = res.data[index].children
-      })
+      this.axios
+        .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
+        .then(res => {
+          this.areas = res.data[index].children
+        })
     },
-    switchAreas: function (index) { // 切换街道
+    switchAreas: function (index) {
+      // 切换街道
       for (let i = 0, len = this.areas.length; i < len; i++) {
         this.areas[i].active = false
       }
       this.areas[index].active = true
       this.screenTab[1].name = this.areas[index].region_name
-      this.maskTap()// 相同逻辑收起下拉
+      this.maskTap() // 相同逻辑收起下拉
     },
     infinite (done) {
       // 下拉加载vue-scroll
@@ -338,158 +364,169 @@ export default {
     // done()表示这次异步加载数据完成，加载下一次
     // 因为这个是同步的，加了setTimeout就是异步加载数据；
     // 因为涉及到this指向问题，所以将他放在一个变量里。
-    refresh () {}
+    refresh () {},
+
+    test: function () {
+      console.log(this.$refs.myscroller.scroller.__scrollTop)
+    }
   },
   mounted () {
     /* eslint-disable */
-    new Swiper('.banner-swiper', {
+    new Swiper(".banner-swiper", {
       pagination: {
-        el: '.swiper-pagination'
+        el: ".swiper-pagination"
       }
-    })
-    this.getCategory()
-    this.getCategoryShop()
+    });
+    this.getCategory();
+    this.getCategoryShop();
     // this.getRegion()
-    this.getArea()
+    this.getArea();
+    console.log(this.$refs.myscroller.scroller.__scrollTop);
   }
-}
+};
 </script>
 <style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
-.banner-swiper {
-  width: 7.5rem;
-  height: 2.6rem;
-  img {
+#food-content {
+  .banner-swiper {
     width: 7.5rem;
     height: 2.6rem;
-  }
-}
-.swiper-pagination.swiper-pagination-bullets {
-  bottom: 0.16rem;
-}
-.swiper-pagination-bullet {
-  width: 0.1rem !important;
-  height: 0.1rem !important;
-  background: #f1f1f1;
-  opacity: 1;
-  margin-right: 0.12rem !important;
-}
-.swiper-pagination-bullet-active {
-  background: #ccc;
-}
-.screen-row {
-  width: 100%;
-  height: 0.8rem;
-  background: #fff;
-  margin-bottom: 0.2rem;
-  position: relative;
-  z-index: 999;
-  > ul {
-    display: flex;
-    > li {
-      flex: 1;
-      text-align: center;
-      line-height: 0.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      > span {
-        border-top: 0.08rem solid #888;
-        border-left: 0.07rem solid #fff;
-        border-right: 0.07rem solid #fff;
-      }
-      > p {
-        color: #333;
-        margin-right: 0.07rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
-    > .cur {
-      > span {
-        border-top: none;
-        border-bottom: 0.08rem solid #f60;
-        border-left: 0.07rem solid #fff;
-        border-right: 0.07rem solid #fff;
-      }
-      > p {
-        color: #f60;
-      }
+    img {
+      width: 7.5rem;
+      height: 2.6rem;
     }
   }
-  .screen-inner {
-    position: absolute;
+  .swiper-pagination.swiper-pagination-bullets {
+    bottom: 0.16rem;
+  }
+  .swiper-pagination-bullet {
+    width: 0.1rem !important;
+    height: 0.1rem !important;
+    background: #f1f1f1;
+    opacity: 1;
+    margin-right: 0.12rem !important;
+  }
+  .swiper-pagination-bullet-active {
+    background: #ccc;
+  }
+  .screen-row {
     width: 100%;
-    height:calc(100vh - 1.68rem);
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 99;
+    height: 0.8rem;
+    background: #fff;
+    margin-bottom: 0.2rem;
+    position: relative;
+    z-index: 999;
     > ul {
-      background: #fff;
-      padding-left: 0.6rem;
-      box-sizing: border-box;
-       max-height:70%;
-      overflow-y: scroll;
-      li {
-        height: 0.9rem;
-        line-height: 0.9rem;
-        font-size: 0.28rem;
+      display: flex;
+      > li {
+        flex: 1;
+        text-align: center;
+        line-height: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        > span {
+          border-top: 0.08rem solid #888;
+          border-left: 0.07rem solid #fff;
+          border-right: 0.07rem solid #fff;
+        }
+        > p {
+          color: #333;
+          margin-right: 0.07rem;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
       }
-      .cur {
-        color: #f60;
+      > .cur {
+        > span {
+          border-top: none;
+          border-bottom: 0.08rem solid #f60;
+          border-left: 0.07rem solid #fff;
+          border-right: 0.07rem solid #fff;
+        }
+        > p {
+          color: #f60;
+        }
       }
     }
-    .lr-part{
-      background: #fff;
-      padding-left: 0.6rem;
-      box-sizing: border-box;
-      display: flex;
-      max-height: 70%;
-      overflow: hidden;
-        > ul {
+    .screen-inner {
+      position: absolute;
+      width: 100%;
+      height: calc(100vh - 1.68rem);
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      > ul {
         background: #fff;
+        padding-left: 0.6rem;
         box-sizing: border-box;
+        max-height: 70%;
         overflow-y: scroll;
         li {
           height: 0.9rem;
           line-height: 0.9rem;
           font-size: 0.28rem;
-          overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
         }
         .cur {
           color: #f60;
-          display: flex;
-          align-items: center;
-          >span:nth-child(1){
-            margin-right: .08rem
-          }
-          >span:nth-child(2){
-            display: block;
-            width:.1rem;
-            height: .19rem;
-            background: url(./images/icon_opt_into.png) no-repeat;
-            background-size:.1rem;
-          }
         }
       }
-      .left-nav{
-        width: 3.05rem;
-      }
-      .right-inner{
-        flex: 1
+      .lr-part {
+        background: #fff;
+        padding-left: 0.6rem;
+        box-sizing: border-box;
+        display: flex;
+        max-height: 70%;
+        overflow: hidden;
+        > ul {
+          background: #fff;
+          box-sizing: border-box;
+          overflow-y: scroll;
+          li {
+            height: 0.9rem;
+            line-height: 0.9rem;
+            font-size: 0.28rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .cur {
+            color: #f60;
+            display: flex;
+            align-items: center;
+            > span:nth-child(1) {
+              margin-right: 0.08rem;
+            }
+            > span:nth-child(2) {
+              display: block;
+              width: 0.1rem;
+              height: 0.19rem;
+              background: url(./images/icon_opt_into.png) no-repeat;
+              background-size: 0.1rem;
+            }
+          }
+        }
+        .left-nav {
+          width: 3.05rem;
+        }
+        .right-inner {
+          flex: 1;
+        }
       }
     }
   }
-}
-.business-list {
-  background: #fff;
-  padding: 0 0.3rem;
-  > ul > li {
-    padding-top: 0.32rem;
+  .business-list {
+    background: #fff;
+    padding: 0 0.3rem;
+    > ul > li {
+      padding-top: 0.32rem;
+    }
+  }
+  .copy-block {
+    position: relative;
+    z-index: 999;
   }
 }
 </style>
