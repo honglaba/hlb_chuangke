@@ -79,9 +79,13 @@
       <Headerx></Headerx>
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
+          <!-- <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
           <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
+          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div> -->
+
+          <div class="swiper-slide" v-for="(item,index) in banner">
+            <img :src="item.img_path" />
+          </div>
         </div>
         <div class="swiper-pagination"></div>
       </div>
@@ -178,6 +182,7 @@ export default {
       ],
       region: [],
       areas: [],
+      banner: [],
       aaa: 'haha'
     }
   },
@@ -188,6 +193,12 @@ export default {
       'HTTP_GetCategoryShop',
       'HTTP_SwitchCategory'
     ]),
+    getBanner: function () {
+      this.axios.get('/api/banner?key=nearby').then(res => {
+        console.log(res)
+        this.banner = res.data
+      })
+    },
     bindTap: function (index) {
       // 模拟绑定点击
       this.screenTap(index)
@@ -370,20 +381,28 @@ export default {
       console.log(this.$refs.myscroller.scroller.__scrollTop)
     }
   },
+  created () {
+    this.getBanner()
+  },
   mounted () {
+    this.getCategory()
+    this.getCategoryShop()
+    // this.getRegion()
+    this.getArea()
+
+    console.log(this.$refs.myscroller.scroller.__scrollTop)
+  },
+  updated () {
     /* eslint-disable */
     new Swiper(".banner-swiper", {
+      loop: true,
       pagination: {
         el: ".swiper-pagination"
       }
     });
-    this.getCategory();
-    this.getCategoryShop();
-    // this.getRegion()
-    this.getArea();
-    console.log(this.$refs.myscroller.scroller.__scrollTop);
   }
-};
+
+}
 </script>
 <style lang="less">
 @import "~vux/src/styles/1px.less";

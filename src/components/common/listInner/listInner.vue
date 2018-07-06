@@ -12,6 +12,7 @@
             </div>
             <span class="mark">到店直换</span>
             <p class="tsc">{{businessList.genres_of_food}}</p>
+            <p class="tsc">特色菜</p>
             <div class="price-row">
                 <div><span>{{businessList.score}}</span>分</div>
                 <p>({{businessList.total_comments}}条评价)</p>
@@ -67,6 +68,9 @@ export default {
           font-size: 0.36rem;
           color: #333;
           margin-right: 0.16rem;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         .mark {
           font-size: 0.22rem;
