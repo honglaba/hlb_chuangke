@@ -8,7 +8,7 @@ import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin} from 'vux'
+import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin, Loading} from 'vux'
 import VueScroller from 'vue-scroller'
 
 Vue.use(VueScroller)
@@ -23,6 +23,7 @@ Vue.prototype.axios = axios
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
+Vue.component('x-loading', Loading)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)

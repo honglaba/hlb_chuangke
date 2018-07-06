@@ -366,7 +366,7 @@ const weika = {
       })
     })
   },
-  Wk_GoodList ({commit}, data) { // 微卡下单商品列表
+  Wk_GoodList ({commit}) { // 微卡下单商品列表
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/weika/goods`

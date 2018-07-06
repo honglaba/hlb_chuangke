@@ -5,7 +5,11 @@ const state = {
   details: '',
   exchange: '',
   comments: '',
-  WkInv: /* 用户邀请码 */ ''
+  WkInv: /* 用户邀请码 */ '',
+  isLoading: {
+    status: false,
+    text: ''
+  }
 }
 
 export default state

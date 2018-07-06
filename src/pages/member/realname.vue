@@ -50,6 +50,9 @@ export default {
     Group,
     Divider
   },
+  created () {
+    console.log(this.$route.query)
+  },
   methods: {
     ...mapActions(['HTTP_realNameRegistration', 'HTTP_UserInfo']),
     _keydown () {
@@ -75,6 +78,10 @@ export default {
                 title: '提示',
                 content: '实名认证成功',
                 onHide () {
+                  if (this.$route.query.type) {
+                    _this.$router.push({name: 'step1'})
+                    return
+                  }
                   _this.$router.push({path: '/member/settings'})
                 }
               })
