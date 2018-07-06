@@ -1,19 +1,32 @@
 <template>
-  <div id="app">
+  <div>
     <Headerx></Headerx>
     <div id="allmap" class="allmap" style="display:none"></div>
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
-      <div class="swiper-container banner-swiper">
+      <div class="swiper-container banner-swiper index">
         <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="./images/home-banner-img1.png" /></div>
+          <!-- <div class="swiper-slide"><img src="./images/home-banner-img1.png" /></div>
           <div class="swiper-slide"><img src="./images/home-banner-img2.png" /></div>
-          <div class="swiper-slide"><img src="./images/home-banner-img3.png" /></div>
+          <div class="swiper-slide"><img src="./images/home-banner-img3.png" /></div> -->
+
+          <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
+            <img :src="item.img_path" />
+          </div>
+
         </div>
       </div>
 
       <div class="swiper-container nav-swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
+            <router-link to="/home/food" v-for="(item,index) in channel" :key="index">
+              <!-- <div class="nav-ico type1"></div> -->
+              <img :src="item.img_path" />
+              <p>{{item.title}}</p>
+            </router-link>
+          </div>
+
+          <!-- <div class="swiper-slide">
             <router-link to="/home/food">
               <div class="nav-ico type1"></div>
               <p>美食</p>
@@ -78,7 +91,7 @@
               <div class="nav-ico type1"></div>
               <p>生活服务</p>
             </a>
-          </div>
+          </div> -->
         </div>
         <div class="swiper-pagination"></div>
       </div>
@@ -97,7 +110,27 @@
         <router-link to="/home/recommend" class="fr">更多></router-link>
       </div>
       <div class="y-flex ad-type-one">
-        <router-link tag="a" to="javascript:;">
+          <router-link tag="a" to="#" v-for="(item, index) in goods" :key="index">
+          <img src="./images/home-recommend-img1.png" />
+          <!-- <img :src="item.thumb" /> -->
+            <div class="lpad26">
+            <div class="txt1">
+              <p>{{item.name}}</p>
+              <p>送创客微卡</p>
+            </div>
+            <div class="txt2">
+              <p>
+                <span>￥</span>
+                <span>{{item.price}}</span>
+              </p>
+              <p>特价</p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <!-- 以下是隐藏部分模板 有用 -->
+      <!-- <div class="y-flex ad-type-one">
+        <router-link tag="a" to="#">
           <img src="./images/home-recommend-img1.png" />
           <div class="lpad26">
             <div class="txt1">
@@ -198,7 +231,7 @@
             </div>
           </div>
         </router-link>
-      </div>
+      </div> -->
 
     </section>
 
@@ -209,7 +242,7 @@
         <router-link class="fr" tag="a" to="/home/choice">更多></router-link>
       </div>
       <div class="y-flex business">
-        <router-link tag="a" to="javascript:;" class="flex1">
+        <!-- <router-link tag="a" to="#" class="flex1">
           <div class="img-box">
             <img src="./images/home-seller-img1.png" />
             <img src="./images/home-seller-logo1.png" />
@@ -222,6 +255,10 @@
             <img src="./images/home-seller-logo2.png" />
           </div>
           <p class="business-name">酱子（高级日料）</p>
+        </router-link> -->
+
+        <router-link tag="a" to="#" class="flex1 sp" v-for="(item, index) in superme" :key="index">
+          <img :src='item.img_path'>
         </router-link>
       </div>
     </section>
@@ -251,7 +288,10 @@ export default {
   name: 'App',
   data () {
     return {
-      banner: '',
+      banner: [],
+      superme: [],
+      channel: [],
+      goods: [],
       transitionName: 'slide-right',
       businessList: [
         {
@@ -267,61 +307,109 @@ export default {
   },
   components: { ListInner, swiper, swiperSlide },
   methods: {
-    ...mapActions(['APP_Banner'])
+    ...mapActions(['APP_Banner']),
+    getBanner: function () {
+      // 顶部banner
+      this.axios.get('/api/banner?key=index').then(res => {
+        this.banner = res.data
+      })
+    },
+    getSuperme: function () {
+      // 精选商家
+      this.axios.get('/api/banner?key=superme').then(res => {
+        this.superme = res.data
+      })
+    },
+    getChannel: function () {
+      // 分类导航
+      this.axios.get('/api/banner?key=channel').then(res => {
+        this.channel = res.data
+      })
+    },
+    getGoods: function () {
+      // 精选推荐
+      this.axios.get('/api/weika/goods').then(res => {
+        this.goods = res.data
+      })
+    },
+    getCategoryShop: function (id) {
+      // 分类下商店
+      // this.HTTP_GetCategoryShop().then(res => {
+      // id ? id = id : id = 0 // 0即为全部
+      // id ? id = '&cid=' + id : id = ''
+      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc').then(res => {
+      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.nextPageUrl = null
+        }
+        delete res.data.result_state
+        delete res.data.return_state
+        this.businessList = []
+        for (let i in res.data) {
+          this.businessList.push(res.data[i])
+        }
+      })
+    }
   },
   created () {
     // this.APP_Banner('nearby').then(res => {
     //   console.log(res, 'nearby')
     // })
-    this.APP_Banner('index').then(res => {
-      this.banner = res.data
-    })
+    // this.APP_Banner('index').then(res => {
+    //   this.banner = res.data
+    // })
+    this.getBanner()
+    this.getSuperme()
+    this.getChannel()
+    this.getGoods()
+    this.getCategoryShop()
   },
   mounted () {
-    /* eslint-disable */
-    new Swiper(".banner-swiper", {
-      autoplay: 8000,
-      loop: true,
-      effect: "coverflow",
-      centeredSlides: true,
-      slidesPerView: "auto",
-      coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true
-      }
-    });
-
-    new Swiper(".nav-swiper", {
-      pagination: {
-        el: ".swiper-pagination"
-      }
-    });
-
     // 百度地图API功能
-    var map = new BMap.Map("allmap"); // 创建Map实例
+    var map = new BMap.Map('allmap') // 创建Map实例
     // 获取自身定位并存入sessionStorage
-    var my_point = [];
-    var geolocation = new BMap.Geolocation();
+    var my_point = []
+    var geolocation = new BMap.Geolocation()
     geolocation.getCurrentPosition(
-      function(r) {
+      function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          var mk = new BMap.Marker(r.point);
-          map.addOverlay(mk);
-          map.panTo(r.point);
+          var mk = new BMap.Marker(r.point)
+          map.addOverlay(mk)
+          map.panTo(r.point)
           // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-          sessionStorage.lng = r.point.lng;
-          sessionStorage.lat = r.point.lat;
+          sessionStorage.lng = r.point.lng
+          sessionStorage.lat = r.point.lat
         } else {
-          alert("failed" + this.getStatus());
+          alert('failed' + this.getStatus())
         }
       },
       { enableHighAccuracy: true }
-    );
+    )
+  },
+  updated () {
+    new Swiper('.banner-swiper', {// 顶部banner实例化
+      autoplay: 8000,
+      loop: true,
+      centeredSlides: true,
+      slidesPerView: 'auto'
+      // effect: 'coverflow',
+      // coverflowEffect: {
+      //   rotate: 50,
+      //   stretch: 0,
+      //   depth: 100,
+      //   modifier: 1,
+      //   slideShadows: true
+      // }
+    })
+    new Swiper('.nav-swiper', {// 分类导航实例化
+      pagination: {
+        el: '.swiper-pagination'
+      }
+    })
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -334,12 +422,20 @@ export default {
 .swiper-container {
   overflow-y: inherit;
 }
-.banner-swiper {
+.banner-swiper.index {
+  height: 2.96rem;
   .swiper-slide {
-    width: 85%;
+    // width: 85%;
+    width: 6.86rem;
+    height: 2.56rem;
+    overflow: hidden;
+    margin:0 .1rem;
+    border-radius: .12rem;
+    box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.2)
   }
   img {
     width: 100%;
+    height: 2.56rem;
   }
 }
 .nav-swiper {
@@ -350,6 +446,11 @@ export default {
       color: #666;
       font-size: 0.24rem;
       text-align: center;
+      > img {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+      }
       .nav-ico {
         width: 0.84rem;
         height: 0.84rem;
@@ -470,6 +571,11 @@ export default {
   }
   > a:nth-child(1) {
     margin-right: 0.2rem;
+  }
+  > .sp {
+    > img {
+      width: 100%;
+    }
   }
 }
 .img-box {
