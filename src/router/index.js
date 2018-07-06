@@ -15,6 +15,7 @@ import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
 import MyComment from '@/pages/home/my-comment'
 import Exchange from '@/pages/home/exchange'
+import PayFinish from '@/pages/home/pay-finish'
 // import Scanning from '@/pages/home/scanning'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
@@ -169,6 +170,13 @@ const router = new VueRouter({
       component: Exchange,
       meta: {
         title: '本店兑换'
+      }
+    }, {
+      path: 'pay-finish',
+      name: 'PayFinish',
+      component: PayFinish,
+      meta: {
+        title: '支付成功'
       }
     }
       // {

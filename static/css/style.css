@@ -139,6 +139,18 @@ body{
 .lpad8{
 	padding-left:.08rem; 
 }
+.tpad44{
+	padding-top:.44rem; 
+}
+.bpad51{
+	padding-bottom: .51rem;
+}
+.bmar20{
+	margin-bottom: .2rem
+}
+.bmar10{
+	margin-bottom: .1rem
+}
 /* 宽高end */
 /* 颜色 */
 .bgf{
@@ -199,6 +211,21 @@ body{
 }
 .c666{
 	color: #666;
+}
+.fz20{
+	font-size: .2rem;
+}
+.text-r{
+	text-align: right;
+}
+.fwb{
+	font-weight: bold
+}
+.fz32{
+	font-size: .32rem
+}
+.cf5222d{
+	color: #f5222d;
 }
 /* 字体end */
 
