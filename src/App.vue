@@ -20,6 +20,13 @@ export default {
         JSON.parse(localStorage.getItem('userAddress'))
       )
     }
+
+    if (localStorage.getItem('invite_id')) {
+      this.$store.commit(
+        'SET_WEIKA_INVID',
+        localStorage.getItem('invite_id')
+      )
+    }
   }
 }
 </script>

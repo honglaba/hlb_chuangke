@@ -1,8 +1,6 @@
 import HTTP from '@/api' // 配置后的axios
 
 const moduleApp = {
-  state: {},
-  mutations: {},
   actions: {
     HTTP_GetCategory ({commit}, data) { // 子分类
       return new Promise((resolve, reject) => {
@@ -67,8 +65,7 @@ const moduleApp = {
         })
       })
     }
-  },
-  getters: {}
+  }
 }
 
 export default moduleApp

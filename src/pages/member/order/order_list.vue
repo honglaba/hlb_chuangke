@@ -21,7 +21,9 @@
               <li>
                 <div class="shopinfo">
                   <div class="name">
-                    <span class="l">订单号：209784545786</span>
+                    <span class="l">订单号：
+                      <em>4547786454</em>
+                    </span>
                     <span class="r">待发货</span>
                   </div>
                 </div>
@@ -88,13 +90,25 @@
               <li>
                 <div class="shopinfo">
                   <div class="name">
-                    <span class="l">乡村木桶饭</span>
-                    <span class="r">已完成</span>
+                    <span class="l">订单号：
+                      <em>4547786454</em>
+                    </span>
+                    <span class="r">
+                      <em class="yiwancheng">已完成</em>
+                    </span>
                   </div>
                 </div>
-                <div class="spprice">
-                  实付:
-                  <span>￥158.55</span>
+                <div class="mdinfo1">
+                  <span>湖南大碗茶 ></span>
+                </div>
+                <div class="mdinfo2">
+                  <span class="a1">下单时间：2018-10-10 16:32</span>
+                  <span class="a2">实付:
+                    <em>￥158.55</em>
+                  </span>
+                </div>
+                <div class="spcaozuo">
+                  <span class="a2">立即评论</span>
                 </div>
               </li>
             </ul>
@@ -294,26 +308,33 @@ export default {
         .shopinfo {
           .name {
             position: relative;
-            font-size: 0.34rem;
-            font-weight: bold;
-            padding-left: 0.4rem;
+            font-size: 0.24rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            .r {
-              color: #999;
-              font-size: 0.24rem;
+            border-bottom: #e6e6e6 solid 1px;
+            padding-bottom: 0.2rem;
+            .l {
+              em {
+                color: #999;
+                font-style: normal;
+              }
             }
-            &::before {
-              display: inline-block;
-              position: absolute;
-              left: 0;
-              top: 0.09rem;
-              content: "";
-              width: 0.28rem;
-              height: 0.24rem;
-              background: url("../images/shop.png") center no-repeat;
-              background-size: contain;
+            .r {
+              color: #f5222d;
+              font-size: 0.24rem;
+              em {
+                font-style: normal;
+                &.yiwancheng {
+                  color: #999;
+                }
+                &.daifukuan {
+                  color: #ff7f32;
+                }
+                &.daishiyong {
+                  color: #0aa42a;
+                }
+              }
             }
           }
         }
@@ -354,6 +375,43 @@ export default {
           span {
             color: #333;
             font-size: 0.3rem;
+          }
+        }
+        .mdinfo1 {
+          position: relative;
+          font-size: 0.34rem;
+          font-weight: bold;
+          padding-left: 0.8rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0.2rem 0;
+          height: 0.6rem;
+          &::before {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            content: "";
+            width: 0.6rem;
+            height: 0.6rem;
+            background: url("../images/shop2.png") center no-repeat;
+            background-size: contain;
+          }
+        }
+        .mdinfo2 {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #999;
+          font-size: 0.24rem;
+          margin: 0.2rem 0;
+          .a2 {
+            em {
+              color: #333;
+              font-size: 0.3rem;
+              font-style: normal;
+            }
           }
         }
         .spcaozuo {

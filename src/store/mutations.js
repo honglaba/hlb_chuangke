@@ -1,3 +1,5 @@
+import * as types from './mutations-type'
+
 const mutations = {
   SAVE_USER_INFO (state, val) { // 用户主要信息
     state.userInfo = val
@@ -20,6 +22,9 @@ const mutations = {
   },
   COMMENTS (state, comments) {
     state.comments = comments
+  },
+  [types.SET_WEIKA_INVID] (state, val) {
+    state.WkInv = val
   }
 }
 

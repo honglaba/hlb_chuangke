@@ -13,10 +13,18 @@ axios.defaults.timeout = 8000
 
 /* 被挂起的请求数组 */
 let refreshSubscribers = []
+
 // let count = 0
 /* 刷新请求（refreshSubscribers数组中的请求得到新的token之后会自执行，用新的token去请求数据） */
 function onRrefreshed (token) {
   refreshSubscribers.map(cb => cb(token))
+}
+
+function _init () { // 初始化
+  Cookies.remove('refreshToken')
+  Cookies.remove('accessToken')
+  localStorage.clear()
+  location.reload()
 }
 
 // 请求拦截器
@@ -25,21 +33,19 @@ axios.interceptors.request.use(config => {
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
     if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
-      MessageBox({
-        title: '提示',
-        message: '登录超时'
-      }).then(res => {
-        // 清空所有cookie,localStorage
-        localStorage.clear()
-        Cookies.remove('accessToken')
-        location.reload()
-        // Cookies.remove('refreshToken')
-      })
+      _init()
       return
     }
 
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
       let xhr = new XMLHttpRequest()
+      let retry = new Promise((resolve, reject) => {
+        refreshSubscribers.push(accessToken => {
+          config.headers.Authorization = 'Bearer ' + accessToken
+          /* 将请求挂起 */
+          resolve(config)
+        })
+      })
       xhr.open('POST', EnvUrl + '/api/login/refresh')
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
       xhr.setRequestHeader('Content-Type', 'application/json')
@@ -53,29 +59,14 @@ axios.interceptors.request.use(config => {
             let accessToken = responseJSON.data.access_token
             config.headers.Authorization = 'Bearer ' + accessToken
             Cookies.set('accessToken', accessToken, {
-              expires: 1 / 36
+              expires: 1 / 30
             })
             onRrefreshed(accessToken)
           } else if (responseJSON.result_state === 'error') {
-            MessageBox({
-              title: '提示',
-              message: '登录超时'
-            }).then(res => {
-              Cookies.remove('refreshToken')
-              Cookies.remove('accessToken')
-              localStorage.clear()
-              location.reload()
-            })
+            _init()
           }
         }
       }
-      let retry = new Promise((resolve, reject) => {
-        refreshSubscribers.push(accessToken => {
-          config.headers.Authorization = 'Bearer ' + accessToken
-          /* 将请求挂起 */
-          resolve(config)
-        })
-      })
       return retry
     }
   }
