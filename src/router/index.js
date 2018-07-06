@@ -26,7 +26,7 @@ router.beforeEach((To, From, next) => {
   }
 
   if (historyTargetPath && !localStorage.getItem('userInfo')) { // 如果存在历史跳转地址且没有用户信息时,说明当前为授权状态,处理url
-    let local = window.location.href
+    let local = location.href
     let hisUrl = historyTargetPath
     localStorage.clear() // 授权状态全部初始化
     if (
@@ -51,7 +51,7 @@ router.beforeEach((To, From, next) => {
       apiList.HTTP_UserInfo()
         .then(res => {
           localStorage.setItem('userInfo', JSON.stringify(res.data))
-          store.commit('SAVE_USER_INFO', res.data)
+          store.commit('SET_USER_INFO', res.data)
           next({path: hisUrl})
         })
       return

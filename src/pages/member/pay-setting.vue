@@ -211,7 +211,7 @@ export default {
               title: '提示',
               content: '支付密码修改成功!'
             })
-            this.$store.commit('SAVE_USER_INFO', res.data)
+            this.$store.commit('SET_USER_INFO', res.data)
             this.$router.push({path: '/member/settings'})
           })
         })

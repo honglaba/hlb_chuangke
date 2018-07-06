@@ -101,7 +101,8 @@ export default {
   data () {
     return {
       chooseIndex: 0,
-      goodList: []
+      goodList: [],
+      incluObj: {}
     }
   },
   created () {
@@ -125,42 +126,33 @@ export default {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter
       }
-      console.log(inbObj)
-      this.Wk_Buy(inbObj).then(res => {
-        localStorage.removeItem('invite_id')
-        this.$store.commit('SET_WEIKA_INVID', '')
-        this.weixinPay()
-        // this.$router.push({path: '/weika/pay'})
-      })
+      this.incluObj = inbObj
+      this.weixinPay(inbObj)
+      // this.$router.push({path: '/weika/pay', params: { userId: 123 }})
     },
-    onBridgeReady () {
-      this.HTTP_pay().then(res => {
-        let result = res.data
-        window.WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            'appId': result.appId,
-            'timeStamp': result.timeStamp,
-            'nonceStr': result.nonceStr,
-            'package': result.package,
-            'signType': result.signType,
-            'paySign': result.paySign
-          }, (res) => {
-            alert('成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-          })
-      })
-    },
-    weixinPay () {
+    weixinPay (nb) {
       let that = this
       if (typeof WeixinJSBridge === 'undefined') {
         if (document.addEventListener) {
-          document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false)
+          document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady.call(this, nb), false)
         } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady)
-          document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady)
+          document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady.call(this, nb))
+          document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady.call(this, nb))
         }
       } else {
-        that.onBridgeReady()
+        that.onBridgeReady(nb)
       }
+    },
+    onBridgeReady (val) {
+      this.Wk_Buy(val).then(res => {
+        let result = res.data
+        localStorage.removeItem('invite_id')
+        this.$store.commit('SET_WEIKA_INVID', '')
+        window.WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', result, (res) => {
+            alert('成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          })
+      })
     }
   },
   components: {

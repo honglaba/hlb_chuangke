@@ -163,6 +163,17 @@ const moduleUser = {
         })
       })
     },
+    Wk_Index ({commit}, data) { // 会员首页数据
+      return new Promise((resolve, reject) => {
+        HTTP({
+          url: `/api/user/weika`
+        }).then(res => {
+          if (res.result_state === 'success') {
+            resolve(res)
+          }
+        })
+      })
+    },
     Wk_Withdraw ({commit}, data) { // 微卡提现
       return new Promise((resolve, reject) => {
         HTTP({
@@ -172,17 +183,6 @@ const moduleUser = {
             amount: data.amount,
             remark: data.remark
           }
-        }).then(res => {
-          if (res.result_state === 'success') {
-            resolve(res)
-          }
-        })
-      })
-    },
-    Wk_Index ({commit}, data) { // 会员首页数据
-      return new Promise((resolve, reject) => {
-        HTTP({
-          url: `/api/user/weika`
         }).then(res => {
           if (res.result_state === 'success') {
             resolve(res)
@@ -223,7 +223,6 @@ const moduleUser = {
         })
       })
     }
-    // Wk_
   }
 }
 

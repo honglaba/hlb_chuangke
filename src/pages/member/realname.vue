@@ -69,7 +69,7 @@ export default {
         .then(res => {
           if (res.result_state === 'success') {
             this.HTTP_UserInfo().then(res => {
-              this.$store.commit('SAVE_USER_INFO', res.data)
+              this.$store.commit('SET_USER_INFO', res.data)
               this.$vux.confirm.show({
                 showCancelButton: false,
                 title: '提示',

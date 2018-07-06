@@ -22,7 +22,7 @@
             </cell>
           </group>
           <div class="tijiao">
-            <button class="btn-aoc">立即支付</button>
+            <button class="btn-aoc" @click="_pay">立即支付</button>
           </div>
           <div class="tips">
             <p>开通即视为同意
@@ -109,6 +109,14 @@ export default {
     return {
       paytype: '微信',
       paytypeList: ['微信', '支付宝']
+    }
+  },
+  created () {
+    console.log(this.$route)
+  },
+  methods: {
+    _pay () {
+
     }
   },
   components: {
