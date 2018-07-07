@@ -1,8 +1,8 @@
 <template>
   <div>
-    <keep-alive>
+    <!-- <keep-alive> -->
       <router-view :DataTree="DataTree || defaultData"></router-view>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </template>
 

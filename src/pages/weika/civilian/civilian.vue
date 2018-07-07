@@ -5,7 +5,7 @@
         <div class="banner">
           <swiper :list="demo01_list" :aspect-ratio="460/750" dots-position="center" :show-desc-mask="false"></swiper>
           <div class="kaitong pd20">
-            <router-link :to="{ path: '/weika/step1' }"><span>立即开通</span></router-link>
+              <div @click="_toOpen"><span>立即开通</span></div>
           </div>
         </div>
         <div class="fuwu">
@@ -75,6 +75,8 @@
 </template>
 <script>
 import { Swiper } from 'vux'
+import { MessageBox } from 'mint-ui'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 const baseList = [
   {
     url: 'javascript:',
@@ -95,6 +97,30 @@ export default {
       demo01_list: baseList,
       til: '创客微卡'
     }
+  },
+  computed: {
+    ...mapGetters({getUser: 'userInfoGetter'})
+  },
+  created () {
+    this.updateStep(1)
+  },
+  methods: {
+    _toOpen () {
+      this.updateStep(2)
+      // this.Wk_Query().then(res => {
+      //   if (res.data.exists === 1) { // 已存在订单
+      //     MessageBox.alert('您有未完成的微卡订单~').then(action => {
+      //       this.$router.push({path: '/member/order/order_list/1'})
+      //     })
+      //   } else {
+      this.getUser.real_name
+        ? this.$router.push({path: '/weika/step1'})
+        : this.$router.push({path: '/member/realname', query: {type: 'weika'}})
+      //   }
+      // })
+    },
+    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'}),
+    ...mapActions(['Wk_Query'])
   },
   components: {
     Swiper

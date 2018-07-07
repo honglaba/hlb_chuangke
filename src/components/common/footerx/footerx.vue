@@ -1,18 +1,18 @@
 <template>
   <footer class="y-flex y-ac vux-1px-t">
-    <router-link to="/" class="flex1" v-bind:class="{cur:evenRoute === 'home' || evenRoute ===''}">
+    <router-link to="/" class="flex1" v-bind:class="{cur: /home/g.test(evenRoute) || evenRoute === ''}">
       <span class="nav-ico type3"></span>
       <p>首页</p>
     </router-link>
-    <router-link to="/shop" class="flex1" v-bind:class="{cur:evenRoute === 'shop'}">
+    <router-link to="/shop" class="flex1" v-bind:class="{cur: /shop/g.test(evenRoute)}">
       <span class="nav-ico type2"></span>
       <p>附近</p>
     </router-link>
-    <router-link to="/weika" class="flex1" v-bind:class="{cur:evenRoute === 'weika'}">
+    <router-link to="/weika" class="flex1" v-bind:class="{cur: /weika/g.test(evenRoute)}">
       <span class="nav-ico type1"></span>
       <p>创客微卡</p>
     </router-link>
-    <router-link to="/member" class="flex1" v-bind:class="{cur:evenRoute === 'member'}">
+    <router-link to="/member" class="flex1" v-bind:class="{cur: /member/g.test(evenRoute)}">
       <span class="nav-ico type4"></span>
       <p>我的</p>
     </router-link>

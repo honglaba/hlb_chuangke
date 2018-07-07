@@ -3,7 +3,6 @@ import router from './config'
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
-import { Indicator } from 'mint-ui'
 
 router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
@@ -47,8 +46,8 @@ router.beforeEach((To, From, next) => {
 
       // cookie
       Cookies.set('accessToken', hashes.access_token, { expires: 1 / 36 })
-      // Cookies.set('accessToken', hashes.access_token, { expires: new Date(new Date().getTime() + 5 * 1000) })
       Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
+
       apiList.HTTP_UserInfo()
         .then(res => {
           localStorage.setItem('userInfo', JSON.stringify(res.data))

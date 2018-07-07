@@ -112,24 +112,29 @@ export default {
       paytypeList: ['微信', '支付宝']
     }
   },
+  created () {
+    if (this.WkLoop !== 5) this.$router.push({path: '/weika'})
+  },
   methods: {
     _pay () {
       wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
     },
     onBridgeReady (val) {
-      this.Wk_Buy(val).then(res => {
+      this.Wk_Pay(val).then(res => {
         let result = res.data
         this.invId(null) // clear
         window.WeixinJSBridge.invoke(
           'getBrandWCPayRequest',
           result,
           res => {
+            this.updateStep(1)
             alert('调取微信支付成功')
+            this.$router.push({path: '/weika'})
           })
       })
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID'}),
-    ...mapActions(['Wk_Buy'])
+    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP'}),
+    ...mapActions(['Wk_Pay'])
   },
   components: {
     XInput,

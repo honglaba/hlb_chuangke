@@ -280,9 +280,6 @@ export default new VueRouter({
       path: 'step1',
       name: 'step1',
       component: WkReg1,
-      beforeEnter: (to, from, next) => {
-        !JSON.parse(localStorage.getItem('userInfo')).real_name ? next({path: '/member/realname', query: {type: 'forweika'}}) : next()
-      },
       meta: {
         title: '注册创客-第一步'
       }

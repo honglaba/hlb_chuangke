@@ -284,14 +284,12 @@ const normal = {
 }
 
 const weika = {
-  Wk_CheckInv ({commit}, data) { // 校验会员推荐码
+  Wk_Order ({commit}, data) { // 微卡下单
     return new Promise((resolve, reject) => {
       HTTP({
-        url: `/api/user/check-invite`,
+        url: `/api/weika/order`,
         method: 'POST',
-        data: {
-          invite_id: data
-        }
+        data
       }).then(res => {
         if (res.result_state === 'success') {
           resolve(res)
@@ -299,16 +297,38 @@ const weika = {
       })
     })
   },
-  Wk_Buy ({commit}, data) { // 微卡下单
+  Wk_Pay ({commit}, data) { // 微卡订单支付
     return new Promise((resolve, reject) => {
       HTTP({
-        url: `/api/weika/order`,
+        url: `/api/weika/pay`,
+        method: 'POST',
+        data
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
+  Wk_Query ({commit}, data) { // 查询是否已存在微卡订单
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/weika/check-order`
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
+  // -------------- 办微卡后的接口 ----------
+  Wk_CheckInv ({commit}, data) { // 校验会员推荐码
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/check-invite`,
         method: 'POST',
         data: {
-          goods_id: data.goods_id,
-          is_invite: data.is_invite,
-          invite_id: data.invite_id,
-          trade_type: data.trade_type
+          invite_id: data
         }
       }).then(res => {
         if (res.result_state === 'success') {

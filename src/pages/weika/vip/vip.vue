@@ -1,42 +1,41 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="微卡VIP首页"></x-header> -->
     <div class="main">
-      <div class="content">
+      <div class="content" v-if="flag">
         <div class="wkbg pd20">
           <div class="wkbox">
             <div class="box1">
               <div class="left">
-                <div class="tx"><img src="http://thirdwx.qlogo.cn/mmopen/odejae0mVFZnfY3M68PlfkwhHJStxviahZO8oLsKxmeQv50LEibdBbqvc3tGtSibZib814ms21yVPCUPhYCQ90b8dlr6bC57rgKw/132"></div>
+                <div class="tx"><img :src="vip.headimgurl"></div>
                 <div class="uinfo">
-                  <p class="name">化妆的小蜜<img src="../images/vip1.png"></p>
-                  <p class="tips">创客为您节约了65.00元</p>
+                  <p class="name">{{ vip.nickname}}<img src="../images/vip1.png"></p>
+                  <p class="tips">创客为您节约了{{ vip.save_money }}.00元</p>
                 </div>
               </div>
               <div class="right">
                 <p class="a1">推广ID</p>
-                <p class="a2">28C5AP</p>
+                <p class="a2">{{ vip.invite_id }}</p>
               </div>
             </div>
             <div class="box2">
               <ul>
                 <li>
                   <span>可用佣金(元)</span>
-                  <span>65.00</span>
+                  <span>{{ vip.money }}.00</span>
                   <span>
                     <router-link to="withdraw">提现</router-link>
                   </span>
                 </li>
                 <li>
                   <span>累计佣金(元)</span>
-                  <span>85.00</span>
+                  <span>{{ vip.total_money }}.00</span>
                   <span>
                     <router-link to="income">查看</router-link>
                   </span>
                 </li>
                 <li>
                   <span>我的推荐(人)</span>
-                  <span>105</span>
+                  <span>{{ vip.invites }}.00</span>
                   <span>
                     <router-link to="recommend_list">查看</router-link>
                   </span>
@@ -160,8 +159,37 @@
 </template>
 <script>
 import { Scroller } from 'vux'
-
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
+  name: 'vip',
+  data () {
+    return {
+      flag: false,
+      vip: {}
+    }
+  },
+  computed: {
+    ...mapGetters(['getWkVipInfo'])
+  },
+  created () {
+    this.updateLoading({status: true})
+    if (this.getWkVipInfo) {
+      this.vip = this.getWkVipInfo
+      this.flag = true
+      this.updateLoading({status: false})
+    } else {
+      this.Wk_Index().then(res => {
+        this.updateLoading({status: false})
+        this.updataVip(res.data)
+        this.vip = res.data
+        this.flag = true
+      })
+    }
+  },
+  methods: {
+    ...mapActions(['Wk_Index']),
+    ...mapMutations({updateLoading: 'UPDATE_LOADING', updataVip: 'UPDATE_VIP_INFO'})
+  },
   components: {
     Scroller
   }

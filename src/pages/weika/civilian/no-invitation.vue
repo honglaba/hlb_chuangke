@@ -43,16 +43,21 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   created () {
     this.invId(null) // 进入删除邀请码
+    if (this.WkLoop !== 3) this.$router.push({path: '/weika'})
+  },
+  computed: {
+    ...mapGetters(['WkLoop'])
   },
   methods: {
     _invCodePass () {
+      this.updateStep(4)
       this.$router.push({path: '/weika/choose_products'})
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID'})
+    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP'})
   }
 }
 </script>
