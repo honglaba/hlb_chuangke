@@ -9,9 +9,9 @@ import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
 import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin} from 'vux'
-import VueScroller from 'vue-scroller'
+// import VueScroller from 'vue-scroller'
 
-Vue.use(VueScroller)
+// Vue.use(VueScroller)
 fastClick.attach(document.body)
 
 // 自定义请求头
