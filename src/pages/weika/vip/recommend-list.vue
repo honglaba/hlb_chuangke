@@ -33,118 +33,6 @@
                 <span>创客微卡VIP1用户</span>
               </div>
             </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
           </ul>
         </div>
       </div>
@@ -152,6 +40,23 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+export default {
+  name: 'recommentdList',
+  data () {
+    return {
+
+    }
+  },
+  created () {
+    this.Vip_Commission().then(res => {
+      console.log(res)
+    })
+  },
+  methods: {
+    ...mapActions(['Vip_Commission'])
+  }
+}
 </script>
 <style lang="less" scoped>
 .txlist {

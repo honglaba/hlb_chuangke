@@ -236,7 +236,7 @@ export default new VueRouter({
       name: 'recommend_list',
       component: WkRecommendList,
       meta: {
-        title: '我的推荐'
+        title: '我的推荐人'
       }
     },
     {

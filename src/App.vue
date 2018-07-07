@@ -21,7 +21,7 @@ export default {
       if (localStorage.getItem('userAddress')) this.SAVE_RECEIVER_ADDRESS(JSON.parse(localStorage.getItem('userAddress')))
       if (localStorage.getItem('invite_id')) this.SET_WEIKA_INVID(localStorage.getItem('invite_id')) // 邀请码
     },
-    ...mapMutations(['UPDATE_LOADING', 'SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID']),
+    ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID']),
     ...mapActions(['HTTP_UserInfo'])
   }
 }

@@ -109,6 +109,7 @@ import {
   VPie,
   VScale
 } from 'vux'
+import { mapActions } from 'vuex'
 const map = {
   创客新用户邀请佣金: '30%',
   邀请的用户平台消费佣金: '18%',
@@ -155,6 +156,16 @@ export default {
       ]
     }
   },
+  methods: {
+    toggleList (e) {
+      this.isDisplay = !this.isDisplay
+    },
+    tab (e) {
+      console.log(e.target.getAttribute('data-id'))
+      this.nowSeen = e.target.getAttribute('data-id')
+    },
+    ...mapActions(['Vip_Commission'])
+  },
   components: {
     Tab,
     TabItem,
@@ -167,15 +178,6 @@ export default {
     VPie,
     VScale,
     Accordion
-  },
-  methods: {
-    toggleList: function (e) {
-      this.isDisplay = !this.isDisplay
-    },
-    tab: function (e) {
-      console.log(e.target.getAttribute('data-id'))
-      this.nowSeen = e.target.getAttribute('data-id')
-    }
   }
 }
 </script>

@@ -30,7 +30,7 @@
                   <span>累计佣金(元)</span>
                   <span>{{ vip.total_money }}.00</span>
                   <span>
-                    <router-link to="income">查看</router-link>
+                    <router-link to="commission">查看</router-link>
                   </span>
                 </li>
                 <li>

@@ -321,7 +321,6 @@ const weika = {
       })
     })
   },
-  // -------------- 办微卡后的接口 ----------
   Wk_CheckInv ({commit}, data) { // 校验会员推荐码
     return new Promise((resolve, reject) => {
       HTTP({
@@ -337,6 +336,7 @@ const weika = {
       })
     })
   },
+  // -------------- 办微卡后的接口 ----------
   Wk_Index ({commit}, data) { // 会员首页数据
     return new Promise((resolve, reject) => {
       HTTP({
@@ -390,6 +390,17 @@ const weika = {
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/weika/goods`
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
+  Vip_Commission ({commit}) {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/commission`
       }).then(res => {
         if (res.result_state === 'success') {
           resolve(res)
