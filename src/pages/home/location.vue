@@ -23,7 +23,7 @@
         </dd>
       </dl>
       <dl class="lpad32">
-        <dt>热情城市</dt>
+        <dt>热门城市</dt>
         <dd>
           <ul class="city-block">
             <li>北京</li>

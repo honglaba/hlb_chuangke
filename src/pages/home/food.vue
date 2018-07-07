@@ -1,5 +1,5 @@
 <template>
-  <div id="food-content">
+  <div id="food-content" :class="{'full-page':seen}">
     <div class="copy-block" v-if="seen">
       <Headerx></Headerx>
       <section class="screen-row">
@@ -75,10 +75,13 @@
         </section>
       </section>
     </div>
-    <scroller :on-infinite="infinite" ref="myscroller" :noDataText='aaa'>
-      <!-- <div> -->
+    <!-- <scroller :on-infinite="infinite" ref="myscroller"> -->
+      <!-- pc触发loadmore辅助容器 -->
+    <!-- <div class="main" style="top:0"> -->
+      <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
+
       <Headerx></Headerx>
-      <div class="swiper-container banner-swiper">
+      <div class="swiper-container banner-swiper" v-if="!seen">
         <div class="swiper-wrapper">
           <!-- <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
           <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
@@ -90,7 +93,7 @@
         </div>
         <div class="swiper-pagination"></div>
       </div>
-      <section class="screen-row">
+      <section class="screen-row sp">
         <ul class="screen-tab">
           <li v-for="(tab, index) in screenTab" @click="bindTap(index)" :key="index">
             <p>{{tab.name}}</p>
@@ -119,6 +122,7 @@
           </ul>
         </section> -->
       </section>
+
       <section class="business-list">
 
         <ul>
@@ -127,14 +131,16 @@
           <Other></Other>
         </router-link> -->
 
-          <router-link tag="li" :to="{path:'/home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in shopList" :key="index">
+          <router-link tag="li" :to="{path:'/home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
           </router-link>
         </ul>
 
       </section>
-    </scroller>
+      </mt-loadmore>
+    <!-- </div> -->
+    <!-- </scroller> -->
   </div>
 </template>
 <script>
@@ -142,18 +148,19 @@ import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import Other from '../../components/common/other/other'
 import ListInner from '../../components/common/listInner/listInner'
 import { mapActions } from 'vuex'
+import { Loadmore } from 'mint-ui'
 export default {
   data () {
     return {
       businessList: [
-        {
-          name: '良记甜品',
-          pic: '../../../static/images/nearby-label-img1.png'
-        },
-        {
-          name: '肯德基宅急送',
-          pic: '../../../static/images/nearby-label-img2.png'
-        }
+        // {
+        //   name: '良记甜品',
+        //   pic: '../../../static/images/nearby-label-img1.png'
+        // },
+        // {
+        //   name: '肯德基宅急送',
+        //   pic: '../../../static/images/nearby-label-img2.png'
+        // }
       ],
       seen: false,
       screenTab: [
@@ -183,17 +190,37 @@ export default {
       ],
       region: [],
       areas: [],
-      banner: [],
-      aaa: 'haha'
+      banner: []
     }
   },
-  components: { ListInner, Other },
+  components: { ListInner, Other, 'mt-loadmore': Loadmore },
   methods: {
     ...mapActions([
       'HTTP_GetCategory',
       'HTTP_GetCategoryShop',
       'HTTP_SwitchCategory'
     ]),
+    // loadmore
+    loadTop () {
+      this.$refs.loadmore.onTopLoaded()
+      this.axios.get(this.nextPageUrl).then(res => {
+        console.log(res)
+        console.log(this.businessList)
+      })
+    },
+    loadBottom () {
+      this.axios.get(this.nextPageUrl).then(res => {
+        this.businessList = this.businessList.concat(res.data)// 添加数据
+        this.$refs.loadmore.onBottomLoaded()// 加载过程
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.allLoaded = true// 若数据已全部获取完毕
+          this.nextPageUrl = null
+        }
+      })
+    },
+    // loadmore end
     getBanner: function () {
       this.axios.get('/api/banner?key=nearby').then(res => {
         console.log(res)
@@ -206,7 +233,7 @@ export default {
     },
     screenTap: function (index) {
       // 顶部筛选切换
-      console.log(this.$refs.myscroller.scroller.__scrollTop)
+      // console.log(this.$refs.myscroller.scroller.__scrollTop)
       // let screenTab = document.querySelectorAll('.screen-tab>li')
       if (this.tabTemp == null || this.tabTemp !== index) {
         this.tabTemp = index
@@ -257,20 +284,20 @@ export default {
         )
         .then(res => {
           if (res.next_page_url != null) {
-            this.nextPageUrl = res.next_page_url
-              .split('http://api.hlbck.com')
-              .join('')
+            this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+            this.allLoaded = false// 重新设置loadmore可触发
           } else {
             this.nextPageUrl = null
+            this.allLoaded = true
           }
 
           delete res.data.result_state
           delete res.data.return_state
-          this.shopList = []
+          this.businessList = []
           for (let i in res.data) {
-            this.shopList.push(res.data[i])
+            this.businessList.push(res.data[i])
           }
-          console.log(this.shopList[0].id)
+          console.log(this.nextPageUrl)
         })
     },
     switchCategory: function (index, event) {
@@ -409,6 +436,10 @@ export default {
 <style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
+.full-page{
+  height: 100vh;
+  overflow: hidden;
+}
 #food-content {
   .banner-swiper {
     width: 7.5rem;
@@ -430,6 +461,9 @@ export default {
   }
   .swiper-pagination-bullet-active {
     background: #ccc;
+  }
+  .screen-row.sp{
+    z-index: 0;
   }
   .screen-row {
     width: 100%;
@@ -541,6 +575,7 @@ export default {
   .business-list {
     background: #fff;
     padding: 0 0.3rem;
+    // min-height: 100vh;
     > ul > li {
       padding-top: 0.32rem;
     }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
     <Headerx></Headerx>
     <div id="allmap" class="allmap" style="display:none"></div>
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
@@ -274,6 +275,7 @@
       </ul>
     </section>
 
+    </mt-loadmore>
     <Footerx></Footerx>
   </div>
 </template>
@@ -284,6 +286,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions } from 'vuex'
+import { Loadmore } from 'mint-ui'
 export default {
   name: 'App',
   data () {
@@ -293,21 +296,43 @@ export default {
       channel: [],
       goods: [],
       transitionName: 'slide-right',
-      businessList: [
-        {
-          name: '良记甜品',
-          pic: '../../../static/images/nearby-label-img1.png'
-        },
-        {
-          name: '肯德基宅急送',
-          pic: '../../../static/images/nearby-label-img2.png'
-        }
-      ]
+      businessList: []
+      // businessList: [
+      //   {
+      //     name: '良记甜品',
+      //     pic: '../../../static/images/nearby-label-img1.png'
+      //   },
+      //   {
+      //     name: '肯德基宅急送',
+      //     pic: '../../../static/images/nearby-label-img2.png'
+      //   }
+      // ]
     }
   },
-  components: { ListInner, swiper, swiperSlide },
+  components: { ListInner, swiper, swiperSlide, 'mt-loadmore': Loadmore },
   methods: {
     ...mapActions(['APP_Banner']),
+    // loadmore
+    loadTop () {
+      this.$refs.loadmore.onTopLoaded()
+      this.axios.get(this.nextPageUrl).then(res => {
+        console.log(res)
+        console.log(this.businessList)
+      })
+    },
+    loadBottom () {
+      this.axios.get(this.nextPageUrl).then(res => {
+        this.businessList = this.businessList.concat(res.data)// 添加数据
+        this.$refs.loadmore.onBottomLoaded()// 加载过程
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.allLoaded = true// 若数据已全部获取完毕
+          this.nextPageUrl = null
+        }
+      })
+    },
+    // loadmore end
     getBanner: function () {
       // 顶部banner
       this.axios.get('/api/banner?key=index').then(res => {
