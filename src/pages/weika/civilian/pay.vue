@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     _pay () {
-      wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.params) // 调起微信支付
+      wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
     },
     onBridgeReady (val) {
       this.Wk_Buy(val).then(res => {

@@ -27,6 +27,10 @@ const mutations = {
   [types.SET_WEIKA_INVID] (state, val) {
     if (!val) localStorage.removeItem('invite_id')
     state.WkInv = val
+  },
+  [types.UPDATE_LOADING] (state, context) {
+    state.isLoading.status = context.status
+    state.isLoading.text = context.text
   }
 }
 

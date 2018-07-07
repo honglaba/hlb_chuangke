@@ -23,6 +23,7 @@ Vue.prototype.axios = axios
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
+Vue.component('x-loading', Loading)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)

@@ -3,6 +3,7 @@ import router from './config'
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
+import { Indicator } from 'mint-ui'
 
 router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
@@ -59,9 +60,11 @@ router.beforeEach((To, From, next) => {
   }
 
   if (window.navigator.userAgent.match(/MicroMessenger/i)) {
-    if (!localStorage.getItem('userInfo')) {
+    if (!localStorage.getItem('userInfo') || !Cookies.get('refreshToken')) {
       // 清空所有数据, 再请求
       getRedirectUrl()
+      next(false)
+      return
     }
   } else {
     let Path = To.fullPath
@@ -77,6 +80,7 @@ router.beforeEach((To, From, next) => {
 
     if (isMatched) {
       getRedirectUrl()
+      next(false)
       return
     }
   }

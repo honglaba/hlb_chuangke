@@ -105,7 +105,7 @@ export default {
     }
   },
   created () {
-    this.Wk_GoodList('aaaaa').then(res => {
+    this.Wk_GoodList().then(res => {
       this.goodList = res.data
     })
   },
@@ -125,20 +125,7 @@ export default {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter
       }
-      this.$router.push({name: 'pay', params: inbObj})
-    },
-    onBridgeReady (val) {
-      this.Wk_Buy(val).then(res => {
-        let result = res.data
-        this.$store.commit('SET_WEIKA_INVID', '')
-        localStorage.removeItem('invite_id')
-        window.WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',
-          result,
-          res => {
-            alert('调取微信支付成功')
-          })
-      })
+      this.$router.push({path: '/weika/pay', query: inbObj})
     }
   },
   components: {
