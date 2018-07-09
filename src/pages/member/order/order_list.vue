@@ -123,6 +123,12 @@ export default {
   components: {
     Tab,
     TabItem
+  },
+  mounted () {
+    this.axios.get('/api/orders?order_state=0').then(res => {
+      console.log(res.data[0])
+      this.orderList = res.data
+    })
   }
 }
 </script>

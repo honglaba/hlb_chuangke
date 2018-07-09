@@ -59,7 +59,8 @@ header {
     background: none;
     font-size: 0.28rem;
     outline: none;
-    columns: #666;
+    color: #666;
+    width: 3.5rem;
   }
 }
 .screen {

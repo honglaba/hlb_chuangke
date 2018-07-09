@@ -1,6 +1,6 @@
 <template>
   <!-- <mt-loadmore id="app" :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange" ref="loadmore"> -->
-  <div>
+  <div class="shop-index">
     <!-- pc触发loadmore辅助容器 -->
     <!-- <div class="main" style="top:0"> -->
       <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
@@ -10,11 +10,15 @@
           <img src="./images/nearby-banner.png" />
         </section>
         <section :class="['tab',tabFixed?'sp':'']">
-          <ul class="tab-nav">
+          <!-- 原始tab -->
+          <!-- <ul class="tab-nav">
             <li v-for="(tab,index) in tabNavs" @click="tabTap(index)" :class="{cur:tab.active}" :key="index">
               {{tab.title}}
             </li>
-          </ul>
+          </ul> -->
+          <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
+            <tab-item v-for="(tab, index) in tabNavs" @click.native="tabTap(index)" :selected="index === 0" :key="index"> {{tab.title}}</tab-item>
+          </tab>
           <div class="tab-con">
             <ul>
               <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
@@ -42,6 +46,7 @@
 import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
 import { Loadmore } from 'mint-ui'
+import { Tab, TabItem } from 'vux'
 export default {
   watch: {
     '$route' (val, oldval) {
@@ -182,7 +187,6 @@ export default {
       this.tabNavs[index].active = true
       this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
       this.getCategoryShop(this.tabNavs[index].id)
-      console.log(this.tabNavs[index].id)
       // this.tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
       // console.log(this.tabH)
     },
@@ -224,7 +228,7 @@ export default {
       id ? id = '&cid=' + id : id = '&cid=1'
       this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960' + id).then(res => {
       // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
-        // console.log(res)
+        console.log(id)
         if (res.next_page_url != null) {
           this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
           this.allLoaded = false// 重新设置loadmore可触发
@@ -255,7 +259,7 @@ export default {
       })
     }
   },
-  components: { ListInner, Other, 'mt-loadmore': Loadmore},
+  components: { ListInner, Other, 'mt-loadmore': Loadmore, Tab, TabItem},
   mounted () {
     this.getCategory()
     this.getCategoryChildren()
@@ -264,8 +268,26 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import "~vux/src/styles/1px.less";
+.shop-index{
+  .vux-tab-wrap{
+  padding-top:.8rem;
+}
+.vux-tab-wrap .vux-tab-container{
+ height:.8rem;
+}
+.vux-tab{
+  height: .8rem !important;
+}
+.vux-tab .vux-tab-item{
+  line-height: .8rem !important;
+  font-size: .28rem !important;
+  flex: 0 0 20% !important;
+}
+.vux-tab-wrap .vux-tab-container .vux-tab .vux-tab-ink-bar {
+    height: 0.06rem !important;
+}
 .app {
   padding-bottom: 1.2rem;
 }
@@ -361,5 +383,6 @@ export default {
   > ul > li {
     padding-top: 0.32rem;
   }
+}
 }
 </style>

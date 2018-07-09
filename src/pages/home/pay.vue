@@ -8,7 +8,8 @@
     </router-link>
     <section class="total-money">
       <p>支付金额</p>
-      <p>￥300</p>
+      <!-- <p>￥300</p> -->
+      <p>￥<input type="number" class="pay-input" placeholder="请输入金额" v-model="money"/></p>
       <div class="vux-1px-t">
         预计您将获得<span class="#cf00">300</span>积分
       </div>
@@ -87,7 +88,8 @@ export default {
       binding: false,
       chuangke: false,
       commission: true,
-      mask: false
+      mask: false,
+      money: ''
     }
   },
   methods: {
@@ -99,7 +101,7 @@ export default {
       this.mask = false
     },
     onBridgeReady: function () {
-      this.HTTP_pay().then(res => {
+      this.HTTP_pay(this.money).then(res => {
         let result = res.data
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
@@ -116,15 +118,19 @@ export default {
     },
     weixinPay: function () {
       let that = this
-      if (typeof WeixinJSBridge === 'undefined') {
-        if (document.addEventListener) {
-          document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false)
-        } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady)
-          document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady)
+      if (this.money) {
+        if (typeof WeixinJSBridge === 'undefined') {
+          if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false)
+          } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', that.onBridgeReady)
+            document.attachEvent('onWeixinJSBridgeReady', that.onBridgeReady)
+          }
+        } else {
+          that.onBridgeReady()
         }
       } else {
-        that.onBridgeReady()
+        alert('请输入金额')
       }
     }
   },
@@ -165,7 +171,13 @@ export default {
     font-size: .64rem;
     font-family: Arial, Helvetica, sans-serif;
     margin-bottom: .24rem;
-        line-height: 100%;
+    line-height: 100%;
+    display: flex;
+  }
+  .pay-input{
+    font-size: .64rem;
+    border: 0;
+    outline: 0;
   }
   >div{
     height: .64rem;
