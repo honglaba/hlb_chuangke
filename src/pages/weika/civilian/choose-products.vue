@@ -96,7 +96,7 @@
 </template>
 <script>
 import { Scroller } from 'vux'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -105,15 +105,15 @@ export default {
     }
   },
   created () {
+    if (this.WkLoop !== 4) this.$router.push({path: '/weika'})
     this.Wk_GoodList().then(res => {
       this.goodList = res.data
     })
   },
   computed: {
-    ...mapGetters(['WkInvGetter'])
+    ...mapGetters(['WkInvGetter', 'WkLoop'])
   },
   methods: {
-    ...mapActions(['Wk_GoodList', 'Wk_Buy', 'HTTP_pay']),
     toBuy () {
       let bf = this.goodList[this.chooseIndex]
       let inbObj = {
@@ -125,8 +125,14 @@ export default {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter
       }
-      this.$router.push({path: '/weika/pay', query: inbObj})
-    }
+      this.Wk_Order(inbObj)
+        .then(res => {
+          this.updateStep(5)
+          this.$router.push({path: '/weika/pay', query: {order_id: res.data.order_id, trade_type: 'weixinjsbridge'}})
+        })
+    },
+    ...mapActions(['Wk_GoodList', 'Wk_Order']),
+    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
   },
   components: {
     Scroller

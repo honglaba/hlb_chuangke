@@ -1,8 +1,5 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import {
-  MessageBox
-} from 'mint-ui'
 
 // 配置axios对象
 let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'

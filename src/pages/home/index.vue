@@ -415,6 +415,7 @@ export default {
     )
   },
   updated () {
+    /* eslint-disable no-new */
     new Swiper('.banner-swiper', {// 顶部banner实例化
       autoplay: 8000,
       loop: true,

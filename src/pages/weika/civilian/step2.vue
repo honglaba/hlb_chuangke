@@ -17,7 +17,7 @@
 <script>
 import { XInput, Group } from 'vux'
 import { Toast } from 'mint-ui'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -30,8 +30,13 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['WkLoop'])
+  },
+  created () {
+    if (this.WkLoop !== 3) this.$router.push({path: '/weika'})
+  },
   methods: {
-    ...mapActions(['Wk_CheckInv']),
     _invCodePass () {
       if (this.$refs.yqm.valid && this.invCode.length === 6) {
         this.$store.commit('SET_WEIKA_INVID', this.invCode)
@@ -43,6 +48,7 @@ export default {
             duration: 1500
           })
           setTimeout(e => {
+            this.updateStep(4)
             this.$router.push({path: '/weika/choose_products'})
           }, 1500)
         })
@@ -53,7 +59,9 @@ export default {
           duration: 1500
         })
       }
-    }
+    },
+    ...mapActions(['Wk_CheckInv']),
+    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
   },
   components: {
     XInput,

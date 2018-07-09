@@ -1,8 +1,6 @@
 <template>
   <div>
-    <keep-alive>
-      <router-view :DataTree="DataTree || defaultData"></router-view>
-    </keep-alive>
+    <router-view :DataTree="DataTree || defaultData"></router-view>
   </div>
 </template>
 
@@ -44,7 +42,7 @@ export default {
           country: '阿拉伯联合酋长国',
           birthday: null,
           headimgurl:
-              'http://thirdwx.qlogo.cn/mmopen/vi_32/c4taseHGbqZ2C18J2Ga12VasJ14vEkhABwJzLPeiaj7q9FH36HY0cFEIKOGZ4S2yDQPvw5pAqDge5ib5xtPNq3Ag/132',
+            'http://thirdwx.qlogo.cn/mmopen/vi_32/c4taseHGbqZ2C18J2Ga12VasJ14vEkhABwJzLPeiaj7q9FH36HY0cFEIKOGZ4S2yDQPvw5pAqDge5ib5xtPNq3Ag/132',
           subscribe_time: null,
           unionid: 'ovjNOw7UrySS5fJFEeGPDwl9g93Y',
           created_at: '2018-06-14 01:18:29',

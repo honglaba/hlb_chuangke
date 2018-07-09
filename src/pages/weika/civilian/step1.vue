@@ -5,10 +5,12 @@
         <div class="xuanze">
           <ul>
             <li>
-              <router-link :to="{path: '/weika/step2'}" tag="img" :src="imgs.A"></router-link><br>我有推荐人
+              <!-- <router-link :to="{path: '/weika/step2'}" tag="img" :src="imgs.A"></router-link><br>我有推荐人 -->
+              <img :src="imgs.A" @click="_hstep(true)"><br>我有推荐人
             </li>
             <li>
-              <router-link :to="{path: '/weika/no_inv'}" tag="img" :src="imgs.B"></router-link><br>我没有推荐人
+              <!-- <router-link :to="{path: '/weika/no_inv'}" tag="img" :src="imgs.B"></router-link><br>我没有推荐人 -->
+              <img :src="imgs.B" @click="_hstep(false)"><br>我没有推荐人
             </li>
           </ul>
         </div>
@@ -17,6 +19,7 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -25,6 +28,19 @@ export default {
         B: require('../images/meiyou.png')
       }
     }
+  },
+  computed: {
+    ...mapGetters(['WkLoop'])
+  },
+  created () {
+    if (this.WkLoop !== 2) this.$router.push({path: '/weika'})
+  },
+  methods: {
+    _hstep (boolean) {
+      this.updateStep(3)
+      boolean ? this.$router.push({path: '/weika/step2'}) : this.$router.push({path: '/weika/no_inv'})
+    },
+    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
   }
 }
 </script>

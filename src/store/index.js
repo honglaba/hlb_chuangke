@@ -14,7 +14,7 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
   strict: debug/* 严格模式-更改状态时一定要Mutation */,
-  plugins: debug ? [createLogger()] : [],
+  plugins: debug ? [createLogger()] : [], /* 开发状态-控制台log */
   state,
   getters,
   actions,

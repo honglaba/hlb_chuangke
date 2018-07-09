@@ -23,7 +23,6 @@ const mutations = {
   [types.COMMENTS] (state, comments) {
     state.comments = comments
   },
-
   [types.SET_WEIKA_INVID] (state, val) {
     if (!val) localStorage.removeItem('invite_id')
     state.WkInv = val
@@ -31,6 +30,12 @@ const mutations = {
   [types.UPDATE_LOADING] (state, context) {
     state.isLoading.status = context.status
     state.isLoading.text = context.text
+  },
+  [types.UPDATE_WEIKA_LOOP] (state, step) {
+    state.WkLoop = step
+  },
+  [types.UPDATE_VIP_INFO] (state, data) {
+    state.WkVipInfo = data
   }
 }
 
