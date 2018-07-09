@@ -280,6 +280,17 @@ const normal = {
         }
       })
     })
+  },
+  User_buyList ({commit}, type) { // 全部订单列表: 待付款1, 待发货2, 待收货3, 待评论4
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/orders?order_state=${type}`
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
   }
 }
 

@@ -54,7 +54,7 @@
               </router-link>
             </li>
             <li>
-              <router-link :to="{path:'/member/order/order_list/2'}">
+              <router-link :to="{path:'/member/order/order_list/3'}">
                 <span><img src="./images/daishouhuo.png"></span>
                 <span>待收货</span>
                 <span class="num">8</span>

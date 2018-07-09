@@ -10,14 +10,18 @@ router.beforeEach((To, From, next) => {
   let isMatched = false
 
   function getRedirectUrl () {
-    /* 初始化 */
-    Cookies.remove('refreshToken')
-    Cookies.remove('accessToken')
-    localStorage.clear()
+    _init()
     localStorage.setItem('historyTargetPath', To.path)
     apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
       window.location.href = res.redirect
     })
+  }
+
+  function _init () {
+    /* 初始化 */
+    Cookies.remove('refreshToken')
+    Cookies.remove('accessToken')
+    localStorage.clear()
   }
 
   if (!To.name) { // 路由不存在时跳转from页
@@ -28,7 +32,9 @@ router.beforeEach((To, From, next) => {
   if (historyTargetPath && !localStorage.getItem('userInfo')) { // 如果存在历史跳转地址且没有用户信息时,说明当前为授权状态,处理url
     let local = location.href
     let hisUrl = historyTargetPath
-    localStorage.clear() // 授权状态全部初始化
+
+    _init()
+
     if (
       local.indexOf('access_token') > 0 &&
       local.indexOf('refresh_token') > 0
@@ -45,7 +51,7 @@ router.beforeEach((To, From, next) => {
       localStorage.setItem('client_id', hashes.client_id)
 
       // cookie
-      Cookies.set('accessToken', hashes.access_token, { expires: 1 / 36 })
+      Cookies.set('accessToken', hashes.access_token, { expires: 1 / 25 })
       Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
 
       apiList.HTTP_UserInfo()
@@ -62,7 +68,7 @@ router.beforeEach((To, From, next) => {
     if (!localStorage.getItem('userInfo') || !Cookies.get('refreshToken')) {
       // 清空所有数据, 再请求
       getRedirectUrl()
-      next(false)
+      next(false) // 这里重定向, 要先stop
       return
     }
   } else {
@@ -79,10 +85,10 @@ router.beforeEach((To, From, next) => {
 
     if (isMatched) {
       getRedirectUrl()
-      next(false)
       return
     }
   }
+
   next() // 无阻碍直接跳转
 })
 

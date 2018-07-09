@@ -380,12 +380,6 @@ export default {
     }
   },
   created () {
-    // this.APP_Banner('nearby').then(res => {
-    //   console.log(res, 'nearby')
-    // })
-    // this.APP_Banner('index').then(res => {
-    //   this.banner = res.data
-    // })
     this.getBanner()
     this.getSuperme()
     this.getChannel()

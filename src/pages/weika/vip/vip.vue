@@ -9,7 +9,7 @@
                 <div class="tx"><img :src="vip.headimgurl"></div>
                 <div class="uinfo">
                   <p class="name">{{ vip.nickname}}<img src="../images/vip1.png"></p>
-                  <p class="tips">创客为您节约了{{ vip.save_money }}.00元</p>
+                  <p class="tips">创客为您节约了{{ vip.save_money }}元</p>
                 </div>
               </div>
               <div class="right">
@@ -21,21 +21,21 @@
               <ul>
                 <li>
                   <span>可用佣金(元)</span>
-                  <span>{{ vip.money }}.00</span>
+                  <span>{{ vip.money }}</span>
                   <span>
                     <router-link to="withdraw">提现</router-link>
                   </span>
                 </li>
                 <li>
                   <span>累计佣金(元)</span>
-                  <span>{{ vip.total_money }}.00</span>
+                  <span>{{ vip.total_money }}</span>
                   <span>
                     <router-link to="commission">查看</router-link>
                   </span>
                 </li>
                 <li>
                   <span>我的推荐(人)</span>
-                  <span>{{ vip.invites }}.00</span>
+                  <span>{{ vip.invites }}</span>
                   <span>
                     <router-link to="recommend_list">查看</router-link>
                   </span>

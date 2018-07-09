@@ -94,7 +94,7 @@
 </template>
 <script>
 import { wxpay } from 'tools/util'
-import { mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import {
   XInput,
   Selector,
@@ -114,6 +114,9 @@ export default {
   },
   created () {
     if (this.WkLoop !== 5) this.$router.push({path: '/weika'})
+  },
+  computed: {
+    ...mapGetters(['WkLoop'])
   },
   methods: {
     _pay () {

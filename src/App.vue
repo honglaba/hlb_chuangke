@@ -14,6 +14,9 @@ export default {
     // 在微信浏览器手机端, 因为不会真正的跳到授权页面, 生命钩子不会进行两次
     this._statusKeep()
   },
+  mouted () {
+
+  },
   methods: {
     _statusKeep () {
       // 每次刷新store会清空,所以要在本地储存中重新commit保证状态

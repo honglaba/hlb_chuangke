@@ -125,6 +125,7 @@ export default {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter
       }
+
       this.Wk_Order(inbObj)
         .then(res => {
           this.updateStep(5)
