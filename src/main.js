@@ -8,7 +8,7 @@ import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin} from 'vux'
+import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin, Loading} from 'vux'
 // import VueScroller from 'vue-scroller'
 
 // Vue.use(VueScroller)

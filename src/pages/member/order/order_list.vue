@@ -18,6 +18,38 @@
           </div>
           <div class="dhlist">
             <ul>
+
+              <li v-for="(item,index) in orderList">
+                <div class="shopinfo">
+                  <div class="name">
+                    <span class="l">订单号：
+                      <em>{{item.order_sn}}</em>
+                    </span>
+                    <span class="r">{{item.status_text}}</span>
+                  </div>
+                </div>
+                <div class="splist">
+                  <div class="glist" v-for="(li,index2) in item.order_goodses">
+                    <div class="left">
+                      <img src="./../images/temp001.png">
+                    </div>
+                    <div class="right">
+                      <div class="name">{{li.name}} 120g*{{li.num}}支</div>
+                      <div class="guige">
+                        数量：1；颜色：白色；尺码：38
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="spprice">共{{item.order_goodses.length}}件商品 实付:
+                  <span>￥{{item.final_price}}</span>
+                </div>
+                <div class="spcaozuo">
+                  <span class="a1">取消订单</span>
+                  <span class="a2">立即付款</span>
+                </div>
+              </li>
+
               <li>
                 <div class="shopinfo">
                   <div class="name">
@@ -255,31 +287,38 @@
   </div>
 </template>
 <script>
-import { Tab, TabItem } from "vux";
-import { mapActions } from "vuex";
+import { Tab, TabItem } from 'vux'
+import { mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
-      nowSeen: "1"
-    };
+      nowSeen: '1',
+      orderList: []
+    }
   },
-  async created() {
-    await this.APP_collectCommodityList();
+  async created () {
+    await this.APP_collectCommodityList()
   },
   methods: {
-    ...mapActions(["APP_collectCommodityList"]),
-    tab(e) {
-      this.nowSeen = e.target.getAttribute("data-id");
+    ...mapActions(['APP_collectCommodityList']),
+    tab (e) {
+      this.nowSeen = e.target.getAttribute('data-id')
     },
-    routeBack() {
-      this.$router.push({ path: "/member" });
+    routeBack () {
+      this.$router.push({ path: '/member' })
     }
   },
   components: {
     Tab,
     TabItem
+  },
+  mounted () {
+    this.axios.get('/api/orders?order_state=0').then(res => {
+      console.log(res.data[0])
+      this.orderList = res.data
+    })
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .empty {

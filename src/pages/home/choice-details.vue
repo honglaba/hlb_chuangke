@@ -202,9 +202,9 @@
       <div class="more">
         <router-link tag="a" to="#">查看更多评论</router-link>
       </div>
-      <router-link to="/home/pay" class="buy-btn">消费买单</router-link>
+      <!-- <router-link to="/home/pay" class="buy-btn">消费买单</router-link> -->
     </section>
-
+    <router-link to="/home/pay" class="buy-btn">消费买单</router-link>
     <div v-transfer-dom>
       <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
         <p style="text-align:center;">{{details.mobile_phone}}</p>
@@ -697,8 +697,28 @@ export default {
     line-height: 0.9rem;
     font-size: 0.32rem;
     display: block;
+    position: initial;
+    margin: 0 auto;
   }
 }
+  .buy-btn {
+    width: 7rem;
+    height: .9rem;
+    background: -webkit-gradient(linear, left top, right top, from(#ff7f32), to(#f5222d));
+    background: linear-gradient(to right, #ff7f32, #f5222d);
+    margin: 0 auto;
+    text-align: center;
+    line-height: .9rem;
+    color: #fff !important;
+    font-size: .32rem;
+    border-radius: .06rem;
+    margin-top: .2rem;
+    display: block;
+    position: fixed;
+    bottom: .1rem;
+    left: 50%;
+    margin-left: -3.5rem;
+  }
 // 弹窗控件样式
 .weui-dialog__btn_primary{
   color: #f60 !important;
