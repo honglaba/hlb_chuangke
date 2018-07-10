@@ -15,6 +15,8 @@ import Choice from '@/pages/home/choice'
 import ChoiceDetails from '@/pages/home/choice-details'
 import MyComment from '@/pages/home/my-comment'
 import Exchange from '@/pages/home/exchange'
+import ShopQRcode from '@/pages/home/shopqrcode'
+
 // import Scanning from '@/pages/home/scanning'
 // 附近商家
 import shop_route from '@/pages/shop/shop_route'
@@ -37,6 +39,7 @@ import realname from '@/pages/member/realname'// 实名认证
 import paySetting from '@/pages/member/pay-setting' // 支付设置
 import address from '@/pages/member/address'// 收货地址管理
 import address_add from '@/pages/member/address_add'// 新增或修改收货地址
+import version from '@/pages/member/version'// 版本号
 // 文章
 import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
@@ -167,6 +170,13 @@ export default new VueRouter({
       component: Exchange,
       meta: {
         title: '本店兑换'
+      }
+    }, {
+      path: 'shopqrcode',
+      name: 'ShopQRcode',
+      component: ShopQRcode,
+      meta: {
+        title: '店铺二维码'
       }
     }
       // {
@@ -414,6 +424,13 @@ export default new VueRouter({
         component: address_add,
         meta: {
           title: '新增或修改收货地址'
+        }
+      }, {
+        path: 'version',
+        name: 'version',
+        component: version,
+        meta: {
+          title: '版本号'
         }
       }
     ]
