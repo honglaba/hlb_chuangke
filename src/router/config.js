@@ -54,6 +54,7 @@ const WkCivilian = () => import(/* 首页-平民 */ '@/pages/weika/civilian/civi
 const WkNoInv = () => import(/* 免邀请码注册 */ '@/pages/weika/civilian/no-invitation')
 const WkChooseProducts = () => import(/* 选择微卡商品 */ '@/pages/weika/civilian/choose-products')
 const WkPay = () => import(/* 微卡支付 */ '@/pages/weika/civilian/pay')
+const WkGoodsDetail = () => import(/* 微卡商品详情 */ '@/pages/weika/goods/goods-detail')
 const WkReg1 = () => import(/*  */ '@/pages/weika/civilian/step1')
 const WkReg2 = () => import(/*  */ '@/pages/weika/civilian/step2')
 // const WkReg3 = () => import(/*  */ '@/pages/weika/civilian/reg/step3')
@@ -301,6 +302,14 @@ export default new VueRouter({
       component: WkReg2,
       meta: {
         title: '填写个人信息'
+      }
+    },
+    {
+      path: 'goods_detail',
+      name: 'goods_detail',
+      component: WkGoodsDetail,
+      meta: {
+        title: '商品详情'
       }
     }
     ]
