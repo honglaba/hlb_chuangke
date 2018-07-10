@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="nav">
-      <x-header title="我的订单" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
+      <my-header @left-action="routeBack" :Title="'我的订单'"></my-header>
 
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
         <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>
@@ -142,7 +142,6 @@ export default {
         })
     },
     wxSuccessCall () {
-      this.updateStep(1)
       this.$vux.loading.show()
       this.ReqEnd = false
       this.getUsrInfo() // 更新用户信息后再跳转

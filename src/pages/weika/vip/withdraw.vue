@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'提现'"></my-header>
     <div class="main">
       <div class="content">
         <div class="base_box pd20 mt20">
@@ -70,7 +71,6 @@ export default {
   },
   watch: {
     numberA (val, oldval) {
-      console.log(this.numberA)
       if (val - this.VipInfoData.money > 0) {
         this.numberA = this.VipInfoData.money
       }
@@ -79,8 +79,6 @@ export default {
   methods: {
     _moneyOnchange (e) {
       if (this.numberA - this.VipInfoData.money > 0) {
-        // console.log(this.numberA)
-        // console.log(this.numberA.split('.'))
         e.target.readOnly = true
         setTimeout(() => {
           e.target.readOnly = false
@@ -93,6 +91,9 @@ export default {
       this.Vip_Withdraw({ amount, remark }).then(res => {
         MessageBox.alert('提现成功').then(action => {})
       })
+    },
+    routeBack () {
+      this.$router.push({path: '/weika/vip'})
     },
     ...mapActions(['Vip_Withdraw'])
   },

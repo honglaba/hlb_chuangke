@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+// import { Domain } from 'tools/env'
 
 export const wxpay = (callback, arg) => { // 微信支付的兼容调用
   if (typeof WeixinJSBridge === 'undefined') {

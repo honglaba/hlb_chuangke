@@ -220,8 +220,7 @@ export default new VueRouter({
       name: 'withdraw',
       component: WkWithdraw,
       meta: {
-        title: '提现',
-        rtext: '提现记录'
+        title: '提现'
       }
     },
     {

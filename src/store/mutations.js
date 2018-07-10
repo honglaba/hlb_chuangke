@@ -2,6 +2,7 @@ import * as types from './mutations-type'
 
 const mutations = {
   [types.SET_USER_INFO] (state, val) { // 用户主要信息
+    localStorage.setItem('userInfo', JSON.stringify(val))
     state.userInfo = val
   },
   [types.SAVE_RECEIVER_ADDRESS] (state, val) { // 物流地址
@@ -30,9 +31,6 @@ const mutations = {
   [types.UPDATE_LOADING] (state, context) {
     state.isLoading.status = context.status
     state.isLoading.text = context.text
-  },
-  [types.UPDATE_WEIKA_LOOP] (state, step) {
-    state.WkLoop = step
   },
   [types.UPDATE_VIP_INFO] (state, data) {
     localStorage.setItem('vip_info', JSON.stringify(data))

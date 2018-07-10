@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header title="我的收藏" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
+    <my-header @left-action="routeBack" :Title="'我的收藏'"></my-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">

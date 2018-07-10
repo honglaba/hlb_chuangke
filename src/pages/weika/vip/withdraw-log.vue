@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-   <!-- <x-header :left-options="{backText: ''}" title="提现记录"></x-header> -->
+   <my-header @left-action="routeBack" :Title="'提现记录'"></my-header>
     <div class="main" v-if="Object.keys(this.defaultData).length > 0">
       <div class="content pd20">
         <div class="txbox">
@@ -49,6 +49,9 @@ export default {
     })
   },
   methods: {
+    routeBack () {
+      this.$router.push({path: '/weika/withdraw'})
+    },
     ...mapActions(['Wk_WithdrawLog'])
   }
 }

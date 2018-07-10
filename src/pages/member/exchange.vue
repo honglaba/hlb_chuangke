@@ -3,6 +3,8 @@
     <x-header title="我要兑换" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
       <router-link to="exchange_log" slot="right">兑换记录</router-link>
     </x-header>
+    <!-- headnoconfig -->
+
     <div class="main2">
       <div class="content">
         <div class="dhlist">

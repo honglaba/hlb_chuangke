@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="我的战绩"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'我的战绩'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="zj zj-a1">
@@ -40,6 +40,9 @@ export default {
     })
   },
   methods: {
+    routeBack () {
+      this.$router.push({path: '/weika/commission'})
+    },
     ...mapActions({getRecord: 'Wk_Record'})
   }
 }

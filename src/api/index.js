@@ -1,9 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { Domain } from 'tools/env'
 
 // 配置axios对象
-let EnvUrl = process.env.NODE_ENV === 'production' ? 'http://api.hlbck.com' : '/api_proxy'
-axios.defaults.baseURL = EnvUrl
+axios.defaults.baseURL = Domain
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 // 请求过期时间 8s
 axios.defaults.timeout = 8000
@@ -43,7 +43,7 @@ axios.interceptors.request.use(config => {
           resolve(config)
         })
       })
-      xhr.open('POST', EnvUrl + '/api/login/refresh')
+      xhr.open('POST', Domain + '/api/login/refresh')
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({

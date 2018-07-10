@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-    <x-header title="实名认证" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
-    </x-header>
+    <my-header @left-action="routeBack" :Title="'实名认证'"></my-header>
     <div class="main2">
       <div class="content">
         <group>

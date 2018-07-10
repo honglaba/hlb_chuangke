@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-    <x-header title="兑换记录" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
-    </x-header>
+    <my-header @left-action="routeBack" :Title="'兑换记录'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="dhlist">

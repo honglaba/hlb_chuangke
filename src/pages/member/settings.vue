@@ -1,11 +1,6 @@
 <template>
   <div class="app">
-    <x-header
-      title="设置"
-      :left-options="{backText: '', preventGoBack: true}"
-      @on-click-back="routeBack"
-    >
-    </x-header>
+    <my-header @left-action="routeBack" :Title="'设置'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="settingbox base_box">

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="我的佣金"></x-header>
+    <my-header @left-action="routeBack" :Title="'佣金首页'"></my-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
@@ -182,6 +182,9 @@ export default {
     },
     tab (id) {
       this.nowSeen = id
+    },
+    routeBack () {
+      this.$router.push({path: '/weika/vip'})
     },
     ...mapActions(['Vip_Commission', 'Vip_CommissionHistory'])
   },

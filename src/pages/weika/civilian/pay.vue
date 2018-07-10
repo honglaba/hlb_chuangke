@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
         <div class="paybox pd20">
@@ -94,7 +95,7 @@
 </template>
 <script>
 import { wxpay } from 'tools/util'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import {
   XInput,
   Selector,
@@ -111,12 +112,6 @@ export default {
       paytype: '微信',
       paytypeList: ['微信', '支付宝']
     }
-  },
-  created () {
-    if (this.WkLoop !== 5) this.$router.push({path: '/weika'})
-  },
-  computed: {
-    ...mapGetters(['WkLoop'])
   },
   methods: {
     _pay () {
@@ -139,7 +134,6 @@ export default {
       })
     },
     wxSuccessCall () {
-      this.updateStep(1)
       this.HTTP_UserInfo() // 更新用户信息后再跳转
         .then(res1 => {
           this.updataUsr(res1.data)
@@ -147,7 +141,10 @@ export default {
         })
     },
     wxErrCall () {},
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP', updataUsr: 'SET_USER_INFO'}),
+    routeBack () {
+      this.$router.go(-1)
+    },
+    ...mapMutations({invId: 'SET_WEIKA_INVID', updataUsr: 'SET_USER_INFO'}),
     ...mapActions(['Wk_Pay', 'HTTP_UserInfo'])
   },
   components: {

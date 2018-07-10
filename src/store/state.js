@@ -7,7 +7,6 @@ const state = {
   comments: '',
   WkVipInfo: '',
   WkInv: /* 用户邀请码 */ '',
-  WkLoop: /* 微卡申请所在的步骤 */ 1,
   isLoading: {
     status: false,
     text: ''
