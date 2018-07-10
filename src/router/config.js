@@ -220,7 +220,8 @@ export default new VueRouter({
       name: 'withdraw',
       component: WkWithdraw,
       meta: {
-        title: '提现'
+        title: '提现',
+        rtext: '提现记录'
       }
     },
     {
@@ -353,7 +354,7 @@ export default new VueRouter({
         name: 'order_list',
         component: order_list,
         meta: {
-          title: '帮助详情'
+          title: '我的订单'
         }
       }, {
         path: 'order/order_detail/:id',

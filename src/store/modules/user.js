@@ -315,9 +315,7 @@ const weika = {
         method: 'POST',
         data
       }).then(res => {
-        if (res.result_state === 'success') {
-          resolve(res)
-        }
+        resolve(res)
       })
     })
   },
@@ -326,9 +324,7 @@ const weika = {
       HTTP({
         url: `/api/weika/check-order`
       }).then(res => {
-        if (res.result_state === 'success') {
-          resolve(res)
-        }
+        resolve(res)
       })
     })
   },
@@ -352,22 +348,6 @@ const weika = {
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/user/weika`
-      }).then(res => {
-        if (res.result_state === 'success') {
-          resolve(res)
-        }
-      })
-    })
-  },
-  Wk_Withdraw ({commit}, data) { // 微卡提现
-    return new Promise((resolve, reject) => {
-      HTTP({
-        url: `/api/weika/withdraw`,
-        method: 'POST',
-        data: {
-          amount: data.amount,
-          remark: data.remark
-        }
       }).then(res => {
         if (res.result_state === 'success') {
           resolve(res)
@@ -408,10 +388,40 @@ const weika = {
       })
     })
   },
-  Vip_Commission ({commit}) {
+  Vip_Commission ({commit}) { // 累计佣金
     return new Promise((resolve, reject) => {
       HTTP({
         url: `/api/user/commission`
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
+  Vip_CommissionHistory ({commit}, mtype) { // 历史佣金
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/commission-history`,
+        params: {
+          m_type: mtype
+        }
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
+  Vip_Withdraw ({commit}, data) { // 微卡提现
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/weika/withdraw`,
+        method: 'POST',
+        data: {
+          amount: data.amount,
+          remark: data.remark
+        }
       }).then(res => {
         if (res.result_state === 'success') {
           resolve(res)

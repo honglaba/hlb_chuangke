@@ -113,6 +113,7 @@
 </template>
 <script>
 import { Swiper } from 'vux'
+// import { mapActions } from 'vuex'
 export default {
   props: {
     DataTree: {
@@ -121,6 +122,9 @@ export default {
   },
   components: {
     Swiper
+  },
+  methods: {
+    // ...mapActions(['HTTP_UserInfo'])
   }
 }
 </script>

@@ -94,29 +94,22 @@ export default {
   },
   methods: {
     ...mapActions(['HTTP_pay']),
-    showTip: function () {
+    showTip  () {
       this.mask = true
     },
-    maskTap: function () {
+    maskTap  () {
       this.mask = false
     },
-    onBridgeReady: function () {
-      this.HTTP_pay(this.money).then(res => {
-        let result = res.data
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            'appId': result.appId,
-            'timeStamp': result.timeStamp,
-            'nonceStr': result.nonceStr,
-            'package': result.package,
-            'signType': result.signType,
-            'paySign': result.paySign
-          }, function (res) {
-            alert('成功')
-          })
-      })
+    onBridgeReady () {
+      this.HTTP_pay(this.money)
+        .then(res => {
+          window.WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', res.data, res => {
+              alert('成功')
+            })
+        })
     },
-    weixinPay: function () {
+    weixinPay  () {
       let that = this
       if (this.money) {
         if (typeof WeixinJSBridge === 'undefined') {

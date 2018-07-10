@@ -50,9 +50,6 @@ export default {
     Group,
     Divider
   },
-  created () {
-    console.log(this.$route.query)
-  },
   methods: {
     ...mapActions(['HTTP_realNameRegistration', 'HTTP_UserInfo']),
     _keydown () {
@@ -71,8 +68,8 @@ export default {
       })
         .then(res => {
           if (res.result_state === 'success') {
-            this.HTTP_UserInfo().then(res => {
-              this.$store.commit('SET_USER_INFO', res.data)
+            this.HTTP_UserInfo().then(res1 => {
+              this.$store.commit('SET_USER_INFO', res1.data)
               this.$vux.confirm.show({
                 showCancelButton: false,
                 title: '提示',
@@ -80,9 +77,9 @@ export default {
                 onHide () {
                   if (this.$route.query.type) {
                     _this.$router.push({name: 'step1'})
-                    return
+                  } else {
+                    _this.$router.push({path: '/member/settings'})
                   }
-                  _this.$router.push({path: '/member/settings'})
                 }
               })
             })
@@ -90,13 +87,17 @@ export default {
             this.$vux.confirm.show({
               showCancelButton: false,
               title: '提示',
-              content: '姓名与身份证号不匹配!'
+              content: res.message
             })
           }
         })
     },
     routeBack () {
-      this.$router.push({path: '/member/settings'})
+      if (this.$route.query.type) {
+        this.$router.push({name: 'step1'})
+      } else {
+        this.$router.push({path: '/member/settings'})
+      }
     }
   }
 }

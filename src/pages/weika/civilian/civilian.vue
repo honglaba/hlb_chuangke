@@ -75,7 +75,7 @@
 </template>
 <script>
 import { Swiper } from 'vux'
-import { MessageBox } from 'mint-ui'
+import { MessageBox, Toast } from 'mint-ui'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 const baseList = [
   {
@@ -107,17 +107,24 @@ export default {
   methods: {
     _toOpen () {
       this.updateStep(2)
-      this.Wk_Query().then(res => {
-        if (res.data.exists === 1) { /* 已存在订单 */
-          MessageBox.alert('您有未完成的微卡订单~').then(action => {
-            this.$router.push({path: '/member/order/order_list/1'})
-          })
-        } else {
-          this.getUser.real_name
-            ? this.$router.push({path: '/weika/step1'})
-            : this.$router.push({path: '/member/realname', query: {type: 'weika'}})
-        }
-      })
+      if (this.getUser.real_name) {
+        this.Wk_Query().then(res => {
+          if (res.result_state === 'error') {
+            MessageBox.alert('您已经是微卡会员了~')
+          } else if (res.result_state === 'success') {
+            if (res.data.exists === 1) { /* 已存在订单 */
+              MessageBox.alert('您有未完成的微卡订单~').then(action => {
+                this.$router.push({path: '/member/order/order_list/1'})
+              })
+            } else {
+              this.$router.push({path: '/weika/step1'})
+            }
+          }
+        })
+      } else {
+        Toast('请先进行实名认证')
+        this.$router.push({path: '/member/realname', query: {type: 'weika'}})
+      }
     },
     ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'}),
     ...mapActions(['Wk_Query'])

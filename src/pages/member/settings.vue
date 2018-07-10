@@ -69,9 +69,6 @@ export default {
       type: Object
     }
   },
-  created () {
-
-  },
   methods: {
     ...mapActions(['HTTP_logout', 'HTTP_UserInfo']),
     _logout () {

@@ -35,6 +35,7 @@ const mutations = {
     state.WkLoop = step
   },
   [types.UPDATE_VIP_INFO] (state, data) {
+    localStorage.setItem('vip_info', JSON.stringify(data))
     state.WkVipInfo = data
   }
 }

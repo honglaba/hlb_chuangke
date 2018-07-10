@@ -130,14 +130,25 @@ export default {
           'getBrandWCPayRequest',
           result,
           res => {
-            this.updateStep(1)
-            alert('调取微信支付成功')
-            this.$router.push({path: '/weika'})
+            if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
+            if (
+              res.err_msg === 'get_brand_wcpay_request:fail' ||
+              res.err_msg === 'get_brand_wcpay_request:cancel'
+            ) this.wxErrCall()
           })
       })
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP'}),
-    ...mapActions(['Wk_Pay'])
+    wxSuccessCall () {
+      this.updateStep(1)
+      this.HTTP_UserInfo() // 更新用户信息后再跳转
+        .then(res1 => {
+          this.updataUsr(res1.data)
+          this.$router.push({path: '/weika'})
+        })
+    },
+    wxErrCall () {},
+    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP', updataUsr: 'SET_USER_INFO'}),
+    ...mapActions(['Wk_Pay', 'HTTP_UserInfo'])
   },
   components: {
     XInput,
