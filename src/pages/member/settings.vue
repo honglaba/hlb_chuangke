@@ -41,6 +41,12 @@
                 <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
+             <router-link to="/member/version">
+              <div class="tit">
+                <div class="l">关于我们</div>
+                <div class="r"><img :src="rightArrow"></div>
+              </div>
+            </router-link>
           </div>
           <div class="logoff" v-if="userAgenForButton" @click="_logout()">
             退出登录
