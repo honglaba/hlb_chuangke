@@ -53,21 +53,26 @@ export default {
     width: 100%;
     font-size: 0.4rem;
     .h-back {
-      width: 0.88rem;
-      text-align: center;
+      padding-left: 0.3rem;
+      width: 0.58rem;
+      margin-right: 0.62rem;
+      text-align: left;
       img {
         width: 0.2rem;
         height: 0.34rem;
       }
     }
     .h-title {
+      flex: 2;
+      text-align: center;
       overflow: hidden;
     }
     .h-do {
-      width: 0.88rem;
-      margin-right: 0.2rem;
-      text-align: center;
-      font-size: 0.4rem;
+      margin-right: 0.3rem;
+      width: 1.2rem;
+      text-align: right;
+      font-size: 0.3rem;
+      color: #999999;
     }
   }
 }
