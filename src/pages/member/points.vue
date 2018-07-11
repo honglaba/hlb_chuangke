@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的积分'"></my-header>
+    <my-header @left-action="routeBack" :left-options="{preventGoBack: true}" :Title="'我的积分'">
+    </my-header>
     <div class="main2">
       <div class="content">
         <div class="jfbox">
@@ -41,7 +42,7 @@ export default {
   },
   methods: {
     routeBack () {
-      this.$router.push({path: '/member'})
+      this.$router.push({ path: '/member' })
     }
   }
 }

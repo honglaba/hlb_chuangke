@@ -113,7 +113,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .yjbd {
-  background: #ffffff;
+  margin-top: 3.7rem;
   padding: 0.4rem 0.7rem;
   text-align: center;
   .tips {
@@ -160,7 +160,7 @@ export default {
           .a2 {
             color: #999;
             margin-top: 0.16rem;
-            font-size: 0.2rem;
+            font-size: 0.24rem;
           }
         }
         .right {
@@ -186,7 +186,7 @@ export default {
       }
       .setting {
         padding-top: 0.2rem;
-        font-size: 0.2rem;
+        font-size: 0.24rem;
         span {
           display: flex;
           align-items: center;

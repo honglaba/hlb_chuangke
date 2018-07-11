@@ -212,7 +212,7 @@ export default {
             this.$vux.confirm.show({
               showCancelButton: false,
               title: '提示',
-              content: '支付密码修改成功!'
+              content: '支付密码修改成功'
             })
             this.$store.commit('SET_USER_INFO', res.data)
             this.$router.push({ path: '/member/settings' })
@@ -227,7 +227,7 @@ export default {
         this.$vux.confirm.show({
           showCancelButton: false,
           title: '提示',
-          content: '两次输入不一致!',
+          content: '两次输入不一致',
           onHide () {
             _this.numVal = []
           }
@@ -241,7 +241,7 @@ export default {
         if (!this.DataTree.mobile_phone) {
           this.$vux.confirm.show({
             title: '提示',
-            content: '请先绑定手机号!',
+            content: '请先绑定手机号',
             onConfirm (val) {
               _this.$router.push({ path: '/member/phone_update' })
             }
@@ -292,6 +292,7 @@ export default {
   color: #666;
 }
 .pay-ident {
+  padding-top: .88rem;  
   .pay-ident-item {
     width: 100%;
     height: 1rem;

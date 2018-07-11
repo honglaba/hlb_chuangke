@@ -1,9 +1,8 @@
 <template>
   <div class="app">
-    <x-header title="我要兑换" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
+    <my-header @left-action="routeBack" :Title="'我要兑换'">
       <router-link to="exchange_log" slot="right">兑换记录</router-link>
-    </x-header>
-    <!-- headnoconfig -->
+    </my-header>
 
     <div class="main2">
       <div class="content">

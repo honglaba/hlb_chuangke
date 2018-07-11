@@ -1,9 +1,10 @@
 <template>
   <!-- <mt-loadmore id="app" :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange" ref="loadmore"> -->
-  <div class="shop-index">
+  <div class="shop-index mescroll" id="mescroll">
     <!-- pc触发loadmore辅助容器 -->
     <!-- <div class="main" style="top:0"> -->
-      <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  class="bpad100">
+      <div>
+      <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  class="bpad100"> -->
         <Headerx @result='result'></Headerx>
         <section class="banner">
           <p>今日推荐</p>
@@ -38,8 +39,9 @@
           </ul>
         </section>
 
-      </mt-loadmore>
-      <Footerx></Footerx>
+      <!-- </mt-loadmore> -->
+      </div>
+      <!-- <Footerx></Footerx> -->
     <!-- </div> -->
   </div>
 </template>
@@ -48,114 +50,17 @@ import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
 import { Loadmore } from 'mint-ui'
 import { Tab, TabItem } from 'vux'
-import { setTimeout } from 'timers'
+import MeScroll from '@/../static/js/mescroll.min.js'
 export default {
-  watch: {
-    '$route' (val, oldval) {
-
-    }
-  },
   data () {
     return {
       transitionName: '',
-      tabNavs: [
-        // {
-        //   title: '附近商家',
-        //   active: true
-        // },
-        // {
-        //   title: '美食',
-        //   active: false
-        // },
-        // {
-        //   title: '酒店',
-        //   active: false
-        // },
-        // {
-        //   title: '娱乐',
-        //   active: false
-        // },
-        // {
-        //   title: '电影',
-        //   active: false
-        // },
-        // {
-        //   title: '丽人',
-        //   active: false
-        // },
-        // {
-        //   title: '附近商家',
-        //   active: false
-        // },
-        // {
-        //   title: '美食',
-        //   active: false
-        // },
-        // {
-        //   title: '酒店',
-        //   active: false
-        // },
-        // {
-        //   title: '娱乐',
-        //   active: false
-        // },
-        // {
-        //   title: '电影',
-        //   active: false
-        // },
-        // {
-        //   title: '丽人',
-        //   active: false
-        // }
-      ],
-      navs: [
-        // {
-        //   title: '全部',
-        //   active: true
-        // },
-        // {
-        //   title: '甜点饮品',
-        //   active: false
-        // },
-        // {
-        //   title: '生日蛋糕',
-        //   active: false
-        // },
-        // {
-        //   title: '火锅',
-        //   active: false
-        // },
-        // {
-        //   title: '自助餐',
-        //   active: false
-        // },
-        // {
-        //   title: '小吃快餐',
-        //   active: false
-        // },
-        // {
-        //   title: '日韩料理',
-        //   active: false
-        // }
-      ],
+      tabNavs: [],
+      navs: [],
       businessList: [],
       allLoaded: false,
       tabFixed: false,
       tabH: ''
-      // businessList: [
-      //   {
-      //     // name: '良记甜品',
-      //     // pic: '../../../static/images/nearby-label-img1.png'
-      //     title: '良记甜品',
-      //     logo: '../../../static/images/nearby-label-img1.png'
-      //   },
-      //   {
-      //     // name: '肯德基宅急送',
-      //     // pic: '../../../static/images/nearby-label-img2.png'
-      //     title: '肯德基宅急送',
-      //     logo: '../../../static/images/nearby-label-img2.png'
-      //   }
-      // ]
     }
   },
   methods: {
@@ -234,8 +139,8 @@ export default {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
       // id ? id = id : id = 0 // 0即为全部
-      // id ? id = '&cid=' + id : id = ''// 这里应该默认为‘美食’id即id应该为1 但为了测试下拉加载所以设置为空
-      id ? id = '&cid=' + id : id = '&cid=1'
+      id ? id = '&cid=' + id : id = ''// 这里应该默认为‘美食’id即id应该为1 但为了测试下拉加载所以设置为空
+      // id ? id = '&cid=' + id : id = '&cid=1'
       this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960' + id).then(res => {
       // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
         console.log(id)
@@ -273,7 +178,97 @@ export default {
           that.tabFixed = false
         }
       })
+    },
+    /* 联网加载列表数据
+		 请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
+		 实际项目以您服务器接口返回的数据为准,无需本地处理分页.
+		 * */
+    getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback) {
+      // 延时一秒,模拟联网
+      let that = this
+      // setTimeout(function () {
+      //   //          	axios.get("xxxxxx", {
+      //   //					params: {
+      //   //						num: pageNum, //页码
+      //   //						size: pageSize //每页长度
+      //   //					}
+      //   //				})
+      //   //				.then(function(response) {
+      //   var data = pdlist1 // 模拟数据: ../res/pdlist1.js
+      //           	var listData = []// 模拟分页数据
+      //   for (var i = (pageNum - 1) * pageSize; i < pageNum * pageSize; i++) {
+	    //         		if (i == data.length) break
+	    //         		listData.push(data[i])
+	    //         	}
+      //           	successCallback && successCallback(listData)// 成功回调
+      //   //				})
+      //   //				.catch(function(error) {
+      //   //					errorCallback&&errorCallback()//失败回调
+      //   //				});
+      // }, 500)
+      let url
+      this.nextPageUrl ? url = this.nextPageUrl : url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc'
+      console.log(this.nextPageUrl)
+      this.axios.get(url).then(res => {
+      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+
+        this.page = res
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.nextPageUrl = null
+        }
+        delete res.data.result_state
+        delete res.data.return_state
+        // this.businessList = []
+        for (let i in res.data) {
+          // this.businessList.push(res.data[i])
+          if (res.data[i].distance >= 1000) {
+            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+          } else {
+            res.data[i].distance = res.data[i].distance + 'm'
+          }
+        }
+        // this.businessList.length == 0 ? this.businessList = res.data : this.businessList = this.businessList.concat(res.data)
+        // this.businessList = this.businessList.concat(res.data)
+        successCallback && successCallback(res.data)
+      })
+    },
+    // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
+    upCallback: function (page) {
+      // 联网加载数据
+      var self = this
+      self.getListDataFromNet(page.num, page.size, function (curPageData) {
+        console.log(curPageData)
+        // curPageData = [] //打开本行注释,可演示列表无任何数据empty的配置
+
+        // 如果是第一页需手动制空列表 (代替clearId和clearEmptyId的配置)
+        // if (page.num == 1) self.businessList = []
+
+        // 更新列表数据
+        self.businessList = self.businessList.concat(curPageData)
+        console.log(self.businessList)
+        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+        // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+        console.log('page.num=' + page.num + ', page.size=' + page.size + ', curPageData.length=' + curPageData.length + ', self.pdlist.length==' + self.businessList.length)
+
+        // 方法一(推荐): 后台接口有返回列表的总页数 totalPage
+        // self.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+        // 方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+        // self.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+        // 方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+        // self.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+        self.mescroll.endSuccess(curPageData.length, self.nextPageUrl)
+        // 方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+        // self.mescroll.endSuccess(curPageData.length)
+      }, function () {
+        // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+        self.mescroll.endErr()
+      })
     }
+
   },
   components: { ListInner, Other, 'mt-loadmore': Loadmore, Tab, TabItem},
   mounted () {
@@ -281,11 +276,53 @@ export default {
     this.getCategoryChildren()
     this.getCategoryShop()
     this.getHeight()
+
+    /// ////////////
+    // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+    // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+    var self = this
+    self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
+      down: {
+        // callback: self.refresh
+        use: false
+      },
+      up: {
+        callback: self.upCallback, // 上拉回调
+        // 以下参数可删除,不配置
+        isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+        // page:{size:8}, //可配置每页8条数据,默认10
+        toTop: { // 配置回到顶部按钮
+          src: '../res/img/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
+          // offset : 1000
+        },
+        empty: { // 配置列表无任何数据的提示
+          // warpId: 'dataList',
+          icon: '../res/img/mescroll-empty.png'
+          //						  	tip : "亲,暂无相关数据哦~" ,
+          //						  	btntext : "去逛逛 >" ,
+          //						  	btnClick : function() {
+          //						  		alert("点击了去逛逛按钮");
+          //						  	}
+        }
+        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+        //						clearId: "dataList",
+        //						clearEmptyId: "dataList"
+      }
+    })
   }
 }
 </script>
 <style lang="less">
 @import "~vux/src/styles/1px.less";
+@import url("../../../static/css/mescroll.min.css");
+.mescroll {
+    position: fixed;
+    top: 0;
+    bottom: 1rem;
+    height: auto;
+} 
 .shop-index{
   .vux-tab-wrap{
   padding-top:.8rem;

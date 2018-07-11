@@ -1,10 +1,8 @@
 <template>
   <div class="app">
-    <x-header title="帮助中心" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
-      <router-link to="#" slot="right">
-        <img src="../../assets/images/kefu.png" class="kefu">
-      </router-link>
-    </x-header>
+        <my-header @left-action="routeBack" :Title="'帮助中心'">
+      <router-link to="#" slot="right"><img src="../../assets/images/kefu.png" class="kefu"></router-link>
+    </my-header>
     <div class="main2">
       <div class="content">
         <div class="jfbox">

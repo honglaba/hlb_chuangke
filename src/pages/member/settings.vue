@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'设置'"></my-header>
+    <my-header @left-action="routeBack" :left-options="{preventGoBack: true}" :Title="'设置'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="settingbox base_box">
@@ -86,7 +86,7 @@ export default {
 <style lang="less" scoped>
 .disable-font {
   color: #f5222d;
-  font-size: .30rem;
+  font-size: .24rem;
 }
 .settingbox {
   background: transparent;
