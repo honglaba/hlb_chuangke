@@ -94,8 +94,7 @@ const baseList = [
 export default {
   data () {
     return {
-      demo01_list: baseList,
-      til: '创客微卡'
+      demo01_list: baseList
     }
   },
   computed: {

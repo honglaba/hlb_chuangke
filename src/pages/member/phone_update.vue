@@ -154,15 +154,14 @@ export default {
                   this.$vux.toast.show({
                     text: '成功绑定手机号',
                     type: 'text',
-                    time: 1000
+                    time: 1500
                   })
                 })
               } else {
                 this.verification_code = ''
                 this.$vux.toast.show({
-                  text: '绑定失败',
-                  type: 'text',
-                  time: 1000
+                  text: res.message,
+                  type: 'text'
                 })
               }
             })
@@ -170,29 +169,40 @@ export default {
       }
     },
     _changePhone () {
-      this.HTTP_resetPhonePassIdentity()
       const _this = this
-      this.isLoading = true
-      this.$vux.toast.show({
-        text: '验证码已发送',
-        type: 'text',
-        time: 1000
-      })
-      this.$vux.confirm.show({
-        title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
-        showInput: true,
-        closeOnConfirm: false,
-        onConfirm (val) {
-          if (val.match(/^[0-9]{5}$/)) {
-            _this.HTTP_resetPhonePassIdentityDrop(val).then(res => {
-              if (res.result_state === 'success') {
-                _this.$vux.confirm.hide()
-                _this.switchWindow = false
+      this.HTTP_resetPhonePassIdentity()
+        .then(res => {
+          this.isLoading = true
+
+          this.$vux.toast.show({
+            text: '验证码已发送',
+            type: 'text',
+            time: 1000
+          })
+
+          this.$vux.confirm.show({
+            title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
+            showInput: true,
+            closeOnConfirm: false,
+            onConfirm (val) {
+              if (val.match(/^[0-9]{5}$/)) {
+                this.$vux.loading.show()
+                _this.HTTP_resetPhonePassIdentityDrop(val)
+                  .then(res => {
+                    this.$vux.loading.hide()
+                    if (res.result_state === 'success') {
+                      _this.$vux.toast.show({
+                        text: '验证成功',
+                        type: 'text'
+                      })
+                      _this.$vux.confirm.hide()
+                      _this.switchWindow = false
+                    }
+                  })
               }
-            })
-          }
-        }
-      })
+            }
+          })
+        })
     },
     routeBack () {
       this.$router.push({path: '/member/settings'})

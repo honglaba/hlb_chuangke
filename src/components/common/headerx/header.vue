@@ -1,13 +1,14 @@
 <template>
-  <div class="head-content">
-
-    <div class="pro-top">
-      <div class="pro-top-back" @click="routeBack"><img src="~static/images/top-return-icon.png"></div>
-      <div class="pro-top-mid">
+  <div class="hlbheader">
+    <div class="h-wrapper">
+      <div class="h-back" @click="routeBack"><img src="~static/images/top-return-icon.png"></div>
+      <div class="h-title">
         <span>{{ Title || '标题' }}</span>
       </div>
+      <div class="h-do">
+        <slot name="right"></slot>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -26,36 +27,52 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.head-content {
-  .pro-top {
+.hlbheader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  background: #fff;
+  &::after {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content: "";
     width: 100%;
-    height: 0.88rem!important;
-    position: relative;
-    top: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #e6e6e6;
-    box-sizing: border-box;
-    overflow: hidden;
+    height: 1px;
+    background: #e6e6e6;
+    background-size: contain;
+  }
+  .h-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     font-size: 0.4rem;
-    .pro-top-back {
-      width: 0.88rem;
-      height: 0.88rem;
-      float: left;
-      box-sizing: border-box;
+    .h-back {
+      padding-left: 0.3rem;
+      width: 0.58rem;
+      margin-right: 0.62rem;
+      text-align: left;
       img {
-        float: left;
         width: 0.2rem;
         height: 0.34rem;
-        margin-top: 50%;
-        transform: translateY(-50%);
-        margin-left: 0.28rem;
       }
     }
-    .pro-top-mid {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+    .h-title {
+      flex: 2;
+      text-align: center;
+      overflow: hidden;
+    }
+    .h-do {
+      margin-right: 0.3rem;
+      width: 1.2rem;
+      text-align: right;
+      font-size: 0.3rem;
+      color: #999999;
     }
   }
 }

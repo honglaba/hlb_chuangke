@@ -17,7 +17,6 @@
 <script>
 import { XInput, Group, Divider } from 'vux'
 import { mapActions } from 'vuex'
-import { Toast } from 'mint-ui'
 export default {
   data () {
     return {

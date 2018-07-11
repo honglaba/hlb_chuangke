@@ -174,18 +174,12 @@ export default {
   },
   created () {
     this.updateLoading({ status: true })
-    if (this.getWkVipInfo) {
-      this.vip = this.getWkVipInfo
-      this.flag = true
+    this.Wk_Index().then(res => {
       this.updateLoading({ status: false })
-    } else {
-      this.Wk_Index().then(res => {
-        this.updateLoading({ status: false })
-        this.updataVip(res.data)
-        this.vip = res.data
-        this.flag = true
-      })
-    }
+      this.updataVip(res.data)
+      this.vip = res.data
+      this.flag = true
+    })
   },
   methods: {
     ...mapActions(['Wk_Index']),

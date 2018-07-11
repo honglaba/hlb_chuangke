@@ -10,8 +10,6 @@ router.beforeEach((To, From, next) => {
   let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
-  store.commit('UPDATE_LOADING', {status: true})
-
   function getRedirectUrl () {
     _init()
     localStorage.setItem('historyTargetPath', To.path)
@@ -89,8 +87,6 @@ router.beforeEach((To, From, next) => {
   next() // 无阻碍直接跳转
 })
 
-router.afterEach((to) => {
-  store.commit('UPDATE_LOADING', {status: false})
-})
+router.afterEach(to => {})
 
 export default router
