@@ -76,7 +76,6 @@
 </template>
 <script>
 import { Swiper } from 'vux'
-import { MessageBox, Toast } from 'mint-ui'
 import { mapGetters, mapActions } from 'vuex'
 const baseList = [
   {
@@ -104,25 +103,39 @@ export default {
   },
   methods: {
     _toOpen () {
-      if (this.getUser.real_name) {
-        this.Wk_Query()
+      const _this = this
+
+      if (!this.getUser.mobile_phone) return
+      if (this.getUser.id_card && this.getUser.real_name) {
+        this.Wk_Query() // 有没有未完成的微卡订单
           .then(res => {
             if (res.result_state === 'error') {
-              MessageBox.alert('您已经是微卡会员了~')
+              this.$vux.alert.show({
+                content: res.message,
+                onConfirm () {
+                  _this.$router.go(0)
+                }
+              })
             } else if (res.result_state === 'success') {
               if (res.data.exists === 1) { /* 已存在订单 */
-                MessageBox.alert('您有未完成的微卡订单~')
-                  .then(action => {
-                    this.$router.push({path: '/member/order/order_list/1'})
-                  })
+                this.$vux.alert.show({
+                  content: '您有未完成的微卡订单!',
+                  onHide () {
+                    _this.$router.push({path: '/member/order/order_list/1'})
+                  }
+                })
               } else {
                 this.$router.push({path: '/weika/step1'})
               }
             }
           })
       } else {
-        Toast('请先进行实名认证')
-        this.$router.push({path: '/member/realname', query: {type: 'weika'}})
+        this.$vux.toast.hide()
+        this.$vux.toast.show({
+          type: 'text',
+          text: '请先实名认证!'
+        })
+        this.$router.push({path: '/member/realname', query: {status: true}})
       }
     },
     routeBack () {

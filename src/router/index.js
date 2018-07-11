@@ -10,6 +10,8 @@ router.beforeEach((To, From, next) => {
   let specialPaths = ['/member/settings', '/weika'] // 这里可以添加那些需要判断登录才能进入的界面! 只能写path
   let isMatched = false
 
+  store.commit('UPDATE_LOADING', {status: true})
+
   function getRedirectUrl () {
     _init()
     localStorage.setItem('historyTargetPath', To.path)
@@ -53,7 +55,7 @@ router.beforeEach((To, From, next) => {
           Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SET_USER_INFO', res.data)
-          next({path: hisUrl})
+          res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
         })
       return
     }
@@ -85,6 +87,10 @@ router.beforeEach((To, From, next) => {
   }
 
   next() // 无阻碍直接跳转
+})
+
+router.afterEach((to) => {
+  store.commit('UPDATE_LOADING', {status: false})
 })
 
 export default router

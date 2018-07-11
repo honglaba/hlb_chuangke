@@ -13,10 +13,9 @@
 
 <script>
 export default {
+  name: 'x-header',
   props: {
-    Title: {
-      type: String
-    }
+    Title: String
   },
   methods: {
     routeBack () {
@@ -30,8 +29,8 @@ export default {
 .head-content {
   .pro-top {
     width: 100%;
-    height: 0.88rem;
-    position: fixed;
+    height: 0.88rem!important;
+    position: relative;
     top: 0;
     background-color: #fff;
     border-bottom: 1px solid #e6e6e6;

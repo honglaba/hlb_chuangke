@@ -133,11 +133,11 @@ export default {
                 this.HTTP_UserInfo().then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
                   this.$router.push({path: '/member/settings'})
-                })
-                this.$vux.toast.show({
-                  text: '更换手机号完成',
-                  type: 'text',
-                  time: 1000
+                  this.$vux.toast.show({
+                    text: '更换手机号完成',
+                    type: 'text',
+                    time: 1000
+                  })
                 })
               }
             })
@@ -151,16 +151,16 @@ export default {
                 this.HTTP_UserInfo().then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
                   this.$router.push({path: '/member/settings'})
-                })
-                this.$vux.toast.show({
-                  text: '绑定成功',
-                  type: 'text',
-                  time: 1000
+                  this.$vux.toast.show({
+                    text: '成功绑定手机号',
+                    type: 'text',
+                    time: 1000
+                  })
                 })
               } else {
                 this.verification_code = ''
                 this.$vux.toast.show({
-                  text: '验证码不正确',
+                  text: '绑定失败',
                   type: 'text',
                   time: 1000
                 })

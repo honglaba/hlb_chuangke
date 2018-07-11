@@ -2,12 +2,10 @@
   <div id="app">
     <x-loading v-model="isLoading.status" :text="isLoading.text"></x-loading>
     <router-view></router-view>
-    <!-- <button @click="">清缓存</button> -->
   </div>
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-/* eslint-disable */
 import VConsole from 'vconsole' // 调试
 
 export default {
@@ -15,6 +13,9 @@ export default {
     ...mapState(['isLoading'])
   },
   created () {
+    /* eslint-disable no-new */
+    new VConsole()
+
     this._statusKeep()
   },
   methods: {

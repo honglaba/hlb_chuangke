@@ -343,6 +343,17 @@ const weika = {
       })
     })
   },
+  Wk_Quota ({commit}) { // 微卡无邀请码注册名额
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/weika/quota`
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
   // -------------- 办微卡后的接口 ----------
   Wk_Index ({commit}, data) { // 会员首页数据
     return new Promise((resolve, reject) => {
