@@ -67,6 +67,8 @@ export default {
       flex: 2;
       text-align: center;
       overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .h-do {
       margin-right: 0.3rem;
