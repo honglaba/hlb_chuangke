@@ -18,7 +18,11 @@ export default {
     return {};
   },
   components: {},
-  methods: {}
+  methods: {
+    routeBack() {
+      this.$router.push({ path: "/member/settings" });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
