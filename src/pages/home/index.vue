@@ -1,7 +1,7 @@
 <template>
   <div>
     <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
-    <Headerx></Headerx>
+    <Headerx @result='result'></Headerx>
     <div id="allmap" class="allmap" style="display:none"></div>
     <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
       <div class="swiper-container banner-swiper index">
@@ -20,7 +20,7 @@
       <div class="swiper-container nav-swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <router-link to="/home/food" v-for="(item,index) in channel" :key="index">
+            <router-link :to="item.link_url" v-for="(item,index) in channel" :key="index">
               <!-- <div class="nav-ico type1"></div> -->
               <img :src="item.img_path" />
               <p>{{item.title}}</p>
@@ -296,7 +296,8 @@ export default {
       channel: [],
       goods: [],
       transitionName: 'slide-right',
-      businessList: []
+      businessList: [],
+      allLoaded: false
       // businessList: [
       //   {
       //     name: '良记甜品',
@@ -322,6 +323,13 @@ export default {
     },
     loadBottom () {
       this.axios.get(this.nextPageUrl).then(res => {
+        for (let i in res.data) {
+          if (res.data[i].distance >= 1000) {
+            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+          } else {
+            res.data[i].distance = res.data[i].distance + 'm'
+          }
+        }
         this.businessList = this.businessList.concat(res.data)// 添加数据
         this.$refs.loadmore.onBottomLoaded()// 加载过程
         if (res.next_page_url != null) {
@@ -333,6 +341,10 @@ export default {
       })
     },
     // loadmore end
+    result: function (result) {
+      // 从子Headerx组件回传的值
+      this.businessList = result
+    },
     getBanner: function () {
       // 顶部banner
       this.axios.get('/api/banner?key=index').then(res => {
@@ -348,6 +360,11 @@ export default {
     getChannel: function () {
       // 分类导航
       this.axios.get('/api/banner?key=channel').then(res => {
+        for (let i = 0, len = res.data.length; i < len; i++) { // 处理链接
+          if (res.data[i].link_url != '') {
+            res.data[i].link_url = res.data[i].link_url.split('http://t.hlbck.com/#/').join('')
+          }
+        }
         this.channel = res.data
       })
     },
@@ -373,9 +390,14 @@ export default {
         delete res.data.return_state
         this.businessList = []
         for (let i in res.data) {
-          this.businessList.push(res.data[i])
-          console.log(this.businessList[i].id)
+          // this.businessList.push(res.data[i])
+          if (res.data[i].distance >= 1000) {
+            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+          } else {
+            res.data[i].distance = res.data[i].distance + 'm'
+          }
         }
+        this.businessList = res.data
       })
     }
   },
@@ -387,26 +409,28 @@ export default {
     this.getCategoryShop()
   },
   mounted () {
-    // 百度地图API功能
-    var map = new BMap.Map('allmap') // 创建Map实例
-    // 获取自身定位并存入sessionStorage
-    var my_point = []
-    var geolocation = new BMap.Geolocation()
-    geolocation.getCurrentPosition(
-      function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          var mk = new BMap.Marker(r.point)
-          map.addOverlay(mk)
-          map.panTo(r.point)
-          // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-          sessionStorage.lng = r.point.lng
-          sessionStorage.lat = r.point.lat
-        } else {
-          alert('failed' + this.getStatus())
-        }
-      },
-      { enableHighAccuracy: true }
-    )
+    if (!sessionStorage.lng) { // 如果本地缓存中没有经纬度才获取经纬度
+      // 百度地图API功能
+      var map = new BMap.Map('allmap') // 创建Map实例
+      // 获取自身定位并存入sessionStorage
+      var my_point = []
+      var geolocation = new BMap.Geolocation()
+      geolocation.getCurrentPosition(
+        function (r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point)
+            map.addOverlay(mk)
+            map.panTo(r.point)
+            // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+            sessionStorage.lng = r.point.lng
+            sessionStorage.lat = r.point.lat
+          } else {
+            alert('failed' + this.getStatus())
+          }
+        },
+        { enableHighAccuracy: true }
+      )
+    }
   },
   updated () {
     /* eslint-disable no-new */

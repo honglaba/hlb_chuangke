@@ -151,6 +151,14 @@ body{
 .bmar10{
 	margin-bottom: .1rem
 }
+.bpad100{
+	padding-bottom: 1rem;
+}
+.bpad200{
+	padding-bottom: 2rem;
+}.mh44{
+	min-height: .44rem;
+}
 /* 宽高end */
 /* 颜色 */
 .bgf{

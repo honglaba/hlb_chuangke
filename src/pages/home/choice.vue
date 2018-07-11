@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app1">
     <x-header :left-options="{backText: ''}" title="精选商家"></x-header>
     <section class="banner">
       <div class="border-cross">
@@ -71,7 +71,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-#app{
+#app1{
   background: #17191e;
   padding-bottom: .1rem;
 }

@@ -3,8 +3,8 @@
   <div class="shop-index">
     <!-- pc触发loadmore辅助容器 -->
     <!-- <div class="main" style="top:0"> -->
-      <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
-        <headerx></headerx>
+      <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  class="bpad100">
+        <Headerx @result='result'></Headerx>
         <section class="banner">
           <p>今日推荐</p>
           <img src="./images/nearby-banner.png" />
@@ -28,7 +28,8 @@
           </div>
         </section>
         <section class="business-list">
-          <div v-if="tabFixed" :style="{height:tabH+'px'}"></div>
+          <!-- 用于占位的dom -->
+          <!-- <div v-if="tabFixed" :style="{height:tabH+'px'}"></div> -->
           <ul>
             <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
               <ListInner :businessList="item"></ListInner>
@@ -47,6 +48,7 @@ import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
 import { Loadmore } from 'mint-ui'
 import { Tab, TabItem } from 'vux'
+import { setTimeout } from 'timers'
 export default {
   watch: {
     '$route' (val, oldval) {
@@ -178,8 +180,13 @@ export default {
       })
     },
     // loadmore end
+    result: function (result) {
+      // 从子Headerx组件回传的值
+      this.businessList = result
+    },
     tabTap: function (index) {
       // 1级分类切换
+      let that = this
       let tabNavs = document.querySelectorAll('.tab-nav>li')
       for (let i = 0, len = tabNavs.length; i < len; i++) {
         this.tabNavs[i].active = false
@@ -187,8 +194,11 @@ export default {
       this.tabNavs[index].active = true
       this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
       this.getCategoryShop(this.tabNavs[index].id)
-      // this.tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
-      // console.log(this.tabH)
+
+      setTimeout(function () {
+        that.tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
+        console.log(that.tabH)
+      }, 500)
     },
     navTap: function (index) {
       // 2级分类切换
@@ -240,17 +250,23 @@ export default {
         delete res.data.return_state
         this.businessList = []
         for (let i in res.data) {
-          this.businessList.push(res.data[i])
+          // this.businessList.push(res.data[i])
+          if (res.data[i].distance >= 1000) {
+            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+          } else {
+            res.data[i].distance = res.data[i].distance + 'm'
+          }
         }
+        this.businessList = res.data
         console.log(this.nextPageUrl)
       })
     },
     getHeight: function () { // 获取吸顶高度
       let that = this
-      let tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
-      this.tabH = tabH
       let h = document.getElementsByClassName('banner')[0].offsetHeight + document.getElementsByTagName('header')[0].offsetHeight
       window.addEventListener('scroll', function () {
+        // let tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
+        // this.tabH = tabH
         if (window.scrollY >= h) {
           that.tabFixed = true
         } else {
