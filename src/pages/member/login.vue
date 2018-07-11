@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'登录'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'登录'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>

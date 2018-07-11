@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'微卡支付'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
         <div class="paybox pd20">

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'关于我们'">
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'关于我们'">
     </my-header>
     <div class="main2">
       <div class="content">

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'免邀请码注册微卡'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'免邀请码注册微卡'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="boack1">

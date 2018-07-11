@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'我的订单'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的订单'"></my-header>
     <div class="tab">
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
         <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>

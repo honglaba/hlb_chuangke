@@ -319,7 +319,6 @@ export default {
 }
 .lishi-list {
   margin-top: 0.2rem;
-
   .tongji {
     background: #ffffff;
     padding: 0.2rem;
@@ -340,3 +339,16 @@ export default {
   }
 }
 </style>
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About
+Press h to open a hovercard with more details.

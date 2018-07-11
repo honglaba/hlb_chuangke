@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'提现'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'提现'"></my-header>
     <div class="main">
       <div class="content">
         <div class="base_box pd20 mt20">
