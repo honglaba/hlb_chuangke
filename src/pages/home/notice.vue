@@ -105,24 +105,8 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-.vux-tab-wrap {
-  padding-top: 0.7rem !important;
-  .vux-tab-container {
-    height: 0.7rem;
-    .vux-tab {
-      height: 0.7rem;
-      .vux-tab-item {
-        font-size: 0.3rem;
-        line-height: 0.7rem;
-      }
-      .vux-tab-ink-bar {
-        height: 0.06rem !important;
-      }
-    }
-  }
-}
 
 // 没有数据显示的图片
 .no-message-img {

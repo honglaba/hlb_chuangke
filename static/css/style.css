@@ -264,6 +264,13 @@ body{
 /*左右居中*/
 .abs-leftcenter{position:absolute;left:50%;transform:translateX(-50%);-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);}
 
+.vux-tab-wrap{padding-top:.7rem!important}
+.vux-tab-wrap .vux-tab-container{height:.7rem}
+.vux-tab-wrap .vux-tab-container .vux-tab{height:.7rem}
+.vux-tab-wrap .vux-tab-container .vux-tab .vux-tab-item{font-size:.3rem;line-height:.7rem}
+.vux-tab-wrap .vux-tab-container .vux-tab .vux-tab-item .vux-tab-ink-bar{height:.06rem!important}
+/*add by chenghai end*/
+
 .vux-header {
 	background: #fff !important;
 	padding: 0 !important;
