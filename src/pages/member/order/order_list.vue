@@ -174,7 +174,7 @@ export default {
 <style lang="less" scoped>
 .tab{position: fixed; top: .88rem; width: 100%;}
 .main2 {
-  top: 1.76rem;
+  top: 1.58rem;
 }
 .empty {
   padding: 0.4rem;
