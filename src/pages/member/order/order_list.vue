@@ -173,9 +173,6 @@ export default {
 .main2 {
   top: 1.76rem;
 }
-.content{
-  height: 100%;
-}
 .empty {
   padding: 0.4rem;
   text-align: center;
