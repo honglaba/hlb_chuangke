@@ -177,6 +177,7 @@ export default {
   top: 1.58rem;
 }
 .empty {
+  margin-top: 2.2rem;
   padding: 0.4rem;
   text-align: center;
   .pic {
@@ -220,13 +221,13 @@ export default {
               font-size: 0.24rem;
               em {
                 font-style: normal;
-                &.yiwancheng {
+                &.huise {
                   color: #999;
                 }
-                &.daifukuan {
+                &.huangse {
                   color: #ff7f32;
                 }
-                &.daishiyong {
+                &.lvse {
                   color: #0aa42a;
                 }
               }
@@ -235,11 +236,11 @@ export default {
         }
         .glist {
           display: flex;
-          align-items: center;
           padding: 0.2rem 0;
           border-bottom: #f0f0f0 solid 1px;
           &:last-child {
             border-bottom: none;
+            padding-bottom: 0;
           }
           .left {
             margin-right: 0.2rem;
@@ -266,7 +267,6 @@ export default {
           justify-content: flex-end;
           color: #999;
           font-size: 0.24rem;
-          margin-bottom: 0.2rem;
           span {
             color: #333;
             font-size: 0.3rem;
@@ -321,7 +321,7 @@ export default {
             color: #333;
             display: block;
             padding: 0 0.3rem;
-            border-radius: 0.1rem;
+            border-radius: 0.06rem;
             line-height: 0.6rem;
             border: #e6e6e6 solid 1px;
             margin-right: 0.4rem;
@@ -337,7 +337,7 @@ export default {
             color: #fff;
             display: block;
             padding: 0 0.3rem;
-            border-radius: 0.1rem;
+            border-radius: 0.06rem;
             line-height: 0.6rem;
           }
         }
