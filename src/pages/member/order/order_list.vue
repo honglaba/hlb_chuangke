@@ -82,91 +82,94 @@
   </div>
 </template>
 <script>
-import { Tab, TabItem } from "vux";
-import { mapActions, mapMutations } from "vuex";
-import { wxpay } from "tools/util";
+import { Tab, TabItem } from 'vux'
+import { mapActions, mapMutations } from 'vuex'
+import { wxpay } from 'tools/util'
 export default {
-  data() {
+  data () {
     return {
       nowSeen: 0,
       realData: [],
       ReqEnd: false
-    };
+    }
   },
-  created() {
-    this.$vux.loading.show();
+  created () {
+    this.$vux.loading.show()
     this.getGoodList(this.$route.params.status).then(res => {
-      console.log(res);
-      this.ReqEnd = true;
-      this.$vux.loading.hide();
-      this.nowSeen = this.$route.params.status;
-      this.realData = res.data;
-    });
+      console.log(res)
+      this.ReqEnd = true
+      this.$vux.loading.hide()
+      this.nowSeen = this.$route.params.status
+      this.realData = res.data
+    })
   },
   methods: {
-    handler(val) {
-      if (this.nowSeen === val) return;
-      this.ReqEnd = false;
-      this.$vux.loading.show();
+    handler (val) {
+      if (this.nowSeen === val) return
+      this.ReqEnd = false
+      this.$vux.loading.show()
       this.getGoodList(val).then(res => {
-        this.ReqEnd = true;
-        this.$vux.loading.hide();
-        this.nowSeen = val;
-        this.realData = res.data;
-      });
+        this.ReqEnd = true
+        this.$vux.loading.hide()
+        this.nowSeen = val
+        this.realData = res.data
+      })
     },
-    routeBack() {
-      this.$router.push({ path: "/member" });
+    routeBack () {
+      this.$router.push({ path: '/member' })
     },
-    _toPay(id) {
+    _toPay (id) {
       wxpay(
         /* 回调 */ this._payLoopCallback,
-        /* 参数 */ { order_id: id, trade_type: "weixinjsbridge" }
-      ); // 调起微信支付
+        /* 参数 */ { order_id: id, trade_type: 'weixinjsbridge' }
+      ) // 调起微信支付
     },
-    _payLoopCallback(val) {
+    _payLoopCallback (val) {
       this.payMoney(val).then(response => {
         window.WeixinJSBridge.invoke(
-          "getBrandWCPayRequest",
+          'getBrandWCPayRequest',
           response.data,
           res => {
-            if (res.err_msg === "get_brand_wcpay_request:ok")
-              this.wxSuccessCall();
+            if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
             if (
-              res.err_msg === "get_brand_wcpay_request:fail" ||
-              res.err_msg === "get_brand_wcpay_request:cancel"
-            )
-              this.wxErrCall();
+              res.err_msg === 'get_brand_wcpay_request:fail' ||
+              res.err_msg === 'get_brand_wcpay_request:cancel'
+            ) { this.wxErrCall() }
           }
-        );
-      });
+        )
+      })
     },
-    wxSuccessCall() {
-      this.$vux.loading.show();
-      this.ReqEnd = false;
+    wxSuccessCall () {
+      this.$vux.loading.show()
+      this.ReqEnd = false
       this.getUsrInfo() // 更新用户信息后再跳转
         .then(res1 => {
-          this.updataUsr(res1.data);
-          this.getGoodList(this.nowSeen).then(res => {
-            this.ReqEnd = true;
-            this.$vux.loading.hide();
-            this.realData = res.data;
-          });
-        });
+          this.updataUsr(res1.data)
+          this.getGoodList(this.nowSeen)
+            .then(res => {
+              this.ReqEnd = true
+              this.realData = res.data
+              this.$vux.loading.hide()
+              this.$vux.toast.show({
+                type: 'text',
+                text: '订单支付完成'
+              })
+            })
+        })
     },
-    wxErrCall() {},
+    wxErrCall () {},
     ...mapActions({
-      getGoodList: "User_buyList",
-      payMoney: "Wk_Pay",
-      getUsrInfo: "HTTP_UserInfo"
+      getGoodList: 'User_buyList',
+      payMoney: 'Wk_Pay',
+      getUsrInfo: 'HTTP_UserInfo'
     }),
-    ...mapMutations({ updataUsr: "SET_USER_INFO" })
+    ...mapMutations({ updataUsr: 'SET_USER_INFO' })
   },
   components: {
     Tab,
     TabItem
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .tab{position: fixed; top: .88rem; width: 100%;}

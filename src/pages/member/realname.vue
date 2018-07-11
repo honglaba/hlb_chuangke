@@ -17,7 +17,6 @@
 <script>
 import { XInput, Group, Divider } from 'vux'
 import { mapActions } from 'vuex'
-import { Toast } from 'mint-ui'
 export default {
   data () {
     return {
@@ -57,7 +56,8 @@ export default {
     _submit () {
       let _this = this
       if (!this.$refs.name.valid || !this.$refs.identCard.valid) {
-        Toast('请填写正确的信息')
+        this.$vux.toast.hide()
+        this.$vux.toast.text('请填写正确的信息')
         return
       }
 
@@ -67,21 +67,18 @@ export default {
       })
         .then(res => {
           if (res.result_state === 'success') {
-            this.HTTP_UserInfo().then(res1 => {
-              this.$store.commit('SET_USER_INFO', res1.data)
-              this.$vux.confirm.show({
-                showCancelButton: false,
-                title: '提示',
-                content: '实名认证成功',
-                onHide () {
-                  if (this.$route.query.type) {
-                    _this.$router.push({name: 'step1'})
-                  } else {
-                    _this.$router.push({path: '/member/settings'})
+            this.HTTP_UserInfo()
+              .then(res1 => {
+                this.$store.commit('SET_USER_INFO', res1.data)
+                this.$vux.confirm.show({
+                  showCancelButton: false,
+                  title: '提示',
+                  content: '实名认证成功',
+                  onHide () {
+                    _this.$route.query.status ? _this.$router.push({name: 'step1'}) : _this.$router.push({path: '/member/settings'})
                   }
-                }
+                })
               })
-            })
           } else {
             this.$vux.confirm.show({
               showCancelButton: false,
@@ -92,8 +89,8 @@ export default {
         })
     },
     routeBack () {
-      if (this.$route.query.type) {
-        this.$router.push({name: 'step1'})
+      if (this.$route.query.status) {
+        this.$router.push({path: '/weika'})
       } else {
         this.$router.push({path: '/member/settings'})
       }

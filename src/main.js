@@ -9,12 +9,12 @@ import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin, Loading} from 'vux'
+import {XHeader, ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading} from 'vux'
 // import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
 
 // Vue.use(VueScroller)
-// fastClick.attach(document.body)
+fastClick.attach(document.body)
 
 // 自定义请求头
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
@@ -31,6 +31,7 @@ Vue.component('x-loading', Loading)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
+Vue.use(AlertPlugin)
 
 Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'

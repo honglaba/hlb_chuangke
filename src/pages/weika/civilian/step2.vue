@@ -34,9 +34,6 @@ export default {
   computed: {
     ...mapGetters(['WkLoop'])
   },
-  created () {
-    if (this.WkLoop !== 3) this.$router.push({path: '/weika'})
-  },
   methods: {
     _invCodePass () {
       if (this.$refs.yqm.valid && this.invCode.length === 6) {

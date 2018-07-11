@@ -105,9 +105,10 @@ export default {
     }
   },
   created () {
-    this.Wk_GoodList().then(res => {
-      this.goodList = res.data
-    })
+    this.Wk_GoodList()
+      .then(res => {
+        this.goodList = res.data
+      })
   },
   computed: {
     ...mapGetters(['WkInvGetter'])
@@ -127,7 +128,10 @@ export default {
 
       this.Wk_Order(inbObj)
         .then(res => {
-          this.$router.push({path: '/weika/pay', query: {order_id: res.data.order_id, trade_type: 'weixinjsbridge'}})
+          this.$router.push({
+            path: '/weika/pay',
+            query: { order_id: res.data.order_id, trade_type: 'weixinjsbridge', bf: JSON.stringify(bf) }
+          })
         })
     },
     routeBack () {

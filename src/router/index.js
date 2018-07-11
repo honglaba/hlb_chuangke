@@ -53,7 +53,7 @@ router.beforeEach((To, From, next) => {
           Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SET_USER_INFO', res.data)
-          next({path: hisUrl})
+          res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
         })
       return
     }
@@ -86,5 +86,7 @@ router.beforeEach((To, From, next) => {
 
   next() // 无阻碍直接跳转
 })
+
+router.afterEach(to => {})
 
 export default router

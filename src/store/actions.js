@@ -54,6 +54,17 @@ const actions = /* 公用 */{
         }
       })
     })
+  },
+  HTTP_Children () { // 用户推荐人列表
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/children?page=1'
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
   }
 }
 

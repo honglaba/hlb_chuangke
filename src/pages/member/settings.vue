@@ -11,7 +11,7 @@
                 <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
-            <router-link to="/member/realname">
+            <router-link :to="{path: '/member/realname', query: {status: false}}">
               <div class="tit">
                 <div class="l">实名认证</div>
                 <div class="r">

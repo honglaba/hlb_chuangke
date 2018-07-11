@@ -14,17 +14,16 @@
 
 <script>
 export default {
+  name: 'x-header',
   props: {
-    Title: {
-      type: String
-    }
+    Title: String
   },
   methods: {
-    routeBack() {
-      this.$emit("left-action");
+    routeBack () {
+      this.$emit('left-action')
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

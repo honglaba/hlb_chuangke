@@ -32,8 +32,8 @@
           <p><img src="../images/vip_logo.png" style="width:1.93rem;"></p>
           <p class="mb60 mt20">创客微卡暂时只能通过<br> 其他创客用户邀请，或向创客平台申请
           </p>
-          <p class="c999">创客平台申请剩余人数
-            <span class="c333">560</span>人（共1000人）</p>
+          <p class="c999" v-if="Object.keys(people).length > 0">创客平台申请剩余人数
+            <span class="c333">{{ people.quota }}</span>人（共{{ people.total }}人）</p>
           <p>
             <button class="btn-aoc" @click="_invCodePass">去申请</button>
           </p>
@@ -43,19 +43,35 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+import { setTimeout } from 'timers'
 export default {
+  data () {
+    return {
+      people: []
+    }
+  },
   created () {
+    this.setLoding({status: true})
     this.invId(null) // 进入删除邀请码
+    this.Wk_Quota().then(res => {
+      this.setLoding({status: false})
+      this.people = res.data
+    })
   },
   methods: {
     _invCodePass () {
-      this.$router.push({path: '/weika/choose_products'})
+      this.setLoding({status: true})
+      setTimeout(() => {
+        this.setLoding({status: false})
+        this.$router.push({path: '/weika/choose_products'})
+      }, 100)
     },
     routeBack () {
       this.$router.push({path: '/weika/step1'})
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID'})
+    ...mapMutations({invId: 'SET_WEIKA_INVID', setLoding: 'UPDATE_LOADING'}),
+    ...mapActions(['Wk_Quota'])
   }
 }
 </script>
