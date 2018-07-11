@@ -108,7 +108,7 @@ export default {
         this.Wk_Query()
           .then(res => {
             if (res.result_state === 'error') {
-              MessageBox.alert('您已经是微卡会员了~')
+              MessageBox.alert(res.message)
             } else if (res.result_state === 'success') {
               if (res.data.exists === 1) { /* 已存在订单 */
                 MessageBox.alert('您有未完成的微卡订单~')

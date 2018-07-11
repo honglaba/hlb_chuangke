@@ -191,7 +191,6 @@ export default {
 }
 .tab-list {
   font-size: 0.24rem;
-  margin-top: 0.2rem;
   .dhlist {
     font-size: 0.24rem;
     margin-top: 0.2rem;
