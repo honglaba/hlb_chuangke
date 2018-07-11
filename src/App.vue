@@ -7,19 +7,15 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+/* eslint-disable */
 import VConsole from 'vconsole' // 调试
+
 export default {
   computed: {
     ...mapState(['isLoading'])
   },
   created () {
-    /* eslint-disable no-new */
-    new VConsole()
-    // 在微信浏览器手机端, 因为不会真正的跳到授权页面, 生命钩子不会进行两次
     this._statusKeep()
-  },
-  mouted () {
-
   },
   methods: {
     _statusKeep () {
