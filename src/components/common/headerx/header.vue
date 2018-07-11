@@ -73,9 +73,12 @@ export default {
     .h-do {
       margin-right: 0.3rem;
       width: 1.2rem;
-      text-align: right;
       font-size: 0.3rem;
       color: #999999;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
     }
   }
 }

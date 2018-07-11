@@ -1,9 +1,8 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
+      <my-header @left-action="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
-    </x-header>
-    <!-- headnoconfig -->
+    </my-header>
 
     <div class="main2">
       <div class="content" v-if="winLock">
@@ -62,14 +61,14 @@ export default {
           let realVal = val.replace(' ', '')
           return {
             valid: !pattern.test(realVal),
-            msg: '姓名格式不正确!'
+            msg: '姓名格式不正确'
           }
         },
         address (val) /* 收货地址 */ {
           let realVal = val.replace(' ', '')
           return {
             valid: realVal !== '',
-            msg: '地址不能为空!'
+            msg: '地址不能为空'
           }
         }
       }
@@ -102,9 +101,9 @@ export default {
         this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
           this.HTTP_receiverAddress().then(res => {
             if (this.userInput.is_default === 1 && res) {
-              Toast('请设置一个默认地址!')
+              Toast('请设置一个默认地址')
             } else if (!res) {
-              Toast('您还没有添加收货地址!')
+              Toast('您还没有添加收货地址')
             }
             this.$router.push({path: '/member/address'})
           })
@@ -120,14 +119,14 @@ export default {
       if (this.isEditor) {
         this.HTTP_receiverAddressEditor(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
-            Toast('修改成功!')
+            Toast('修改成功')
             this.$router.push({path: '/member/address'})
           })
         })
       } else {
         this.HTTP_receiverAddressAdd(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {
-            Toast('添加成功!')
+            Toast('添加成功')
             this.$router.push({path: '/member/address'})
           })
         })
