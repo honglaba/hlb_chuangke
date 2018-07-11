@@ -1,12 +1,9 @@
 <template>
   <div class="app">
-    <x-header title="收货地址管理" :left-options="{backText: '', preventGoBack: true}"  @on-click-back="routeBack">
+    <my-header @left-action="routeBack" :Title="'收货地址管理'">
       <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
-    </x-header>
-    <!-- headnoconfig -->
-
+    </my-header>
     <div class="main2">
-
       <div class="content" v-if="contentFlag">
         <div class="yjbd" v-if="!equal">
           <p><img src="./images/noaddress.png"></p>
@@ -45,70 +42,77 @@
   </div>
 </template>
 <script>
-import { Divider } from 'vux'
-import { mapActions, mapState } from 'vuex'
+import { Divider } from "vux";
+import { mapActions, mapState } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       equal: false,
       contentFlag: false
-    }
+    };
   },
   watch: {
-    '$route' (to, from) {
-      Object.assign(this.$data, this.$options.data())
-      this.contentFlag = true
+    $route(to, from) {
+      Object.assign(this.$data, this.$options.data());
+      this.contentFlag = true;
       if (this.receiverAddress.length > 0) {
-        this.equal = true
+        this.equal = true;
       }
     }
   },
   computed: {
-    ...mapState(['receiverAddress'])
+    ...mapState(["receiverAddress"])
   },
-  created () {
+  created() {
     if (this.receiverAddress.length > 0) {
-      this.equal = !this.equal
-      this.contentFlag = true
+      this.equal = !this.equal;
+      this.contentFlag = true;
     } else {
       this.HTTP_receiverAddress().then(res => {
-        if (res) this.equal = !this.equal
-        this.contentFlag = true
-      })
+        if (res) this.equal = !this.equal;
+        this.contentFlag = true;
+      });
     }
   },
   methods: {
-    ...mapActions(['HTTP_receiverAddress', 'HTTP_receiverAddressEditor', 'HTTP_receiverAddress']),
-    _toggleIsDefault (item) {
+    ...mapActions([
+      "HTTP_receiverAddress",
+      "HTTP_receiverAddressEditor",
+      "HTTP_receiverAddress"
+    ]),
+    _toggleIsDefault(item) {
       if (item.is_default === 0) {
         this.receiverAddress.forEach(cb => {
           if (cb.is_default === 1) {
-            cb.is_default = 0
+            cb.is_default = 0;
           } else if (cb.id === item.id) {
-            cb.is_default = 1
+            cb.is_default = 1;
             this.HTTP_receiverAddressEditor(cb).then(res => {
-              this.HTTP_receiverAddress()
-            })
+              this.HTTP_receiverAddress();
+            });
           }
-        })
+        });
       }
     },
-    _toEditor (item) {
-      localStorage.setItem('beingEditorAddress', JSON.stringify(item))
-      this.$router.push({path: '/member/address_add', query: {t: +new Date()}})
+    _toEditor(item) {
+      localStorage.setItem("beingEditorAddress", JSON.stringify(item));
+      this.$router.push({
+        path: "/member/address_add",
+        query: { t: +new Date() }
+      });
     },
-    routeBack () {
-      this.$router.push({path: '/member/settings'})
+    routeBack() {
+      this.$router.push({ path: "/member/settings" });
     }
   },
   components: {
     Divider
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .yjbd {
-  background: #ffffff;
+  margin-top: 3.7rem;
   padding: 0.4rem 0.7rem;
   text-align: center;
   .tips {
@@ -155,7 +159,7 @@ export default {
           .a2 {
             color: #999;
             margin-top: 0.16rem;
-            font-size: 0.2rem;
+            font-size: 0.24rem;
           }
         }
         .right {
@@ -181,7 +185,7 @@ export default {
       }
       .setting {
         padding-top: 0.2rem;
-        font-size: 0.2rem;
+        font-size: 0.24rem;
         span {
           display: flex;
           align-items: center;
@@ -198,7 +202,7 @@ export default {
               background: url("../../assets/images/radio_on.png") no-repeat;
               background-size: cover;
             }
-            .un-default{
+            .un-default {
               background: url("../../assets/images/radio_unon.png") no-repeat;
               background-size: cover;
             }

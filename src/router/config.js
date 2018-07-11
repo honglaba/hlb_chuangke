@@ -238,6 +238,9 @@ export default new VueRouter({
       path: 'vip',
       name: 'vip',
       component: WkVip,
+      beforeEnter: (to, from, next) => {
+        JSON.parse(localStorage.getItem('userInfo')).is_weika === 1 ? next() : next({path: '/weika'})
+      },
       meta: {
         title: '微卡vip首页'
       }

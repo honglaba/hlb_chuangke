@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'设置'"></my-header>
+    <my-header @left-action="routeBack" :Title="'设置'">
+    </my-header>
     <div class="main2">
       <div class="content">
         <div class="settingbox base_box">
@@ -11,7 +12,7 @@
                 <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
-            <router-link to="/member/realname">
+            <router-link :to="{path: '/member/realname', query: {status: false}}">
               <div class="tit">
                 <div class="l">实名认证</div>
                 <div class="r">
@@ -86,7 +87,7 @@ export default {
 <style lang="less" scoped>
 .disable-font {
   color: #f5222d;
-  font-size: .30rem;
+  font-size: .24rem;
 }
 .settingbox {
   background: transparent;

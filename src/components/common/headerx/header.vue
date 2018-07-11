@@ -1,62 +1,84 @@
 <template>
-  <div class="head-content">
-
-    <div class="pro-top">
-      <div class="pro-top-back" @click="routeBack"><img src="~static/images/top-return-icon.png"></div>
-      <div class="pro-top-mid">
+  <div class="hlbheader">
+    <div class="h-wrapper">
+      <div class="h-back" @click="routeBack"><img src="~static/images/top-return-icon.png"></div>
+      <div class="h-title">
         <span>{{ Title || '标题' }}</span>
       </div>
+      <div class="h-do">
+        <slot name="right"></slot>
+      </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
+  name: "x-header",
   props: {
-    Title: {
-      type: String
-    }
+    Title: String
   },
   methods: {
-    routeBack () {
-      this.$emit('left-action')
+    routeBack() {
+      this.$emit("left-action");
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-.head-content {
-  .pro-top {
+.hlbheader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  background: #fff;
+  &::after {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content: "";
     width: 100%;
-    height: 0.88rem;
-    position: fixed;
-    top: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #e6e6e6;
-    box-sizing: border-box;
-    overflow: hidden;
+    height: 1px;
+    background: #e6e6e6;
+    background-size: contain;
+  }
+  .h-wrapper {
+    position: relative;
+    text-align: center;
     font-size: 0.4rem;
-    .pro-top-back {
-      width: 0.88rem;
-      height: 0.88rem;
-      float: left;
-      box-sizing: border-box;
+    .h-back {
+      position: absolute;
+      text-align: left;
+      top: 0;
+      padding: 0 0.3rem;
       img {
-        float: left;
         width: 0.2rem;
         height: 0.34rem;
-        margin-top: 50%;
-        transform: translateY(-50%);
-        margin-left: 0.28rem;
       }
     }
-    .pro-top-mid {
+    .h-title {
+      width: 80%;
+      margin: 0 auto;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .h-do {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      right: 0.3rem;
+      top: 0;
+      font-size: 0.3rem;
+      color: #666;
+      a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }

@@ -10,15 +10,15 @@
             <popup-radio title="支付方式" :options="paytypeList" v-model="paytype">
               <template slot-scope="props" slot="each-item">
                 <p>
-                  <img src="~assets/images/weixin.png" class="vux-radio-icon"> {{ props.label }}----{{ props.index + 1 }}
+                  <img src="~assets/images/weixin.png" class="vux-radio-icon">
                 </p>
               </template>
             </popup-radio>
             <cell title="支付金额">
-              <span style="color: #f5232e">￥298.00</span>
+              <span style="color: #f5232e">￥{{ mitem.price }}</span>
             </cell>
             <cell title="奖励积分">
-              <span style="color: #ff7e32">298.00积分</span>
+              <span style="color: #ff7e32">{{ mitem.price }}积分</span>
             </cell>
           </group>
           <div class="tijiao">
@@ -110,8 +110,17 @@ export default {
   data () {
     return {
       paytype: '微信',
-      paytypeList: ['微信', '支付宝']
+      paytypeList: ['微信', '支付宝'],
+      mitem: {}
     }
+  },
+  created () {
+    if (Object.keys(this.$route.query).length === 0) {
+      this.$router.go(-1)
+      return
+    }
+    this.mitem = JSON.parse(this.$route.query.bf)
+    delete this.$route.query.bf
   },
   methods: {
     _pay () {

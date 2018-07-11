@@ -1,8 +1,7 @@
 <template>
   <div class="app">
-    <div class="nav">
-      <my-header @left-action="routeBack" :Title="'我的订单'"></my-header>
-
+    <my-header @left-action="routeBack" :Title="'我的订单'"></my-header>
+    <div class="tab">
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
         <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>
         <tab-item @on-item-click="handler(1)" data-id=1 :selected="nowSeen == 1">待付款</tab-item>
@@ -12,11 +11,9 @@
         <!-- <tab-item @on-item-click="handler(5)" data-id=5 :selected="nowSeen === 5">退换/售后</tab-item> -->
       </tab>
     </div>
-
-    <div class="scroll">
-
+    <div class="main2">
       <div class="content">
-        <div class="tab-list tab-list1" v-if="ReqEnd">
+        <div class="tab-list" v-if="ReqEnd">
           <div class="empty" v-if="realData.length === 0">
             <p class="pic"><img src="./../images/noorder.png"></p>
             <p class="tips">还没有相关订单,先去逛逛想买的商品~</p>
@@ -81,7 +78,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -112,34 +108,36 @@ export default {
       if (this.nowSeen === val) return
       this.ReqEnd = false
       this.$vux.loading.show()
-      this.getGoodList(val)
-        .then(res => {
-          this.ReqEnd = true
-          this.$vux.loading.hide()
-          this.nowSeen = val
-          this.realData = res.data
-        })
+      this.getGoodList(val).then(res => {
+        this.ReqEnd = true
+        this.$vux.loading.hide()
+        this.nowSeen = val
+        this.realData = res.data
+      })
     },
     routeBack () {
       this.$router.push({ path: '/member' })
     },
     _toPay (id) {
-      wxpay(/* 回调 */this._payLoopCallback, /* 参数 */{order_id: id, trade_type: 'weixinjsbridge'}) // 调起微信支付
+      wxpay(
+        /* 回调 */ this._payLoopCallback,
+        /* 参数 */ { order_id: id, trade_type: 'weixinjsbridge' }
+      ) // 调起微信支付
     },
     _payLoopCallback (val) {
-      this.payMoney(val)
-        .then(response => {
-          window.WeixinJSBridge.invoke(
-            'getBrandWCPayRequest',
-            response.data,
-            res => {
-              if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
-              if (
-                res.err_msg === 'get_brand_wcpay_request:fail' ||
+      this.payMoney(val).then(response => {
+        window.WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',
+          response.data,
+          res => {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
+            if (
+              res.err_msg === 'get_brand_wcpay_request:fail' ||
               res.err_msg === 'get_brand_wcpay_request:cancel'
-              ) this.wxErrCall()
-            })
-        })
+            ) { this.wxErrCall() }
+          }
+        )
+      })
     },
     wxSuccessCall () {
       this.$vux.loading.show()
@@ -150,14 +148,22 @@ export default {
           this.getGoodList(this.nowSeen)
             .then(res => {
               this.ReqEnd = true
-              this.$vux.loading.hide()
               this.realData = res.data
+              this.$vux.loading.hide()
+              this.$vux.toast.show({
+                type: 'text',
+                text: '订单支付完成'
+              })
             })
         })
     },
     wxErrCall () {},
-    ...mapActions({getGoodList: 'User_buyList', payMoney: 'Wk_Pay', getUsrInfo: 'HTTP_UserInfo'}),
-    ...mapMutations({updataUsr: 'SET_USER_INFO'})
+    ...mapActions({
+      getGoodList: 'User_buyList',
+      payMoney: 'Wk_Pay',
+      getUsrInfo: 'HTTP_UserInfo'
+    }),
+    ...mapMutations({ updataUsr: 'SET_USER_INFO' })
   },
   components: {
     Tab,
@@ -166,22 +172,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.nav {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  overflow: hidden;
-  z-index: 6;
-}
-.scroll {
-  width: 100%;
-  position: absolute;
-  top: 1.8rem;
-}
+.tab{position: fixed; top: .88rem; width: 100%;}
 .main2 {
-  position: relative;
+  top: 1.58rem;
 }
 .empty {
+  margin-top: 2.2rem;
   padding: 0.4rem;
   text-align: center;
   .pic {
@@ -196,7 +192,6 @@ export default {
 }
 .tab-list {
   font-size: 0.24rem;
-  margin-top: 0.2rem;
   .dhlist {
     font-size: 0.24rem;
     margin-top: 0.2rem;
@@ -226,13 +221,13 @@ export default {
               font-size: 0.24rem;
               em {
                 font-style: normal;
-                &.yiwancheng {
+                &.huise {
                   color: #999;
                 }
-                &.daifukuan {
+                &.huangse {
                   color: #ff7f32;
                 }
-                &.daishiyong {
+                &.lvse {
                   color: #0aa42a;
                 }
               }
@@ -241,11 +236,11 @@ export default {
         }
         .glist {
           display: flex;
-          align-items: center;
           padding: 0.2rem 0;
           border-bottom: #f0f0f0 solid 1px;
           &:last-child {
             border-bottom: none;
+            padding-bottom: 0;
           }
           .left {
             margin-right: 0.2rem;
@@ -272,7 +267,6 @@ export default {
           justify-content: flex-end;
           color: #999;
           font-size: 0.24rem;
-          margin-bottom: 0.2rem;
           span {
             color: #333;
             font-size: 0.3rem;
@@ -327,7 +321,7 @@ export default {
             color: #333;
             display: block;
             padding: 0 0.3rem;
-            border-radius: 0.1rem;
+            border-radius: 0.06rem;
             line-height: 0.6rem;
             border: #e6e6e6 solid 1px;
             margin-right: 0.4rem;
@@ -343,7 +337,7 @@ export default {
             color: #fff;
             display: block;
             padding: 0 0.3rem;
-            border-radius: 0.1rem;
+            border-radius: 0.06rem;
             line-height: 0.6rem;
           }
         }

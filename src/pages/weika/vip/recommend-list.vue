@@ -3,36 +3,24 @@
     <my-header @left-action="routeBack" :Title="'我的推荐人'"></my-header>
     <div class="main2">
       <div class="content">
-        <div class="txlist pd20">
+        <div class="txlist pd20" v-if="ChildList.length > 0">
           <ul>
-            <li>
+
+            <li v-for="(item, index) in ChildList" :key="index">
               <div class="left">
                 <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
+                  <span><img :src="item.headimgurl"></span>
                 </div>
                 <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
+                  <span>{{ item.nickname }}</span>
+                  <span>{{ item.created_at }}</span>
                 </div>
               </div>
               <div class="right">
-                <span>创客微卡VIP1用户</span>
+                <span>{{ item.level_name }}</span>
               </div>
             </li>
-            <li>
-              <div class="left">
-                <div class="a1">
-                  <span><img src="~assets/images/mrtx.png"></span>
-                </div>
-                <div class="a2">
-                  <span>化妆的小蜜</span>
-                  <span>2018-05-26 16:45:56</span>
-                </div>
-              </div>
-              <div class="right">
-                <span>创客微卡VIP1用户</span>
-              </div>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -45,19 +33,20 @@ export default {
   name: 'recommentdList',
   data () {
     return {
-
+      ChildList: []
     }
   },
   created () {
-    this.Vip_Commission().then(res => {
-      console.log(res)
-    })
+    this.HTTP_Children()
+      .then(res => {
+        this.ChildList = res.data
+      })
   },
   methods: {
     routeBack () {
       this.$router.push({path: '/weika/vip'})
     },
-    ...mapActions(['Vip_Commission'])
+    ...mapActions(['HTTP_Children'])
   }
 }
 </script>
