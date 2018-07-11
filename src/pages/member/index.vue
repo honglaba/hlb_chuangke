@@ -49,16 +49,24 @@
           <ul class="myorder">
             <li>
               <router-link :to="{ path:'/member/order/order_list/1' }">
-                <span><img src="./images/daifukuan.png"></span>
+                <span class="myorder-icon">
+                  <img src="./images/daifukuan.png">
+                  <span class="num" v-if="DataTree.unpay_order_amount > 0">
+                    {{ DataTree.unpay_order_amount}}
+                  </span>
+                </span>
                 <span>待付款</span>
-                <span class="num" v-if="false">8</span>
               </router-link>
             </li>
             <li>
               <router-link :to="{path:'/member/order/order_list/3'}">
-                <span><img src="./images/daishouhuo.png"></span>
+                <span class="myorder-icon">
+                  <img src="./images/daishouhuo.png">
+                  <span class="num" v-if="DataTree.unrecevie_order_amount > 0">
+                    {{ DataTree.unrecevie_order_amount }}
+                  </span>
+                </span>
                 <span>待收货</span>
-                <span class="num">8</span>
               </router-link>
             </li>
             <!-- <li>
@@ -69,9 +77,13 @@
             </li> -->
             <li>
               <router-link :to="{path:'/member/order/order_list/4'}">
-                <span><img src="./images/daipinglun.png"></span>
+                <span class="myorder-icon">
+                  <img src="./images/daipinglun.png">
+                  <span class="num" v-if="DataTree.uncomment_order_amount > 0">
+                    {{ DataTree.uncomment_order_amount }}
+                  </span>
+                </span>
                 <span>待评论</span>
-                <span class="num">12</span>
               </router-link>
             </li>
             <li>
@@ -81,6 +93,7 @@
               </router-link>
             </li>
           </ul>
+
           <router-link :to="{path:'/member/points'}">
             <div class="tit">
               <div class="l">我的积分</div>
@@ -105,6 +118,7 @@
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
+
         </div>
       </div>
     </div>
@@ -221,6 +235,7 @@ export default {
 .base_box .tit {
   border-bottom: #e6e6e6 dashed 1px;
 }
+
 .myorder {
   position: relative;
   display: flex;
@@ -237,18 +252,25 @@ export default {
     span {
       display: block;
     }
-    .num {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0.3rem;
-      height: 0.3rem;
-      line-height: 0.3rem;
-      background: #ff7f32;
-      color: #ffffff;
-      border-radius: 1rem;
-      font-size: 0.2rem;
-      text-align: center;
+    .myorder-icon {
+      width: 0.68rem;
+      height: 0.68rem;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      position: relative;
+      .num {
+        position: absolute;
+        top: -0.1rem;
+        right: -0.1rem;
+        width: 0.3rem;
+        height: 0.3rem;
+        line-height: 0.3rem;
+        background: #ff7f32;
+        color: #ffffff;
+        border-radius: 1rem;
+        font-size: 0.2rem;
+        text-align: center;
+      }
     }
   }
 }

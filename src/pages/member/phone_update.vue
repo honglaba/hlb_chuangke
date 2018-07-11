@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="DataTree.mobile_phone ? '更改手机号' : '绑定手机号'"></x-header>
+    <my-header @left-action="routeBack" :Title="DataTree.mobile_phone ? '更改手机号' : '绑定手机号'"></my-header>
     <div class="main2">
 
       <div class="content-a" v-if="switchWindow">

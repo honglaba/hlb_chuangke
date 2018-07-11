@@ -3,6 +3,7 @@ import router from './config'
 import Cookies from 'js-cookie'
 import apiList from '@/store/actions'
 import store from '@/store'
+import { _init } from 'tools/util'
 
 router.beforeEach((To, From, next) => {
   let historyTargetPath = localStorage.getItem('historyTargetPath') // 每一次跳转都获取该参数
@@ -15,13 +16,6 @@ router.beforeEach((To, From, next) => {
     apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
       window.location.href = res.redirect
     })
-  }
-
-  function _init () {
-    /* 初始化 */
-    Cookies.remove('refreshToken')
-    Cookies.remove('accessToken')
-    localStorage.clear()
   }
 
   if (!To.name) { // 路由不存在时跳转from页
@@ -56,6 +50,7 @@ router.beforeEach((To, From, next) => {
 
       apiList.HTTP_UserInfo()
         .then(res => {
+          Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SET_USER_INFO', res.data)
           next({path: hisUrl})

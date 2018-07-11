@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <x-header :left-options="{backText: ''}" title="我的推荐"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'我的推荐人'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="txlist pd20">
@@ -54,6 +54,9 @@ export default {
     })
   },
   methods: {
+    routeBack () {
+      this.$router.push({path: '/weika/vip'})
+    },
     ...mapActions(['Vip_Commission'])
   }
 }

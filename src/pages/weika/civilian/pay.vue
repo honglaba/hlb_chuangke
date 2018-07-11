@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
         <div class="paybox pd20">
@@ -94,7 +95,7 @@
 </template>
 <script>
 import { wxpay } from 'tools/util'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import {
   XInput,
   Selector,
@@ -112,12 +113,6 @@ export default {
       paytypeList: ['微信', '支付宝']
     }
   },
-  created () {
-    if (this.WkLoop !== 5) this.$router.push({path: '/weika'})
-  },
-  computed: {
-    ...mapGetters(['WkLoop'])
-  },
   methods: {
     _pay () {
       wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
@@ -130,14 +125,27 @@ export default {
           'getBrandWCPayRequest',
           result,
           res => {
-            this.updateStep(1)
-            alert('调取微信支付成功')
-            this.$router.push({path: '/weika'})
+            if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
+            if (
+              res.err_msg === 'get_brand_wcpay_request:fail' ||
+              res.err_msg === 'get_brand_wcpay_request:cancel'
+            ) this.wxErrCall()
           })
       })
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP'}),
-    ...mapActions(['Wk_Pay'])
+    wxSuccessCall () {
+      this.HTTP_UserInfo() // 更新用户信息后再跳转
+        .then(res1 => {
+          this.updataUsr(res1.data)
+          this.$router.push({path: '/weika'})
+        })
+    },
+    wxErrCall () {},
+    routeBack () {
+      this.$router.go(-1)
+    },
+    ...mapMutations({invId: 'SET_WEIKA_INVID', updataUsr: 'SET_USER_INFO'}),
+    ...mapActions(['Wk_Pay', 'HTTP_UserInfo'])
   },
   components: {
     XInput,

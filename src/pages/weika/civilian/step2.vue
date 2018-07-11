@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'填写个人信息'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../images/b1.png"><br>填写推荐人信息</div>
@@ -17,14 +18,14 @@
 <script>
 import { XInput, Group } from 'vux'
 import { Toast } from 'mint-ui'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
       invCode: '',
       validator_verification: val => {
         return {
-          valid: val.length >= 6 ? new RegExp(/^[A-Z0-9]{6}$/).test(val) : new RegExp(/^[A-Z0-9]{0,6}$/).test(val),
+          valid: val.length >= 6 ? new RegExp(/^[A-Za-z0-9]{6}$/).test(val) : new RegExp(/^[A-Za-z0-9]{0,6}$/).test(val),
           msg: '格式不正确!'
         }
       }
@@ -48,7 +49,6 @@ export default {
             duration: 1500
           })
           setTimeout(e => {
-            this.updateStep(4)
             this.$router.push({path: '/weika/choose_products'})
           }, 1500)
         })
@@ -60,8 +60,10 @@ export default {
         })
       }
     },
-    ...mapActions(['Wk_CheckInv']),
-    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
+    routeBack () {
+      this.$router.push({path: '/weika/step1'})
+    },
+    ...mapActions(['Wk_CheckInv'])
   },
   components: {
     XInput,

@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'注册创客-第一步'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="xuanze">
@@ -19,7 +20,6 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -29,18 +29,13 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['WkLoop'])
-  },
-  created () {
-    if (this.WkLoop !== 2) this.$router.push({path: '/weika'})
-  },
   methods: {
     _hstep (boolean) {
-      this.updateStep(3)
       boolean ? this.$router.push({path: '/weika/step2'}) : this.$router.push({path: '/weika/no_inv'})
     },
-    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
+    routeBack () {
+      this.$router.push({path: '/weika'})
+    }
   }
 }
 </script>

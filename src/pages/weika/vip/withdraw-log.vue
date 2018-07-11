@@ -1,39 +1,21 @@
 <template>
   <div class="app">
-   <!-- <x-header :left-options="{backText: ''}" title="提现记录"></x-header> -->
-    <div class="main">
+   <my-header @left-action="routeBack" :Title="'提现记录'"></my-header>
+    <div class="main" v-if="Object.keys(this.defaultData).length > 0">
       <div class="content pd20">
         <div class="txbox">
-          <p class="lstotal">888.66</p>
+          <p class="lstotal">{{ defaultData.total_amount }}</p>
           <p class="shuoming">历史提现总额(元)</p>
         </div>
         <div class="txlist">
           <ul>
-            <li class="jinxingzhong">
+            <li :class="item.bindClass" v-for="item in defaultData.data" :key="item.id">
               <div class="left">
-                <span class="status">提现申请中</span>
-                <span>2018-05-26 16:45:56</span>
+                <span class="status">{{ item.audit_status }}</span>
+                <span>{{ item.created_at }}</span>
               </div>
               <div class="right">
-                <span class="biandong">-50</span>
-              </div>
-            </li>
-            <li class="wancheng">
-              <div class="left">
-                <span class="status">提现成功</span>
-                <span>2018-05-26 16:45:56</span>
-              </div>
-              <div class="right">
-                <span class="biandong">-80</span>
-              </div>
-            </li>
-            <li class="shibai">
-              <div class="left">
-                <span class="status">提现失败（已返还账户）</span>
-                <span>2018-05-26 16:45:56</span>
-              </div>
-              <div class="right">
-                <span class="biandong">-50</span>
+                <span class="biandong">-{{ item.amount }}</span>
               </div>
             </li>
           </ul>
@@ -44,6 +26,35 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      defaultData: {}
+    }
+  },
+  created () {
+    this.Wk_WithdrawLog().then(res => {
+      res.data.data.forEach(cb => {
+        if (cb.status === 1) {
+          cb.bindClass = 'wancheng'
+        } else if (cb.status === 2) {
+          cb.bindClass = 'shibai'
+        } else {
+          cb.bindClass = 'jinxingzhong'
+        }
+      })
+
+      this.defaultData = res.data
+    })
+  },
+  methods: {
+    routeBack () {
+      this.$router.push({path: '/weika/withdraw'})
+    },
+    ...mapActions(['Wk_WithdrawLog'])
+  }
+}
 </script>
 <style lang="less" scoped>
 .main {

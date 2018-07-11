@@ -269,8 +269,8 @@ body{
 	padding: 0 !important;
 	height: 0.88rem !important;
 	position: relative;
-  }
-  .vux-header::after {
+	}
+ .vux-header::after {
 	display: inline-block;
 	position: absolute;
 	left: 0;

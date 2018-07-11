@@ -1,10 +1,6 @@
 <template>
   <div class="app">
-    <x-header
-      :left-options="{backText: '', preventGoBack: true}"
-      :title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"
-      @on-click-back="routeBack"
-      ></x-header>
+    <my-header @left-action="routeBack" :Title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"></my-header>
     <div class="pay-ident" v-if="interFaceToggle">
       <span class="pay-ident-item" @click="checkType(2)">
         忘记6位数字支付密码
@@ -77,7 +73,7 @@ export default {
     }
   },
   watch: {
-    '$route' (to, from) {
+    $route (to, from) {
       Object.assign(this.$data, this.$options.data())
       this.resetType = this.$route.params.id
     },
@@ -130,7 +126,8 @@ export default {
       'User_PayResetPhoneVerificationGet',
       'User_PayResetPhoneVerificationPass'
     ]),
-    kayval (val) { // 筛选不同的按键类型,假设有多种,目前只有两种
+    kayval (val) {
+      // 筛选不同的按键类型,假设有多种,目前只有两种
       let numlist = this.numVal
       switch (val) {
         case 'back':
@@ -147,16 +144,20 @@ export default {
         this.numVal.push(val)
       } else {
         this.numVal.push(val)
-        if (this.resetType === '3') { // 如果当前是在进行身份认证(支付密码), 则在第一次确认后直接请求
+        if (this.resetType === '3') {
+          // 如果当前是在进行身份认证(支付密码), 则在第一次确认后直接请求
           // this.$vux.loading.show()
           let str = ''
           this.numVal.map(r => {
             str += r
           })
-          this.User_PayPwdPass({pay_password: str, action: 'modify_pay_password'}).then(res => {
+          this.User_PayPwdPass({
+            pay_password: str,
+            action: 'modify_pay_password'
+          }).then(res => {
             if (res) {
               this.$vux.loading.hide()
-              this.$router.push({path: '/member/paysetting/4'})
+              this.$router.push({ path: '/member/paysetting/4' })
             } else {
               // this.$vux.loading.hide()
               this.$vux.confirm.show({
@@ -184,12 +185,14 @@ export default {
         }
       }
     },
-    _checkoutCode () { // (最后确认的一步)--将数组转化为字符串并发送请求
+    _checkoutCode () {
+      // (最后确认的一步)--将数组转化为字符串并发送请求
       let flag = true
       let str1 = ''
       let str2 = ''
       let _this = this
-      this.numVal.forEach((n, index) => { // 判断两次结果是否相等
+      this.numVal.forEach((n, index) => {
+        // 判断两次结果是否相等
         str1 += this.numVal[index]
         str2 += this.numComfirm[index]
         if (n !== this.numComfirm[index]) {
@@ -212,7 +215,7 @@ export default {
               content: '支付密码修改成功!'
             })
             this.$store.commit('SET_USER_INFO', res.data)
-            this.$router.push({path: '/member/settings'})
+            this.$router.push({ path: '/member/settings' })
           })
         })
       } else {
@@ -231,7 +234,8 @@ export default {
         })
       }
     },
-    checkType (c) { // 选择验证身份的方式
+    checkType (c) {
+      // 选择验证身份的方式
       let _this = this
       if (c === 2) {
         if (!this.DataTree.mobile_phone) {
@@ -239,14 +243,18 @@ export default {
             title: '提示',
             content: '请先绑定手机号!',
             onConfirm (val) {
-              _this.$router.push({path: '/member/phone_update'})
+              _this.$router.push({ path: '/member/phone_update' })
             }
           })
           return
         }
         this.User_PayResetPhoneVerificationGet()
         this.$vux.confirm.show({
-          title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
+          title:
+            '验证码已发送至' +
+            this.DataTree.mobile_phone.slice(0, 3) +
+            '****' +
+            this.DataTree.mobile_phone.slice(7, 12),
           showInput: true,
           closeOnConfirm: false,
           onConfirm (val) {
@@ -270,8 +278,9 @@ export default {
         }, 500)
       }
     },
-    routeBack () { // 顶部返回按钮事件
-      this.$router.push({path: '/member/settings'})
+    routeBack () {
+      // 顶部返回按钮事件
+      this.$router.push({ path: '/member/settings' })
     }
   }
 }
@@ -293,15 +302,15 @@ export default {
     display: block;
   }
   .pay-ident-icon {
-    width: .6rem;
-    height: .6rem;
+    width: 0.6rem;
+    height: 0.6rem;
     float: right;
-    margin-top: .2rem;
-    margin-right: .2rem;
+    margin-top: 0.2rem;
+    margin-right: 0.2rem;
   }
   .pay-ident-item:nth-child(2) {
-  border-top: 2px solid #f0f0f0;
-}
+    border-top: 2px solid #f0f0f0;
+  }
 }
 
 .pay-contain {

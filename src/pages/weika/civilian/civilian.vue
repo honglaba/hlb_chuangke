@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'微卡首页'"></my-header>
     <div class="main">
       <div class="content">
         <div class="banner">
@@ -75,8 +76,8 @@
 </template>
 <script>
 import { Swiper } from 'vux'
-import { MessageBox } from 'mint-ui'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { MessageBox, Toast } from 'mint-ui'
+import { mapGetters, mapActions } from 'vuex'
 const baseList = [
   {
     url: 'javascript:',
@@ -101,25 +102,32 @@ export default {
   computed: {
     ...mapGetters({getUser: 'userInfoGetter'})
   },
-  created () {
-    this.updateStep(1)
-  },
   methods: {
     _toOpen () {
-      this.updateStep(2)
-      this.Wk_Query().then(res => {
-        if (res.data.exists === 1) { /* 已存在订单 */
-          MessageBox.alert('您有未完成的微卡订单~').then(action => {
-            this.$router.push({path: '/member/order/order_list/1'})
+      if (this.getUser.real_name) {
+        this.Wk_Query()
+          .then(res => {
+            if (res.result_state === 'error') {
+              MessageBox.alert('您已经是微卡会员了~')
+            } else if (res.result_state === 'success') {
+              if (res.data.exists === 1) { /* 已存在订单 */
+                MessageBox.alert('您有未完成的微卡订单~')
+                  .then(action => {
+                    this.$router.push({path: '/member/order/order_list/1'})
+                  })
+              } else {
+                this.$router.push({path: '/weika/step1'})
+              }
+            }
           })
-        } else {
-          this.getUser.real_name
-            ? this.$router.push({path: '/weika/step1'})
-            : this.$router.push({path: '/member/realname', query: {type: 'weika'}})
-        }
-      })
+      } else {
+        Toast('请先进行实名认证')
+        this.$router.push({path: '/member/realname', query: {type: 'weika'}})
+      }
     },
-    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'}),
+    routeBack () {
+      this.$router.push({path: '/home'})
+    },
     ...mapActions(['Wk_Query'])
   },
   components: {

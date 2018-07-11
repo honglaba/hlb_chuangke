@@ -3,6 +3,7 @@
     <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </x-header>
+    <!-- headnoconfig -->
 
     <div class="main2">
       <div class="content" v-if="winLock">

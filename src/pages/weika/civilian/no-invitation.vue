@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="注册微卡"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'免邀请码注册微卡'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="boack1">
@@ -43,21 +43,19 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   created () {
     this.invId(null) // 进入删除邀请码
-    if (this.WkLoop !== 3) this.$router.push({path: '/weika'})
-  },
-  computed: {
-    ...mapGetters(['WkLoop'])
   },
   methods: {
     _invCodePass () {
-      this.updateStep(4)
       this.$router.push({path: '/weika/choose_products'})
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updateStep: 'UPDATE_WEIKA_LOOP'})
+    routeBack () {
+      this.$router.push({path: '/weika/step1'})
+    },
+    ...mapMutations({invId: 'SET_WEIKA_INVID'})
   }
 }
 </script>

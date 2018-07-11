@@ -1,8 +1,6 @@
 <template>
   <div class="app">
-    <x-header title="我的积分" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack">
-      <router-link to="points_log" slot="right">积分记录</router-link>
-    </x-header>
+    <my-header @left-action="routeBack" :Title="'我的积分'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="jfbox">

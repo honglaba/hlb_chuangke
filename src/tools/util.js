@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie'
+// import { Domain } from 'tools/env'
+
 export const wxpay = (callback, arg) => { // 微信支付的兼容调用
   if (typeof WeixinJSBridge === 'undefined') {
     if (document.addEventListener) {
@@ -9,4 +12,12 @@ export const wxpay = (callback, arg) => { // 微信支付的兼容调用
   } else {
     callback(arg)
   }
+}
+
+export function _init () {
+  /* 初始化 */
+  Cookies.remove('refreshToken')
+  Cookies.remove('accessToken')
+  Cookies.remove('session_id')
+  localStorage.clear()
 }

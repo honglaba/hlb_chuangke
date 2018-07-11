@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'提现'"></my-header>
     <div class="main">
       <div class="content">
         <div class="base_box pd20 mt20">
@@ -17,38 +18,20 @@
                 </span>
               </div>
             </li>
-            <li>
-              <div class="left">
-                <img src="~assets/images/weixin.png">微信
-              </div>
-              <div class="right">
-                <span>
-                </span>
-              </div>
-            </li>
-            <li>
-              <div class="left"><img src="~assets/images/zhifubao.png">支付宝
-              </div>
-              <div class="right">
-                <router-link to="bind">未绑定,先去绑定<img src="~assets/images/you1.png"></router-link>
-              </div>
-            </li>
           </ul>
-          <!-- <group>
-                        <radio :selected-label-style="{color: '#09BB07'}" :options="accountLists" v-model="defaultAccount" @on-change="change"></radio>
-                    </group> -->
         </div>
         <div class="base_box pd20 mt20">
           <div class="tit">
             <div class="l">提现金额</div>
-            <div class="r" @click="viewrules">提现规则<img src="~assets/images/you1.png"></div>
+            <div class="r">提现规则<img src="~assets/images/you1.png"></div>
           </div>
-          <group>
-            <x-input title="¥" :is-type="be2333" placeholder="" @on-focus="onFocus" required style='color:#000;font-weight: bold;font-size: .6rem;' type="number"></x-input>
-          </group>
-          <p class="mtb20 c999">可提现金额￥300.额外可用作金额￥50.</p>
+          <div class="money-input">
+            <span>¥</span>
+            <input type="text" class="money-input-item" v-model="numberA" @keydown="_moneyOnchange">
+          </div>
+          <p class="mtb20 c999">可提现金额￥{{ VipInfoData.money }}</p>
           <p class="mb20">
-            <button class="btn-aoc">立即提现</button>
+            <button :class="'btn-aoc'" @click="_withDraw">立即提现</button>
           </p>
         </div>
       </div>
@@ -58,7 +41,8 @@
 </template>
 <script>
 import { Radio, XInput } from 'vux'
-
+import { mapActions, mapGetters } from 'vuex'
+import { MessageBox } from 'mint-ui'
 export default {
   data () {
     return {
@@ -68,22 +52,54 @@ export default {
           icon: require('assets/images/weixin.png'),
           key: '1',
           value: '微信'
-        },
-        {
-          icon: require('assets/images/zhifubao.png'),
-          key: '2',
-          value: '支付宝'
         }
-      ]
+      ],
+      valid: {
+        money () {
+          return false
+        }
+      },
+      numberA: '',
+      remark: ''
     }
+  },
+  computed: {
+    ...mapGetters(['getWkVipInfo']),
+    VipInfoData () {
+      return this.getWkVipInfo
+    }
+  },
+  watch: {
+    numberA (val, oldval) {
+      if (val - this.VipInfoData.money > 0) {
+        this.numberA = this.VipInfoData.money
+      }
+    }
+  },
+  methods: {
+    _moneyOnchange (e) {
+      if (this.numberA - this.VipInfoData.money > 0) {
+        e.target.readOnly = true
+        setTimeout(() => {
+          e.target.readOnly = false
+        }, 50)
+      }
+    },
+    _withDraw () {
+      let amount = this.numberA
+      let remark = this.remark
+      this.Vip_Withdraw({ amount, remark }).then(res => {
+        MessageBox.alert('提现成功').then(action => {})
+      })
+    },
+    routeBack () {
+      this.$router.push({path: '/weika/vip'})
+    },
+    ...mapActions(['Vip_Withdraw'])
   },
   components: {
     Radio,
     XInput
-  },
-  methods: {
-    viewrules: function () {},
-    onFocus (val, $event) {}
   }
 }
 </script>
@@ -92,6 +108,31 @@ export default {
   height: auto;
   margin-bottom: 0.2rem;
 }
+// 提现输入框
+.money-input {
+  width: 100%;
+  height: .9rem;
+  font-size: .6rem;
+  font-weight: 600;
+  line-height: .9rem;
+  border-bottom: 1px solid rgb(196, 190, 190);
+  span {
+    display: block;
+    float: left;
+  }
+  .money-input-item {
+    display: block;
+    box-sizing: border-box;
+    float: left;
+    width: 80%;
+    height: .9rem;
+    font-size: .6rem;
+    margin-left: .2rem;
+    outline: none;
+    border: none;
+  }
+}
+
 .btn-aoc {
   background-image: -webkit-linear-gradient(225deg, #f97d81 0, #ffb084 94%);
   background-image: linear-gradient(225deg, #f97d81 0, #ffb084 94%);

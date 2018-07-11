@@ -1,31 +1,52 @@
 <template>
   <div class="app">
-    <!-- <x-header :left-options="{backText: ''}" title="我的战绩"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'我的战绩'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="zj zj-a1">
-          ￥886
+          ￥{{dataRecord.total_amount}}
         </div>
         <div class="zj zj-a2">
-          80名新用户
+          {{dataRecord.invites}}名新用户
         </div>
         <div class="zj zj-a3">
-          44578名新用户
+          {{dataRecord.ck_member_num}}名新用户
         </div>
         <div class="zj zj-a4">
-          365天
+          {{dataRecord.day}}天
         </div>
         <div class="zj zj-a5">
         </div>
         <div class="zj zj-a6">
         </div>
-        <div class="wozhidao">
-          <button class="btn-aoc">我知道了</button>
-        </div>
+        <!-- <div class="wozhidao">
+          <button class="btn-aoc"><router-view to="">我知道了</router-view></button>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
+<script>
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      dataRecord: []
+    }
+  },
+  created () {
+    this.getRecord().then(res => {
+      this.dataRecord = res.data
+    })
+  },
+  methods: {
+    routeBack () {
+      this.$router.push({path: '/weika/commission'})
+    },
+    ...mapActions({getRecord: 'Wk_Record'})
+  }
+}
+</script>
 <style lang="less" scoped>
 .content {
   position: relative;

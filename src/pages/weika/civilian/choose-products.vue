@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <!-- 选择商品界面 -->
-    <!-- <x-header :left-options="{backText: ''}" title="微卡购买"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'选择微卡商品'"></my-header>
     <div class="main">
       <div class="content">
         <div class="paybox">
@@ -96,7 +96,7 @@
 </template>
 <script>
 import { Scroller } from 'vux'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -105,13 +105,12 @@ export default {
     }
   },
   created () {
-    if (this.WkLoop !== 4) this.$router.push({path: '/weika'})
     this.Wk_GoodList().then(res => {
       this.goodList = res.data
     })
   },
   computed: {
-    ...mapGetters(['WkInvGetter', 'WkLoop'])
+    ...mapGetters(['WkInvGetter'])
   },
   methods: {
     toBuy () {
@@ -128,12 +127,13 @@ export default {
 
       this.Wk_Order(inbObj)
         .then(res => {
-          this.updateStep(5)
           this.$router.push({path: '/weika/pay', query: {order_id: res.data.order_id, trade_type: 'weixinjsbridge'}})
         })
     },
-    ...mapActions(['Wk_GoodList', 'Wk_Order']),
-    ...mapMutations({updateStep: 'UPDATE_WEIKA_LOOP'})
+    routeBack () {
+      this.$router.go(-1)
+    },
+    ...mapActions(['Wk_GoodList', 'Wk_Order'])
   },
   components: {
     Scroller

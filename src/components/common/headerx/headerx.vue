@@ -40,6 +40,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+
 header {
   height: 0.88rem;
   padding-left: 0.2rem;

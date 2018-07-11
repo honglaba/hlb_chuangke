@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <x-header title="登录" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
+    <my-header @left-action="routeBack" :Title="'登录'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../../assets/images/logo.png"></div>

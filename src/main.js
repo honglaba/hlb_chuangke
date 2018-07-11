@@ -7,6 +7,7 @@ import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
+import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
 import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin, Loading} from 'vux'
 // import BScroll from 'better-scroll'
@@ -21,6 +22,7 @@ Vue.config.productionTip = false
 Vue.prototype.axios = axios
 
 // 全局组件
+Vue.component('my-header', myHeader) // 自定义头部
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)

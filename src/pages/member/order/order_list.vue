@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="nav">
-      <x-header title="我的订单" :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack"></x-header>
+      <my-header @left-action="routeBack" :Title="'我的订单'"></my-header>
 
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
         <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>
@@ -13,70 +13,72 @@
       </tab>
     </div>
 
-    <div class="content">
+    <div class="scroll">
 
-      <div class="tab-list tab-list1" v-if="ReqEnd">
-        <div class="empty" v-if="realData.length === 0">
-          <p class="pic"><img src="./../images/noorder.png"></p>
-          <p class="tips">还没有相关订单,先去逛逛想买的商品~</p>
-        </div>
-        <div class="dhlist" v-else>
-          <ul>
-            <li v-for="(item, index) in realData" :key="index">
-              <div class="shopinfo">
-                <div class="name">
-                  <span class="l">订单号：
-                    <em>{{ item.order_sn }}</em>
-                  </span>
-                  <span class="r">{{ item.status_text }}</span>
-                </div>
-              </div>
-              <div class="splist">
-                <div class="glist" v-for="child in item.order_goodses" :key="child.id">
-                  <div class="left">
-                    <img :src="child.thumb || ''" onerror="javascript:this.src='static/images/商品默认图.png';">
+      <div class="content">
+        <div class="tab-list tab-list1" v-if="ReqEnd">
+          <div class="empty" v-if="realData.length === 0">
+            <p class="pic"><img src="./../images/noorder.png"></p>
+            <p class="tips">还没有相关订单,先去逛逛想买的商品~</p>
+          </div>
+          <div class="dhlist" v-else>
+            <ul>
+              <li v-for="(item, index) in realData" :key="index">
+                <div class="shopinfo">
+                  <div class="name">
+                    <span class="l">订单号：
+                      <em>{{ item.order_sn }}</em>
+                    </span>
+                    <span class="r">{{ item.status_text }}</span>
                   </div>
-                  <div class="right">
-                    <div class="name">{{ child.name }}</div>
-                    <div class="guige">
-                      数量：{{ child.num }}；颜色：白色；尺码：38
+                </div>
+                <div class="splist">
+                  <div class="glist" v-for="child in item.order_goodses" :key="child.id">
+                    <div class="left">
+                      <img :src="child.thumb || ''" onerror="javascript:this.src='static/images/商品默认图.png';">
+                    </div>
+                    <div class="right">
+                      <div class="name">{{ child.name }}</div>
+                      <div class="guige">
+                        数量：{{ child.num }}；颜色：白色；尺码：38
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="spprice">共 {{ item.order_goodses.length }} 件商品 实付:
-                <span>￥{{ item.final_price }}</span>
-              </div>
+                <div class="spprice">共 {{ item.order_goodses.length }} 件商品 实付:
+                  <span>￥{{ item.final_price }}</span>
+                </div>
 
-              <!-- 1 -->
-              <div class="spcaozuo" v-if="item.status_text === '待付款'">
-                <span class="a1">取消订单</span>
-                <span class="a2">立即付款</span>
-              </div>
+                <!-- 1 -->
+                <div class="spcaozuo" v-if="item.status_text === '待付款'">
+                  <span class="a1">取消订单</span>
+                  <span class="a2" @click="_toPay(item.id)">立即付款</span>
+                </div>
 
-              <!-- 2 -->
-              <!-- <div class="spcaozuo" v-if="item.status_text === '待发货'">
+                <!-- 2 -->
+                <!-- <div class="spcaozuo" v-if="item.status_text === '待发货'">
                   <span class="a1">取消订单</span>
                   <span class="a2">提醒发货</span>
                 </div> -->
 
-              <!-- 3 -->
-              <div class="spcaozuo" v-if="item.status_text === '待收货'">
-                <span class="a1">取消订单</span>
-                <span class="a2">确认收货</span>
-              </div>
+                <!-- 3 -->
+                <div class="spcaozuo" v-if="item.status_text === '待收货'">
+                  <span class="a1">取消订单</span>
+                  <span class="a2">确认收货</span>
+                </div>
 
-              <!-- 4 -->
-              <div class="spcaozuo" v-if="item.status_text === '待评论'">
-                <span class="a1">申请售后</span>
-                <span class="a1">再次购买</span>
-                <span class="a2">去评价</span>
-              </div>
+                <!-- 4 -->
+                <div class="spcaozuo" v-if="item.status_text === '待评论'">
+                  <span class="a1">申请售后</span>
+                  <span class="a1">再次购买</span>
+                  <span class="a2">去评价</span>
+                </div>
 
-              <!-- 5 -->
-              <!-- 售后 -->
-            </li>
-          </ul>
+                <!-- 5 -->
+                <!-- 售后 -->
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -85,7 +87,8 @@
 </template>
 <script>
 import { Tab, TabItem } from 'vux'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
+import { wxpay } from 'tools/util'
 export default {
   data () {
     return {
@@ -97,6 +100,7 @@ export default {
   created () {
     this.$vux.loading.show()
     this.getGoodList(this.$route.params.status).then(res => {
+      console.log(res)
       this.ReqEnd = true
       this.$vux.loading.hide()
       this.nowSeen = this.$route.params.status
@@ -108,45 +112,71 @@ export default {
       if (this.nowSeen === val) return
       this.ReqEnd = false
       this.$vux.loading.show()
-      this.getGoodList(val).then(res => {
-        this.ReqEnd = true
-        this.$vux.loading.hide()
-        this.nowSeen = val
-        this.realData = res.data
-      })
+      this.getGoodList(val)
+        .then(res => {
+          this.ReqEnd = true
+          this.$vux.loading.hide()
+          this.nowSeen = val
+          this.realData = res.data
+        })
     },
     routeBack () {
       this.$router.push({ path: '/member' })
     },
-    ...mapActions({ getGoodList: 'User_buyList' })
+    _toPay (id) {
+      wxpay(/* 回调 */this._payLoopCallback, /* 参数 */{order_id: id, trade_type: 'weixinjsbridge'}) // 调起微信支付
+    },
+    _payLoopCallback (val) {
+      this.payMoney(val)
+        .then(response => {
+          window.WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            response.data,
+            res => {
+              if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
+              if (
+                res.err_msg === 'get_brand_wcpay_request:fail' ||
+              res.err_msg === 'get_brand_wcpay_request:cancel'
+              ) this.wxErrCall()
+            })
+        })
+    },
+    wxSuccessCall () {
+      this.$vux.loading.show()
+      this.ReqEnd = false
+      this.getUsrInfo() // 更新用户信息后再跳转
+        .then(res1 => {
+          this.updataUsr(res1.data)
+          this.getGoodList(this.nowSeen)
+            .then(res => {
+              this.ReqEnd = true
+              this.$vux.loading.hide()
+              this.realData = res.data
+            })
+        })
+    },
+    wxErrCall () {},
+    ...mapActions({getGoodList: 'User_buyList', payMoney: 'Wk_Pay', getUsrInfo: 'HTTP_UserInfo'}),
+    ...mapMutations({updataUsr: 'SET_USER_INFO'})
   },
   components: {
     Tab,
     TabItem
-  },
-  mounted () {
-    this.axios.get('/api/orders?order_state=0').then(res => {
-      console.log(res.data[0])
-      this.orderList = res.data
-    })
   }
 }
 </script>
 <style lang="less" scoped>
 .nav {
   width: 100%;
-  height: auto;
   position: fixed;
   top: 0;
+  overflow: hidden;
+  z-index: 6;
 }
-.content {
+.scroll {
   width: 100%;
-  height: 600px;
-  overflow-y: auto;
-  overflow-x: hidden;
   position: absolute;
   top: 1.8rem;
-  overflow: hidden;
 }
 .main2 {
   position: relative;

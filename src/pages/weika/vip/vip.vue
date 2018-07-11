@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <my-header @left-action="routeBack" :Title="'微卡vip首页'"></my-header>
     <div class="main">
       <div class="content" v-if="flag">
         <div class="wkbg pd20">
@@ -172,14 +173,14 @@ export default {
     ...mapGetters(['getWkVipInfo'])
   },
   created () {
-    this.updateLoading({status: true})
+    this.updateLoading({ status: true })
     if (this.getWkVipInfo) {
       this.vip = this.getWkVipInfo
       this.flag = true
-      this.updateLoading({status: false})
+      this.updateLoading({ status: false })
     } else {
       this.Wk_Index().then(res => {
-        this.updateLoading({status: false})
+        this.updateLoading({ status: false })
         this.updataVip(res.data)
         this.vip = res.data
         this.flag = true
@@ -188,7 +189,13 @@ export default {
   },
   methods: {
     ...mapActions(['Wk_Index']),
-    ...mapMutations({updateLoading: 'UPDATE_LOADING', updataVip: 'UPDATE_VIP_INFO'})
+    ...mapMutations({
+      updateLoading: 'UPDATE_LOADING',
+      updataVip: 'UPDATE_VIP_INFO'
+    }),
+    routeBack () {
+      this.$router.push({path: '/home'})
+    }
   },
   components: {
     Scroller

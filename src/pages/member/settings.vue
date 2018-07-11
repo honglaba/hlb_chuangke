@@ -1,11 +1,6 @@
 <template>
   <div class="app">
-    <x-header
-      title="设置"
-      :left-options="{backText: '', preventGoBack: true}"
-      @on-click-back="routeBack"
-    >
-    </x-header>
+    <my-header @left-action="routeBack" :Title="'设置'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="settingbox base_box">
@@ -46,6 +41,12 @@
                 <div class="r"><img :src="rightArrow"></div>
               </div>
             </router-link>
+             <router-link to="/member/version">
+              <div class="tit">
+                <div class="l">关于我们</div>
+                <div class="r"><img :src="rightArrow"></div>
+              </div>
+            </router-link>
           </div>
           <div class="logoff" v-if="userAgenForButton" @click="_logout()">
             退出登录
@@ -68,9 +69,6 @@ export default {
     DataTree: {
       type: Object
     }
-  },
-  created () {
-
   },
   methods: {
     ...mapActions(['HTTP_logout', 'HTTP_UserInfo']),

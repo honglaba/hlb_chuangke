@@ -1,11 +1,11 @@
 <template>
   <div class="app">
-      <!-- <x-header :left-options="{backText: ''}" title="我的佣金"></x-header> -->
+    <my-header @left-action="routeBack" :Title="'佣金首页'"></my-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
-          <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>累计佣金</tab-item>
-          <tab-item @on-item-click="handler" @click.native="tab" data-id=2>历史获取</tab-item>
+          <tab-item @click.native="tab(1)" selected>累计佣金</tab-item>
+          <tab-item @click.native="tab(2)">历史获取</tab-item>
         </tab>
 
         <div class="leiji-list" v-if="nowSeen==1">
@@ -13,35 +13,38 @@
             <div class="box">
               <div class="left">
                 <p class="c999">累计佣金（元）</p>
-                <p>100</p>
+                <p>{{ countMoney.grand_total_money }}</p>
               </div>
               <div class="right">
                 <p class="c999">累计可提现佣金（元）</p>
-                <p>80</p>
+                <p>{{ countMoney.grand_withdraw_money }}</p>
                 <p class="c999">累计可用代用金（元）</p>
-                <p>20</p>
+                <p>{{ countMoney.grand_vouchers }}</p>
               </div>
             </div>
             <div class="box">
               <div class="left">
                 <p class="c999">剩余可用（元）</p>
-                <p>100</p>
+                <p>{{ countMoney.total_money }}</p>
               </div>
               <div class="right">
                 <p class="c999">剩余可提现佣金（元）</p>
-                <p>80</p>
+                <p>{{ countMoney.withdraw_money }}</p>
                 <p class="c999">剩余可用代用金（元）</p>
-                <p>20</p>
+                <p>{{ countMoney.vouchers }}</p>
               </div>
             </div>
+
+            <!-- 跳转 -->
             <div class="caozuo">
               <span>
-                <router-link to="income_zhanji">查看战绩</router-link>
+                <router-link to="record">查看战绩</router-link>
               </span>
               <span>
                 <a href="#">查看佣金使用明细</a>
               </span>
             </div>
+
           </div>
           <div class="box2">
             <div class="tb">
@@ -55,40 +58,41 @@
             <ul class="fenleilist pd20">
               <li>
                 <div class="tit">创客新用户邀请佣金
-                  <span>100</span>
+                  <span>{{ countMoney.invite_commission }}</span>
                 </div>
-                <div class="warper">
+                <!-- <div class="warper">
                   <p>
                     <span>已取现佣金</span>
-                    <span class="c333">80</span>
+                    <span class="c333">{{ countMoney.invite_commission }}</span>
                   </p>
                   <p>
                     <span>已用代用金</span>
-                    <span class="c333">20</span>
+                    <span class="c333">{{ countMoney.invite_commission }}</span>
                   </p>
-                </div>
+                </div> -->
               </li>
               <li>
                 <div class="tit">邀请的用户平台消费佣金
-                  <span>100</span>
+                  <span>{{ countMoney.invite_commission }}</span>
                 </div>
               </li>
-              <li>
+              <!-- <li>
                 <div class="tit">额外创客奖励佣金
-                  <span>200</span>
+                  <span>{{ countMoney.invite_commission }}</span>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
+
         <div class="lishi-list" v-if="nowSeen==2">
           <div class="tongji">
             <p class="c999">历史获取总佣金（元）</p>
-            <p>2888.64</p>
+            <p>{{ hisMoney.total_money }}</p>
           </div>
           <div class="mxbox">
             <p class="c333 pd20">历史获取佣金明细</p>
-            <Accordion v-for="(item, index) in mxdataList" :key="index" :title="item" :list="item.mingxi"></Accordion>
+            <Accordion v-for="(item, index) in hisMoney.data" :key="index" :title="item.date" :list="item.mingxi"></Accordion>
           </div>
         </div>
       </div>
@@ -118,6 +122,8 @@ const map = {
 export default {
   data () {
     return {
+      countMoney: {},
+      hisMoney: {},
       nowSeen: '1',
       legendOptions: {
         position: 'right',
@@ -132,9 +138,9 @@ export default {
       },
       map,
       data: [
-        { name: '创客新用户邀请佣金', change: 0.3, a: '1' },
-        { name: '邀请的用户平台消费佣金', percent: 0.18, a: '1' },
-        { name: '额外奖励佣金', percent: 0.52, a: '1' }
+        { name: '创客新用户邀请佣金', percent: 0.3, a: '1' },
+        { name: '邀请的用户平台消费佣金', percent: 0.18, a: '1' }
+        // { name: '额外奖励佣金', percent: 0.52, a: '1' }
       ],
       mxdataList: [
         {
@@ -156,15 +162,31 @@ export default {
       ]
     }
   },
+  async created () {
+    await this.Vip_Commission()
+      .then(res => {
+        this.countMoney = res.data
+      })
+    await this.Vip_CommissionHistory(0)
+      .then(res => {
+        this.hisMoney = res.data
+      })
+    // await this.Vip_CommissionHistory(1)
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+  },
   methods: {
     toggleList (e) {
       this.isDisplay = !this.isDisplay
     },
-    tab (e) {
-      console.log(e.target.getAttribute('data-id'))
-      this.nowSeen = e.target.getAttribute('data-id')
+    tab (id) {
+      this.nowSeen = id
     },
-    ...mapActions(['Vip_Commission'])
+    routeBack () {
+      this.$router.push({path: '/weika/vip'})
+    },
+    ...mapActions(['Vip_Commission', 'Vip_CommissionHistory'])
   },
   components: {
     Tab,
