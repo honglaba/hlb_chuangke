@@ -2,14 +2,14 @@ import HTTP from '@/api' // 配置后的axios
 import Cookies from 'js-cookie'
 
 const actions = /* 公用 */{
-  HTTP_pay ({commit}, money) { // 支付试验
+  HTTP_pay ({commit}, data) { // 支付试验
     return new Promise((resolve, reject) => {
       HTTP({
         url: '/api/pay-order',
         method: 'post',
         data: {
-          price: money,
-          sid: '1',
+          price: data.money,
+          sid: data.id,
           trade_type: 'WeixinJSBridge'
         },
         headers: {

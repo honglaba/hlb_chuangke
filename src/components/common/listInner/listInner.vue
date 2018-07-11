@@ -21,7 +21,7 @@
                 <p>({{businessList.total_comments}}条评价)</p>
             </div>
         </div>
-        <p>{{businessList.distance}}m</p>
+        <p>{{businessList.distance}}</p>
     </div>
 </template>
 <script>
@@ -35,6 +35,7 @@ export default {
       > p {
         font-size: 0.24rem;
         color: #666;
+        line-height: .5rem;
       }
       .business-img {
         width: 2.02rem;

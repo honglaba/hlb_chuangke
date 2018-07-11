@@ -7,7 +7,7 @@
           <router-link to="/home/details" tag="li" class="vux-1px-b">
             <div class="recommend-img"><img src="./images/recommend-label-img1.png" /></div>
             <div class="recommend-info">
-              <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶</h3>
+              <h3>康路宝k600-T煮茶器玻璃蒸茶器全自动普洱电热茶壶养生壶康路宝k600-T煮茶器玻璃蒸茶器全自动普</h3>
               <div class="mark-row">
                 <div>包邮</div>
                 <div></div>

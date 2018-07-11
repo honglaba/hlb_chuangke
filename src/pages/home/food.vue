@@ -1,7 +1,7 @@
 <template>
   <div id="food-content" :class="{'full-page':seen}">
     <div class="copy-block" v-if="seen">
-      <Headerx></Headerx>
+      <Headerx @result='result'></Headerx>
       <section class="screen-row">
         <ul class="screen-tab">
           <li v-for="(tab, index) in screenTab" @click="screenTap(index)" :class="{cur:tab.active}" :key="index">
@@ -80,7 +80,7 @@
     <!-- <div class="main" style="top:0"> -->
       <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
 
-      <Headerx></Headerx>
+      <Headerx @result='result'></Headerx>
       <div class="swiper-container banner-swiper" v-if="!seen">
         <div class="swiper-wrapper">
           <!-- <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
@@ -190,7 +190,8 @@ export default {
       ],
       region: [],
       areas: [],
-      banner: []
+      banner: [],
+      cid: ''
     }
   },
   components: { ListInner, Other, 'mt-loadmore': Loadmore },
@@ -221,6 +222,10 @@ export default {
       })
     },
     // loadmore end
+    result: function (result) {
+      // 从子Headerx组件回传的值
+      this.businessList = result
+    },
     getBanner: function () {
       this.axios.get('/api/banner?key=nearby').then(res => {
         console.log(res)
@@ -254,19 +259,19 @@ export default {
       // 遮罩层点击
       this.seen = false
       this.tabTemp = null
-      let screenTab = document.querySelectorAll('.screen-tab>li')
-      for (let i = 0, len = screenTab.length; i < len; i++) {
-        this.screenTab[i].active = false
-      }
+      // let screenTab = document.querySelectorAll('.screen-tab>li')
+      // for (let i = 0, len = screenTab.length; i < len; i++) {
+      //   this.screenTab[i].active = false
+      // }
     },
     getCategory: function () {
       // 分类
-      this.axios.get('/api/shop-category?parent=1').then(res => {
+      this.axios.get('/api/shop-category?parent=' + this.$route.query.cid).then(res => {
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
         }
         this.category = res.data
-        this.category.unshift({ title: '全部', id: 0, active: true })
+        this.category.unshift({ title: '全部', id: this.$route.query.cid, active: true })
         console.log(this.category)
       })
       // this.HTTP_GetCategory().then(res => {
@@ -276,13 +281,14 @@ export default {
     getCategoryShop: function (id) {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
-      id ? (id = id) : (id = 0)
+      id ? (id = id) : (id = '&cid=' + this.$route.query.cid)
       this.axios
         .get(
           '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' +
             id
         )
         .then(res => {
+          console.log(res)
           if (res.next_page_url != null) {
             this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
             this.allLoaded = false// 重新设置loadmore可触发
@@ -295,9 +301,14 @@ export default {
           delete res.data.return_state
           this.businessList = []
           for (let i in res.data) {
-            this.businessList.push(res.data[i])
+            // this.businessList.push(res.data[i])
+            if (res.data[i].distance >= 1000) {
+              res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            } else {
+              res.data[i].distance = res.data[i].distance + 'm'
+            }
           }
-          console.log(this.nextPageUrl)
+          this.businessList = res.data
         })
     },
     switchCategory: function (index, event) {
@@ -306,7 +317,8 @@ export default {
       // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + categoryId).then(res => {
       //   console.log(res)
       // })
-      this.getCategoryShop(categoryId)
+      this.getCategoryShop('&cid=' + categoryId)
+      this.cid = categoryId
       // this.HTTP_SwitchCategory(categoryId).then(res => {
       //   console.log(res)
       // })
@@ -338,6 +350,7 @@ export default {
           res.data[0].active = true
           this.region = res.data
           this.areas = res.data[0].children // 默认首个街道
+          console.log(this.areas)
         })
     },
     sort: function (index) {
@@ -368,6 +381,7 @@ export default {
       }
       this.areas[index].active = true
       this.screenTab[1].name = this.areas[index].region_name
+      this.getCategoryShop('&area_id=' + this.areas[index].id + '&cid=' + this.cid)
       this.maskTap() // 相同逻辑收起下拉
     },
     infinite (done) {
@@ -418,8 +432,9 @@ export default {
     this.getCategoryShop()
     // this.getRegion()
     this.getArea()
-
-    console.log(this.$refs.myscroller.scroller.__scrollTop)
+    this.cid = this.$route.query.cid// 将默认分类值存储
+    console.log(this.$route.query.cid)
+    // console.log(this.$refs.myscroller.scroller.__scrollTop)
   },
   updated () {
     /* eslint-disable */

@@ -6,7 +6,7 @@
     </div>
     <div class="search-box y-flex y-ac">
       <span></span>
-      <input type="text" placeholder="搜索附近的吃喝玩乐" />
+      <input type="search" placeholder="搜索附近的吃喝玩乐" ref="search" @keyup.13=search() v-model="searchVal"/>
     </div>
     <div class="screen"></div>
     <router-link class="message" to="/home/notice" tag="div"></router-link>
@@ -15,7 +15,27 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      searchVal: ''
+    }
+  },
+  methods: {
+    search: function () {
+      if (this.searchVal) {
+        this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&title=' + this.searchVal).then(res => {
+          for (let i in res.data) {
+            if (res.data[i].distance >= 1000) {
+              res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            } else {
+              res.data[i].distance = res.data[i].distance + 'm'
+            }
+          }
+          this.$emit('result', res.data)// 将请求所得的值传给父组件
+        })
+      } else {
+        alert('请输入关键字')
+      }
+    }
   }
 }
 </script>

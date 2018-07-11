@@ -9,10 +9,11 @@ import fastClick from 'fastclick'
 import Headerx from '@/components/common/headerx/headerx'
 import Footerx from '@/components/common/footerx/footerx'
 import {XHeader, ToastPlugin, ConfirmPlugin, LoadingPlugin, Loading} from 'vux'
+// import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
 
 // Vue.use(VueScroller)
-fastClick.attach(document.body)
+// fastClick.attach(document.body)
 
 // 自定义请求头
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
@@ -24,6 +25,7 @@ Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
 Vue.component('x-loading', Loading)
+// Vue.component('BScroll', BScroll)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)

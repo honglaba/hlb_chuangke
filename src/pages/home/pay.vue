@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <x-header :left-options="{backText: ''}" title="大岗仙庙烧鸡"></x-header>
+  <x-header :left-options="{backText: ''}" :title="detailsGetter.title"></x-header>
   <section>
     <router-link class="location-row" tag="a" to="#">
       <span></span>
@@ -82,6 +82,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
@@ -94,6 +95,7 @@ export default {
   },
   methods: {
     ...mapActions(['HTTP_pay']),
+
     showTip: function () {
       this.mask = true
     },
@@ -101,7 +103,7 @@ export default {
       this.mask = false
     },
     onBridgeReady: function () {
-      this.HTTP_pay(this.money).then(res => {
+      this.HTTP_pay({money: this.money, id: this.detailsGetter.id}).then(res => {
         let result = res.data
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
@@ -133,6 +135,9 @@ export default {
         alert('请输入金额')
       }
     }
+  },
+  computed: {
+    ...mapGetters(['detailsGetter'])
   },
   mounted () {
   }

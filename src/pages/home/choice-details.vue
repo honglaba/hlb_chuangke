@@ -5,7 +5,7 @@
       <img :src="details.logo">
 
       <div class="top-row">
-        <span class="back"></span>
+        <span class="back" @click="goBack"></span>
         <div class="y-flex y-ac">
           <span></span>
           <span></span>
@@ -13,8 +13,9 @@
       </div>
       <div class="bottom-row">
         <div class="y-flex y-ac">
-          <span></span>
-          <p>店铺详情</p>
+          <!-- 暂时隐藏 -->
+          <!-- <span></span>
+          <p>店铺详情</p> -->
         </div>
         <div>22张</div>
       </div>
@@ -113,9 +114,9 @@
       </div>
 
       <div class="vux-1px-t h80 y-flex y-ac add-row" v-if="!actionDetail">
-        <router-link class="y-flex y-ac vux-1px-r flex1 h44" tag="div" to="/home/map">
+        <router-link class="y-flex y-ac vux-1px-r flex1 mh44" tag="div" to="/home/map">
           <span class="add-ico"></span>
-          <p class="c666">{{details.address}}</p>
+          <p class="c666 address-row">{{details.address}}</p>
         </router-link>
         <div class="call-btn" @click="showMask">
           <img src="./images/icon_details_iphone.png" />
@@ -245,6 +246,7 @@ export default {
       // console.log(this.$store.state)
       let that = this
       this.axios.get('/api/shop?id=' + this.$route.query.id).then(function (res) {
+        console.log(res)
         that.$store.commit('CHOICE_DETAILS', res.data)
       })
     },
@@ -252,7 +254,6 @@ export default {
     getExchange () {
       let that = this
       this.axios.get('/api/shop/commodities?sid=1').then(function (res) {
-        console.log(res.data)
         that.$store.commit('EXCHANHE', res.data)
       })
     },
@@ -262,6 +263,10 @@ export default {
       this.axios.get('/api/shop/comments?sid=3').then(function (res) {
         that.$store.commit('COMMENTS', res.data)
       })
+    },
+    // 返回上一页
+    goBack () {
+      this.$router.go(-1)
     }
   },
   computed: {
@@ -280,6 +285,7 @@ export default {
     this.getInfo()
     this.getExchange()
     this.getComments()
+    console.log(this.$route.query.id)
   },
   directives: {
     TransferDom
@@ -382,9 +388,13 @@ export default {
     .til {
       display: flex;
       align-items: center;
+      margin-right: .1rem;
+      flex: 1;
       > h3 {
         font-size: 0.44rem;
         margin-right: 0.08rem;
+        flex: 1;
+        line-height: .5rem;
       }
       > div {
         font-size: 0.28rem;
@@ -406,7 +416,7 @@ export default {
       > img {
         width: 0.26rem;
         height: 0.26rem;
-        margin-right: 0.1rem;
+        margin-right: 0.05rem;
       }
       > span {
         color: #fff;
@@ -718,6 +728,11 @@ export default {
     bottom: .1rem;
     left: 50%;
     margin-left: -3.5rem;
+  }
+  .address-row{
+    // overflow: hidden;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
   }
 // 弹窗控件样式
 .weui-dialog__btn_primary{
