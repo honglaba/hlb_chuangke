@@ -30,6 +30,7 @@ export default {
 <style lang="less" scoped>
 .hlbheader {
   position: fixed;
+  top: 0;
   width: 100%;
   height: 0.88rem;
   line-height: 0.88rem;
