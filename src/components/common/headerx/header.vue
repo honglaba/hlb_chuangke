@@ -71,14 +71,23 @@ export default {
       white-space: nowrap;
     }
     .h-do {
-      margin-right: 0.3rem;
-      width: 1.2rem;
+      margin-right: 0.2rem;
+      width: 1.3rem;
       font-size: 0.3rem;
       color: #999999;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      a {
+        display: flex;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }

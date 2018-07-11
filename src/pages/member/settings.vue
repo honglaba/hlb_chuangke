@@ -86,7 +86,7 @@ export default {
 <style lang="less" scoped>
 .disable-font {
   color: #f5222d;
-  font-size: .30rem;
+  font-size: .24rem;
 }
 .settingbox {
   background: transparent;

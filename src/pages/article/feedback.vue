@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="问题反馈">
-    </x-header>
+   <my-header @left-action="routeBack" :Title="'问题反馈'">
+    </my-header>
     <div class="main2">
       <div class="content">
         <div class="feedback base_box">

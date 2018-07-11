@@ -88,7 +88,7 @@
             </li>
             <li>
               <router-link :to="{path:'/member/order/order_list/5'}">
-                <span><img src="./images/daituikuan.png"></span>
+                <span class="myorder-icon"><img src="./images/daituikuan.png"></span>
                 <span>待退款</span>
               </router-link>
             </li>
@@ -234,6 +234,7 @@ export default {
 }
 .base_box .tit {
   border-bottom: #e6e6e6 dashed 1px;
+  height: 1rem;
 }
 
 .myorder {
@@ -246,15 +247,16 @@ export default {
     text-align: center;
     position: relative;
     img {
-      height: 0.68rem;
-      width: 0.68rem;
+      height: 0.5rem;
+      width: 0.5rem;
     }
     span {
       display: block;
     }
     .myorder-icon {
-      width: 0.68rem;
-      height: 0.68rem;
+      margin-bottom: .1rem;
+      width: 0.5rem;
+      height: 0.5rem;
       margin-left: 50%;
       transform: translateX(-50%);
       position: relative;
