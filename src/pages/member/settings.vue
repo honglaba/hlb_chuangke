@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'设置'">
-    </my-header>
+    <my-header @left-action="routeBack" :left-options="{preventGoBack: true}" :Title="'设置'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="settingbox base_box">

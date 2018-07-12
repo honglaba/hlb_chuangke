@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'微卡vip首页'"></my-header>
+    <my-header @on-click-back="routeBack" :Title="'微卡vip首页'" :left-options="{preventGoBack: true}"></my-header>
+
     <div class="main">
       <div class="content" v-if="flag">
         <div class="wkbg pd20">

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'微卡首页'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'微卡首页'"></my-header>
     <div class="main">
       <div class="content">
         <div class="banner">

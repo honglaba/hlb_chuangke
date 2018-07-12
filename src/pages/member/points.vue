@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-      <my-header @left-action="routeBack" :Title="'我的积分'">
+    <my-header @left-action="routeBack" :left-options="{preventGoBack: true}" :Title="'我的积分'">
     </my-header>
     <div class="main2">
       <div class="content">
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     routeBack () {
-      this.$router.push({path: '/member'})
+      this.$router.push({ path: '/member' })
     }
   }
 }

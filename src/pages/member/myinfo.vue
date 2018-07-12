@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header  @left-action="routeBack" :Title="'个人信息'"> <span slot="right">保存</span></my-header>
+    <my-header  @left-action="routeBack" :left-options="{preventGoBack: true}" :Title="'个人信息'"> <span slot="right">保存</span></my-header>
     <div class="main2">
       <div class="content">
         <div class="myinfo">

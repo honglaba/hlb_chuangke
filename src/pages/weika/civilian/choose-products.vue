@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <!-- 选择商品界面 -->
-    <my-header @left-action="routeBack" :Title="'选择微卡商品'"></my-header>
+    <my-header :Title="'选择微卡商品'" :left-options="{preventGoBack: true}" @on-click-back="routeBack"></my-header>
     <div class="main">
       <div class="content">
         <div class="paybox">

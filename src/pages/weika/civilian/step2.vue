@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'填写个人信息'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'填写个人信息'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="logo"><img src="../images/b1.png"><br>填写推荐人信息</div>

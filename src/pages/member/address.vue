@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'收货地址管理'">
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'收货地址管理'">
       <router-link :to="{path: '/member/address_add', query: {t: +new Date()}}" slot="right">添加地址</router-link>
     </my-header>
     <div class="main2">
@@ -42,73 +42,74 @@
   </div>
 </template>
 <script>
-import { Divider } from "vux";
-import { mapActions, mapState } from "vuex";
+import { Divider } from 'vux'
+import { mapActions, mapState } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       equal: false,
       contentFlag: false
-    };
+    }
   },
   watch: {
-    $route(to, from) {
-      Object.assign(this.$data, this.$options.data());
-      this.contentFlag = true;
+    $route (to, from) {
+      Object.assign(this.$data, this.$options.data())
+      this.contentFlag = true
       if (this.receiverAddress.length > 0) {
-        this.equal = true;
+        this.equal = true
       }
     }
   },
   computed: {
-    ...mapState(["receiverAddress"])
+    ...mapState(['receiverAddress'])
   },
-  created() {
+  created () {
     if (this.receiverAddress.length > 0) {
-      this.equal = !this.equal;
-      this.contentFlag = true;
+      this.equal = !this.equal
+      this.contentFlag = true
     } else {
       this.HTTP_receiverAddress().then(res => {
-        if (res) this.equal = !this.equal;
-        this.contentFlag = true;
-      });
+        if (res) this.equal = !this.equal
+        this.contentFlag = true
+      })
     }
   },
   methods: {
     ...mapActions([
-      "HTTP_receiverAddress",
-      "HTTP_receiverAddressEditor",
-      "HTTP_receiverAddress"
+      'HTTP_receiverAddress',
+      'HTTP_receiverAddressEditor',
+      'HTTP_receiverAddress'
     ]),
-    _toggleIsDefault(item) {
+    _toggleIsDefault (item) {
       if (item.is_default === 0) {
         this.receiverAddress.forEach(cb => {
           if (cb.is_default === 1) {
-            cb.is_default = 0;
+            cb.is_default = 0
           } else if (cb.id === item.id) {
-            cb.is_default = 1;
-            this.HTTP_receiverAddressEditor(cb).then(res => {
-              this.HTTP_receiverAddress();
-            });
+            cb.is_default = 1
+            this.HTTP_receiverAddressEditor(cb)
+              .then(res => {
+                this.HTTP_receiverAddress()
+              })
           }
-        });
+        })
       }
     },
-    _toEditor(item) {
-      localStorage.setItem("beingEditorAddress", JSON.stringify(item));
+    _toEditor (item) {
+      localStorage.setItem('beingEditorAddress', JSON.stringify(item))
       this.$router.push({
-        path: "/member/address_add",
+        path: '/member/address_add',
         query: { t: +new Date() }
-      });
+      })
     },
-    routeBack() {
-      this.$router.push({ path: "/member/settings" });
+    routeBack () {
+      this.$router.push({ path: '/member/settings' })
     }
   },
   components: {
     Divider
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .yjbd {

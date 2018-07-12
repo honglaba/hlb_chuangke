@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'注册创客-第一步'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'注册创客-第一步'"></my-header>
     <div class="main2">
       <div class="content pd20">
         <div class="xuanze">

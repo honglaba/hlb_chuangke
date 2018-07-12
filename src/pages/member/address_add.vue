@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-      <my-header @left-action="routeBack" :title="isEditor ? '修改收货地址' : '新增收货地址'">
+      <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :title="isEditor ? '修改收货地址' : '新增收货地址'">
       <img src="./images/shanchu.png" class="shanchu" slot="right" v-if="isEditor" @click="_delMsg()">
     </my-header>
 
@@ -29,7 +29,7 @@
 import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
 import { mapActions, mapGetters } from 'vuex'
-import { Toast, MessageBox } from 'mint-ui'
+import { Toast } from 'mint-ui'
 export default {
   components: {
     XInput,
@@ -93,21 +93,23 @@ export default {
       this.userInput.is_default = this.userInput.is_default === 0 ? 1 : 0
     },
     _delMsg () {
-      MessageBox({
+      let _this = this
+      this.$vux.confirm.show({
         title: '提示',
-        message: '确定执行此操作?',
-        showCancelButton: true
-      }).then(res => {
-        this.HTTP_receiverAddressDel(this.userInput.id).then(res => {
-          this.HTTP_receiverAddress().then(res => {
-            if (this.userInput.is_default === 1 && res) {
-              Toast('请设置一个默认地址')
-            } else if (!res) {
-              Toast('您还没有添加收货地址')
-            }
-            this.$router.push({path: '/member/address'})
+        content: '确定执行此操作?',
+        // 组件除show外的属性
+        onConfirm () {
+          _this.HTTP_receiverAddressDel(_this.userInput.id).then(res => {
+            _this.HTTP_receiverAddress().then(res => {
+              if (_this.userInput.is_default === 1 && res) {
+                Toast('请设置一个默认地址')
+              } else if (!res) {
+                Toast('您还没有添加收货地址')
+              }
+              _this.$router.push({path: '/member/address'})
+            })
           })
-        })
+        }
       })
     },
     _saveEditor (e) {
@@ -117,12 +119,14 @@ export default {
       stack.city_id = area[1]
       stack.borough_id = area[2]
       if (this.isEditor) {
-        this.HTTP_receiverAddressEditor(this.userInput).then(res => {
-          this.HTTP_receiverAddress().then(res => {
-            Toast('修改成功')
-            this.$router.push({path: '/member/address'})
+        this.HTTP_receiverAddressEditor(this.userInput)
+          .then(res => {
+            this.HTTP_receiverAddress()
+              .then(res => {
+                Toast('修改成功')
+                this.$router.push({path: '/member/address'})
+              })
           })
-        })
       } else {
         this.HTTP_receiverAddressAdd(this.userInput).then(res => {
           this.HTTP_receiverAddress().then(res => {

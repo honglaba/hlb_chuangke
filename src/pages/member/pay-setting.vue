@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="!!DataTree.is_set_pay_password ? '重置支付密码' : '设置支付密码'"></my-header>
     <div class="pay-ident" v-if="interFaceToggle">
       <span class="pay-ident-item" @click="checkType(2)">
         忘记6位数字支付密码

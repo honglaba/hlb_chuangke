@@ -1,29 +1,64 @@
 <template>
   <div class="hlbheader">
     <div class="h-wrapper">
-      <div class="h-back" @click="routeBack"><img src="~static/images/top-return-icon.png"></div>
-      <div class="h-title">
-        <span>{{ Title || '标题' }}</span>
+
+      <!-- left -->
+      <div class="h-back" @click="onClickBack"><img src="~static/images/top-return-icon.png"></div>
+
+      <!-- title -->
+      <div class="h-title" @click="$emit('on-click-title')">
+        <slot>
+          <span v-show="Title">{{ Title || '标题' }}</span>
+        </slot>
       </div>
+
+      <!-- right -->
       <div class="h-do">
         <slot name="right"></slot>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import objectAssign from 'object-assign'
 export default {
-  name: "x-header",
+  name: 'x-header',
   props: {
-    Title: String
+    leftOptions: Object,
+    Title: String,
+    transition: String,
+    rightOptions: {
+      type: Object,
+      default () {
+        return {
+          showMore: false
+        }
+      }
+    }
+  },
+  computed: {
+    _leftOptions () {
+      return objectAssign(
+        {
+          showBack: true,
+          preventGoBack: false
+        },
+        this.leftOptions || {}
+      )
+    }
   },
   methods: {
-    routeBack() {
-      this.$emit("left-action");
+    onClickBack () {
+      if (this._leftOptions.preventGoBack) {
+        this.$emit('on-click-back')
+      } else {
+        this.$router ? this.$router.back() : window.history.back()
+      }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
