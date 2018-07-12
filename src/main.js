@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
+import VueClipboard from 'vue-clipboard2'
 import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
@@ -32,6 +33,7 @@ Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(AlertPlugin)
+Vue.use(VueClipboard)
 
 Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'
