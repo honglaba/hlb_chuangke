@@ -81,8 +81,7 @@
 </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import {mapGetters} from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -102,7 +101,7 @@ export default {
       this.mask = false
     },
     onBridgeReady () {
-      this.HTTP_pay(this.money)
+      this.HTTP_pay({money: this.money, id: this.detailsGetter.id})
         .then(res => {
           window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', res.data, res => {
