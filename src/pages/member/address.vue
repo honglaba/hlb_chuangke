@@ -82,7 +82,8 @@ export default {
     ]),
     _toggleIsDefault (item) {
       if (item.is_default === 0) {
-        this.receiverAddress.forEach(cb => {
+        let catObj = JSON.parse(JSON.stringify(this.receiverAddress))
+        catObj.forEach(cb => {
           if (cb.is_default === 1) {
             cb.is_default = 0
           } else if (cb.id === item.id) {

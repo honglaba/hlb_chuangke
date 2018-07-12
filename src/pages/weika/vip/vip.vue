@@ -166,19 +166,17 @@ export default {
   name: 'vip',
   data () {
     return {
-      flag: false,
-      vip: {}
+      flag: false
     }
   },
   computed: {
-    ...mapGetters(['getWkVipInfo'])
+    ...mapGetters({vip: 'getWkVipInfo'})
   },
   created () {
     this.updateLoading({ status: true })
     this.Wk_Index().then(res => {
       this.updateLoading({ status: false })
       this.updataVip(res.data)
-      this.vip = res.data
       this.flag = true
     })
   },

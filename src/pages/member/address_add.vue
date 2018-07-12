@@ -115,9 +115,10 @@ export default {
     _saveEditor (e) {
       let stack = this.userInput
       let area = this.areaDefault
-      stack.province_id = area[0]
-      stack.city_id = area[1]
-      stack.borough_id = area[2]
+      stack.province_id = +area[0]
+      stack.city_id = +area[1]
+      stack.borough_id = +area[2]
+
       if (this.isEditor) {
         this.HTTP_receiverAddressEditor(this.userInput)
           .then(res => {
@@ -128,12 +129,13 @@ export default {
               })
           })
       } else {
-        this.HTTP_receiverAddressAdd(this.userInput).then(res => {
-          this.HTTP_receiverAddress().then(res => {
-            Toast('添加成功')
-            this.$router.push({path: '/member/address'})
+        this.HTTP_receiverAddressAdd(this.userInput)
+          .then(res => {
+            this.HTTP_receiverAddress().then(res => {
+              Toast('添加成功')
+              this.$router.push({path: '/member/address'})
+            })
           })
-        })
       }
     },
     keyDown () {

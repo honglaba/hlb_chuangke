@@ -49,7 +49,7 @@
                 <!-- 1 -->
                 <div class="spcaozuo" v-if="item.status_text === '待付款'">
                   <span class="a1">取消订单</span>
-                  <span class="a2" @click="_toPay(item.id)">立即付款</span>
+                  <span class="a2" @click="_toPay(item)">立即付款</span>
                 </div>
 
                 <!-- 2 -->
@@ -90,7 +90,8 @@ export default {
     return {
       nowSeen: 0,
       realData: [],
-      ReqEnd: false
+      ReqEnd: false,
+      momentPay: {}
     }
   },
   created () {
@@ -107,10 +108,10 @@ export default {
     handler (val) {
       if (this.nowSeen === val) return
       this.ReqEnd = false
-      this.$vux.loading.show()
+      this.updateLoading({status: true})
       this.getGoodList(val).then(res => {
         this.ReqEnd = true
-        this.$vux.loading.hide()
+        this.updateLoading({status: false})
         this.nowSeen = val
         this.realData = res.data
       })
@@ -118,11 +119,9 @@ export default {
     routeBack () {
       this.$router.push({ path: '/member' })
     },
-    _toPay (id) {
-      wxpay(
-        /* 回调 */ this._payLoopCallback,
-        /* 参数 */ { order_id: id, trade_type: 'weixinjsbridge' }
-      ) // 调起微信支付
+    _toPay (item) {
+      this.momentPay = item
+      wxpay(/* 回调 */ this._payLoopCallback, /* 参数 */ { order_id: item.id, trade_type: 'weixinjsbridge' }) // 调起微信支付
     },
     _payLoopCallback (val) {
       this.payMoney(val).then(response => {
@@ -140,22 +139,30 @@ export default {
       })
     },
     wxSuccessCall () {
-      this.$vux.loading.show()
+      this.updateLoading({status: true})
       this.ReqEnd = false
-      this.getUsrInfo() // 更新用户信息后再跳转
-        .then(res1 => {
-          this.updataUsr(res1.data)
-          this.getGoodList(this.nowSeen)
-            .then(res => {
-              this.ReqEnd = true
-              this.realData = res.data
-              this.$vux.loading.hide()
-              this.$vux.toast.show({
-                type: 'text',
-                text: '订单支付完成'
-              })
+      if (this.momentPay.type_text === '微卡订单') {
+        this.getUsrInfo() // 更新用户信息后再跳转
+          .then(res1 => {
+            this.updataUsr(res1.data)
+            this.momentPay = {}
+            this.updateLoading({status: false})
+            this.$router.push({path: '/weika/vip'})
+          })
+      } else {
+        this.getGoodList(this.nowSeen)
+          .then(res => {
+            this.ReqEnd = true
+            this.realData = res.data
+            this.$vux.loading.hide()
+            this.updateLoading({status: false})
+            this.$vux.toast.show({
+              type: 'text',
+              text: '订单支付完成'
             })
-        })
+            this.momentPay = {}
+          })
+      }
     },
     wxErrCall () {},
     ...mapActions({
@@ -163,7 +170,7 @@ export default {
       payMoney: 'Wk_Pay',
       getUsrInfo: 'HTTP_UserInfo'
     }),
-    ...mapMutations({ updataUsr: 'SET_USER_INFO' })
+    ...mapMutations({updataUsr: 'SET_USER_INFO', updateLoading: 'UPDATE_LOADING'})
   },
   components: {
     Tab,

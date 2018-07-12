@@ -13,7 +13,7 @@
       </div>
 
       <!-- right -->
-      <div class="h-do">
+      <div class="h-do" @click="onClickRight">
         <slot name="right"></slot>
       </div>
 
@@ -56,6 +56,9 @@ export default {
       } else {
         this.$router ? this.$router.back() : window.history.back()
       }
+    },
+    onClickRight () {
+      this.$emit('on-click-right')
     }
   }
 }

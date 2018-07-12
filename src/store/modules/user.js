@@ -17,6 +17,19 @@ const normal = {
       })
     })
   },
+  User_InfoConfig ({commit}, data) {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: '/api/user/info',
+        method: 'POST',
+        data
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
+  },
   HTTP_receiverAddress ({commit}) { // 收货地址获取
     return new Promise((resolve, reject) => {
       HTTP({
@@ -361,6 +374,7 @@ const weika = {
         url: `/api/user/weika`
       }).then(res => {
         if (res.result_state === 'success') {
+          commit('UPDATE_VIP_INFO', res.data)
           resolve(res)
         }
       })

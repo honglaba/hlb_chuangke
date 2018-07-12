@@ -186,16 +186,16 @@ export default {
             closeOnConfirm: false,
             onConfirm (val) {
               if (val.match(/^[0-9]{5}$/)) {
-                this.$vux.loading.show()
+                _this.$vux.confirm.hide()
+                _this.$vux.loading.show()
                 _this.HTTP_resetPhonePassIdentityDrop(val)
                   .then(res => {
-                    this.$vux.loading.hide()
+                    _this.$vux.loading.hide()
                     if (res.result_state === 'success') {
                       _this.$vux.toast.show({
                         text: '验证成功',
                         type: 'text'
                       })
-                      _this.$vux.confirm.hide()
                       _this.switchWindow = false
                     }
                   })

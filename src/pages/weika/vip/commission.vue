@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'佣金首页'"></my-header>
+    <my-header :Title="'佣金首页'" :left-options="{preventGoBack: true}" @on-click-back="routeBack"></my-header>
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
@@ -8,7 +8,7 @@
           <tab-item @click.native="tab(2)">历史获取</tab-item>
         </tab>
 
-        <div class="leiji-list" v-if="nowSeen==1">
+        <div class="leiji-list" v-if="nowSeen === 1 && Object.keys(countMoney).length > 0">
           <div class="box1 pd20">
             <div class="box">
               <div class="left">
@@ -41,14 +41,14 @@
                 <router-link to="record">查看战绩</router-link>
               </span>
               <span>
-                <a href="#">查看佣金使用明细</a>
+                <a href="javascript:;">查看佣金使用明细</a>
               </span>
             </div>
 
           </div>
           <div class="box2">
             <div class="tb">
-              <v-chart :data="data">
+              <v-chart :data="dataPie">
                 <v-scale y :options="yOptions" />
                 <v-tooltip disabled />
                 <v-pie :radius="0.85" series-field="name" />
@@ -85,14 +85,14 @@
           </div>
         </div>
 
-        <div class="lishi-list" v-if="nowSeen==2">
+        <div class="lishi-list" v-if="nowSeen === 2 && Object.keys(hisMoney).length > 0">
           <div class="tongji">
             <p class="c999">历史获取总佣金（元）</p>
             <p>{{ hisMoney.total_money }}</p>
           </div>
-          <div class="mxbox">
+          <div class="mxbox" v-if="hisMoney.total_money > 0">
             <p class="c333 pd20">历史获取佣金明细</p>
-            <Accordion v-for="(item, index) in hisMoney.data" :key="index" :title="item.date" :list="item.mingxi"></Accordion>
+            <Accordion :list="hisMoney.data"></Accordion>
           </div>
         </div>
       </div>
@@ -114,57 +114,43 @@ import {
   VScale
 } from 'vux'
 import { mapActions } from 'vuex'
-const map = {
-  创客新用户邀请佣金: '30%',
-  邀请的用户平台消费佣金: '18%',
-  额外奖励佣金: '52%'
-}
 export default {
   data () {
     return {
-      countMoney: {},
-      hisMoney: {},
-      nowSeen: '1',
-      legendOptions: {
-        position: 'right',
-        itemFormatter (val) {
-          return val + '  ' + map[val]
-        }
-      },
+      countMoney: /* 累计佣金 */{},
+      hisMoney: /* 历史佣金 */{},
+      nowSeen: 1,
+      legendOptions: {},
       yOptions: {
-        formatter (val) {
-          return val * 100 + '%'
-        }
+        // formatter (val) {
+        //   return val * 100 + '%'
+        // }
       },
-      map,
-      data: [
-        { name: '创客新用户邀请佣金', percent: 0.3, a: '1' },
-        { name: '邀请的用户平台消费佣金', percent: 0.18, a: '1' }
-        // { name: '额外奖励佣金', percent: 0.52, a: '1' }
-      ],
-      mxdataList: [
-        {
-          riqi: '2018-05-28',
-          mingxi: [
-            { name: '创客新用户邀请佣金', change: '+20' },
-            { name: '邀请的用户平台消费佣金', change: '+30' },
-            { name: '额外奖励佣金', change: '+40' }
-          ]
-        },
-        {
-          riqi: '2017-05-06',
-          mingxi: [
-            { name: '创客新用户邀请佣金', change: '+50' },
-            { name: '邀请的用户平台消费佣金', change: '+60' },
-            { name: '额外奖励佣金', change: '+70' }
-          ]
-        }
-      ]
+      dataPie: []
     }
   },
   async created () {
     await this.Vip_Commission()
       .then(res => {
+        let inviteCommission = res.data.invite_commission_per
+        let consumptionCommissionPer = res.data.consumption_commission_per
+        let mapCanvas = {
+          '创客新用户邀请佣金': inviteCommission + '%',
+          '邀请的用户平台消费佣金': consumptionCommissionPer + '%'
+        }
+
+        this.dataPie = [
+          { name: '创客新用户邀请佣金', percent: inviteCommission, a: '1' },
+          { name: '邀请的用户平台消费佣金', percent: consumptionCommissionPer, a: '1' }
+        // { name: '额外奖励佣金', percent: 0.52, a: '1' }
+        ]
+
+        this.legendOptions = {
+          position: 'right',
+          itemFormatter (val) {
+            return val + '  ' + mapCanvas[val]
+          }
+        }
         this.countMoney = res.data
       })
     await this.Vip_CommissionHistory(0)
