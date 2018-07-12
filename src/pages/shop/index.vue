@@ -29,6 +29,19 @@
           </div>
         </section>
         <section class="business-list">
+          <!-- 复制的占位dom -->
+          <section v-if="tabFixed">
+            <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
+              <tab-item v-for="(tab, index) in tabNavs" @click.native="tabTap(index)" :selected="index === 0" :key="index"> {{tab.title}}</tab-item>
+            </tab>
+            <div class="tab-con">
+              <ul>
+                <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
+                  {{nav.title}}
+                </li>
+              </ul>
+            </div>
+          </section>
           <!-- 用于占位的dom -->
           <!-- <div v-if="tabFixed" :style="{height:tabH+'px'}"></div> -->
           <ul>
@@ -41,7 +54,7 @@
 
       <!-- </mt-loadmore> -->
       </div>
-      <!-- <Footerx></Footerx> -->
+      <Footerx></Footerx>
     <!-- </div> -->
   </div>
 </template>
@@ -60,10 +73,26 @@ export default {
       businessList: [],
       allLoaded: false,
       tabFixed: false,
-      tabH: ''
+      tabH: '',
+      selectId: '',
+      nextPageUrl: null
     }
   },
   methods: {
+    // 滚动方法
+    handleScroll: function () {
+      let that = this
+      let h = document.getElementsByClassName('banner')[0].offsetHeight + document.getElementsByTagName('header')[0].offsetHeight
+      let mescroll = document.getElementById('mescroll')
+      // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var scrollTop = mescroll.pageYOffset || mescroll.scrollTop
+      // console.log(scrollTop, h)
+      if (scrollTop >= h) {
+        that.tabFixed = true
+      } else {
+        that.tabFixed = false
+      }
+    },
     // loadmore
     loadTop () {
       this.$refs.loadmore.onTopLoaded()
@@ -97,8 +126,15 @@ export default {
         this.tabNavs[i].active = false
       }
       this.tabNavs[index].active = true
+      this.selectId = this.tabNavs[index].id
       this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
-      this.getCategoryShop(this.tabNavs[index].id)
+      this.businessList = [] // 切换分类时数据清空 否则一直叠加
+      // this.getCategoryShop(this.tabNavs[index].id)
+      let page1 = { // 切换分类时参数重置
+        num: 1,
+        size: 10
+      }
+      this.upCallback(page1)
 
       setTimeout(function () {
         that.tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
@@ -139,8 +175,8 @@ export default {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
       // id ? id = id : id = 0 // 0即为全部
-      id ? id = '&cid=' + id : id = ''// 这里应该默认为‘美食’id即id应该为1 但为了测试下拉加载所以设置为空
-      // id ? id = '&cid=' + id : id = '&cid=1'
+      // id ? id = '&cid=' + id : id = ''// 这里应该默认为‘美食’id即id应该为1 但为了测试下拉加载所以设置为空
+      id ? id = '&cid=' + id : id = '&cid=1'
       this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960' + id).then(res => {
       // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
         console.log(id)
@@ -183,35 +219,14 @@ export default {
 		 请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
 		 实际项目以您服务器接口返回的数据为准,无需本地处理分页.
 		 * */
-    getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback) {
-      // 延时一秒,模拟联网
+    getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback, id) {
       let that = this
-      // setTimeout(function () {
-      //   //          	axios.get("xxxxxx", {
-      //   //					params: {
-      //   //						num: pageNum, //页码
-      //   //						size: pageSize //每页长度
-      //   //					}
-      //   //				})
-      //   //				.then(function(response) {
-      //   var data = pdlist1 // 模拟数据: ../res/pdlist1.js
-      //           	var listData = []// 模拟分页数据
-      //   for (var i = (pageNum - 1) * pageSize; i < pageNum * pageSize; i++) {
-	    //         		if (i == data.length) break
-	    //         		listData.push(data[i])
-	    //         	}
-      //           	successCallback && successCallback(listData)// 成功回调
-      //   //				})
-      //   //				.catch(function(error) {
-      //   //					errorCallback&&errorCallback()//失败回调
-      //   //				});
-      // }, 500)
       let url
-      this.nextPageUrl ? url = this.nextPageUrl : url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc'
-      console.log(this.nextPageUrl)
-      this.axios.get(url).then(res => {
-      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+      id ? id = '&cid=' + id : id = '&cid=1'
 
+      this.nextPageUrl == 'null' ? url = this.nextPageUrl : url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960' + id
+      console.log('下一页' + this.nextPageUrl)
+      this.axios.get(url).then(res => {
         this.page = res
         if (res.next_page_url != null) {
           this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
@@ -260,13 +275,13 @@ export default {
 
         // 方法三(推荐): 您有其他方式知道是否有下一页 hasNext
         // self.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
-        self.mescroll.endSuccess(curPageData.length, self.nextPageUrl)
+        self.mescroll.endSuccess(curPageData.length, self.nextPageUrl != null)
         // 方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
         // self.mescroll.endSuccess(curPageData.length)
       }, function () {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
         self.mescroll.endErr()
-      })
+      }, this.selectId)
     }
 
   },
@@ -274,9 +289,10 @@ export default {
   mounted () {
     this.getCategory()
     this.getCategoryChildren()
-    this.getCategoryShop()
-    this.getHeight()
-
+    // this.getCategoryShop()
+    // this.getHeight()
+    // 监听滚动事件
+    document.getElementById('mescroll').addEventListener('scroll', this.handleScroll)
     /// ////////////
     // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
     // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
@@ -292,7 +308,7 @@ export default {
         isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
         // page:{size:8}, //可配置每页8条数据,默认10
         toTop: { // 配置回到顶部按钮
-          src: '../res/img/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
           // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
           // offset : 1000
         },
@@ -322,7 +338,8 @@ export default {
     top: 0;
     bottom: 1rem;
     height: auto;
-} 
+    width: 7.5rem;
+}
 .shop-index{
   .vux-tab-wrap{
   padding-top:.8rem;
@@ -432,10 +449,13 @@ export default {
 }
 .business-list {
   background: #fff;
-  padding: 0 0.3rem;
-  > ul > li {
+  > ul {
+    padding: 0 0.3rem;
+    > li {
     padding-top: 0.32rem;
   }
+}
+
 }
 }
 </style>

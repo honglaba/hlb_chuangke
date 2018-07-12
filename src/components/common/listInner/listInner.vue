@@ -54,7 +54,7 @@ export default {
         .til-row {
           display: flex;
           align-items: center;
-          height: 0.5rem;
+         // height: 0.5rem;
           // margin-bottom: 0.1rem;
           // > p {
           //   font-size: 0.2rem;

@@ -14,7 +14,7 @@
                   <p class="tips">创客为您节约了{{ vip.save_money }}元</p>
                 </div>
               </div>
-              <div class="right">
+              <div class="right" v-clipboard:copy="vip.invite_id" v-clipboard:success="copy_inviteid">
                 <p class="a1">推广ID</p>
                 <p class="a2">{{ vip.invite_id }}</p>
               </div>
@@ -188,6 +188,9 @@ export default {
     }),
     routeBack () {
       this.$router.push({path: '/home'})
+    },
+    copy_inviteid () {
+      this.$vux.toast.text('复制成功')
     }
   },
   components: {

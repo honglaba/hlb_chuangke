@@ -101,7 +101,7 @@ export default {
       this.mask = false
     },
     onBridgeReady () {
-      this.HTTP_pay(this.money)
+      this.HTTP_pay({money: this.money, id: this.detailsGetter.id})
         .then(res => {
           window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', res.data, res => {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的推荐人'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的推荐'"></my-header>
     <div class="main2">
       <div class="content">
         <div class="txlist pd20" v-if="ChildList.length > 0">

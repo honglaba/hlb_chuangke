@@ -11,83 +11,32 @@
         </ul>
         <section class="screen-inner" @click.self="maskTap">
           <ul v-if="tabTemp==0" class="screen-li">
-            <!-- <li>全部</li>
-              <li>甜品饮品</li>
-              <li>火锅</li>
-              <li>生日蛋糕</li>
-              <li class="cur">自助餐</li>
-              <li>小吃快餐</li>
-              <li>日韩料理</li>
-              <li>西餐</li>
-              <li>聚餐宴席</li>
-              <li>烧烤烤肉</li>
-              <li>小吃快餐</li>
-              <li>日韩料理</li>
-              <li>西餐</li>
-              <li>聚餐宴席</li>
-              <li>烧烤烤肉</li> -->
             <li v-for="(item, index) in category" :data-category="item.id" @click="switchCategory(index,$event)" :key="index" :class="{cur:item.active}">{{item.title}}</li>
           </ul>
           <div v-if="tabTemp==1" class="lr-part">
             <ul class="left-nav">
-              <!-- <li class="cur">
-                  <span>附近</span>
-                  <span></span>
-                </li>
-                <li>
-                  <span>推荐商圈</span>
-                  <span></span>
-                </li>
-                <li>
-                  <span>南城区</span>
-                  <span></span>
-                </li>
-                <li>
-                  <span>东城区</span>
-                  <span></span>
-                </li> -->
-
-              <li v-for="(item,index) in region" :class="{cur:item.active}" @click="switchRegion(index)">
+              <li v-for="(item,index) in region" :class="{cur:item.active}" @click="switchRegion(index)" :key="index">
                 <span>{{item.region_name}}</span>
                 <span></span>
               </li>
             </ul>
             <ul class="right-inner">
-              <!-- <li>全部</li>
-                <li class="cur">第一国际/汇一城</li>
-                <li>富民步行街</li>
-                <li>洪福路口</li>
-                <li>景湖时代城</li> -->
-
-              <li v-for="(item,index) in areas" :class="{cur:item.active}" @click="switchAreas(index)">
+              <li v-for="(item,index) in areas" :class="{cur:item.active}" @click="switchAreas(index)" :key="index">
                 {{item.region_name}}
               </li>
             </ul>
           </div>
           <ul v-if="tabTemp==2" class="screen-li sort">
-            <!-- <li>智能排序</li>
-              <li>离我最近</li>
-              <li>好评优先</li>
-              <li>人气最高</li> -->
-
-            <li v-for="(item,index) in sortTxt" :class="{cur:item.active}" @click="sort(index)">{{item.title}}</li>
+            <li v-for="(item,index) in sortTxt" :class="{cur:item.active}" @click="sort(index)" :key="index">{{item.title}}</li>
           </ul>
         </section>
       </section>
     </div>
-    <!-- <scroller :on-infinite="infinite" ref="myscroller"> -->
-      <!-- pc触发loadmore辅助容器 -->
-    <!-- <div class="main" style="top:0"> -->
-      <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  >
-
+    <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
       <div class="swiper-container banner-swiper" v-if="!seen">
         <div class="swiper-wrapper">
-          <!-- <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div>
-          <div class="swiper-slide"><img src="./images/1_02.jpg" /></div> -->
-
-          <div class="swiper-slide" v-for="(item,index) in banner">
+          <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
             <img :src="item.img_path" />
           </div>
         </div>
@@ -122,25 +71,15 @@
           </ul>
         </section> -->
       </section>
-
       <section class="business-list">
-
         <ul>
-          <!-- <router-link tag="li" to="#" class="vux-1px-b" v-for="(item,index) in businessList">
-          <ListInner :businessList="item"></ListInner>
-          <Other></Other>
-        </router-link> -->
-
           <router-link tag="li" :to="{path:'/home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
           </router-link>
         </ul>
-
       </section>
-      </mt-loadmore>
-    <!-- </div> -->
-    <!-- </scroller> -->
+    </div>
   </div>
 </template>
 <script>
@@ -148,20 +87,12 @@ import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import Other from '../../components/common/other/other'
 import ListInner from '../../components/common/listInner/listInner'
 import { mapActions } from 'vuex'
+import MeScroll from '@/../static/js/mescroll.min.js'
 import { Loadmore } from 'mint-ui'
 export default {
   data () {
     return {
-      businessList: [
-        // {
-        //   name: '良记甜品',
-        //   pic: '../../../static/images/nearby-label-img1.png'
-        // },
-        // {
-        //   name: '肯德基宅急送',
-        //   pic: '../../../static/images/nearby-label-img2.png'
-        // }
-      ],
+      businessList: [],
       seen: false,
       screenTab: [
         {
@@ -180,7 +111,7 @@ export default {
       tabTemp: null,
       category: [],
       shopList: [],
-      nextPageUrl: '',
+      nextPageUrl: null,
       tempArr: [],
       sortTxt: [
         { title: '智能排序', active: true },
@@ -191,7 +122,8 @@ export default {
       region: [],
       areas: [],
       banner: [],
-      cid: ''
+      cid: '',
+      resetPage: {num: 1, size: 10}
     }
   },
   components: { ListInner, Other, 'mt-loadmore': Loadmore },
@@ -228,7 +160,6 @@ export default {
     },
     getBanner: function () {
       this.axios.get('/api/banner?key=nearby').then(res => {
-        console.log(res)
         this.banner = res.data
       })
     },
@@ -272,7 +203,6 @@ export default {
         }
         this.category = res.data
         this.category.unshift({ title: '全部', id: this.$route.query.cid, active: true })
-        console.log(this.category)
       })
       // this.HTTP_GetCategory().then(res => {
       //   this.category = res.data
@@ -314,14 +244,10 @@ export default {
     switchCategory: function (index, event) {
       // 切换分类
       let categoryId = event.target.getAttribute('data-category')
-      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + categoryId).then(res => {
-      //   console.log(res)
-      // })
       this.getCategoryShop('&cid=' + categoryId)
+      // this.businessList = []
+      // this.upCallback(this.resetPage, categoryId)
       this.cid = categoryId
-      // this.HTTP_SwitchCategory(categoryId).then(res => {
-      //   console.log(res)
-      // })
 
       // 点击改变样式
       for (let i = 0, len = this.category.length; i < len; i++) {
@@ -350,7 +276,6 @@ export default {
           res.data[0].active = true
           this.region = res.data
           this.areas = res.data[0].children // 默认首个街道
-          console.log(this.areas)
         })
     },
     sort: function (index) {
@@ -384,42 +309,74 @@ export default {
       this.getCategoryShop('&area_id=' + this.areas[index].id + '&cid=' + this.cid)
       this.maskTap() // 相同逻辑收起下拉
     },
-    infinite (done) {
-      // 下拉加载vue-scroll
-      if (this.noData) {
-        setTimeout(() => {
-          this.$refs.myscroller.finishInfinite(2)
-        })
-        return
-      }
-      let self = this // this指向问题
-      setTimeout(() => {
-        this.axios.get(this.nextPageUrl + '&cid=1').then(res => {
-          this.tempArr = []
-          res.next_page_url == null
-            ? (this.nextPageUrl = null)
-            : (this.nextPageUrl = res.next_page_url
-              .split('http://api.hlbck.com')
-              .join(''))
-          delete res.data.result_state
-          delete res.data.return_state
-          for (let i in res.data) {
-            this.tempArr.push(res.data[i])
-          }
-        })
-        this.shopList = this.shopList.concat(this.tempArr)
-        if (this.nextPageUrl == null) {
-          self.noData = '没有更多数据'
-        }
-        // self.$refs.myscroller.resize()
-        done()
-      }, 500)
-    },
-    // done()表示这次异步加载数据完成，加载下一次
-    // 因为这个是同步的，加了setTimeout就是异步加载数据；
-    // 因为涉及到this指向问题，所以将他放在一个变量里。
-    refresh () {},
+    getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback, id) {
+      // 加载方法
+      let that = this
+      // id ? (id = id) : (id = '&cid=' + this.$route.query.cid)
+      id ? (id = id) : (id = this.$route.query.cid)
 
+      console.log(id)
+      let url
+      this.nextPageUrl ? url = this.nextPageUrl : url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&cid=' + id
+      this.axios.get(url).then(res => {
+      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+        console.log(res)
+        this.page = res
+        if (res.next_page_url != null) {
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+        } else {
+          this.nextPageUrl = null
+        }
+        delete res.data.result_state
+        delete res.data.return_state
+        // this.businessList = []
+        for (let i in res.data) {
+          // this.businessList.push(res.data[i])
+          if (res.data[i].distance >= 1000) {
+            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+          } else {
+            res.data[i].distance = res.data[i].distance + 'm'
+          }
+        }
+        // this.businessList.length == 0 ? this.businessList = res.data : this.businessList = this.businessList.concat(res.data)
+        // this.businessList = this.businessList.concat(res.data)
+        successCallback && successCallback(res.data)
+      })
+    },
+    // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
+    upCallback: function (page) {
+      // 联网加载数据
+      var self = this
+      self.getListDataFromNet(page.num, page.size, function (curPageData) {
+        // curPageData = [] //打开本行注释,可演示列表无任何数据empty的配置
+
+        // 如果是第一页需手动制空列表 (代替clearId和clearEmptyId的配置)
+        // if (page.num == 1) self.businessList = []
+
+        // 更新列表数据
+        console.log(self.businessList)
+        self.businessList = self.businessList.concat(curPageData)
+
+        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+        // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+        console.log('page.num=' + page.num + ', page.size=' + page.size + ', curPageData.length=' + curPageData.length + ', self.pdlist.length==' + self.businessList.length)
+
+        // 方法一(推荐): 后台接口有返回列表的总页数 totalPage
+        // self.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+        // 方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+        // self.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+        // 方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+        // self.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+        self.mescroll.endSuccess(curPageData.length, self.nextPageUrl != null)
+        // 方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+        // self.mescroll.endSuccess(curPageData.length)
+      }, function () {
+        // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+        self.mescroll.endErr()
+      }, this.cid)
+    },
     test: function () {
       console.log(this.$refs.myscroller.scroller.__scrollTop)
     }
@@ -429,12 +386,45 @@ export default {
   },
   mounted () {
     this.getCategory()
-    this.getCategoryShop()
+    // this.getCategoryShop()
     // this.getRegion()
     this.getArea()
     this.cid = this.$route.query.cid// 将默认分类值存储
-    console.log(this.$route.query.cid)
     // console.log(this.$refs.myscroller.scroller.__scrollTop)
+
+    // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+    // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+    var self = this
+    self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
+      down: {
+        // callback: self.refresh
+        use: false
+      },
+      up: {
+        callback: self.upCallback, // 上拉回调
+        // 以下参数可删除,不配置
+        isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+        // page:{size:8}, //可配置每页8条数据,默认10
+        toTop: { // 配置回到顶部按钮
+          src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
+          // offset : 1000
+        },
+        empty: { // 配置列表无任何数据的提示
+          // warpId: 'dataList',
+          icon: '../res/img/mescroll-empty.png'
+          //						  	tip : "亲,暂无相关数据哦~" ,
+          //						  	btntext : "去逛逛 >" ,
+          //						  	btnClick : function() {
+          //						  		alert("点击了去逛逛按钮");
+          //						  	}
+        }
+        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+        //						clearId: "dataList",
+        //						clearEmptyId: "dataList"
+      }
+    })
   },
   updated () {
     /* eslint-disable */
@@ -451,11 +441,19 @@ export default {
 <style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
+@import url("../../../static/css/mescroll.min.css");
 .full-page{
   height: 100vh;
   overflow: hidden;
 }
 #food-content {
+  .mescroll {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 7.5rem;
+  }
   .banner-swiper {
     width: 7.5rem;
     height: 2.6rem;
