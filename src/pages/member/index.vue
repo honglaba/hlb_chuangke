@@ -242,10 +242,11 @@ export default {
   display: flex;
   padding: 0.2rem 0;
   border-bottom: #e6e6e6 dashed 1px;
+  justify-content: space-around;
   li {
-    width: 25%;
     text-align: center;
     position: relative;
+    text-align: center;
     img {
       height: 0.5rem;
       width: 0.5rem;
@@ -257,8 +258,7 @@ export default {
       margin-bottom: .1rem;
       width: 0.5rem;
       height: 0.5rem;
-      margin-left: 50%;
-      transform: translateX(-50%);
+      display: inline-block;
       position: relative;
       .num {
         position: absolute;
