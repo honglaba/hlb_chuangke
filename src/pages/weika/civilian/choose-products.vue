@@ -28,6 +28,7 @@
             </transition>
 
           </div>
+
           <div class="pd20">
             <div class="tijiao">
               <button class="btn-aoc" @click="toBuy">确认购买</button>
@@ -115,20 +116,20 @@ export default {
   },
   methods: {
     toBuy () {
-      this.updateLoading({status: true})
+      let choose = this.goodList[this.chooseIndex]
+      this.updateLoading({ status: true })
       setTimeout(() => {
-        this.updateLoading({status: false})
-        this.$router.push({
-          path: '/weika/pay',
-          query: { bf: JSON.stringify(this.goodList[this.chooseIndex]) }
-        })
+        this.updateLoading({ status: false })
+        this.updateCart(choose)
+        this.saveCurrTodo('Wkbuy')
+        this.$router.push({path: '/weika/pay'})
       }, 300)
     },
     routeBack () {
       this.$router.go(-1)
     },
-    ...mapActions(['Wk_GoodList', 'Wk_Order']),
-    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
+    ...mapActions(['Wk_GoodList']),
+    ...mapMutations({ updateLoading: 'UPDATE_LOADING', updateCart: 'SAVE_SHOPPING_CART', saveCurrTodo: 'UPDATE_CURRENT_OPERATION' })
   },
   components: {
     Scroller

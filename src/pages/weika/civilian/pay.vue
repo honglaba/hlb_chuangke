@@ -3,6 +3,24 @@
     <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
+
+        <div class="address_box">
+          <div class="none" v-if="!hasReceiverAddress">
+            <router-link :to="{path: '/member/address_add'}">
+              <span class="add">新增收货地址</span>
+            </router-link>
+          </div>
+
+          <group gutter="5px" v-else>
+            <cell
+            :link="{path: '/member/address'}"
+            :title="'收货地址：' + hasReceiverAddress.address"
+            :inline-desc="hasReceiverAddress.name + '，' + hasReceiverAddress.mobile_phone"
+            :border-intent="false"></cell>
+          </group>
+          <img src="../images/address_bline.png">
+        </div>
+
         <div class="paybox pd20">
           <img src="../images/pay_ad.png">
           <group gutter="5px" v-if="Object.keys(mitem).length > 0">
@@ -10,7 +28,7 @@
             <popup-radio title="支付方式" :options="paytypeList" v-model="paytype">
               <template slot-scope="props" slot="each-item">
                 <p>
-                  <img src="~assets/images/weixin.png" class="vux-radio-icon">
+                  <img src="~assets/images/weixin.png" class="vux-radio-icon">微信支付
                 </p>
               </template>
             </popup-radio>
@@ -109,38 +127,35 @@ export default {
   data () {
     return {
       paytype: '微信',
-      paytypeList: ['微信', '支付宝'],
+      paytypeList: ['微信'],
       mitem: {}
     }
   },
   computed: {
-    ...mapGetters(['WkInvGetter'])
+    hasReceiverAddress () {
+      let defaultAddr = {}
+      if (this.receiverAddressGetter.length > 0) {
+        this.receiverAddressGetter.forEach(ele => {
+          if (ele.is_default === 1) {
+            defaultAddr = ele
+          }
+        })
+        return defaultAddr
+      } else {
+        return false
+      }
+    },
+    ...mapGetters(['WkInvGetter', 'payAddress', 'receiverAddressGetter', 'shoppingCart'])
   },
-  created () {
-    if (Object.keys(this.$route.query).length === 0) {
-      this.$router.go(-1)
-      return
-    }
-
-    this.mitem = JSON.parse(this.$route.query.bf)
-
-    let inbObj = {
-      goods_id: this.mitem.id,
-      is_invite: 0,
-      trade_type: 'weixinjsbridge'
-    }
-
-    if (this.WkInvGetter) {
-      inbObj.is_invite = 1
-      inbObj.invite_id = this.WkInvGetter
-    }
-
-    console.log(this.mitem)
+  async created () {
+    await this.HTTP_receiverAddress()
+    this.updateCurrTodo('')
+    this.mitem = this.shoppingCart
   },
   methods: {
     _pay () {
       let inbObj = {
-        // goods_id: this.mitem.id,
+        goods_id: this.mitem.id,
         is_invite: 0,
         trade_type: 'weixinjsbridge'
       }
@@ -149,37 +164,62 @@ export default {
         inbObj.invite_id = this.WkInvGetter
       }
 
-      wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
+      let realAddress = {
+        consignee: this.hasReceiverAddress.name,
+        mobile: this.hasReceiverAddress.mobile_phone,
+        province: this.hasReceiverAddress.province_id,
+        city: this.hasReceiverAddress.city_id,
+        borough: this.hasReceiverAddress.borough_id,
+        address: this.hasReceiverAddress.address
+      }
+
+      this.updateShoppingCard('') // 清空购物车
+
+      this.Wk_Order(Object.assign(inbObj, realAddress))
+        .then(res => {
+          wxpay(/* 回调 */this.onBridgeReady, /* 参数 */{order_id: res.data.order_id, trade_type: 'weixinjsbridge'}) // 调起微信支付
+        })
+        .catch(err1 => {
+          this.$router.push({path: '/member/order/order_list/1'})
+        })
     },
     onBridgeReady (val) {
-      this.Wk_Pay(val).then(res => {
-        let result = res.data
-        this.invId(null) // clear
-        window.WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',
-          result,
-          res => {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
+      this.Wk_Pay(val)
+        .then(res => {
+          let result = res.data
+          this.invId(null) // clear
+          window.WeixinJSBridge.invoke('getBrandWCPayRequest', result, res => {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
             if (
               res.err_msg === 'get_brand_wcpay_request:fail' ||
-              res.err_msg === 'get_brand_wcpay_request:cancel'
-            ) this.wxErrCall()
+            res.err_msg === 'get_brand_wcpay_request:cancel'
+            ) { this.wxErrCall() }
           })
-      })
+        })
     },
     wxSuccessCall () {
       this.HTTP_UserInfo() // 更新用户信息后再跳转
         .then(res1 => {
-          this.updataUsr(res1.data)
-          this.$router.push({path: '/weika'})
+          this.updateUsr(res1.data)
+          this.$router.push({ path: '/weika' })
         })
     },
-    wxErrCall () {},
+    wxErrCall () {
+      this.$router.push({path: '/member/order/order_list/1'})
+    },
     routeBack () {
       this.$router.go(-1)
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updataUsr: 'SET_USER_INFO'}),
-    ...mapActions(['Wk_Pay', 'HTTP_UserInfo'])
+    ...mapMutations({ invId: 'SET_WEIKA_INVID', updateUsr: 'SET_USER_INFO', updateCurrTodo: 'UPDATE_CURRENT_OPERATION', updateShoppingCard: 'SAVE_SHOPPING_CART' }),
+    ...mapActions(['Wk_Pay', 'HTTP_UserInfo', 'Wk_Order', 'User_CancelOrder', 'Wk_Query', 'HTTP_receiverAddress'])
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.path === '/member/address_add' || to.path === '/member/address') {
+      this.updateCurrTodo('Wkbuy')
+    } else {
+      this.updateCurrTodo('')
+    }
+    next()
   },
   components: {
     XInput,
@@ -194,9 +234,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.content .weui-cells {
-  margin-top: 0;
-}
 .paybox {
   background: #fff;
   .tijiao {
@@ -270,6 +307,26 @@ export default {
         }
       }
     }
+  }
+}
+.address_box {
+  background: #fff;
+  margin-bottom: 0.1rem;
+  .none {
+    text-align: center;
+    .add {
+      margin: 0.3rem 0 0.3rem 0;
+      display: inline-block;
+      line-height: 0.7rem;
+      padding: 0 0.3rem;
+      border: #e5e5e5 solid 1px;
+      border-radius: 5rem;
+      color: #333;
+    }
+  }
+  img {
+    width: 100%;
+    height: 0.06rem;
   }
 }
 </style>

@@ -45,7 +45,6 @@ import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
 import help_detail from '@/pages/article/help_detail' // 帮助详情
 import feedback from '@/pages/article/feedback' // 问题反馈
-
 // ---------------------= 微 卡 =------------------
 const WkMain = () => import(/* 根组件 */ '@/pages/weika')
 

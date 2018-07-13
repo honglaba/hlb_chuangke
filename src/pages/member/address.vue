@@ -43,7 +43,7 @@
 </template>
 <script>
 import { Divider } from 'vux'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -61,7 +61,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(['receiverAddress'])
+    ...mapState(['receiverAddress']),
+    ...mapGetters(['payAddress', 'currOperation'])
   },
   created () {
     if (this.receiverAddress.length > 0) {
@@ -104,7 +105,11 @@ export default {
       })
     },
     routeBack () {
-      this.$router.push({ path: '/member/settings' })
+      if (this.currOperation === 'Wkbuy') {
+        this.$router.push('/weika/pay')
+      } else {
+        this.$router.push({path: '/member/settings'})
+      }
     }
   },
   components: {
