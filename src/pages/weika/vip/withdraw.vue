@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'提现'"></my-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'提现'">
+      <span slot="right" @click="$router.push('/weika/withdraw_log')">提现记录</span>
+    </my-header>
     <div class="main">
       <div class="content">
         <div class="base_box pd20 mt20">
@@ -27,11 +29,11 @@
           </div>
           <div class="money-input">
             <span>¥</span>
-            <input type="text" class="money-input-item" v-model="numberA" @keydown="_moneyOnchange">
+            <input type="number" class="money-input-item" v-model="numberA" @keydown="_onMoneyChange">
           </div>
-          <p class="mtb20 c999">可提现金额￥{{ VipInfoData.money }}</p>
+          <p class="mtb20 c999">可提现金额￥{{ vipInfo.money }}</p>
           <p class="mb20">
-            <button :class="'btn-aoc'" @click="_withDraw">立即提现</button>
+            <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="_withDraw">立即提现</button>
           </p>
         </div>
       </div>
@@ -41,8 +43,7 @@
 </template>
 <script>
 import { Radio, XInput } from 'vux'
-import { mapActions, mapGetters } from 'vuex'
-import { MessageBox } from 'mint-ui'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -60,42 +61,69 @@ export default {
         }
       },
       numberA: '',
-      remark: ''
+      remark: '',
+      clickAble: false
     }
   },
   computed: {
-    ...mapGetters(['getWkVipInfo']),
-    VipInfoData () {
-      return this.getWkVipInfo
-    }
+    ...mapGetters({vipInfo: 'getWkVipInfo'})
   },
   watch: {
-    numberA (val, oldval) {
-      if (val - this.VipInfoData.money > 0) {
-        this.numberA = this.VipInfoData.money
-      }
+    numberA (val) {
+      this.clickAble = val > 0
     }
   },
   methods: {
-    _moneyOnchange (e) {
-      if (this.numberA - this.VipInfoData.money > 0) {
-        e.target.readOnly = true
-        setTimeout(() => {
-          e.target.readOnly = false
-        }, 50)
+    _onMoneyChange (e) {
+      if (e.keyCode === 8) {
+        e.returnValue = true
+        return
+      }
+
+      if (e.keyCode === 69) {
+        e.preventDefault()
+        return
+      }
+
+      if (this.numberA.split('.')[1]) {
+        if (this.numberA.split('.')[1].length >= 2) e.preventDefault()
+      }
+
+      if (this.numberA > this.vipInfo.money) {
+
       }
     },
     _withDraw () {
+      if (!this.numberA) {
+        this.$vux.toast.show({text: '请输入正确的金额', width: '3rem'})
+        return
+      }
       let amount = this.numberA
       let remark = this.remark
-      this.Vip_Withdraw({ amount, remark }).then(res => {
-        MessageBox.alert('提现成功').then(action => {})
-      })
+      let _this = this
+      this.updateLoading({status: true})
+      this.Vip_Withdraw({ amount, remark })
+        .then(res => {
+          this.Wk_Index()
+            .then(vres => {
+              this.updateLoading({status: false})
+              this.$vux.toast.show(
+                {
+                  text: '提现申请成功',
+                  type: 'success',
+                  time: 2000,
+                  onHide () {
+                    _this.$router.push('/weika/vip')
+                  }
+                })
+            })
+        })
     },
     routeBack () {
       this.$router.push({path: '/weika/vip'})
     },
-    ...mapActions(['Vip_Withdraw'])
+    ...mapActions(['Vip_Withdraw', 'Wk_Index']),
+    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
   },
   components: {
     Radio,
@@ -116,6 +144,7 @@ export default {
   font-weight: 600;
   line-height: .9rem;
   border-bottom: 1px solid rgb(196, 190, 190);
+  position: relative;
   span {
     display: block;
     float: left;
@@ -133,10 +162,10 @@ export default {
   }
 }
 
-.btn-aoc {
-  background-image: -webkit-linear-gradient(225deg, #f97d81 0, #ffb084 94%);
-  background-image: linear-gradient(225deg, #f97d81 0, #ffb084 94%);
-}
+// .btn-aoc {
+//   background-image: -webkit-linear-gradient(225deg, #f97d81 0, #ffb084 94%);
+//   background-image: linear-gradient(225deg, #f97d81 0, #ffb084 94%);
+// }
 .account li {
   display: flex;
   align-items: center;

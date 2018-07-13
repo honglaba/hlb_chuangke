@@ -1,8 +1,8 @@
 <template>
   <div class="app">
    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'提现记录'"></my-header>
-    <div class="main" v-if="Object.keys(this.defaultData).length > 0">
-      <div class="content pd20">
+    <div class="main">
+      <div class="content pd20" v-if="Object.keys(this.defaultData).length > 0">
         <div class="txbox">
           <p class="lstotal">{{ defaultData.total_amount }}</p>
           <p class="shuoming">历史提现总额(元)</p>
@@ -34,19 +34,20 @@ export default {
     }
   },
   created () {
-    this.Wk_WithdrawLog().then(res => {
-      res.data.data.forEach(cb => {
-        if (cb.status === 1) {
-          cb.bindClass = 'wancheng'
-        } else if (cb.status === 2) {
-          cb.bindClass = 'shibai'
-        } else {
-          cb.bindClass = 'jinxingzhong'
-        }
-      })
+    this.Wk_WithdrawLog()
+      .then(res => {
+        res.data.data.forEach(cb => {
+          if (cb.status === 1) {
+            cb.bindClass = 'wancheng'
+          } else if (cb.status === 2) {
+            cb.bindClass = 'shibai'
+          } else {
+            cb.bindClass = 'jinxingzhong'
+          }
+        })
 
-      this.defaultData = res.data
-    })
+        this.defaultData = res.data
+      })
   },
   methods: {
     routeBack () {

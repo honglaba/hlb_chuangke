@@ -104,7 +104,7 @@ export default {
     _toOpen () {
       const _this = this
 
-      if (!this.getUser.mobile_phone) return
+      // if (!this.getUser.mobile_phone) return
       if (this.getUser.id_card && this.getUser.real_name) {
         this.Wk_Query() // 有没有未完成的微卡订单
           .then(res => {
@@ -118,7 +118,7 @@ export default {
             } else if (res.result_state === 'success') {
               if (res.data.exists === 1) { /* 已存在订单 */
                 this.$vux.alert.show({
-                  content: '您有未完成的微卡订单!',
+                  content: '您有未完成的微卡订单',
                   onHide () {
                     _this.$router.push({path: '/member/order/order_list/1'})
                   }
@@ -132,9 +132,11 @@ export default {
         this.$vux.toast.hide()
         this.$vux.toast.show({
           type: 'text',
-          text: '请先实名认证!'
+          text: '请先实名认证',
+          onHide () {
+            _this.$router.push({path: '/member/realname', query: {status: true}})
+          }
         })
-        this.$router.push({path: '/member/realname', query: {status: true}})
       }
     },
     routeBack () {

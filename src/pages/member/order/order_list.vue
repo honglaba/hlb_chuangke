@@ -5,7 +5,7 @@
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
         <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>
         <tab-item @on-item-click="handler(1)" data-id=1 :selected="nowSeen == 1">待付款</tab-item>
-        <!-- <tab-item @on-item-click="handler(2)" data-id=2 :selected="nowSeen === 2">待发货</tab-item> -->
+        <tab-item @on-item-click="handler(2)" data-id=2 :selected="nowSeen == 2">待发货</tab-item>
         <tab-item @on-item-click="handler(3)" data-id=3 :selected="nowSeen == 3">待收货</tab-item>
         <tab-item @on-item-click="handler(4)" data-id=4 :selected="nowSeen == 4">待评价</tab-item>
         <!-- <tab-item @on-item-click="handler(5)" data-id=5 :selected="nowSeen === 5">退换/售后</tab-item> -->
@@ -20,36 +20,60 @@
           </div>
           <div class="dhlist" v-else>
             <ul>
+
               <li v-for="(item, index) in realData" :key="index">
                 <div class="shopinfo">
                   <div class="name">
                     <span class="l">订单号：
                       <em>{{ item.order_sn }}</em>
                     </span>
-                    <span class="r">{{ item.status_text }}</span>
+                    <span class="r">
+                      <em class="huangse" v-if="item.status_text === '待付款'">{{ item.status_text }}</em>
+                      <em class="huangse" v-if="item.status_text === '待发货'">{{ item.status_text }}</em>
+                      <em class="lvse" v-if="item.status_text === '待收货'">{{ item.status_text }}</em>
+                      <em class="" v-if="item.status_text === '待评价'">{{ item.status_text }}</em>
+                      <em class="huise" v-if="item.status_text === '已取消'">{{ item.status_text }}</em>
+                    </span>
                   </div>
                 </div>
+
                 <div class="splist">
-                  <div class="glist" v-for="child in item.order_goodses" :key="child.id">
-                    <div class="left">
-                      <img :src="child.thumb || ''" onerror="javascript:this.src='static/images/商品默认图.png';">
-                    </div>
-                    <div class="right">
-                      <div class="name">{{ child.name }}</div>
-                      <div class="guige">
+                  <template v-if="item.type === 3">
+                    <div class="glist" v-for="child in item.order_goodses" :key="child.id">
+                      <div class="left">
+                        <img :src="child.thumb || ''" onerror="javascript:this.src='static/images/商品默认图.png';">
+                      </div>
+                      <div class="right">
+                        <div class="name">{{ child.name }}</div>
+                        <!-- <div class="guige">
                         数量：{{ child.num }}；颜色：白色；尺码：38
+                      </div> -->
                       </div>
                     </div>
-                  </div>
+                  </template>
+
+                  <template v-if="item.type === 2">
+                    <div class="mdinfo1">
+                      <span>{{ item.shop_title }}</span>
+                    </div>
+                    <div class="mdinfo2">
+                      <span class="a1">下单时间：{{item.created_at }}</span>
+                      <span class="a2">实付:
+                        <em>￥{{ item.final_price }}</em>
+                      </span>
+                    </div>
+                  </template>
+
                 </div>
-                <div class="spprice">共 {{ item.order_goodses.length }} 件商品 实付:
+
+                <div class="spprice" v-if="item.type !== 2">共 {{ item.order_goodses.length }} 件商品 实付:
                   <span>￥{{ item.final_price }}</span>
                 </div>
 
                 <!-- 1 -->
                 <div class="spcaozuo" v-if="item.status_text === '待付款'">
-                  <span class="a1">取消订单</span>
-                  <span class="a2" @click="_toPay(item.id)">立即付款</span>
+                  <span class="a1" @click="_toCancel(item)">取消订单</span>
+                  <span class="a2" @click="_toPay(item)">立即付款</span>
                 </div>
 
                 <!-- 2 -->
@@ -72,6 +96,9 @@
                 </div>
 
                 <!-- 5 -->
+                <div class="spcaozuo" v-if="item.status_text === '待评价'">
+                  <span class="a2">立即评论</span>
+                </div>
                 <!-- 售后 -->
               </li>
             </ul>
@@ -90,13 +117,13 @@ export default {
     return {
       nowSeen: 0,
       realData: [],
-      ReqEnd: false
+      ReqEnd: false,
+      momentPay: {}
     }
   },
   created () {
     this.$vux.loading.show()
     this.getGoodList(this.$route.params.status).then(res => {
-      console.log(res)
       this.ReqEnd = true
       this.$vux.loading.hide()
       this.nowSeen = this.$route.params.status
@@ -107,21 +134,38 @@ export default {
     handler (val) {
       if (this.nowSeen === val) return
       this.ReqEnd = false
-      this.$vux.loading.show()
-      this.getGoodList(val).then(res => {
-        this.ReqEnd = true
-        this.$vux.loading.hide()
-        this.nowSeen = val
-        this.realData = res.data
-      })
+      this.updateLoading({ status: true })
+      this.getGoodList(val)
+        .then(res => {
+          this.ReqEnd = true
+          this.updateLoading({ status: false })
+          this.nowSeen = val
+          this.realData = res.data
+        })
     },
     routeBack () {
       this.$router.push({ path: '/member' })
     },
-    _toPay (id) {
+    _toCancel (item) {
+      let _this = this
+      this.$vux.confirm.show({
+        content: '确认取消该订单?',
+        onConfirm () {
+          _this.updateLoading({ status: true })
+          _this.cancelOrder({order_id: item.id})
+            .then(res => {
+              _this.updateLoading({ status: false })
+              _this.getGoodList(_this.$route.params.status)
+              _this.realData = res.data
+            })
+        }
+      })
+    },
+    _toPay (item) {
+      this.momentPay = item
       wxpay(
         /* 回调 */ this._payLoopCallback,
-        /* 参数 */ { order_id: id, trade_type: 'weixinjsbridge' }
+        /* 参数 */ { order_id: item.id, trade_type: 'weixinjsbridge' }
       ) // 调起微信支付
     },
     _payLoopCallback (val) {
@@ -130,40 +174,55 @@ export default {
           'getBrandWCPayRequest',
           response.data,
           res => {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              this.wxSuccessCall()
+            }
             if (
               res.err_msg === 'get_brand_wcpay_request:fail' ||
               res.err_msg === 'get_brand_wcpay_request:cancel'
-            ) { this.wxErrCall() }
+            ) {
+              this.wxErrCall()
+            }
           }
         )
       })
     },
     wxSuccessCall () {
-      this.$vux.loading.show()
+      this.updateLoading({ status: true })
       this.ReqEnd = false
-      this.getUsrInfo() // 更新用户信息后再跳转
-        .then(res1 => {
-          this.updataUsr(res1.data)
-          this.getGoodList(this.nowSeen)
-            .then(res => {
-              this.ReqEnd = true
-              this.realData = res.data
-              this.$vux.loading.hide()
-              this.$vux.toast.show({
-                type: 'text',
-                text: '订单支付完成'
-              })
-            })
+      if (this.momentPay.type_text === '微卡订单') {
+        this.getUsrInfo() // 更新用户信息后再跳转
+          .then(res1 => {
+            this.updataUsr(res1.data)
+            this.momentPay = {}
+            this.updateLoading({ status: false })
+            this.$router.push({ path: '/weika/vip' })
+          })
+      } else {
+        this.getGoodList(this.nowSeen).then(res => {
+          this.ReqEnd = true
+          this.realData = res.data
+          this.$vux.loading.hide()
+          this.updateLoading({ status: false })
+          this.$vux.toast.show({
+            type: 'text',
+            text: '订单支付完成'
+          })
+          this.momentPay = {}
         })
+      }
     },
     wxErrCall () {},
     ...mapActions({
       getGoodList: 'User_buyList',
       payMoney: 'Wk_Pay',
-      getUsrInfo: 'HTTP_UserInfo'
+      getUsrInfo: 'HTTP_UserInfo',
+      cancelOrder: 'User_CancelOrder'
     }),
-    ...mapMutations({ updataUsr: 'SET_USER_INFO' })
+    ...mapMutations({
+      updataUsr: 'SET_USER_INFO',
+      updateLoading: 'UPDATE_LOADING'
+    })
   },
   components: {
     Tab,
@@ -172,7 +231,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.tab{position: fixed; top: .88rem; width: 100%;}
+.tab {
+  position: fixed;
+  top: 0.88rem;
+  width: 100%;
+}
 .main2 {
   top: 1.58rem;
 }

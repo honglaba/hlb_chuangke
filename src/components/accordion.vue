@@ -1,17 +1,19 @@
 <template>
-  <div class="accWrapper" :class="[{ 'up': isDisplay,'down': !isDisplay  }]">
-    <div class="accTitle" @click="toggleList">
-      <div class="left">{{ title.riqi }}</div>
-      <div class="right">
-        <span></span>
-        <span class="ico"></span>
+  <div>
+    <div class="accWrapper" :class="isDisplay ? 'up' : 'down'" v-for="(item, index) in list" :key="index">
+      <div class="accTitle" @click="toggleList">
+        <div class="left">{{ item.date }}</div>
+        <div class="right">
+          <span></span>
+          <span class="ico"></span>
+        </div>
       </div>
+      <ul class="accList">
+        <li v-if="item.consumption">消费佣金
+          <span>{{item.consumption}}</span>
+        </li>
+      </ul>
     </div>
-    <ul class="accList">
-      <li v-for="(item, index) in list" :key="index">{{item.name}}
-        <span>{{item.change}}</span>
-      </li>
-    </ul>
   </div>
 </template>
 <script>
@@ -33,8 +35,11 @@ export default {
       required: true
     }
   },
+  created () {
+    console.log(this.list)
+  },
   methods: {
-    toggleList: function (e) {
+    toggleList (e) {
       this.isDisplay = !this.isDisplay
     }
   }

@@ -64,8 +64,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import { Loading } from 'vux'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   props: {
     DataTree: {
@@ -95,9 +94,6 @@ export default {
           return false
       }
     }
-  },
-  components: {
-    Loading
   },
   computed: {
     interFaceToggle () {
@@ -151,12 +147,13 @@ export default {
           this.numVal.map(r => {
             str += r
           })
+          this.updataLoading({status: true})
           this.User_PayPwdPass({
             pay_password: str,
             action: 'modify_pay_password'
           }).then(res => {
+            this.updataLoading({status: false})
             if (res) {
-              this.$vux.loading.hide()
               this.$router.push({ path: '/member/paysetting/4' })
             } else {
               // this.$vux.loading.hide()
@@ -201,28 +198,29 @@ export default {
       })
       if (flag) {
         this.isWaiting = true
-        this.$vux.loading.show()
+        this.updataLoading({status: true})
         this.User_PayPwdConf(
           [str1, str2, this.resetType] /* type is important */
         ).then(res => {
           this.isWaiting = false
-          this.HTTP_UserInfo().then(res => {
-            this.$vux.loading.hide()
-            // show-cancel-button
-            this.$vux.confirm.show({
-              showCancelButton: false,
-              title: '提示',
-              content: '支付密码修改成功'
+          this.HTTP_UserInfo()
+            .then(res => {
+              this.updataLoading({status: false})
+              // show-cancel-button
+              this.$vux.confirm.show({
+                showCancelButton: false,
+                title: '提示',
+                content: '支付密码修改成功'
+              })
+              this.$store.commit('SET_USER_INFO', res.data)
+              this.$router.push({ path: '/member/settings' })
             })
-            this.$store.commit('SET_USER_INFO', res.data)
-            this.$router.push({ path: '/member/settings' })
-          })
         })
       } else {
-        this.$vux.loading.show()
+        this.updataLoading({status: true})
         setTimeout(() => {
           this.numVal = []
-          this.$vux.loading.hide()
+          this.updataLoading({status: false})
         }, 300)
         this.$vux.confirm.show({
           showCancelButton: false,
@@ -259,29 +257,30 @@ export default {
           closeOnConfirm: false,
           onConfirm (val) {
             if (val.match(/^[0-9]{5}$/)) {
-              _this.$vux.loading.show()
+              _this.updataLoading({status: true})
               _this.User_PayResetPhoneVerificationPass(val).then(res => {
                 _this.resetType = '2'
                 if (res.result_state === 'success') {
                   _this.$vux.confirm.hide()
-                  _this.$vux.loading.hide()
+                  _this.updataLoading({status: false})
                 }
               })
             }
           }
         })
       } else if (c === 3) {
-        this.$vux.loading.show()
+        this.updataLoading({status: true})
         setTimeout(() => {
           this.resetType = '3'
-          this.$vux.loading.hide()
+          this.updataLoading({status: false})
         }, 500)
       }
     },
     routeBack () {
       // 顶部返回按钮事件
       this.$router.push({ path: '/member/settings' })
-    }
+    },
+    ...mapMutations({updataLoading: 'UPDATE_LOADING'})
   }
 }
 </script>
@@ -292,7 +291,7 @@ export default {
   color: #666;
 }
 .pay-ident {
-  padding-top: .88rem;  
+  padding-top: .88rem;
   .pay-ident-item {
     width: 100%;
     height: 1rem;

@@ -43,7 +43,6 @@
 <script>
 import { XInput, Group, Divider, Spinner } from 'vux'
 import { mapActions } from 'vuex'
-import { Toast } from 'mint-ui'
 export default {
   props: {
     DataTree: {
@@ -63,7 +62,7 @@ export default {
       validator_verification: val => {
         return {
           valid: !!val.match(/^[0-9]/),
-          msg: '格式不正确!'
+          msg: '格式不正确'
         }
       }
     }
@@ -101,7 +100,7 @@ export default {
     _getVerificationCode () { // 获取验证码
       this.isGetVerificationCode = true
       if (this.sendAble) {
-        Toast('验证码已发送!')
+        this.$vux.toast.show('验证码已发送')
         this.countDown = 60
         let timer = setInterval(() => {
           if (this.countDown === 0) {
@@ -113,12 +112,12 @@ export default {
         }, 1000)
         this.HTTP_verification(this.my_mobile_phone)
       } else {
-        Toast('请填写正确的手机号!')
+        this.$vux.toast.show('请填写正确的手机号')
       }
     },
     _lastToBind () {
       if (!this.$refs.refPhone.valid || !this.$refs.refValidator.valid) {
-        Toast('请填写正确的格式!')
+        this.$vux.toast.show('请填写正确的格式')
         return
       }
 
@@ -132,13 +131,11 @@ export default {
               if (res.result_state === 'success') {
                 this.HTTP_UserInfo().then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
-                  this.$router.push({path: '/member/settings'})
-                  this.$vux.toast.show({
-                    text: '更换手机号完成',
-                    type: 'text',
-                    time: 1000
-                  })
+                  this.$vux.toast.show('更换手机号完成')
+                  this.$router.go(0)
                 })
+              } else {
+                this.$vux.toast.show('手机号码已经被占用')
               }
             })
         } else {
@@ -151,18 +148,11 @@ export default {
                 this.HTTP_UserInfo().then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
                   this.$router.push({path: '/member/settings'})
-                  this.$vux.toast.show({
-                    text: '成功绑定手机号',
-                    type: 'text',
-                    time: 1500
-                  })
+                  this.$vux.toast.show('成功绑定手机号')
                 })
               } else {
                 this.verification_code = ''
-                this.$vux.toast.show({
-                  text: res.message,
-                  type: 'text'
-                })
+                this.$vux.toast.show(res.message)
               }
             })
         }
@@ -174,11 +164,7 @@ export default {
         .then(res => {
           this.isLoading = true
 
-          this.$vux.toast.show({
-            text: '验证码已发送',
-            type: 'text',
-            time: 1000
-          })
+          this.$vux.toast.show('验证码已发送')
 
           this.$vux.confirm.show({
             title: '验证码已发送至' + this.DataTree.mobile_phone.slice(0, 3) + '****' + this.DataTree.mobile_phone.slice(7, 12),
@@ -186,16 +172,13 @@ export default {
             closeOnConfirm: false,
             onConfirm (val) {
               if (val.match(/^[0-9]{5}$/)) {
-                this.$vux.loading.show()
+                _this.$vux.confirm.hide()
+                _this.$vux.loading.show()
                 _this.HTTP_resetPhonePassIdentityDrop(val)
                   .then(res => {
-                    this.$vux.loading.hide()
+                    _this.$vux.loading.hide()
                     if (res.result_state === 'success') {
-                      _this.$vux.toast.show({
-                        text: '验证成功',
-                        type: 'text'
-                      })
-                      _this.$vux.confirm.hide()
+                      _this.$vux.toast.show('验证成功')
                       _this.switchWindow = false
                     }
                   })

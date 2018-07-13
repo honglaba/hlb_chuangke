@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
+import VueClipboard from 'vue-clipboard2'
 import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
@@ -30,10 +31,12 @@ Vue.component('Footerx', Footerx)
 Vue.component('x-header', XHeader)
 Vue.component('x-loading', Loading)
 // Vue.component('BScroll', BScroll)
-Vue.use(ToastPlugin)
+
+Vue.use(ToastPlugin, {type: 'text', time: 1500})
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(AlertPlugin)
+Vue.use(VueClipboard)
 
 Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'
