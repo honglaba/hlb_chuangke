@@ -453,6 +453,19 @@ const weika = {
         }
       })
     })
+  },
+  User_CancelOrder ({commit}, data) {
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url: `/api/user/order/cancel`,
+        method: 'POST',
+        data
+      }).then(res => {
+        if (res.result_state === 'success') {
+          resolve(res)
+        }
+      })
+    })
   }
 }
 

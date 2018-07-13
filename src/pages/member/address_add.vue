@@ -99,16 +99,14 @@ export default {
         content: '确定执行此操作?',
         // 组件除show外的属性
         onConfirm () {
-          _this.HTTP_receiverAddressDel(_this.userInput.id).then(res => {
-            _this.HTTP_receiverAddress().then(res => {
-              if (_this.userInput.is_default === 1 && res) {
-                Toast('请设置一个默认地址')
-              } else if (!res) {
-                Toast('您还没有添加收货地址')
-              }
-              _this.$router.push({path: '/member/address'})
+          _this.HTTP_receiverAddressDel(_this.userInput.id)
+            .then(res => {
+              _this.HTTP_receiverAddress()
+                .then(res => {
+                  _this.$vux.toast.show('删除成功')
+                  _this.$router.push({path: '/member/address'})
+                })
             })
-          })
         }
       })
     },
@@ -124,7 +122,7 @@ export default {
           .then(res => {
             this.HTTP_receiverAddress()
               .then(res => {
-                Toast('修改成功')
+                this.$vux.toast.show('修改成功')
                 this.$router.push({path: '/member/address'})
               })
           })
@@ -132,7 +130,7 @@ export default {
         this.HTTP_receiverAddressAdd(this.userInput)
           .then(res => {
             this.HTTP_receiverAddress().then(res => {
-              Toast('添加成功')
+              this.$vux.toast.show('添加成功')
               this.$router.push({path: '/member/address'})
             })
           })

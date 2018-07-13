@@ -8,9 +8,7 @@
 import { mapGetters } from 'vuex'
 export default {
   computed: {
-    ...mapGetters({
-      DataTree: 'userInfoGetter'
-    })
+    ...mapGetters({DataTree: 'userInfoGetter'})
   },
   data () {
     return {

@@ -4,11 +4,11 @@
     <div class="main2">
       <div class="content">
         <group>
-          <x-input title='真实姓名' type="text" ref="name" v-model="value.name" :is-type="valid.name" @on-change="_keydown" required></x-input>
-          <x-input title='身份证号码' type="text" ref="identCard" v-model="value.identCard" :is-type="valid.identCard" @on-change="_keydown" required></x-input>
+          <x-input title='真实姓名' type="text" ref="name" v-model="value.real_name" :disabled="WriteDisable" :is-type="valid.name" @on-change="_keydown" required></x-input>
+          <x-input title='身份证号码' type="text" ref="identCard" v-model="value.id_card" :disabled="WriteDisable" :is-type="valid.identCard" @on-change="_keydown" required></x-input>
         </group>
         <div class="tijiao">
-          <button class="btn-aoc" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="_submit">确认</button>
+          <button class="btn-aoc" v-if="!getUser.real_name" :class="!clickAble ? 'btn-aoc-disble' : ''" @click="_submit">确认</button>
         </div>
       </div>
     </div>
@@ -16,7 +16,7 @@
 </template>
 <script>
 import { XInput, Group, Divider } from 'vux'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -38,9 +38,10 @@ export default {
         }
       },
       value: {
-        name: '',
-        identCard: ''
-      }
+        real_name: '',
+        id_card: ''
+      },
+      WriteDisable: false
     }
   },
   components: {
@@ -48,13 +49,22 @@ export default {
     Group,
     Divider
   },
+  computed: {
+    ...mapGetters({getUser: 'userInfoGetter'})
+  },
+  created () {
+    if (this.getUser.real_name && this.getUser.id_card) {
+      this.value.real_name = this.getUser.real_name
+      this.value.id_card = this.getUser.id_card
+      this.WriteDisable = true
+    }
+  },
   methods: {
     ...mapActions(['HTTP_realNameRegistration', 'HTTP_UserInfo']),
     _keydown () {
       this.clickAble = this.$refs.name.valid && this.$refs.identCard.valid
     },
     _submit () {
-      let _this = this
       if (!this.$refs.name.valid || !this.$refs.identCard.valid) {
         this.$vux.toast.hide()
         this.$vux.toast.text('请填写正确的信息')
@@ -62,22 +72,17 @@ export default {
       }
 
       this.HTTP_realNameRegistration({
-        name: this.value.name,
-        id_card: this.value.identCard
+        name: this.value.real_name,
+        id_card: this.value.id_card
       })
         .then(res => {
           if (res.result_state === 'success') {
             this.HTTP_UserInfo()
               .then(res1 => {
                 this.$store.commit('SET_USER_INFO', res1.data)
-                this.$vux.confirm.show({
-                  showCancelButton: false,
-                  title: '提示',
-                  content: '实名认证成功',
-                  onHide () {
-                    _this.$route.query.status ? _this.$router.push({name: 'step1'}) : _this.$router.push({path: '/member/settings'})
-                  }
-                })
+                this.$vux.toast.show('实名认证成功')
+                this.WriteDisable = true
+                if (this.$route.query.status) this.$router.push({name: 'step1'})
               })
           } else {
             this.$vux.confirm.show({

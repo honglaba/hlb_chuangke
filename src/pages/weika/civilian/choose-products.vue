@@ -236,7 +236,7 @@ export default {
 }
 .dhbox {
   position: relative;
-  width: 9.4rem;
+  width: 12.42rem;
   min-height: 3.88rem;
 }
 .dhbox-item {
@@ -248,11 +248,11 @@ export default {
   border-radius: 5px;
   margin-left: .1rem;
   background: #fff;
-  float: left;
   padding: 0.2rem;
   .name {
     font-size: 0.32rem;
     font-weight: bold;
+    min-height: .84rem;
   }
   .price {
     margin-top: 0.1rem;

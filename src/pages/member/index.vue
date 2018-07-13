@@ -30,8 +30,7 @@
               </div>
               <div class="uinfo-login" v-else>
                 <p class="name-login">{{ DataTree.nickname }}</p>
-                <p class="tips-login">VIP
-                  <span></span>
+                <p class="tips-login">Hello, 欢迎来到创客
                 </p>
               </div>
             </div>

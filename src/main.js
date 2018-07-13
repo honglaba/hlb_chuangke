@@ -30,7 +30,7 @@ Vue.component('x-header', XHeader)
 Vue.component('x-loading', Loading)
 // Vue.component('BScroll', BScroll)
 
-Vue.use(ToastPlugin, {type: 'text', time: 1000})
+Vue.use(ToastPlugin, {type: 'text', time: 1500})
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(AlertPlugin)

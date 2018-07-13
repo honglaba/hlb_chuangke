@@ -35,7 +35,6 @@ axios.interceptors.request.use(config => {
     }
 
     if (!Cookies.get('accessToken')) { // 判断access_token是否过期
-      alert()
       let xhr = new XMLHttpRequest()
       let retry = new Promise((resolve, reject) => {
         refreshSubscribers.push(accessToken => {
