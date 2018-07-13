@@ -3,6 +3,17 @@
     <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
+        <div class="address_box">
+          <div class="none">
+            <a href="#">
+              <span class="add">新增收货地址</span>
+            </a>
+          </div>
+          <group gutter="5px" style="">
+            <cell title="收货地址：东莞市南城区鸿禧中心a606" link="/component/radio" inline-desc='成海，18503088185' :border-intent="false"></cell>
+          </group>
+          <!-- <img src="../images/address_bline.png"> -->
+        </div>
         <div class="paybox pd20">
           <img src="../images/pay_ad.png">
           <group gutter="5px">
@@ -94,8 +105,8 @@
   </div>
 </template>
 <script>
-import { wxpay } from 'tools/util'
-import { mapMutations, mapActions } from 'vuex'
+import { wxpay } from "tools/util";
+import { mapMutations, mapActions } from "vuex";
 import {
   XInput,
   Selector,
@@ -105,56 +116,55 @@ import {
   Picker,
   Cell,
   PopupRadio
-} from 'vux'
+} from "vux";
 export default {
-  data () {
+  data() {
     return {
-      paytype: '微信',
-      paytypeList: ['微信', '支付宝'],
+      paytype: "微信",
+      paytypeList: ["微信", "支付宝"],
       mitem: {}
-    }
+    };
   },
-  created () {
+  created() {
     if (Object.keys(this.$route.query).length === 0) {
-      this.$router.go(-1)
-      return
+      this.$router.go(-1);
+      return;
     }
-    this.mitem = JSON.parse(this.$route.query.bf)
-    delete this.$route.query.bf
+    this.mitem = JSON.parse(this.$route.query.bf);
+    delete this.$route.query.bf;
   },
   methods: {
-    _pay () {
-      wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
+    _pay() {
+      wxpay(/* 回调 */ this.onBridgeReady, /* 参数 */ this.$route.query); // 调起微信支付
     },
-    onBridgeReady (val) {
+    onBridgeReady(val) {
       this.Wk_Pay(val).then(res => {
-        let result = res.data
-        this.invId(null) // clear
-        window.WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',
-          result,
-          res => {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') this.wxSuccessCall()
-            if (
-              res.err_msg === 'get_brand_wcpay_request:fail' ||
-              res.err_msg === 'get_brand_wcpay_request:cancel'
-            ) this.wxErrCall()
-          })
-      })
+        let result = res.data;
+        this.invId(null); // clear
+        window.WeixinJSBridge.invoke("getBrandWCPayRequest", result, res => {
+          if (res.err_msg === "get_brand_wcpay_request:ok")
+            this.wxSuccessCall();
+          if (
+            res.err_msg === "get_brand_wcpay_request:fail" ||
+            res.err_msg === "get_brand_wcpay_request:cancel"
+          )
+            this.wxErrCall();
+        });
+      });
     },
-    wxSuccessCall () {
+    wxSuccessCall() {
       this.HTTP_UserInfo() // 更新用户信息后再跳转
         .then(res1 => {
-          this.updataUsr(res1.data)
-          this.$router.push({path: '/weika'})
-        })
+          this.updataUsr(res1.data);
+          this.$router.push({ path: "/weika" });
+        });
     },
-    wxErrCall () {},
-    routeBack () {
-      this.$router.go(-1)
+    wxErrCall() {},
+    routeBack() {
+      this.$router.go(-1);
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', updataUsr: 'SET_USER_INFO'}),
-    ...mapActions(['Wk_Pay', 'HTTP_UserInfo'])
+    ...mapMutations({ invId: "SET_WEIKA_INVID", updataUsr: "SET_USER_INFO" }),
+    ...mapActions(["Wk_Pay", "HTTP_UserInfo"])
   },
   components: {
     XInput,
@@ -166,12 +176,9 @@ export default {
     Cell,
     PopupRadio
   }
-}
+};
 </script>
 <style lang="less" scoped>
-.content .weui-cells {
-  margin-top: 0;
-}
 .paybox {
   background: #fff;
   .tijiao {
@@ -245,6 +252,26 @@ export default {
         }
       }
     }
+  }
+}
+.address_box {
+  background: #fff;
+  margin-bottom: 0.1rem;
+  .none {
+    text-align: center;
+    .add {
+      margin: 0.3rem 0 0.3rem 0;
+      display: inline-block;
+      line-height: 0.7rem;
+      padding: 0 0.3rem;
+      border: #e5e5e5 solid 1px;
+      border-radius: 5rem;
+      color: #333;
+    }
+  }
+  img {
+    width: 100%;
+    height: 0.06rem;
   }
 }
 </style>

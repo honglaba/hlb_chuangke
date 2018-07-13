@@ -124,7 +124,6 @@ export default {
   created () {
     this.$vux.loading.show()
     this.getGoodList(this.$route.params.status).then(res => {
-      this.filtersColor(res.data)
       this.ReqEnd = true
       this.$vux.loading.hide()
       this.nowSeen = this.$route.params.status
