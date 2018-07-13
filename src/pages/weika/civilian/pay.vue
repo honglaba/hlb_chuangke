@@ -5,7 +5,7 @@
       <div class="content">
         <div class="paybox pd20">
           <img src="../images/pay_ad.png">
-          <group gutter="5px">
+          <group gutter="5px" v-if="Object.keys(mitem).length > 0">
             <cell title="购买方式" value="在线支付"></cell>
             <popup-radio title="支付方式" :options="paytypeList" v-model="paytype">
               <template slot-scope="props" slot="each-item">
@@ -26,8 +26,7 @@
           </div>
           <div class="tips">
             <p>开通即视为同意
-              <span>
-                <<创客微卡会员用户协议>></span>
+              <span>&#60;&#60;创客微卡会员用户协议&#62;&#62;</span>
             </p>
           </div>
         </div>
@@ -95,7 +94,7 @@
 </template>
 <script>
 import { wxpay } from 'tools/util'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import {
   XInput,
   Selector,
@@ -114,16 +113,42 @@ export default {
       mitem: {}
     }
   },
+  computed: {
+    ...mapGetters(['WkInvGetter'])
+  },
   created () {
     if (Object.keys(this.$route.query).length === 0) {
       this.$router.go(-1)
       return
     }
+
     this.mitem = JSON.parse(this.$route.query.bf)
-    delete this.$route.query.bf
+
+    let inbObj = {
+      goods_id: this.mitem.id,
+      is_invite: 0,
+      trade_type: 'weixinjsbridge'
+    }
+
+    if (this.WkInvGetter) {
+      inbObj.is_invite = 1
+      inbObj.invite_id = this.WkInvGetter
+    }
+
+    console.log(this.mitem)
   },
   methods: {
     _pay () {
+      let inbObj = {
+        // goods_id: this.mitem.id,
+        is_invite: 0,
+        trade_type: 'weixinjsbridge'
+      }
+      if (this.WkInvGetter) {
+        inbObj.is_invite = 1
+        inbObj.invite_id = this.WkInvGetter
+      }
+
       wxpay(/* 回调 */this.onBridgeReady, /* 参数 */this.$route.query) // 调起微信支付
     },
     onBridgeReady (val) {

@@ -29,6 +29,8 @@ const mutations = {
     state.WkInv = val
   },
   [types.UPDATE_LOADING] (state, context) {
+    state.isLoading.status = false
+    state.isLoading.text = ''
     state.isLoading.status = context.status
     state.isLoading.text = context.text
   },
