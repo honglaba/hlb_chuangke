@@ -16,6 +16,7 @@ import ChoiceDetails from '@/pages/home/choice-details'
 import MyComment from '@/pages/home/my-comment'
 import Exchange from '@/pages/home/exchange'
 import ShopQRcode from '@/pages/home/shopqrcode'
+import Comment from '@/pages/home/comment'
 
 // import Scanning from '@/pages/home/scanning'
 // 附近商家
@@ -178,6 +179,13 @@ export default new VueRouter({
       component: ShopQRcode,
       meta: {
         title: '店铺二维码'
+      }
+    }, {
+      path: 'comment',
+      name: 'Comment',
+      component: Comment,
+      meta: {
+        title: '评论列表'
       }
     }
       // {

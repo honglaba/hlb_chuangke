@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-    
+
 }
 </script>
 <style lang="less" scoped>
@@ -28,7 +28,7 @@ export default {
       > li {
         display: flex;
         align-items: center;
-        padding-top: .2rem;
+        padding-top: .1rem;
         &:last-child{
            padding-bottom: .2rem;
         }
@@ -59,4 +59,3 @@ export default {
       }
     }
 </style>
-

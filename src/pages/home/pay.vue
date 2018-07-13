@@ -2,17 +2,18 @@
 <div id="app">
   <x-header :left-options="{backText: ''}" :title="detailsGetter.title"></x-header>
   <section>
-    <router-link class="location-row" tag="a" to="#">
+    <router-link class="location-row" tag="a" to="/home/map">
       <span></span>
-      <p>袁屋边大道2号盈锋生活超市二层一号铺</p>
+      <p>{{detailsGetter.address}}</p>
     </router-link>
     <section class="total-money">
       <p>支付金额</p>
       <!-- <p>￥300</p> -->
       <p>￥<input type="number" class="pay-input" placeholder="请输入金额" v-model="money"/></p>
-      <div class="vux-1px-t">
-        预计您将获得<span class="#cf00">300</span>积分
+      <div class="vux-1px-t" v-if="money">
+        预计您将获得<span class="#cf00">{{money}}</span>积分
       </div>
+      <div class="vux-1px-t" v-if="!money">付款将获得相应积分</div>
     </section>
 
     <section class="chuangke-block" v-if="chuangke">
@@ -174,6 +175,7 @@ export default {
     font-size: .64rem;
     border: 0;
     outline: 0;
+    width: 5rem;
   }
   >div{
     height: .64rem;

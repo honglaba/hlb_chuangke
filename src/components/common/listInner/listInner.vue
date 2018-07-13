@@ -72,9 +72,12 @@ export default {
           font-size: 0.36rem;
           color: #333;
           margin-right: 0.16rem;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
+
+           text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
         }
         .mark-row{
           display: flex;
@@ -104,7 +107,7 @@ export default {
             text-align: center;
             line-height: 0.3rem;
             border-radius: 0.02rem;
-            background: linear-gradient(left, #ffd05f, #ffb51d);
+            background: linear-gradient(90deg, #ffd05f, #ffb51d);
             border: 0.01rem solid #ffecb0;
         }
         .tsc {

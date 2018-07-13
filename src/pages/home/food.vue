@@ -253,6 +253,12 @@ export default {
       for (let i = 0, len = this.category.length; i < len; i++) {
         this.category[i].active = false
       }
+      if (index == 0) { // 如果是选择全部则‘附近商家’一栏重置
+        this.getArea()
+        this.screenTab[1] = {
+          name: '附近商家',
+          active: false}
+      }
       this.category[index].active = true
       this.screenTab[0].name = this.category[index].title
       this.maskTap() // 相同逻辑收起下拉
@@ -333,7 +339,7 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -406,7 +412,7 @@ export default {
         isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
         // page:{size:8}, //可配置每页8条数据,默认10
         toTop: { // 配置回到顶部按钮
-          src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
           // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
           // offset : 1000
         },

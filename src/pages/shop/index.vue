@@ -1,38 +1,16 @@
 <template>
-  <!-- <mt-loadmore id="app" :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange" ref="loadmore"> -->
-  <div class="shop-index mescroll" id="mescroll">
-    <!-- pc触发loadmore辅助容器 -->
-    <!-- <div class="main" style="top:0"> -->
+  <div>
+    <div class="shop-index mescroll" id="mescroll">
       <div>
-      <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  class="bpad100"> -->
         <Headerx @result='result'></Headerx>
         <section class="banner">
           <p>今日推荐</p>
           <img src="./images/nearby-banner.png" />
         </section>
-        <section :class="['tab',tabFixed?'sp':'']">
-          <!-- 原始tab -->
-          <!-- <ul class="tab-nav">
-            <li v-for="(tab,index) in tabNavs" @click="tabTap(index)" :class="{cur:tab.active}" :key="index">
-              {{tab.title}}
-            </li>
-          </ul> -->
-          <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
-            <tab-item v-for="(tab, index) in tabNavs" @click.native="tabTap(index)" :selected="index === 0" :key="index"> {{tab.title}}</tab-item>
-          </tab>
-          <div class="tab-con">
-            <ul>
-              <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
-                {{nav.title}}
-              </li>
-            </ul>
-          </div>
-        </section>
         <section class="business-list">
-          <!-- 复制的占位dom -->
-          <section v-if="tabFixed">
+          <section class="tab">
             <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
-              <tab-item v-for="(tab, index) in tabNavs" @click.native="tabTap(index)" :selected="index === 0" :key="index"> {{tab.title}}</tab-item>
+              <tab-item v-for="(tab, index) in tabNavs"  :selected="index === fixIndex" :key="index" @on-item-click="tabTap(index)" @click.native="fixIndex=index"> {{tab.title}}</tab-item>
             </tab>
             <div class="tab-con">
               <ul>
@@ -42,8 +20,6 @@
               </ul>
             </div>
           </section>
-          <!-- 用于占位的dom -->
-          <!-- <div v-if="tabFixed" :style="{height:tabH+'px'}"></div> -->
           <ul>
             <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
               <ListInner :businessList="item"></ListInner>
@@ -51,11 +27,23 @@
             </router-link>
           </ul>
         </section>
-
-      <!-- </mt-loadmore> -->
       </div>
-      <Footerx></Footerx>
-    <!-- </div> -->
+  </div>
+  <!-- mescroll外的固定定位  解决苹果跟随抖动的bug -->
+    <section class="tab sp" v-if="tabFixed">
+          <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
+            <tab-item v-for="(tab, index) in tabNavs"  :selected="index === fixIndex" :key="index" @on-item-click="tabTap(index)" @click.native="fixIndex=index"> {{tab.title}}</tab-item>
+          </tab>
+          <div class="tab-con">
+            <ul>
+              <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
+                {{nav.title}}
+              </li>
+            </ul>
+          </div>
+        </section>
+        <!-- end -->
+  <Footerx></Footerx>
   </div>
 </template>
 <script>
@@ -73,9 +61,9 @@ export default {
       businessList: [],
       allLoaded: false,
       tabFixed: false,
-      tabH: '',
       selectId: '',
-      nextPageUrl: null
+      nextPageUrl: null,
+      fixIndex: 0
     }
   },
   methods: {
@@ -93,27 +81,6 @@ export default {
         that.tabFixed = false
       }
     },
-    // loadmore
-    loadTop () {
-      this.$refs.loadmore.onTopLoaded()
-      this.axios.get(this.nextPageUrl).then(res => {
-        console.log(res)
-        console.log(this.businessList)
-      })
-    },
-    loadBottom () {
-      this.axios.get(this.nextPageUrl).then(res => {
-        this.businessList = this.businessList.concat(res.data)// 添加数据
-        this.$refs.loadmore.onBottomLoaded()// 加载过程
-        if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
-        } else {
-          this.allLoaded = true// 若数据已全部获取完毕
-          this.nextPageUrl = null
-        }
-      })
-    },
-    // loadmore end
     result: function (result) {
       // 从子Headerx组件回传的值
       this.businessList = result
@@ -121,8 +88,8 @@ export default {
     tabTap: function (index) {
       // 1级分类切换
       let that = this
-      let tabNavs = document.querySelectorAll('.tab-nav>li')
-      for (let i = 0, len = tabNavs.length; i < len; i++) {
+      // let tabNavs = document.querySelectorAll('.tab-nav>li')
+      for (let i = 0, len = this.tabNavs.length; i < len; i++) {
         this.tabNavs[i].active = false
       }
       this.tabNavs[index].active = true
@@ -135,16 +102,11 @@ export default {
         size: 10
       }
       this.upCallback(page1)
-
-      setTimeout(function () {
-        that.tabH = document.getElementsByClassName('tab')[0].offsetHeight// 将tab的高度保存到变量
-        console.log(that.tabH)
-      }, 500)
     },
     navTap: function (index) {
       // 2级分类切换
-      let navs = document.querySelectorAll('.tab-con li')
-      for (let i = 0, len = navs.length; i < len; i++) {
+      // let navs = document.querySelectorAll('.tab-con li')
+      for (let i = 0, len = this.navs.length; i < len; i++) {
         this.navs[i].active = false
       }
       this.navs[index].active = true
@@ -239,7 +201,7 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -285,7 +247,7 @@ export default {
     }
 
   },
-  components: { ListInner, Other, 'mt-loadmore': Loadmore, Tab, TabItem},
+  components: { ListInner, Other, Tab, TabItem },
   mounted () {
     this.getCategory()
     this.getCategoryChildren()
@@ -300,17 +262,19 @@ export default {
     self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
       down: {
         // callback: self.refresh
-        use: false
+        use: false,
+        auto: false
       },
       up: {
+        auto: false,
         callback: self.upCallback, // 上拉回调
         // 以下参数可删除,不配置
         isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
         // page:{size:8}, //可配置每页8条数据,默认10
         toTop: { // 配置回到顶部按钮
-          src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
           // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
-          // offset : 1000
+          // offset: 1000
         },
         empty: { // 配置列表无任何数据的提示
           // warpId: 'dataList',
@@ -378,14 +342,7 @@ export default {
     padding-top: 0.35rem;
   }
 }
-.tab.sp{
-  position: fixed;
-  width: 7.5rem;
-  top: 0;
-  left: 50%;
-  margin-left: -3.75rem;
-  z-index: 99;
-}
+
 .tab-nav {
   background: #fff;
   height: 0.8rem;
@@ -456,6 +413,93 @@ export default {
   }
 }
 
+}
+}
+//mesroll外的tab样式
+.tab.sp{
+  position: fixed ;
+  width: 7.5rem;
+  top: 0;
+  left: 50%;
+  margin-left: -3.75rem;
+  z-index: 999;
+    .vux-tab-wrap{
+  padding-top:.8rem;
+}
+.vux-tab-wrap .vux-tab-container{
+ height:.8rem;
+}
+.vux-tab{
+  height: .8rem !important;
+}
+.vux-tab .vux-tab-item{
+  line-height: .8rem !important;
+  font-size: .28rem !important;
+  flex: 0 0 20% !important;
+}
+.vux-tab-wrap .vux-tab-container .vux-tab .vux-tab-ink-bar {
+    height: 0.06rem !important;
+}
+  .tab-nav {
+  background: #fff;
+  height: 0.8rem;
+  font-size: 0.28rem;
+  color: #333;
+  width: 100%;
+  // display: inline;
+  white-space: nowrap;
+  overflow-x: scroll;
+  float: left;
+  overflow-y: hidden;
+  > li {
+    height: 0.8rem;
+    text-align: center;
+    line-height: 0.8rem;
+    position: relative;
+    display: inline-block;
+    margin: 0 0.3rem;
+  }
+  > .cur {
+    color: #f60;
+  }
+  > .cur:before {
+    content: "";
+    width: 0.72rem;
+    height: 0.04rem;
+    background: #f60;
+    border-radius: 0.02rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -0.36rem;
+  }
+}
+  .tab-con {
+  background: #f5f5f5;
+  padding: 0.24rem 0 0.06rem 0.24rem;
+  overflow: hidden;
+  li {
+    width: 1.6rem;
+    height: 0.52rem;
+    border: 0.01rem solid #eee;
+    border-radius: 0.26rem;
+    font-size: 0.26rem;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 0.52rem;
+    background: #fff;
+    float: left;
+    margin-right: 0.2rem;
+    margin-bottom: 0.18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cur {
+    color: #f60;
+    border: 0.01rem solid #f60;
+    background: #ffe7d7;
+  }
 }
 }
 </style>

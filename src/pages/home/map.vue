@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-link class="back" to="/home/choice-details"></router-link>
+        <div class="back"  @click="goBack"></div>
         <div id="allmap" class="allmap"></div>
         <section class="bottom-row">
             <div class="location-info">
@@ -43,6 +43,10 @@ export default {
   methods: {
     useMap: function () {
       this.show = true
+    },
+    // 返回上一页
+    goBack () {
+      this.$router.go(-1)
     }
   },
   mounted () {

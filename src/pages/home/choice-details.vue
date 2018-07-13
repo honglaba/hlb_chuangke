@@ -7,7 +7,7 @@
       <div class="top-row">
         <span class="back" @click="goBack"></span>
         <div class="y-flex y-ac">
-          <span></span>
+          <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}" @click.native="createQR"></router-link>
           <span></span>
         </div>
       </div>
@@ -114,7 +114,7 @@
       </div>
 
       <div class="vux-1px-t h80 y-flex y-ac add-row" v-if="!actionDetail">
-        <router-link class="y-flex y-ac vux-1px-r flex1 mh44" tag="div" to="/home/map">
+        <router-link class="y-flex y-ac vux-1px-r flex1 mh44 y-flex" tag="div" to="/home/map">
           <span class="add-ico"></span>
           <p class="c666 address-row">{{details.address}}</p>
         </router-link>
@@ -149,14 +149,14 @@
           <span>({{details.total_comments}})</span>
         </div>
         <router-link to="/home/my-comment" tag="a">
-          评分
-          <span>{{details.score}}</span> 去评论
-          <span class="lpad8">></span>
+          <span>评分</span>
+          <span>{{details.score}}</span>
+          <span>去评论</span><span class="lpad8 littleArr"></span>
         </router-link>
       </div>
 
       <ul class="comment-list">
-        <!-- <li class="vux-1px-b">
+        <li class="vux-1px-b">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
               <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
@@ -176,7 +176,7 @@
           <div class="comment-content">
             很好，优惠很多，非常好
           </div>
-        </li> -->
+        </li>
 
         <li class="vux-1px-b" v-for="(item,index) in comments">
           <div class="y-flex y-jc-b">
@@ -201,7 +201,7 @@
         </li>
       </ul>
       <div class="more">
-        <router-link tag="a" to="#">查看更多评论</router-link>
+        <router-link tag="a" to="/home/comment">查看更多评论</router-link>
       </div>
       <!-- <router-link to="/home/pay" class="buy-btn">消费买单</router-link> -->
     </section>
@@ -267,6 +267,14 @@ export default {
     // 返回上一页
     goBack () {
       this.$router.go(-1)
+    },
+    // 创建二维码
+    createQR () {
+      this.axios.post('/api/qrcode', {
+        text: this.details.address
+      }).then(res => {
+        console.log(res)
+      })
     }
   },
   computed: {
@@ -319,11 +327,12 @@ export default {
     padding-right: 0.35rem;
     box-sizing: border-box;
     > span {
-      width: 0.2rem;
-      height: 0.34rem;
-      background: url(./images/icon_details_ruturn.png) no-repeat;
-      background-size: 100%;
-      position: initial
+      width: .7rem;
+      height: .7rem;
+      background:rgba(0,0,0,.5) url(./images/icon_details_ruturn.png) no-repeat center;
+      background-size: .2rem;
+      position: initial;
+      border-radius:50%;
     }
     > div {
       > span:nth-child(1) {
@@ -640,11 +649,21 @@ export default {
       }
     }
     > a {
+      display: flex;
       color: #999;
-      > span:nth-child(1) {
+      align-items: center;
+      > span:nth-child(2) {
         color: #f00;
         margin-right: 0.16rem;
         font-family: Arial, Helvetica, sans-serif;
+      }
+      .littleArr{
+        width: .1rem;
+        height: .19rem;
+        background: url(../../../static/images/littleArr.png) no-repeat;
+        background-size: 100%;
+        margin-left: .08rem;
+        box-sizing: border-box;
       }
     }
   }
@@ -733,6 +752,12 @@ export default {
     // overflow: hidden;
     // white-space: nowrap;
     // text-overflow: ellipsis;
+        text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    flex: 1
   }
 // 弹窗控件样式
 .weui-dialog__btn_primary{

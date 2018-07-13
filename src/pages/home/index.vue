@@ -1,5 +1,6 @@
 <template>
     <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  > -->
+    <div>
     <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
       <div id="allmap" class="allmap" style="display:none"></div>
@@ -37,7 +38,7 @@
       <section class="vux-1px-tb bmar20 bgf tpad36" key="2">
         <div class="lrpad32 til-row bmar56">
           <h3 class="fl">精选推荐</h3>
-          <router-link to="/home/recommend" class="fr">更多></router-link>
+          <router-link to="/home/recommend" class="fr"><span>更多</span><span class="littleArr"></span></router-link>
         </div>
         <div class="y-flex ad-type-one">
             <router-link tag="a" to="#" v-for="(item, index) in goods" :key="index">
@@ -169,7 +170,7 @@
         <div class="lrpad32 til-row bmar52">
           <h3 class="fl">精选商家</h3>
           <!-- <a class="fr" href="#">更多></a> -->
-          <router-link class="fr" tag="a" to="/home/choice">更多></router-link>
+          <router-link class="fr" tag="a" to="/home/choice"><span>更多</span><span class="littleArr"></span></router-link>
         </div>
         <div class="y-flex business">
           <!-- <router-link tag="a" to="#" class="flex1">
@@ -205,9 +206,10 @@
       </section>
 
       <!-- </mt-loadmore> -->
-      <Footerx></Footerx>
-    </div>
 
+    </div>
+    <Footerx></Footerx>
+    </div>
 </template>
 
 <script>
@@ -248,13 +250,6 @@ export default {
   components: { ListInner, swiper, swiperSlide, 'mt-loadmore': Loadmore },
   methods: {
     ...mapActions(['APP_Banner']),
-    // 滚动方法
-    handleScroll: function () {
-      let mescroll = document.getElementById('mescroll')
-      // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      var scrollTop = mescroll.pageYOffset || mescroll.scrollTop
-      console.log(scrollTop)
-    },
     // loadmore
     loadTop () {
       this.$refs.loadmore.onTopLoaded()
@@ -314,6 +309,7 @@ export default {
       // 精选推荐
       this.axios.get('/api/weika/goods').then(res => {
         this.goods = res.data
+        this.goods.length = 3// 限制数量为三个
       })
     },
     getCategoryShop: function (id) {
@@ -389,7 +385,7 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -443,23 +439,23 @@ export default {
     // this.getCategoryShop()//默认的加载列表交由mescroll第一次执行负责
   },
   mounted () {
-    // 监听滚动事件
-    document.getElementById('mescroll').addEventListener('scroll', this.handleScroll)
     // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
     // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
     var self = this
     self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
       down: {
         // callback: self.refresh
-        use: false
+        use: false,
+        auto: false
       },
       up: {
+        auto: false,
         callback: self.upCallback, // 上拉回调
         // 以下参数可删除,不配置
         isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
         // page:{size:8}, //可配置每页8条数据,默认10
         toTop: { // 配置回到顶部按钮
-          src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+          // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
           // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
           // offset : 1000
         },
@@ -632,8 +628,17 @@ export default {
     color: #333;
   }
   a {
+    display: flex;
+    align-items: center;
     font-size: 0.28rem;
     color: #666;
+    .littleArr{
+      width: .1rem;
+      height: .19rem;
+      background: url(../../../static/images/littleArr.png) no-repeat;
+      background-size: 100%;
+      margin-left: .08rem;
+    }
   }
 }
 .ad-type-one {

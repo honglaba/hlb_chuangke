@@ -40,7 +40,7 @@ footer {
   left: 50%;
   margin-left: -3.75rem;
   background: #fff;
-  z-index: 100;
+  z-index: 10000;
   font-size: 0.24rem;
   color: #9a9795;
   text-align: center;

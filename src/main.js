@@ -10,6 +10,7 @@ import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
 import {XHeader, ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading} from 'vux'
+import md5 from 'js-md5'
 // import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
 
@@ -20,6 +21,7 @@ fastClick.attach(document.body)
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
+Vue.prototype.$md5 = md5
 
 // 全局组件
 Vue.component('my-header', myHeader) // 自定义头部
