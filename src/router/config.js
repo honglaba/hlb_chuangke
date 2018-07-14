@@ -12,7 +12,7 @@ import Location from '@/pages/home/location'
 import Map from '@/pages/home/map'
 import Pay from '@/pages/home/pay'
 import Choice from '@/pages/home/choice'
-import ChoiceDetails from '@/pages/home/choice-details'
+import Shop from '@/pages/home/shop'
 import MyComment from '@/pages/home/my-comment'
 import Exchange from '@/pages/home/exchange'
 import ShopQRcode from '@/pages/home/shopqrcode'
@@ -85,7 +85,8 @@ export default new VueRouter({
       name: 'HomeIndex',
       component: HomeIndex,
       meta: {
-        title: '首页'
+        title: '首页',
+        keepAlive: true 
       }
     },
     {
@@ -108,7 +109,8 @@ export default new VueRouter({
       name: 'Food',
       component: Food,
       meta: {
-        title: '美食'
+        title: '美食',
+        keepAlive: true 
       }
     }, {
       path: 'business-details',
@@ -153,11 +155,12 @@ export default new VueRouter({
         title: '精选商家'
       }
     }, {
-      path: 'choice-details',
-      name: 'ChoiceDetails',
-      component: ChoiceDetails,
+      path: 'shop',
+      name: 'Shop',
+      component: Shop,
       meta: {
-        title: '商家详情'
+        title: '商家',
+        keepAlive: false
       }
     }, {
       path: 'my-comment',
@@ -207,7 +210,8 @@ export default new VueRouter({
       name: 'ShopIndex',
       component: ShopIndex,
       meta: {
-        title: '附近商家'
+        title: '附近商家',
+        keepAlive: true 
       }
     }]
   },
@@ -478,5 +482,9 @@ export default new VueRouter({
       }
     }]
   }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    console.log(savedPosition)
+  }
 })

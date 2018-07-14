@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="bpad100">
     <section class="banner-box">
       <!-- <img src="./images/choicepic.png"> -->
       <img :src="details.logo">
@@ -156,7 +156,7 @@
       </div>
 
       <ul class="comment-list">
-        <li class="vux-1px-b">
+        <!-- <li class="vux-1px-b">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
               <div class="comment-img"><img src="./images/home-like-img2.png" /></div>
@@ -176,14 +176,14 @@
           <div class="comment-content">
             很好，优惠很多，非常好
           </div>
-        </li>
+        </li> -->
 
         <li class="vux-1px-b" v-for="(item,index) in comments">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
               <div class="comment-img"><img :src="item.userInfo.headimgurl" /></div>
               <div class="s">
-                <p>{{item.userInfo.nickname}}</p>
+                <p>{{item.userInfo.nickname||'未知用户'}}</p>
                 <div class="star">
                   <span></span>
                   <span></span>
@@ -201,11 +201,11 @@
         </li>
       </ul>
       <div class="more">
-        <router-link tag="a" to="/home/comment">查看更多评论</router-link>
+        <router-link tag="a" :to="{path:'/home/comment',query:{sid:$route.query.id}}">查看更多评论</router-link>
       </div>
       <!-- <router-link to="/home/pay" class="buy-btn">消费买单</router-link> -->
     </section>
-    <router-link to="/home/pay" class="buy-btn">消费买单</router-link>
+    <router-link :to="{path:'/home/pay',query:{id:details.id,title:details.title,address:details.address}}" class="buy-btn">消费买单</router-link>
     <div v-transfer-dom>
       <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
         <p style="text-align:center;">{{details.mobile_phone}}</p>
@@ -260,7 +260,7 @@ export default {
     // 评论
     getComments () {
       let that = this
-      this.axios.get('/api/shop/comments?sid=3').then(function (res) {
+      this.axios.get('/api/shop/comments?sid='+this.$route.query.id).then(function (res) {
         that.$store.commit('COMMENTS', res.data)
       })
     },
@@ -673,6 +673,7 @@ export default {
       padding-top: 0.32rem;
       padding-bottom: 0.3rem;
       .comment-img {
+        background: #ccc;
         width: 0.8rem;
         height: 0.8rem;
         overflow: hidden;

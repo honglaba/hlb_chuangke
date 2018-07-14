@@ -73,7 +73,7 @@
       </section>
       <section class="business-list">
         <ul>
-          <router-link tag="li" :to="{path:'/home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+          <router-link tag="li" :to="{path:'/home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
           </router-link>

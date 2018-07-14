@@ -1,10 +1,11 @@
 <template>
 <div id="app">
-  <x-header :left-options="{backText: ''}" :title="detailsGetter.title"></x-header>
+  <x-header :left-options="{backText: ''}" :title="detailsGetter.title||$route.query.title"></x-header>
   <section>
-    <router-link class="location-row" tag="a" to="/home/map">
+    <!-- 若非从shop跳转过来即收起该栏 -->
+    <router-link class="location-row" tag="a" to="/home/map" v-if="detailsGetter.address">
       <span></span>
-      <p>{{detailsGetter.address}}</p>
+      <p>{{detailsGetter.address||$route.query.address}}</p>
     </router-link>
     <section class="total-money">
       <p>支付金额</p>
@@ -102,7 +103,8 @@ export default {
       this.mask = false
     },
     onBridgeReady () {
-      this.HTTP_pay({money: this.money, id: this.detailsGetter.id})
+      // this.HTTP_pay({money: this.money, id: this.detailsGetter.id})
+      this.HTTP_pay({money: this.money, id: this.$route.query.id})      
         .then(res => {
           window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', res.data, res => {

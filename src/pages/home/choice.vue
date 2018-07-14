@@ -10,7 +10,7 @@
       </div>
     </section>
     <ul class="choice-list">
-      <router-link tag="li" to="/home/choice-details">
+      <router-link tag="li" to="/home/shop">
         <img src="./images/banner1_shop_tab.png" />
         <div class="info">
           <div class="inner-box">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </router-link>
-      <router-link tag="li" to="/home/choice-details">
+      <router-link tag="li" to="/home/shop">
         <img src="./images/banner2_shop_tab.png" />
         <div class="info">
           <div class="inner-box">
@@ -44,7 +44,7 @@
           </div>
         </div>
       </router-link>
-      <router-link tag="li" to="/home/choice-details">
+      <router-link tag="li" to="/home/shop">
         <img src="./images/banner3_shop_tab.png" />
         <div class="info">
           <div class="inner-box">

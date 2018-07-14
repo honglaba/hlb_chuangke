@@ -2,6 +2,24 @@ import HTTP from '@/api' // 配置后的axios
 import Cookies from 'js-cookie'
 
 const actions = /* 公用 */{
+  HTTP_Comment ({commit}, data) { // 评论
+    return new Promise((resolve, reject) => {
+      HTTP({
+        url:'/api/shop/comments',
+        method:'post',
+        data:{
+          sid:data.sid,
+          content:data.content,
+          score:data.score
+        },
+        headers: {
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
+        }
+      }).then(res=>{
+        resolve(res)
+      })
+    })
+  },
   HTTP_pay ({commit}, data) { // 支付试验
     return new Promise((resolve, reject) => {
       HTTP({

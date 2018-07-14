@@ -21,7 +21,7 @@
             </div>
           </section>
           <ul>
-            <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+            <router-link tag="li" :to="{path:'home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
               <ListInner :businessList="item"></ListInner>
               <Other></Other>
             </router-link>
@@ -67,6 +67,14 @@ export default {
     }
   },
   methods: {
+    //检测高度
+    getScrollTop: function () {
+      let mescroll = document.getElementById('mescroll')
+      let scrollTop = mescroll.pageYOffset || mescroll.scrollTop
+      sessionStorage.setItem('shopPageScrollTo',scrollTop)
+      console.log('离开')
+      // this.tabFixed=false
+    },
     // 滚动方法
     handleScroll: function () {
       let that = this
@@ -96,12 +104,13 @@ export default {
       this.selectId = this.tabNavs[index].id
       this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
       this.businessList = [] // 切换分类时数据清空 否则一直叠加
-      // this.getCategoryShop(this.tabNavs[index].id)
-      let page1 = { // 切换分类时参数重置
-        num: 1,
-        size: 10
-      }
-      this.upCallback(page1)
+      this.getCategoryShop(this.tabNavs[index].id)
+      // let page1 = { // 切换分类时参数重置
+      //   num: 1,
+      //   size: 10
+      // }
+      // this.upCallback(page1)
+      // this.mescrollInstantiation()
     },
     navTap: function (index) {
       // 2级分类切换
@@ -244,11 +253,63 @@ export default {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
         self.mescroll.endErr()
       }, this.selectId)
-    }
-
+    },
+    mescrollInstantiation: function () {
+       // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+      // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+      var self = this
+      self.mescroll=null
+      self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
+        down: {
+          // callback: self.refresh
+          use: false,
+          auto: false
+        },
+        up: {
+          // auto: false,
+          callback: self.upCallback, // 上拉回调
+          // 以下参数可删除,不配置
+          isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+          // page:{size:8}, //可配置每页8条数据,默认10
+          toTop: { // 配置回到顶部按钮
+            // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+            // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
+            // offset: 1000
+          },
+          empty: { // 配置列表无任何数据的提示
+            // warpId: 'dataList',
+            icon: '../res/img/mescroll-empty.png'
+            //						  	tip : "亲,暂无相关数据哦~" ,
+            //						  	btntext : "去逛逛 >" ,
+            //						  	btnClick : function() {
+            //						  		alert("点击了去逛逛按钮");
+            //						  	}
+          }
+          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+          //						clearId: "dataList",
+          //						clearEmptyId: "dataList"
+        }
+      })
+     }
   },
+  beforeRouteEnter (to, from, next) {
+    console.log('进入')
+    next();
+  },
+  beforeRouteUpdate(to, from, next){
+    console.log('读取')
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+        from.meta.keepAlive = true;
+        next();
+         this.getScrollTop()
+    },
+
   components: { ListInner, Other, Tab, TabItem },
   mounted () {
+    
     this.getCategory()
     this.getCategoryChildren()
     // this.getCategoryShop()
@@ -256,41 +317,7 @@ export default {
     // 监听滚动事件
     document.getElementById('mescroll').addEventListener('scroll', this.handleScroll)
     /// ////////////
-    // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
-    // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
-    var self = this
-    self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
-      down: {
-        // callback: self.refresh
-        use: false,
-        auto: false
-      },
-      up: {
-        auto: false,
-        callback: self.upCallback, // 上拉回调
-        // 以下参数可删除,不配置
-        isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
-        // page:{size:8}, //可配置每页8条数据,默认10
-        toTop: { // 配置回到顶部按钮
-          // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
-          // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
-          // offset: 1000
-        },
-        empty: { // 配置列表无任何数据的提示
-          // warpId: 'dataList',
-          icon: '../res/img/mescroll-empty.png'
-          //						  	tip : "亲,暂无相关数据哦~" ,
-          //						  	btntext : "去逛逛 >" ,
-          //						  	btnClick : function() {
-          //						  		alert("点击了去逛逛按钮");
-          //						  	}
-        }
-        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-        //						clearId: "dataList",
-        //						clearEmptyId: "dataList"
-      }
-    })
+    this.mescrollInstantiation()
   }
 }
 </script>

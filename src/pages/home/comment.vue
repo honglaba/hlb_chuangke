@@ -2,7 +2,7 @@
   <div>
      <x-header :left-options="{backText: ''}" title="评价"></x-header>
      <section class="comment-info">
-       <div>评论500+</div>
+       <div>评论{{commentList.length}}</div>
        <div class="score-part">
          <span>评分5.0</span>
          <div class="score">
@@ -18,7 +18,7 @@
      </section>
      <section class="comment-list">
        <ul>
-         <li class="vux-1px-b">
+         <!-- <li class="vux-1px-b">
            <div class="user-row">
              <div>
                <div class="user-img">
@@ -47,6 +47,33 @@
              <span>数量：2</span>
              <span>颜色：白色</span>
            </div>
+         </li> -->
+
+         <li class="vux-1px-b" v-for="(item,index) in commentList" :key="index">
+           <div class="user-row">
+             <div>
+               <div class="user-img">
+                 <img :src="item.userInfo.headerimgurl" />
+               </div>
+               <div class="user-txt">
+                 <p>{{item.userInfo.nickname||'未知用户'}}</p>
+                 <div>
+                   <span>{{item.created_at}}</span>
+                 </div>
+               </div>
+             </div>
+             <div class="score">
+              <ul>
+                <li v-for='(star,index) in parseInt(item.score)' class="cur"></li>
+                <li v-for='(star,index) in (5-parseInt(item.score))'></li>
+              </ul>
+            </div>
+           </div>
+           <div class="comment-inner">{{item.content}}</div>
+           <div class="type">
+             <span>数量：2</span>
+             <span>颜色：白色</span>
+           </div>
          </li>
        </ul>
      </section>
@@ -56,8 +83,18 @@
 export default {
   data () {
     return {
-      
+      commentList:[]
     }
+  },
+  methods:{
+    getCommentList(){
+      this.axios.get('/api/shop/comments?sid='+this.$route.query.sid).then(res=>{
+        this.commentList=res.data
+      })
+    }
+  },
+  mounted(){
+    this.getCommentList()
   }
 }
 </script>
@@ -121,6 +158,7 @@ export default {
               overflow: hidden;
               border-radius: 50%;
               margin-right: .08rem;
+              background: #ccc;
               img{
                 display: block;
                 height: .6rem;

@@ -199,7 +199,7 @@
           <h3>猜你喜欢</h3>
         </div>
         <ul class="guess-list">
-          <router-link tag="li" :to="{path:'home/choice-details/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
+          <router-link tag="li" :to="{path:'home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
           </router-link>
         </ul>
@@ -332,7 +332,8 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            // res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+             res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -428,6 +429,43 @@ export default {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
         self.mescroll.endErr()
       })
+    },
+    mescrollInstantiation: function () {
+      // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+      // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+      var self = this
+      self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
+        down: {
+          // callback: self.refresh
+          use: false,
+          auto: false
+        },
+        up: {
+          // auto: false,
+          callback: self.upCallback, // 上拉回调
+          // 以下参数可删除,不配置
+          isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+          // page:{size:8}, //可配置每页8条数据,默认10
+          toTop: { // 配置回到顶部按钮
+            // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
+            // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
+            // offset : 1000
+          },
+          empty: { // 配置列表无任何数据的提示
+            // warpId: 'dataList',
+            icon: '../res/img/mescroll-empty.png'
+            //						  	tip : "亲,暂无相关数据哦~" ,
+            //						  	btntext : "去逛逛 >" ,
+            //						  	btnClick : function() {
+            //						  		alert("点击了去逛逛按钮");
+            //						  	}
+          }
+          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
+          //						clearId: "dataList",
+          //						clearEmptyId: "dataList"
+        }
+      })
     }
 
   },
@@ -439,41 +477,7 @@ export default {
     // this.getCategoryShop()//默认的加载列表交由mescroll第一次执行负责
   },
   mounted () {
-    // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
-    // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
-    var self = this
-    self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
-      down: {
-        // callback: self.refresh
-        use: false,
-        auto: false
-      },
-      up: {
-        auto: false,
-        callback: self.upCallback, // 上拉回调
-        // 以下参数可删除,不配置
-        isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
-        // page:{size:8}, //可配置每页8条数据,默认10
-        toTop: { // 配置回到顶部按钮
-          // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
-          // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
-          // offset : 1000
-        },
-        empty: { // 配置列表无任何数据的提示
-          // warpId: 'dataList',
-          icon: '../res/img/mescroll-empty.png'
-          //						  	tip : "亲,暂无相关数据哦~" ,
-          //						  	btntext : "去逛逛 >" ,
-          //						  	btnClick : function() {
-          //						  		alert("点击了去逛逛按钮");
-          //						  	}
-        }
-        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-        // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-        //						clearId: "dataList",
-        //						clearEmptyId: "dataList"
-      }
-    })
+    this.mescrollInstantiation()
   },
   updated () {
     // 百度地图

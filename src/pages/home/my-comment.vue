@@ -17,20 +17,21 @@
           <p>{{scoreStar[scoreIndex].txt}}</p>
         </div>
         <textarea placeholder="分享商家消费体验给小伙伴吧！" v-model="myComment"></textarea>
-        <div class="upload-til">
+        <!-- 上传部分先隐藏 -->
+        <!-- <div class="upload-til">
           <span>晒图</span>
           <span>(可一次上传多张)</span>
         </div>
         <div class="upload-btn">
-          <!-- <input type="file" id="upload-input"/> -->
-        </div>
+        </div> -->
       </section>
       <input type="button" value="提交评论" class="submit-btn" @click="submitComment"/>
     <!-- </form> -->
   </div>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import { mapActions, mapGetters} from 'vuex'
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -58,6 +59,7 @@ export default {
     }
   },
   methods: {
+     ...mapActions(['HTTP_Comment']),
     score: function (e) {
       let index = e.target.getAttribute('data-id')
       this.myScore = index
@@ -70,20 +72,39 @@ export default {
       }
     },
     submitComment: function () {
+      console.log(this.myScore)
       let that = this
+      // if (this.myComment) {
+      //   this.axios.post('/api/shop/comments', {
+      //     sid: that.detailsGetter.id,
+      //     content: that.myComment,
+      //     score: that.myScore
+      //   }).then(res => {
+      //     console.log(res)
+      //     if (res.result_state == 'success') {
+      //       alert('评论成功')
+      //     } else {
+      //       alert('评论失败')
+      //     }
+      //   })
+      // }
+
       if (this.myComment) {
-        this.axios.post('/api/shop/comments', {
-          sid: 7,
-          content: that.myComment,
+        this.HTTP_Comment({
+          sid:that.detailsGetter.id,
+          content:that.myComment,
           score: that.myScore
-        }).then(res => {
-          console.log(res)
-          if (res.result_state == 'success') {
-            alert('评论成功')
-          } else {
-            alert('评论失败')
-          }
-        })
+          }).then(res => {
+            console.log(res)
+            if (res.result_state == 'success') {
+              alert('评论成功')
+            } else {
+              alert('评论失败')
+            }
+            setTimeout(function(){
+                that.$router.push({path:'/home/comment',query:{sid:that.detailsGetter.id}})
+              },1000)
+          })
       }
     }
   },
@@ -91,7 +112,7 @@ export default {
     ...mapGetters(['detailsGetter'])
   },
   mounted () {
-
+     console.log('这里是'+this.detailsGetter.id)
   }
 }
 </script>
