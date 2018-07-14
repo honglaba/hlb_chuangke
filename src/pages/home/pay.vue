@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <x-header :left-options="{backText: ''}" :title="detailsGetter.title"></x-header>
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'detailsGetter.title'"></my-header>
   <section>
     <router-link class="location-row" tag="a" to="#">
       <span></span>
@@ -9,9 +9,11 @@
     <section class="total-money">
       <p>支付金额</p>
       <!-- <p>￥300</p> -->
-      <p>￥<input type="number" class="pay-input" placeholder="请输入金额" v-model="money"/></p>
+      <p>￥<input type="number" class="pay-input" autofocus="autofocus" placeholder="请输入金额" v-model="money"  
+       onkeyup="value=value.replace(/[^\d]/g,'') "
+onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"/></p>
       <div class="vux-1px-t">
-        预计您将获得<span class="#cf00">300</span>积分
+        预计您将获得<span class="#cf00">{{money}}</span>积分
       </div>
     </section>
 
@@ -123,7 +125,7 @@ export default {
           that.onBridgeReady()
         }
       } else {
-        alert('请输入金额')
+       this.$vux.toast.text('请输入提现金额')
       }
     }
   },
@@ -167,13 +169,13 @@ export default {
     font-size: .64rem;
     font-family: Arial, Helvetica, sans-serif;
     margin-bottom: .24rem;
-    line-height: 100%;
     display: flex;
   }
   .pay-input{
     font-size: .64rem;
     border: 0;
     outline: 0;
+    width: 100%;
   }
   >div{
     height: .64rem;
