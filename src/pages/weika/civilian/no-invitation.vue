@@ -54,10 +54,11 @@ export default {
   created () {
     this.setLoding({status: true})
     this.invId(null) // 进入删除邀请码
-    this.Wk_Quota().then(res => {
-      this.setLoding({status: false})
-      this.people = res.data
-    })
+    this.Wk_Quota()
+      .then(res => {
+        this.setLoding({status: false})
+        this.people = res.data
+      })
   },
   methods: {
     _invCodePass () {

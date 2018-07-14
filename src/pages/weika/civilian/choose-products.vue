@@ -11,19 +11,24 @@
             <p class="p2">选购完成后自动开通创客微卡</p>
           </div>
           <div class="wkgoodslist">
-            <scroller lock-y scrollbar-x v-if="goodList.length > 0">
-              <div class="dhbox">
-                <div class="dhbox-item" v-for="(item, index) in goodList" :key="index" :class="chooseIndex === index ? 'on' : ''" @click="chooseIndex = index">
-                  <div class="name">{{ item.name }}</div>
-                  <div class="price">特价：￥{{ item.price }}</div>
-                  <div class="beizhu">赠送创客微卡</div>
-                  <div class="look">
-                    <span>查看详情</span>
+
+            <transition name="fade">
+              <scroller lock-y scrollbar-x v-show="goodList.length > 0">
+                <div class="dhbox">
+                  <div class="dhbox-item" v-for="(item, index) in goodList" :key="index" :class="chooseIndex === index ? 'on' : ''" @click="chooseIndex = index">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="price">特价：￥{{ item.price }}</div>
+                    <div class="beizhu">赠送创客微卡</div>
+                    <div class="look">
+                      <span>查看详情</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </scroller>
+              </scroller>
+            </transition>
+
           </div>
+
           <div class="pd20">
             <div class="tijiao">
               <button class="btn-aoc" @click="toBuy">确认购买</button>
@@ -96,7 +101,7 @@
 </template>
 <script>
 import { Scroller } from 'vux'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -105,39 +110,26 @@ export default {
     }
   },
   created () {
-    this.Wk_GoodList()
-      .then(res => {
-        this.goodList = res.data
-      })
-  },
-  computed: {
-    ...mapGetters(['WkInvGetter'])
+    this.Wk_GoodList().then(res => {
+      this.goodList = res.data
+    })
   },
   methods: {
     toBuy () {
-      let bf = this.goodList[this.chooseIndex]
-      let inbObj = {
-        goods_id: bf.id,
-        is_invite: 0,
-        trade_type: 'weixinjsbridge'
-      }
-      if (this.WkInvGetter) {
-        inbObj.is_invite = 1
-        inbObj.invite_id = this.WkInvGetter
-      }
-
-      this.Wk_Order(inbObj)
-        .then(res => {
-          this.$router.push({
-            path: '/weika/pay',
-            query: { order_id: res.data.order_id, trade_type: 'weixinjsbridge', bf: JSON.stringify(bf) }
-          })
-        })
+      let choose = this.goodList[this.chooseIndex]
+      this.updateLoading({ status: true })
+      setTimeout(() => {
+        this.updateLoading({ status: false })
+        this.updateCart(choose)
+        this.saveCurrTodo('Wkbuy')
+        this.$router.push({path: '/weika/pay'})
+      }, 300)
     },
     routeBack () {
       this.$router.go(-1)
     },
-    ...mapActions(['Wk_GoodList', 'Wk_Order'])
+    ...mapActions(['Wk_GoodList']),
+    ...mapMutations({ updateLoading: 'UPDATE_LOADING', updateCart: 'SAVE_SHOPPING_CART', saveCurrTodo: 'UPDATE_CURRENT_OPERATION' })
   },
   components: {
     Scroller
@@ -233,11 +225,12 @@ export default {
 .wkgoodslist {
   margin-top: -0.4rem;
   padding: 0 0.2rem;
+  height: 3.8rem;
 }
 .dhbox {
   position: relative;
   width: 12.42rem;
-  min-height: 3.88rem;
+  height: 3.8rem;
 }
 .dhbox-item {
   width: 2.56rem;
@@ -246,13 +239,13 @@ export default {
   border: #fff solid 1px;
   box-shadow: 0 3px 12px rgba(21, 0, 71, 0.16);
   border-radius: 5px;
-  margin-left: .1rem;
+  margin-left: 0.1rem;
   background: #fff;
   padding: 0.2rem;
   .name {
     font-size: 0.32rem;
     font-weight: bold;
-    min-height: .84rem;
+    min-height: 0.84rem;
   }
   .price {
     margin-top: 0.1rem;

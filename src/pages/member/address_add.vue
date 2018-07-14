@@ -29,7 +29,6 @@
 import { XInput, Group, Divider, PopupPicker } from 'vux'
 import regionJson from '../../../static/js/region'
 import { mapActions, mapGetters } from 'vuex'
-import { Toast } from 'mint-ui'
 export default {
   components: {
     XInput,
@@ -75,7 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['receiverAddressGetter'])
+    ...mapGetters(['receiverAddressGetter', 'currOperation'])
   },
   watch: {
     '$route' (to, from) {
@@ -159,7 +158,11 @@ export default {
       }
     },
     routeBack () {
-      this.$router.push({path: '/member/address'})
+      if (this.currOperation === 'wkbuy') {
+        this.$router.push('/weika/pay')
+      } else {
+        this.$router.push({path: '/member/address'})
+      }
     }
   }
 }

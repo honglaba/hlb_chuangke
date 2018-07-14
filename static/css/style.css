@@ -272,12 +272,12 @@ body{
 /*add by chenghai end*/
 
 .vux-header {
-	background: #fff !important;
-	padding: 0 !important;
-	height: 0.88rem !important;
-	position: relative;
-	}
- .vux-header::after {
+		background: #fff !important;
+		padding: 0 !important;
+		height: 0.88rem !important;
+		position: relative;
+}
+.vux-header::after {
 	display: inline-block;
 	position: absolute;
 	left: 0;
@@ -287,31 +287,39 @@ body{
 	height: 1px;
 	background: #e6e6e6;
 	background-size: contain;
-  }
-  .vux-header .vux-header-title > span {
+}
+.vux-header .vux-header-title > span {
 	color: #333;
-  }
-  .vux-header-title-area,
-  .vux-header .vux-header-title {
+}
+.vux-header-title-area,
+.vux-header .vux-header-title {
 	height: 0.88rem !important;
 	line-height: 0.88rem !important;
 	font-size: 0.4rem !important;
-  }
-  .vux-header .vux-header-left {
+}
+.vux-header .vux-header-left {
 	top: 50% !important;
 	margin-top: -0.17rem;
-  }
-  .vux-header .vux-header-left .left-arrow {
+}
+.vux-header .vux-header-left .left-arrow {
 	width: 0.2rem !important;
 	height: 0.34rem !important;
 	background: url(../../static/images/top-return-icon.png) no-repeat;
 	background-size: 100%;
 	top: 0 !important;
 	left: 0 !important;
-  }
-  .vux-header .vux-header-left .left-arrow:before {
+}
+.vux-header .vux-header-left .left-arrow:before {
 	content: none !important;
-  }
-  .vux-header .vux-header-left {
+}
+.vux-header .vux-header-left {
 	left: 0.3rem;
-  }
+}
+
+/* transition */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}

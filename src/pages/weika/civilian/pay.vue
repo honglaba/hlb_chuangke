@@ -3,25 +3,32 @@
     <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'微卡支付'"></my-header>
     <div class="main">
       <div class="content">
+
         <div class="address_box">
-          <div class="none">
-            <a href="#">
+          <div class="none" v-if="!hasReceiverAddress">
+            <router-link :to="{path: '/member/address_add'}">
               <span class="add">新增收货地址</span>
-            </a>
+            </router-link>
           </div>
-          <group gutter="5px" style="">
-            <cell title="收货地址：东莞市南城区鸿禧中心a606" link="/component/radio" inline-desc='成海，18503088185' :border-intent="false"></cell>
+
+          <group gutter="5px" v-else>
+            <cell
+            :link="{path: '/member/address'}"
+            :title="'收货地址：' + hasReceiverAddress.address"
+            :inline-desc="hasReceiverAddress.name + '，' + hasReceiverAddress.mobile_phone"
+            :border-intent="false"></cell>
           </group>
-          <!-- <img src="../images/address_bline.png"> -->
+          <img src="../images/address_bline.png">
         </div>
+
         <div class="paybox pd20">
           <img src="../images/pay_ad.png">
-          <group gutter="5px">
+          <group gutter="5px" v-if="Object.keys(mitem).length > 0">
             <cell title="购买方式" value="在线支付"></cell>
             <popup-radio title="支付方式" :options="paytypeList" v-model="paytype">
               <template slot-scope="props" slot="each-item">
                 <p>
-                  <img src="~assets/images/weixin.png" class="vux-radio-icon">
+                  <img src="~assets/images/weixin.png" class="vux-radio-icon">微信支付
                 </p>
               </template>
             </popup-radio>
@@ -37,8 +44,7 @@
           </div>
           <div class="tips">
             <p>开通即视为同意
-              <span>
-                <<创客微卡会员用户协议>></span>
+              <span>&#60;&#60;创客微卡会员用户协议&#62;&#62;</span>
             </p>
           </div>
         </div>
@@ -105,8 +111,8 @@
   </div>
 </template>
 <script>
-import { wxpay } from "tools/util";
-import { mapMutations, mapActions } from "vuex";
+import { wxpay } from 'tools/util'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import {
   XInput,
   Selector,
@@ -116,55 +122,104 @@ import {
   Picker,
   Cell,
   PopupRadio
-} from "vux";
+} from 'vux'
 export default {
-  data() {
+  data () {
     return {
-      paytype: "微信",
-      paytypeList: ["微信", "支付宝"],
+      paytype: '微信',
+      paytypeList: ['微信'],
       mitem: {}
-    };
-  },
-  created() {
-    if (Object.keys(this.$route.query).length === 0) {
-      this.$router.go(-1);
-      return;
     }
-    this.mitem = JSON.parse(this.$route.query.bf);
-    delete this.$route.query.bf;
+  },
+  computed: {
+    hasReceiverAddress () {
+      let defaultAddr = {}
+      if (this.receiverAddressGetter.length > 0) {
+        this.receiverAddressGetter.forEach(ele => {
+          if (ele.is_default === 1) {
+            defaultAddr = ele
+          }
+        })
+        return defaultAddr
+      } else {
+        return false
+      }
+    },
+    ...mapGetters(['WkInvGetter', 'payAddress', 'receiverAddressGetter', 'shoppingCart'])
+  },
+  async created () {
+    await this.HTTP_receiverAddress()
+    this.updateCurrTodo('')
+    this.mitem = this.shoppingCart
   },
   methods: {
-    _pay() {
-      wxpay(/* 回调 */ this.onBridgeReady, /* 参数 */ this.$route.query); // 调起微信支付
+    _pay () {
+      let inbObj = {
+        goods_id: this.mitem.id,
+        is_invite: 0,
+        trade_type: 'weixinjsbridge'
+      }
+      if (this.WkInvGetter) {
+        inbObj.is_invite = 1
+        inbObj.invite_id = this.WkInvGetter
+      }
+
+      let realAddress = {
+        consignee: this.hasReceiverAddress.name,
+        mobile: this.hasReceiverAddress.mobile_phone,
+        province: this.hasReceiverAddress.province_id,
+        city: this.hasReceiverAddress.city_id,
+        borough: this.hasReceiverAddress.borough_id,
+        address: this.hasReceiverAddress.address
+      }
+
+      this.updateShoppingCard('') // 清空购物车
+
+      this.Wk_Order(Object.assign(inbObj, realAddress))
+        .then(res => {
+          wxpay(/* 回调 */this.onBridgeReady, /* 参数 */{order_id: res.data.order_id, trade_type: 'weixinjsbridge'}) // 调起微信支付
+        })
+        .catch(err1 => {
+          this.$router.push({path: '/member/order/order_list/1'})
+        })
     },
-    onBridgeReady(val) {
-      this.Wk_Pay(val).then(res => {
-        let result = res.data;
-        this.invId(null); // clear
-        window.WeixinJSBridge.invoke("getBrandWCPayRequest", result, res => {
-          if (res.err_msg === "get_brand_wcpay_request:ok")
-            this.wxSuccessCall();
-          if (
-            res.err_msg === "get_brand_wcpay_request:fail" ||
-            res.err_msg === "get_brand_wcpay_request:cancel"
-          )
-            this.wxErrCall();
-        });
-      });
+    onBridgeReady (val) {
+      this.Wk_Pay(val)
+        .then(res => {
+          let result = res.data
+          this.invId(null) // clear
+          window.WeixinJSBridge.invoke('getBrandWCPayRequest', result, res => {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
+            if (
+              res.err_msg === 'get_brand_wcpay_request:fail' ||
+            res.err_msg === 'get_brand_wcpay_request:cancel'
+            ) { this.wxErrCall() }
+          })
+        })
     },
-    wxSuccessCall() {
+    wxSuccessCall () {
       this.HTTP_UserInfo() // 更新用户信息后再跳转
         .then(res1 => {
-          this.updataUsr(res1.data);
-          this.$router.push({ path: "/weika" });
-        });
+          this.updateUsr(res1.data)
+          this.$router.push({ path: '/weika' })
+        })
     },
-    wxErrCall() {},
-    routeBack() {
-      this.$router.go(-1);
+    wxErrCall () {
+      this.$router.push({path: '/member/order/order_list/1'})
     },
-    ...mapMutations({ invId: "SET_WEIKA_INVID", updataUsr: "SET_USER_INFO" }),
-    ...mapActions(["Wk_Pay", "HTTP_UserInfo"])
+    routeBack () {
+      this.$router.go(-1)
+    },
+    ...mapMutations({ invId: 'SET_WEIKA_INVID', updateUsr: 'SET_USER_INFO', updateCurrTodo: 'UPDATE_CURRENT_OPERATION', updateShoppingCard: 'SAVE_SHOPPING_CART' }),
+    ...mapActions(['Wk_Pay', 'HTTP_UserInfo', 'Wk_Order', 'User_CancelOrder', 'Wk_Query', 'HTTP_receiverAddress'])
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.path === '/member/address_add' || to.path === '/member/address') {
+      this.updateCurrTodo('Wkbuy')
+    } else {
+      this.updateCurrTodo('')
+    }
+    next()
   },
   components: {
     XInput,
@@ -176,7 +231,7 @@ export default {
     Cell,
     PopupRadio
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .paybox {

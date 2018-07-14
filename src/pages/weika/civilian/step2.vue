@@ -17,7 +17,6 @@
 </template>
 <script>
 import { XInput, Group } from 'vux'
-import { Toast } from 'mint-ui'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
@@ -26,7 +25,7 @@ export default {
       validator_verification: val => {
         return {
           valid: val.length >= 6 ? new RegExp(/^[A-Za-z0-9]{6}$/).test(val) : new RegExp(/^[A-Za-z0-9]{0,6}$/).test(val),
-          msg: '格式不正确!'
+          msg: '格式不正确'
         }
       }
     }
@@ -39,22 +38,15 @@ export default {
       if (this.$refs.yqm.valid && this.invCode.length === 6) {
         this.$store.commit('SET_WEIKA_INVID', this.invCode)
         localStorage.setItem('invite_id', this.invCode)
-        this.Wk_CheckInv(this.invCode).then(res => {
-          Toast({
-            message: '验证通过',
-            iconClass: 'icon icon-success',
-            duration: 1500
+        this.Wk_CheckInv(this.invCode)
+          .then(res => {
+            this.$vux.toast.show('验证通过')
+            setTimeout(e => {
+              this.$router.push({path: '/weika/choose_products'})
+            }, 1500)
           })
-          setTimeout(e => {
-            this.$router.push({path: '/weika/choose_products'})
-          }, 1500)
-        })
       } else {
-        Toast({
-          message: '格式不正确',
-          position: 'top',
-          duration: 1500
-        })
+        this.$vux.toast.show('格式不正确')
       }
     },
     routeBack () {

@@ -103,7 +103,6 @@ export default {
   methods: {
     _toOpen () {
       const _this = this
-
       // if (!this.getUser.mobile_phone) return
       if (this.getUser.id_card && this.getUser.real_name) {
         this.Wk_Query() // 有没有未完成的微卡订单

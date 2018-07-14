@@ -317,6 +317,8 @@ const weika = {
       }).then(res => {
         if (res.result_state === 'success') {
           resolve(res)
+        } else {
+          reject(res)
         }
       })
     })
