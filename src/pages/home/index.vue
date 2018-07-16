@@ -233,8 +233,8 @@ export default {
       allLoaded: false,
       mescroll: null,
       pdlist: [],
-      page: null,
-      businessList: []
+      page: null
+      // businessList: []
       // businessList: [
       //   {
       //     name: '良记甜品',
@@ -333,7 +333,7 @@ export default {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
             // res.data[i].distance = res.data[i].distance / 1000 + 'Km'
-             res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -436,8 +436,10 @@ export default {
       var self = this
       self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
         down: {
-          // callback: self.refresh
-          use: false,
+          // callback: function () {
+          //   self.businessList = []
+          // },
+          use: true,
           auto: false
         },
         up: {

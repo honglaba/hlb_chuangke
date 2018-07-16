@@ -72,12 +72,9 @@ export default {
           font-size: 0.36rem;
           color: #333;
           margin-right: 0.16rem;
-
-           text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
         .mark-row{
           display: flex;
