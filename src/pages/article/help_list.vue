@@ -60,13 +60,12 @@ export default {
     padding: 0 0.4rem;
     a {
       &:last-child {
-        .tit {
+        .tit::after{
           border-bottom: none;
         }
       }
     }
     .tit {
-      border-bottom: #e6e6e6 dashed 1px;
       .l {
         img {
           width: 0.34rem;

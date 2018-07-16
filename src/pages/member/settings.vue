@@ -95,9 +95,11 @@ export default {
     a {
       padding: 0 0.2rem;
       display: block;
-      border-bottom: #f0f0f0 solid 1px;
       &:last-child {
         border-bottom: none;
+        .tit::after{
+          border-bottom: none;
+        }
       }
     }
   }

@@ -75,12 +75,13 @@ export default {
   &::after {
     display: inline-block;
     position: absolute;
+    transform: scaleY(.5);
     left: 0;
     bottom: 0;
     content: "";
     width: 100%;
     height: 1px;
-    background: #e6e6e6;
+    background: #e0e0e0;
     background-size: contain;
   }
   .h-wrapper {
