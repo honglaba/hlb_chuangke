@@ -10,9 +10,7 @@
     <section class="total-money">
       <p>支付金额</p>
       <!-- <p>￥300</p> -->
-      <p>￥<input type="number" class="pay-input" autofocus="autofocus" placeholder="请输入金额" v-model="money"  
-       onkeyup="value=value.replace(/[^\d]/g,'') "
-onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"/></p>
+      <p>￥<input type="number" class="pay-input" autofocus="autofocus" placeholder="请输入金额" v-model="money"/></p>
       <div class="vux-1px-t" v-if="money">
         预计您将获得<span class="#cf00">{{money}}</span>积分
       </div>
@@ -110,13 +108,13 @@ export default {
         .then(res => {
           window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', res.data, res => {
-              alert('成功')
+              //dosomthing
             })
         })
     },
     weixinPay  () {
       let that = this
-      if (this.money) {
+      if (this.money>0) {
         if (typeof WeixinJSBridge === 'undefined') {
           if (document.addEventListener) {
             document.addEventListener('WeixinJSBridgeReady', that.onBridgeReady, false)
@@ -128,7 +126,7 @@ export default {
           that.onBridgeReady()
         }
       } else {
-       this.$vux.toast.text('请输入提现金额')
+       this.$vux.toast.text('请输入正确的提现金额')
       }
     }
   },
