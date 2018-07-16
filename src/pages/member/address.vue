@@ -165,7 +165,7 @@ export default {
           }
           .a2 {
             color: #999;
-            margin-top: 0.16rem;
+            margin-top: 0.12rem;
             font-size: 0.24rem;
           }
         }
@@ -191,7 +191,7 @@ export default {
         }
       }
       .setting {
-        padding-top: 0.2rem;
+        padding-top: 0.1rem;
         font-size: 0.24rem;
         span {
           display: flex;

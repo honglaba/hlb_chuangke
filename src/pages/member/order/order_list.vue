@@ -23,7 +23,7 @@
 
               <li v-for="(item, index) in realData" :key="index">
                 <div class="shopinfo">
-                  <div class="name">
+                  <div class="name bdr-b">
                     <span class="l">订单号：
                       <em>{{ item.order_sn }}</em>
                     </span>
@@ -271,7 +271,6 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: #e6e6e6 solid 1px;
             padding-bottom: 0.2rem;
             .l {
               em {

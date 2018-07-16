@@ -45,7 +45,7 @@
             <!-- <div class="r">全部订单<img src="./images/you1.png"></div> -->
             <router-link class="r" tag="div" to="member/order/order_list/0">全部订单<img src="./images/you1.png"></router-link>
           </div>
-          <ul class="myorder">
+          <ul class="myorder bdr-b">
             <li>
               <router-link :to="{ path:'/member/order/order_list/1' }">
                 <span class="myorder-icon">
@@ -232,7 +232,6 @@ export default {
   }
 }
 .base_box .tit {
-  border-bottom: #e6e6e6 dashed 1px;
   height: 1rem;
 }
 
@@ -240,7 +239,6 @@ export default {
   position: relative;
   display: flex;
   padding: 0.2rem 0;
-  border-bottom: #e6e6e6 dashed 1px;
   justify-content: space-around;
   li {
     text-align: center;
