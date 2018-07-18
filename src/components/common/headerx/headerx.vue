@@ -1,6 +1,7 @@
 <template>
   <header class="y-flex y-ac">
-    <div class="add y-flex y-ac">
+    <div class="back-btn" @click="goBack" v-if="backSeen"></div>
+    <div class="add y-flex y-ac" v-if="!backSeen">
       <router-link to="/home/location" tag="p">东莞</router-link>
       <span></span>
     </div>
@@ -14,9 +15,11 @@
 </template>
 <script>
 export default {
+
   data () {
     return {
-      searchVal: ''
+      searchVal: '',
+      backSeen: false
     }
   },
   methods: {
@@ -35,6 +38,16 @@ export default {
       } else {
         alert('请输入关键字')
       }
+    },
+    goBack: function () {
+      this.$router.back()
+    }
+  },
+  mounted () {
+    if (this.$route.name === 'Food') {
+      this.backSeen = true
+    } else {
+      this.backSeen = false
     }
   }
 }
@@ -107,5 +120,12 @@ header {
     right: -0.04rem;
     top: -0.04rem;
   }
+}
+.back-btn{
+  width:.7rem;
+  margin-right: .2rem;
+  height: .88rem;
+  background: url(./images/top-return-icon.png) no-repeat center;
+  background-size: .2rem;
 }
 </style>

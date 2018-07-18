@@ -1,5 +1,6 @@
 <template>
   <div id="food-content" :class="{'full-page':seen}">
+    <transition name="fade">
     <div class="copy-block" v-if="seen">
       <Headerx @result='result'></Headerx>
       <section class="screen-row">
@@ -32,9 +33,20 @@
         </section>
       </section>
     </div>
+    </transition>
+    <!-- 滚动吸顶部分 -->
+    <section class="screen-row fixed vux-1px-b" v-if="tabFixed">
+        <ul class="screen-tab">
+          <li v-for="(tab, index) in screenTab" @click="bindTap(index)" :key="index">
+            <p>{{tab.name}}</p>
+            <span></span>
+          </li>
+        </ul>
+      </section>
+      <!-- end -->
     <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
-      <div class="swiper-container banner-swiper" v-if="!seen">
+      <div class="swiper-container banner-swiper" >
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
             <img :src="item.img_path" />
@@ -122,8 +134,12 @@ export default {
       region: [],
       areas: [],
       banner: [],
-      cid: '',
-      tempId: ''
+      cid: '', // 商家id
+      areaId: '', // 街道id
+      selectId: '', // 组装好的id
+      tempId: '', // 缓存的id
+      tabFixed: false,
+      times: 0
     }
   },
   components: { ListInner, Other, 'mt-loadmore': Loadmore },
@@ -133,27 +149,18 @@ export default {
       'HTTP_GetCategoryShop',
       'HTTP_SwitchCategory'
     ]),
-    // loadmore
-    loadTop () {
-      this.$refs.loadmore.onTopLoaded()
-      this.axios.get(this.nextPageUrl).then(res => {
-        console.log(res)
-        console.log(this.businessList)
-      })
+    // 滚动方法
+    handleScroll: function () {
+      let that = this
+      let h = document.getElementsByClassName('banner-swiper')[0].offsetHeight + document.getElementsByTagName('header')[0].offsetHeight
+      let mescroll = document.getElementById('mescroll')
+      var scrollTop = mescroll.pageYOffset || mescroll.scrollTop
+      if (scrollTop >= h) {
+        that.tabFixed = true
+      } else {
+        that.tabFixed = false
+      }
     },
-    loadBottom () {
-      this.axios.get(this.nextPageUrl).then(res => {
-        this.businessList = this.businessList.concat(res.data)// 添加数据
-        this.$refs.loadmore.onBottomLoaded()// 加载过程
-        if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
-        } else {
-          this.allLoaded = true// 若数据已全部获取完毕
-          this.nextPageUrl = null
-        }
-      })
-    },
-    // loadmore end
     result: function (result) {
       // 从子Headerx组件回传的值
       this.businessList = result
@@ -247,23 +254,42 @@ export default {
       // this.getCategoryShop('&cid=' + categoryId)
 
       this.cid = this.category[index].id
-      console.log(this.cid)
-
       // 点击改变样式
       for (let i = 0, len = this.category.length; i < len; i++) {
         this.category[i].active = false
       }
-      if (index == 0) { // 如果是选择全部则‘附近商家’一栏重置
-        this.getArea()
-        this.screenTab[1] = {
-          name: '附近商家',
-          active: false}
+
+      // if (index == 0) { // 如果是选择全部则‘附近商家’一栏重置 清空id
+      //   this.getArea()
+      //   // this.screenTab[1] = {
+      //   //   name: '附近商家',
+      //   //   active: false}
+      //   this.selectId = this.$route.query.cid
+      //   this.cid = this.$route.query.cid
+      //   this.areaId = ''
+      // } else {
+      //   if (this.areaId == '') { // 判断是否有其他筛选条件
+      //     this.selectId = this.cid
+      //   } else {
+      //     this.selectId = this.cid + '&area_id=' + this.areaId
+      //   }
+      // }
+
+      if (index == 0) { this.cid = this.$route.query.cid }
+      if (this.areaId == '') {
+        this.selectId = this.cid
+      } else {
+        this.selectId = this.cid + '&area_id=' + this.areaId
       }
+
       this.category[index].active = true
       this.screenTab[0].name = this.category[index].title
       this.maskTap() // 相同逻辑收起下拉
-      this.businessList = [] // 切换分类时数据清空 否则一直叠加
-      this.mescroll.resetUpScroll()
+
+      if (this.selectId != this.tempId) { // 若切换分类才触发重置
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+      }
     },
     // getRegion: function () { // 附近筛选
     //   this.axios.get('/api/region?parent=79').then(res => { // 79是东莞
@@ -275,15 +301,17 @@ export default {
       this.axios
         .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
         .then(res => {
+          console.log(res)
           for (let i = 0, len = res.data.length; i < len; i++) {
             res.data[i].active = false
           }
           for (let j = 0, len = res.data[0].children.length; j < len; j++) {
             res.data[0].children[j].active = false
           }
-          res.data[0].active = true
+          // res.data[0].active = true
           this.region = res.data
-          this.areas = res.data[0].children // 默认首个街道
+          // this.areas = res.data[0].children // 默认首个街道
+          this.region.unshift({region_name: '全部', active: true})
         })
     },
     sort: function (index) {
@@ -301,11 +329,23 @@ export default {
         this.region[i].active = false
       }
       this.region[index].active = true
-      this.axios
-        .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
-        .then(res => {
-          this.areas = res.data[index].children
-        })
+      if (index > 0) {
+        this.axios
+          .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
+          .then(res => {
+            this.areas = res.data[index - 1].children
+          })
+      } else {
+        this.areas = []
+        this.screenTab[1] = {
+          name: '附近商家',
+          active: false
+        }
+        this.selectId = this.cid
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+        this.maskTap()
+      }
     },
     switchAreas: function (index) {
       // 切换街道
@@ -314,7 +354,13 @@ export default {
       }
       this.areas[index].active = true
       this.screenTab[1].name = this.areas[index].region_name
-      this.getCategoryShop('&area_id=' + this.areas[index].id + '&cid=' + this.cid)
+      // this.getCategoryShop('&area_id=' + this.areas[index].id + '&cid=' + this.cid)
+      this.areaId = this.areas[index].id
+      this.selectId = this.cid + '&area_id=' + this.areas[index].id
+      if (this.selectId != this.tempId) { // 若切换分类才触发重置
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+      }
       this.maskTap() // 相同逻辑收起下拉
     },
     /* 联网加载列表数据* */
@@ -383,7 +429,7 @@ export default {
       }, function () {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
         self.mescroll.endErr()
-      }, this.cid)
+      }, this.selectId)
     },
     mescrollInstantiation: function () {
       // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
@@ -431,8 +477,12 @@ export default {
     // this.getCategoryShop()
     // this.getRegion()
     this.getArea()
+    this.selectId = this.$route.query.cid
+    this.cid = this.$route.query.cid
     this.tempId = this.$route.query.cid// 将默认分类值存储
     // console.log(this.$refs.myscroller.scroller.__scrollTop)
+    // 监听滚动事件
+    document.getElementById('mescroll').addEventListener('scroll', this.handleScroll)
     this.mescrollInstantiation()
   },
   updated () {
@@ -606,5 +656,12 @@ export default {
     position: relative;
     z-index: 999;
   }
+}
+.screen-row.fixed{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7.5rem;
+  z-index: 888 !important; 
 }
 </style>

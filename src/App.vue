@@ -1,8 +1,8 @@
 <template>
-  <div id="app"> 
+  <div id="app">
     <x-loading v-model="isLoading.status" :text="isLoading.text"></x-loading>
     <!-- <keep-alive v-if="$route.meta.keepAlive"> -->
-    <!-- <keep-alive :include="HomeIndex,Food" >       -->
+    <!-- <keep-alive :include="HomeIndex,Food" > -->
       <router-view></router-view>
     <!-- </keep-alive> -->
     <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->

@@ -69,9 +69,9 @@ export default {
       nextPageUrl: null,
       fixIndex: 0,
       times: 0, // 加载次数
-      tempId: '', // 旧id
+      tempId: 1, // 旧id,默认为1
       page: '',
-      slideTap: false
+      slideTap: true
     }
   },
   methods: {
@@ -93,8 +93,10 @@ export default {
       // console.log(scrollTop, h)
       if (scrollTop >= h) {
         that.tabFixed = true
+        // that.slideTap = false
       } else {
         that.tabFixed = false
+        // that.slideTap = true
       }
     },
     result: function (result) {
@@ -112,10 +114,11 @@ export default {
       this.selectId = this.tabNavs[index].id// 改变此id以传入mescroll
       this.getCategoryChildren(this.tabNavs[index].id) // 获取对应的二级分类
       // 自写的重置列表数据 不与mescorll联动 有bug
-      // this.getCategoryShop(this.tabNavs[index].id)
-      // mescroll自带重置列表数据
-      this.businessList = [] // 切换分类时数据清空 否则一直叠加
-      this.mescroll.resetUpScroll()
+      if (this.selectId != this.tempId) { // 若切换分类才触发重置
+        // mescroll自带重置列表数据
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+      }
     },
     navTap: function (index) {
       // 2级分类切换
@@ -126,9 +129,11 @@ export default {
       this.selectId = this.navs[index].id// 改变此id以传入mescroll
       // 自写的重置列表数据 不与mescorll联动 有bug
       // this.getCategoryShop(this.navs[index].id)
+      if (this.selectId != this.tempId) { // 若切换分类才触发重置
       // mescroll自带重置列表数据
-      this.businessList = [] // 切换分类时数据清空 否则一直叠加
-      this.mescroll.resetUpScroll()
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+      }
     },
     getCategory: function () {
       // 获取1级分类
