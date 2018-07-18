@@ -116,7 +116,7 @@ export default {
           active: false
         },
         {
-          name: '智能排序',
+          name: '离我最近',
           active: false
         }
       ],
@@ -126,10 +126,10 @@ export default {
       nextPageUrl: null,
       tempArr: [],
       sortTxt: [
-        { title: '智能排序', active: true },
-        { title: '离我最近', active: false },
-        { title: '好评优先', active: false },
-        { title: '人气最高', active: false }
+        // { title: '智能排序', active: true, by: 'total_customers', order: 'desc'},
+        { title: '离我最近', active: true, by: 'distance', order: 'asc'},
+        { title: '好评优先', active: false, by: 'score', order: 'desc' },
+        { title: '人气最高', active: false, by: 'total_customers', order: 'desc'}
       ],
       region: [],
       areas: [],
@@ -139,7 +139,8 @@ export default {
       selectId: '', // 组装好的id
       tempId: '', // 缓存的id
       tabFixed: false,
-      times: 0
+      times: 0,
+      sortIndex: 0
     }
   },
   components: { ListInner, Other, 'mt-loadmore': Loadmore },
@@ -322,6 +323,12 @@ export default {
       this.sortTxt[index].active = true
       this.screenTab[2].name = this.sortTxt[index].title
       this.maskTap()
+      if (index != this.sortIndex) {
+        this.times = 0
+        this.sortIndex = index
+        this.businessList = [] // 切换分类时数据清空 否则一直叠加
+        this.mescroll.resetUpScroll()
+      }
     },
     switchRegion: function (index) {
       // 切换区
@@ -373,11 +380,10 @@ export default {
       }
       this.tempId = id// 将id缓存
       id == '' ? id = '&cid=1' : id = '&cid=' + id// 若id为空则判断为从别的路由进入，默认id为1；若不为空则判断为点击分类切换数据，id为点击的id
-      url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id
+      url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
 
       this.axios.get(url).then(res => {
         this.page = res
-        console.log(res.data)
         console.log('数据个数' + res.total)
         // 设置下一页 由于加载方法使用以总数据量的方式  所以此处暂时无用
         if (res.next_page_url) {

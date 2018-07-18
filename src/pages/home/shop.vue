@@ -185,11 +185,8 @@
               <div class="s">
                 <p>{{item.userInfo.nickname||'未知用户'}}</p>
                 <div class="star">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
+                  <span v-for="(star,index) in parseInt(item.score)" class="cur"></span>
+                  <span v-for="(star,index) in (5-parseInt(item.score))" ></span>
                 </div>
               </div>
             </div>
@@ -260,7 +257,7 @@ export default {
     // 评论
     getComments () {
       let that = this
-      this.axios.get('/api/shop/comments?sid='+this.$route.query.id).then(function (res) {
+      this.axios.get('/api/shop/comments?sid=' + this.$route.query.id).then(function (res) {
         that.$store.commit('COMMENTS', res.data)
       })
     },
@@ -293,7 +290,6 @@ export default {
     this.getInfo()
     this.getExchange()
     this.getComments()
-    console.log(this.$route.query.id)
   },
   directives: {
     TransferDom
@@ -696,8 +692,13 @@ export default {
             float: left;
             width: 0.25rem;
             height: 0.24rem;
-            background: url(./images/icon_details_good.png) no-repeat;
+            // background: url(./images/icon_details_good.png) no-repeat;
+            background: url(./images/scorestar1.png) no-repeat;
             background-size: 100%;
+            &.cur{
+                 background: url(./images/icon_details_good.png) no-repeat;
+                background-size: 100%;
+              }
           }
         }
       }

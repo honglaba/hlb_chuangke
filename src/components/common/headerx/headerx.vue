@@ -7,10 +7,11 @@
     </div>
     <div class="search-box y-flex y-ac">
       <span></span>
-      <input type="search" placeholder="搜索附近的吃喝玩乐" ref="search" @keyup.13=search() v-model="searchVal"/>
+      <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model="searchVal" @focus="getFocus" />
     </div>
-    <div class="screen"></div>
-    <router-link class="message" to="/home/notice" tag="div"></router-link>
+    <div class="screen" v-if="!searchSeen"></div>
+    <router-link class="message" to="/home/notice" tag="div" v-if="!searchSeen"></router-link>
+    <div v-if="searchSeen" class="search-btn" @click="search">搜索</div>
   </header>
 </template>
 <script>
@@ -19,36 +20,52 @@ export default {
   data () {
     return {
       searchVal: '',
-      backSeen: false
+      backSeen: false,
+      searchSeen: false,
+      historyWords: [],
+      historyWordsArray: null
     }
   },
   methods: {
     search: function () {
+      // if (this.searchVal) { // 旧的搜索方法 废弃
+      //   this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&title=' + this.searchVal).then(res => {
+      //     for (let i in res.data) {
+      //       if (res.data[i].distance >= 1000) {
+      //         res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+      //       } else {
+      //         res.data[i].distance = res.data[i].distance + 'm'
+      //       }
+      //     }
+      //     this.$emit('result', res.data)// 将请求所得的值传给父组件
+      //   })
+      // } else {
+      //   alert('请输入关键字')
+      // }
       if (this.searchVal) {
-        this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&title=' + this.searchVal).then(res => {
-          for (let i in res.data) {
-            if (res.data[i].distance >= 1000) {
-              res.data[i].distance = res.data[i].distance / 1000 + 'Km'
-            } else {
-              res.data[i].distance = res.data[i].distance + 'm'
-            }
-          }
-          this.$emit('result', res.data)// 将请求所得的值传给父组件
-        })
+        this.$router.push({path: '/home/result', query: {title: this.searchVal}})
       } else {
         alert('请输入关键字')
       }
     },
     goBack: function () {
       this.$router.back()
+    },
+    getFocus: function () {
+      if (this.$route.name !== 'Search') {
+        this.$router.push({path: '/home/search'})
+      }
     }
+
   },
   mounted () {
-    if (this.$route.name === 'Food') {
+    if (this.$route.name === 'Food' || this.$route.name === 'Search' || this.$route.name === 'Result') {
       this.backSeen = true
     } else {
       this.backSeen = false
     }
+
+    this.$route.name === 'Search' ? this.searchSeen = true : this.searchSeen = false
   }
 }
 </script>
@@ -56,7 +73,7 @@ export default {
 
 header {
   height: 0.88rem;
-  padding-left: 0.2rem;
+  padding:0 .2rem;
   // margin-bottom: .4rem;
   background: #fff;
 }
@@ -75,6 +92,7 @@ header {
   }
 }
 .search-box {
+  flex: 1;
   width: 4.44rem;
   height: 0.62rem;
   border-radius: 0.62rem;
@@ -94,7 +112,7 @@ header {
     font-size: 0.28rem;
     outline: none;
     color: #666;
-    width: 3.5rem;
+    width: 80%;
   }
 }
 .screen {
@@ -127,5 +145,10 @@ header {
   height: .88rem;
   background: url(./images/top-return-icon.png) no-repeat center;
   background-size: .2rem;
+}
+.search-btn{
+  margin-left: .25rem;
+  font-size:.3rem;
+  font-weight: bold;
 }
 </style>

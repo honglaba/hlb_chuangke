@@ -17,6 +17,8 @@ import MyComment from '@/pages/home/my-comment'
 import Exchange from '@/pages/home/exchange'
 import ShopQRcode from '@/pages/home/shopqrcode'
 import Comment from '@/pages/home/comment'
+import Search from '@/pages/home/search'
+import Result from '@/pages/home/result'
 
 // import Scanning from '@/pages/home/scanning'
 // 附近商家
@@ -85,7 +87,7 @@ export default new VueRouter({
       component: HomeIndex,
       meta: {
         title: '首页',
-        keepAlive: true 
+        keepAlive: true
       }
     },
     {
@@ -109,7 +111,7 @@ export default new VueRouter({
       component: Food,
       meta: {
         title: '美食',
-        keepAlive: true 
+        keepAlive: true
       }
     }, {
       path: 'business-details',
@@ -189,6 +191,20 @@ export default new VueRouter({
       meta: {
         title: '评论列表'
       }
+    }, {
+      path: 'search',
+      name: 'Search',
+      component: Search,
+      meta: {
+        title: '搜索'
+      }
+    }, {
+      path: 'result',
+      name: 'Result',
+      component: Result,
+      meta: {
+        title: '搜索结果'
+      }
     }
       // {
       //   path: 'scanning',
@@ -210,7 +226,7 @@ export default new VueRouter({
       component: ShopIndex,
       meta: {
         title: '附近商家',
-        keepAlive: true 
+        keepAlive: true
       }
     }]
   },

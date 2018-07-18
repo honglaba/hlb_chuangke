@@ -31,7 +31,7 @@
 </template>
 <script>
 import { mapActions, mapGetters} from 'vuex'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 export default {
   data () {
     return {
@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-     ...mapActions(['HTTP_Comment']),
+    ...mapActions(['HTTP_Comment']),
     score: function (e) {
       let index = e.target.getAttribute('data-id')
       this.myScore = index
@@ -91,20 +91,20 @@ export default {
 
       if (this.myComment) {
         this.HTTP_Comment({
-          sid:that.detailsGetter.id,
-          content:that.myComment,
+          sid: that.detailsGetter.id,
+          content: that.myComment,
           score: that.myScore
-          }).then(res => {
-            console.log(res)
-            if (res.result_state == 'success') {
-              alert('评论成功')
-            } else {
-              alert('评论失败')
-            }
-            setTimeout(function(){
-                that.$router.push({path:'/home/comment',query:{sid:that.detailsGetter.id}})
-              },1000)
-          })
+        }).then(res => {
+          console.log(res)
+          if (res.result_state == 'success') {
+            alert('评论成功')
+          } else {
+            alert(res.message)
+          }
+          setTimeout(function () {
+            that.$router.push({path: '/home/comment', query: {sid: that.detailsGetter.id}})
+          }, 1000)
+        })
       }
     }
   },
@@ -112,7 +112,7 @@ export default {
     ...mapGetters(['detailsGetter'])
   },
   mounted () {
-     console.log('这里是'+this.detailsGetter.id)
+    console.log('这里是' + this.detailsGetter.id)
   }
 }
 </script>

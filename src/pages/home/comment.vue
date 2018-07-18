@@ -4,14 +4,11 @@
      <section class="comment-info">
        <div>评论{{commentList.length}}</div>
        <div class="score-part">
-         <span>评分5.0</span>
+         <span>评分{{score}}</span>
          <div class="score">
           <ul>
-            <li class="cur"></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li v-for="(item,index) in parseInt(score)" :key="index" class="cur"></li>
+            <li v-for="(item,index) in (5-parseInt(score))" :key="index"></li>
           </ul>
          </div>
        </div>
@@ -70,10 +67,11 @@
             </div>
            </div>
            <div class="comment-inner">{{item.content}}</div>
-           <div class="type">
+           <!-- 暂时隐藏 -->
+           <!-- <div class="type">
              <span>数量：2</span>
              <span>颜色：白色</span>
-           </div>
+           </div> -->
          </li>
        </ul>
      </section>
@@ -83,18 +81,25 @@
 export default {
   data () {
     return {
-      commentList:[]
+      commentList: [],
+      score: ''
     }
   },
-  methods:{
-    getCommentList(){
-      this.axios.get('/api/shop/comments?sid='+this.$route.query.sid).then(res=>{
-        this.commentList=res.data
+  methods: {
+    getCommentList () {
+      this.axios.get('/api/shop/comments?sid=' + this.$route.query.sid).then(res => {
+        this.commentList = res.data
+      })
+    },
+    getShopScore () {
+      this.axios.get('/api/shop?id=' + this.$route.query.sid).then(res => {
+        this.score = res.data.score
       })
     }
   },
-  mounted(){
+  mounted () {
     this.getCommentList()
+    this.getShopScore()
   }
 }
 </script>
