@@ -1,6 +1,6 @@
 <template>
   <div id="app1">
-    <x-header :left-options="{backText: ''}" title="精选商家"></x-header>
+    <my-header Title="'精选商家'"></my-header>
     <section class="banner">
       <div class="border-cross">
         <div class="inner">

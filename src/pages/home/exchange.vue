@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <x-header :left-options="{backText: ''}" title="大岗仙庙烧鸡-兑换商品">
+    <my-header :Title="'大岗仙庙烧鸡-兑换商品'">
        <router-link to="#" slot="right">
         <img src="./images/more.png" class="more-btn">
       </router-link>
-    </x-header>
+    </my-header>
     <section class="main2">
       <section class="recommend-list">
         <ul>

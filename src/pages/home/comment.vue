@@ -1,6 +1,7 @@
 <template>
   <div>
-     <x-header :left-options="{backText: ''}" title="评价"></x-header>
+            <my-header :Title="'评论'"></my-header>
+            <div class="main2">
      <section class="comment-info">
        <div>评论{{commentList.length}}</div>
        <div class="score-part">
@@ -75,6 +76,7 @@
          </li>
        </ul>
      </section>
+            </div>
   </div>
 </template>
 <script>

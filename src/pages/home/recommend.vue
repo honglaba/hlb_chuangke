@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <x-header :left-options="{backText: ''}" title="精品推荐"></x-header>
+    <my-header :Title="'精品推荐'">
+    </my-header>
     <section class="main2">
       <section class="recommend-list">
         <ul>

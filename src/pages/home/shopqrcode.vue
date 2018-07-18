@@ -1,7 +1,7 @@
 <template>
     <div class="app">
-        <x-header :left-options="{backText: ''}" title="店铺二维码">
-        </x-header>
+               <my-header :Title="'店铺二维码'">
+    </my-header>
         <div class="main2">
             <div class="content">
                 <!-- <img src="../../assets/images/logo.png" class="qrcode"> -->

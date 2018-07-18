@@ -296,6 +296,7 @@ export default {
     background: #fff;
     padding: 0 0.3rem;
     // min-height: 100vh;
+    margin-top: .1rem;
     > ul > li {
       padding-top: 0.32rem;
     }

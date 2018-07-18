@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="routeBack" title="消息公告"></x-header>
+        <my-header :Title="'消息公告'">
+    </my-header>
+    <div class="main2">
     <section>
       <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
         <tab-item @click.native="nowSeen = 1" selected>消息</tab-item>
@@ -69,6 +71,7 @@
 
       </div>
     </section>
+    </div>
   </div>
 </template>
 <script>

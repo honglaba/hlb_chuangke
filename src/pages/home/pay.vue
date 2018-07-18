@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <x-header :left-options="{backText: ''}" :title="detailsGetter.title||$route.query.title"></x-header>
+   <my-header :title="detailsGetter.title||$route.query.title"></my-header>
   <section>
     <!-- 若非从shop跳转过来即收起该栏 -->
     <router-link class="location-row" tag="a" to="/home/map" v-if="detailsGetter.address">

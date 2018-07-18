@@ -1,10 +1,9 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="我的积分">
-      <router-link to="points_log" slot="right">
+          <my-header :Title="'我的积分'"> <router-link to="points_log" slot="right">
         <img src="../../assets/images/kefu.png" class="kefu">
       </router-link>
-    </x-header>
+    </my-header>
     <div class="main2">
       <div class="content">
         <div class="jfbox">

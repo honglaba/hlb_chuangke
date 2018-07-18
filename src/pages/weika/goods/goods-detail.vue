@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="商品详情">
-    </x-header>
+    <my-header :Title="'商品详情'">
+    </my-header>
     <div class="main2">
       <div class="content">
         <p> 这里是微卡商品详情页面内容</p>

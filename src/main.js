@@ -10,7 +10,7 @@ import VueClipboard from 'vue-clipboard2'
 import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
-import {XHeader, ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading} from 'vux'
+import {ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading} from 'vux'
 import md5 from 'js-md5'
 // import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
@@ -28,7 +28,6 @@ Vue.prototype.$md5 = md5
 Vue.component('my-header', myHeader) // 自定义头部
 Vue.component('Headerx', Headerx)
 Vue.component('Footerx', Footerx)
-Vue.component('x-header', XHeader)
 Vue.component('x-loading', Loading)
 // Vue.component('BScroll', BScroll)
 

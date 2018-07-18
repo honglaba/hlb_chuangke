@@ -1,6 +1,8 @@
 <template>
   <div>
-    <x-header :left-options="{backText: ''}" title="我的评论"></x-header>
+            <my-header :Title="'我的评论'">
+    </my-header>
+    <div class="main2">
     <section class="top">
       <div class="img">
         <img :src="detailsGetter.logo" />
@@ -27,6 +29,7 @@
       </section>
       <input type="button" value="提交评论" class="submit-btn" @click="submitComment"/>
     <!-- </form> -->
+    </div>
   </div>
 </template>
 <script>
@@ -97,9 +100,9 @@ export default {
         }).then(res => {
           console.log(res)
           if (res.result_state == 'success') {
-            alert('评论成功')
+             this.$vux.toast.text('评论成功')
           } else {
-            alert(res.message)
+             this.$vux.toast.text(res.message)
           }
           setTimeout(function () {
             that.$router.push({path: '/home/comment', query: {sid: that.detailsGetter.id}})

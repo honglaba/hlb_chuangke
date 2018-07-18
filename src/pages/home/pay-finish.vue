@@ -1,6 +1,7 @@
 <template>
 <div id="app">
-  <x-header :left-options="{backText: ''}" title="订单详情"></x-header>
+      <my-header :Title="'订单详情'">
+    </my-header>
   <section class="bgf tpad44 bpad51 bmar20 text-c">
     <img src="./images/finish.png" class="finish-logo"/>
     <h3>支付完成</h3>

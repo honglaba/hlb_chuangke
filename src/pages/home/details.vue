@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <x-header :left-options="{backText: ''}" title="商品详情页"></x-header>
+     <my-header :Title="'商品详情'">
+    </my-header>
     <router-link to="#" class="buy-button">
       立即购买
     </router-link>
