@@ -33,6 +33,7 @@ import points from '@/pages/member/points' // 我的积分
 import points_log from '@/pages/member/points_log' // 积分记录
 import order_list from '@/pages/member/order/order_list' // 订单列表
 import order_detail from '@/pages/member/order/order_detail' // 订单详情
+import order_logistics from '@/pages/member/order/order_logistics' // 订单物流详情
 import MemberLogin from '@/pages/member/login' // 登录、注册绑定手机
 import MemberIndex from '@/pages/member/index'
 import phone_update from '@/pages/member/phone_update'// 更改手机号
@@ -405,6 +406,14 @@ export default new VueRouter({
           title: '我的订单'
         }
       }, {
+        path: 'order/order_logistics/:id',
+        name: 'order_logistics',
+        component: order_logistics,
+        meta: {
+          title: '订单物流详情'
+        }
+      },
+      {
         path: 'order/order_detail/:id',
         name: 'order_detail',
         component: order_detail,
