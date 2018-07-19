@@ -219,7 +219,6 @@ import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import MeScroll from '@/../static/js/mescroll.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions } from 'vuex'
-import { Loadmore } from 'mint-ui'
 export default {
   name: 'App',
   data () {
@@ -247,37 +246,9 @@ export default {
       // ]
     }
   },
-  components: { ListInner, swiper, swiperSlide, 'mt-loadmore': Loadmore },
+  components: { ListInner, swiper, swiperSlide },
   methods: {
     ...mapActions(['APP_Banner']),
-    // loadmore
-    loadTop () {
-      this.$refs.loadmore.onTopLoaded()
-      this.axios.get(this.nextPageUrl).then(res => {
-        console.log(res)
-        console.log(this.businessList)
-      })
-    },
-    loadBottom () {
-      this.axios.get(this.nextPageUrl).then(res => {
-        for (let i in res.data) {
-          if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
-          } else {
-            res.data[i].distance = res.data[i].distance + 'm'
-          }
-        }
-        this.businessList = this.businessList.concat(res.data)// 添加数据
-        this.$refs.loadmore.onBottomLoaded()// 加载过程
-        if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
-        } else {
-          this.allLoaded = true// 若数据已全部获取完毕
-          this.nextPageUrl = null
-        }
-      })
-    },
-    // loadmore end
     result: function (result) {
       // 从子Headerx组件回传的值
       this.businessList = result

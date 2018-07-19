@@ -7,23 +7,31 @@
         <div class="detele-btn" @click="deleteHistory"></div>
       </div>
       <ul>
-        <li>中影时代电影院</li>
+        <!-- <li>中影时代电影院</li>
         <li>万达影院</li>
         <li>中式餐厅</li>
         <li>哥顿蛋糕</li>
         <li>蛙来哒炭烧牛蛙</li>
         <li>牛奶</li>
         <li>必胜客</li>
-        <li>必胜客</li>
+        <li>必胜客</li> -->
+
+        <router-link tag="li" v-for="(item,index) in history" :key="index" :to="{path:'/home/result',query:{'title':item}}">{{item}}</router-link>
       </ul>
     </section>
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      history: localStorage.historyWords.split('|')
+    }
+  },
   methods: {
     deleteHistory () {
       localStorage.removeItem('historyWords')
+      this.history = null
     }
   },
   mounted () {

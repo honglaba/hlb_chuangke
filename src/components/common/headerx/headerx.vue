@@ -7,7 +7,7 @@
     </div>
     <div class="search-box y-flex y-ac">
       <span></span>
-      <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model="searchVal" @focus="getFocus" />
+      <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model.trim="searchVal" @focus="getFocus" />
     </div>
     <div class="screen" v-if="!searchSeen"></div>
     <router-link class="message" to="/home/notice" tag="div" v-if="!searchSeen"></router-link>
@@ -22,8 +22,7 @@ export default {
       searchVal: '',
       backSeen: false,
       searchSeen: false,
-      historyWords: [],
-      historyWordsArray: null
+      historyWords: null
     }
   },
   methods: {
@@ -44,6 +43,14 @@ export default {
       // }
       if (this.searchVal) {
         this.$router.push({path: '/home/result', query: {title: this.searchVal}})
+        this.historyWords = localStorage.historyWords
+        if (this.historyWords === undefined) {
+          localStorage.historyWords = this.searchVal
+        } else {
+          const onlyWord = this.historyWords.split('|').filter(e => e != this.searchVal)
+          if (onlyWord.length > 0) this.historyWords = this.searchVal + '|' + onlyWord.join('|')
+          localStorage.historyWords = this.historyWords
+        }
       } else {
         alert('请输入关键字')
       }

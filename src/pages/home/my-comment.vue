@@ -49,16 +49,15 @@ export default {
           active: true,
           txt: '满意'
         }, {
-          active: false,
+          active: true,
           txt: '很满意'
         }, {
-          active: false,
+          active: true,
           txt: '非常满意'
         }
       ],
-      scoreIndex: 2,
-      myComment: '',
-      myScore: 3
+      scoreIndex: 4,
+      myComment: ''
     }
   },
   methods: {
@@ -100,9 +99,9 @@ export default {
         }).then(res => {
           console.log(res)
           if (res.result_state == 'success') {
-             this.$vux.toast.text('评论成功')
+            this.$vux.toast.text('评论成功')
           } else {
-             this.$vux.toast.text(res.message)
+            this.$vux.toast.text(res.message)
           }
           setTimeout(function () {
             that.$router.push({path: '/home/comment', query: {sid: that.detailsGetter.id}})

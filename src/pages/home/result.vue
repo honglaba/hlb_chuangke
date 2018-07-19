@@ -1,5 +1,5 @@
 <template>
-  <div id="food-content" :class="{'full-page':seen}">
+  <div id="food-content" >
     <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
       <section class="business-list">
