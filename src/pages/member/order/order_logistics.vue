@@ -7,8 +7,8 @@
         <div class="order-info pd20">
           <div class="left"><img src="./../images/noorder.png"></div>
           <div class="right">
-            <h3>物流类型：顺丰快递</h3>
-            <p>物流单号：545465787661</p>
+            <h3>物流单号:545465787661</h3>
+            <p>物流类型:顺丰快递</p>
           </div>
         </div>
         <div class="step-vertical mt20 pd20">
@@ -31,6 +31,11 @@
             <li class="bdr-b">
               <p>2016-07-10 09:30</p>
               <h3>已发货</h3>
+              <i class="step-circle abs-topcenter"></i>
+            </li>
+            <li class="bdr-b">
+              <p>2016-07-10 09:30</p>
+              <h3>提交订单完成：15457887645</h3>
               <i class="step-circle abs-topcenter"></i>
             </li>
           </ul>
@@ -62,11 +67,12 @@ export default {
   }
   .right {
     h3 {
-      margin-bottom: 0.1rem;
       font-weight: normal;
+      margin-bottom: 0.1rem;
     }
     p {
       color: #999999;
+      font-size: 0.2rem;
     }
   }
 }
