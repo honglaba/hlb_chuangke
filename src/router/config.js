@@ -49,8 +49,10 @@ import article_route from '@/pages/article/article_route'
 import help_list from '@/pages/article/help_list' // 帮助中心
 import help_detail from '@/pages/article/help_detail' // 帮助详情
 import feedback from '@/pages/article/feedback' // 问题反馈
+
+const PayFinish = () => import(/* 根组件 */ '@/pages/home/pay-finish')
 // ---------------------= 微 卡 =------------------
-const WkMain = () => import(/* 根组件 */ '@/pages/weika')
+const WkMain = () => import(/* 微卡根组件 */ '@/pages/weika')
 
 /* 平民 */
 const WkCivilian = () => import(/* 首页-平民 */ '@/pages/weika/civilian/civilian')
@@ -149,7 +151,16 @@ export default new VueRouter({
       meta: {
         title: '消费买单'
       }
-    }, {
+    },
+    {
+      path: 'payfinish',
+      name: 'payfinish',
+      component: PayFinish,
+      meta: {
+        title: '支付完成页面'
+      }
+    },
+    {
       path: 'choice',
       name: 'Choice',
       component: Choice,
