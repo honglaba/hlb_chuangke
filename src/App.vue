@@ -2,9 +2,9 @@
   <div id="app">
     <x-loading v-model="isLoading.status" :text="isLoading.text"></x-loading>
     <!-- <keep-alive v-if="$route.meta.keepAlive"> -->
-    <!-- <keep-alive :include="HomeIndex,Food" > -->
+    <keep-alive :include="HomeIndex,Food" >
       <router-view></router-view>
-    <!-- </keep-alive> -->
+    </keep-alive>
     <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
       if (localStorage.getItem('vip_info')) this.UPDATE_VIP_INFO(JSON.parse(localStorage.getItem('vip_info'))) // vip信息
       if (localStorage.getItem('shoppingCart')) this.SAVE_SHOPPING_CART(JSON.parse(localStorage.getItem('shoppingCart'))) // 购物车
     },
-    ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID', 'UPDATE_VIP_INFO', 'SAVE_SHOPPING_CART'])
+    ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID', 'UPDATE_VIP_INFO', 'SAVE_SHOPPING_CART', 'UPDATE_LOADING'])
   }
 }
 </script>

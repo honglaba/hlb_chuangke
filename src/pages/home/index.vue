@@ -2,17 +2,24 @@
   <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  > -->
   <div>
     <div id="mescroll" class="mescroll">
+      <!-- 头部 -->
       <Headerx @result='result'></Headerx>
+
       <div id="allmap" class="allmap" style="display:none"></div>
-      <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1">
+
+      <section class="bgf bmar20 vux-1px-b bpad26 tpad27" key="1" v-if="chainLength > 0">
+
+        <!-- 大轮播图 -->
         <div class="swiper-container banner-swiper index">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
-              <img :src="item.img_path" />
+              <img class="img-fade-in" :src="item.img_path" :onerror="require('static/images/轮播默认图.png')">
             </div>
-
           </div>
+
         </div>
+
+        <!-- 小icon图标导航 -->
         <div class="swiper-container nav-swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
@@ -27,15 +34,19 @@
           <div class="swiper-pagination"></div>
         </div>
 
+        <!-- 创客优讯 -->
         <div class="y-flex ad">
           <a href="javascript:;">
             <!-- <img src="./images/home-news-text.png" /> -->
           </a>
           <a href="javascript:;" class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
         </div>
+
       </section>
 
-      <section class="vux-1px-tb bmar20 bgf tpad36" key="2">
+      <!-- 精选推荐 -->
+      <section class="home-rec vux-1px-tb bmar20 bgf tpad36" key="2" v-if="chainLength > 1">
+
         <div class="lrpad32 til-row bmar56">
           <h3 class="fl">精选推荐</h3>
           <router-link to="/home/recommend" class="fr">
@@ -43,6 +54,7 @@
             <span class="littleArr"></span>
           </router-link>
         </div>
+
         <div class="y-flex ad-type-one">
           <router-link tag="a" to="javascript:;" v-for="(item, index) in goods" :key="index">
             <img src="./images/home-recommend-img1.png" />
@@ -62,6 +74,7 @@
             </div>
           </router-link>
         </div>
+
         <!-- 以下是隐藏部分模板 有用 -->
         <!-- <div class="y-flex ad-type-one">
           <router-link tag="a" to="javascript:;">
@@ -166,10 +179,10 @@
             </div>
           </router-link>
         </div> -->
-
       </section>
 
-      <section class="vux-1px-tb bmar20 bgf tpad36" key="3">
+      <!-- 精选商家 -->
+      <section class="careful-shops vux-1px-tb bmar20 bgf tpad36" key="3" v-if="chainLength > 2">
         <div class="lrpad32 til-row bmar52">
           <h3 class="fl">精选商家</h3>
           <!-- <a class="fr" href="#">更多></a> -->
@@ -200,7 +213,8 @@
         </div>
       </section>
 
-      <section class="vux-1px-tb bmar20 bgf guess" key="4">
+      <!-- 猜你喜欢 -->
+      <section class="guess-you-like vux-1px-tb bmar20 bgf guess" key="4" v-if="chainLength > 3">
         <div class="til-row1 vux-1px-b">
           <h3>猜你喜欢</h3>
         </div>
@@ -224,7 +238,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import MeScroll from '@/../static/js/mescroll.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   name: 'App',
   data () {
@@ -238,7 +252,8 @@ export default {
       allLoaded: false,
       mescroll: null,
       pdlist: [],
-      page: null
+      page: null,
+      chainLength: 0
       // businessList: []
       // businessList: [
       //   {
@@ -252,26 +267,99 @@ export default {
       // ]
     }
   },
-  components: { ListInner, swiper, swiperSlide },
+  watch: {
+    banner (val, oldVal) { // 轮播初始化
+      /* eslint-disable no-new */
+      this.$nextTick()
+        .then(() => {
+          new Swiper('.banner-swiper', {
+            // 顶部banner实例化
+            autoplay: 8000,
+            loop: true,
+            centeredSlides: true,
+            slidesPerView: 'auto'
+            // effect: 'coverflow',
+            // coverflowEffect: {
+            //   rotate: 50,
+            //   stretch: 0,
+            //   depth: 100,
+            //   modifier: 1,
+            //   slideShadows: true
+            // }
+          })
+          new Swiper('.nav-swiper', {
+            // 分类导航实例化
+            pagination: {
+              el: '.swiper-pagination'
+            }
+          })
+        })
+    },
+    chainLength (val, oldVal) {
+      if (val === 4) {
+        this.updateLoading({status: false})
+      }
+    }
+  },
+  async created () {
+    this.updateLoading({status: true})
+    await this.getBanner() // 轮播
+    await this.getChannel() // 分类导航
+    this.chainLength++
+    await this.getSuperme() // 精选商家
+    this.chainLength++
+    await this.getGoods() // 精选推荐
+    this.chainLength++
+    await this.getCategoryShop() // 默认的加载列表交由mescroll第一次执行负责
+    this.chainLength++
+  },
+  mounted () {
+    this.mescrollInstantiation()
+  },
+  updated () {
+    // 百度地图
+    if (!sessionStorage.lng) {
+      // 如果本地缓存中没有经纬度才获取经纬度
+      // 百度地图API功能
+      var map = new BMap.Map('allmap') // 创建Map实例
+      // 获取自身定位并存入sessionStorage
+      var my_point = []
+      var geolocation = new BMap.Geolocation()
+      geolocation.getCurrentPosition(
+        function (r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point)
+            map.addOverlay(mk)
+            map.panTo(r.point)
+            // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
+            sessionStorage.lng = r.point.lng
+            sessionStorage.lat = r.point.lat
+          } else {
+            alert('failed' + this.getStatus())
+          }
+        },
+        { enableHighAccuracy: true }
+      )
+    }
+  },
   methods: {
-    ...mapActions(['APP_Banner']),
-    result: function (result) {
+    result (result) {
       // 从子Headerx组件回传的值
       this.businessList = result
     },
-    getBanner: function () {
+    getBanner () {
       // 顶部banner
       this.axios.get('/api/banner?key=index').then(res => {
         this.banner = res.data
       })
     },
-    getSuperme: function () {
+    getSuperme () {
       // 精选商家
       this.axios.get('/api/banner?key=superme').then(res => {
         this.superme = res.data
       })
     },
-    getChannel: function () {
+    getChannel () {
       // 分类导航
       this.axios.get('/api/banner?key=channel').then(res => {
         for (let i = 0, len = res.data.length; i < len; i++) {
@@ -285,14 +373,14 @@ export default {
         this.channel = res.data
       })
     },
-    getGoods: function () {
+    getGoods () {
       // 精选推荐
       this.axios.get('/api/weika/goods').then(res => {
         this.goods = res.data
         this.goods.length = 3 // 限制数量为三个
       })
     },
-    getCategoryShop: function (id) {
+    getCategoryShop (id) {
       // 分类下商店
       // this.HTTP_GetCategoryShop().then(res => {
       // id ? id = id : id = 0 // 0即为全部
@@ -329,10 +417,9 @@ export default {
         })
     },
     /* 联网加载列表数据
-		 请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
-		 实际项目以您服务器接口返回的数据为准,无需本地处理分页.
-		 * */
-    getListDataFromNet: function (
+      请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
+      实际项目以您服务器接口返回的数据为准,无需本地处理分页. */
+    getListDataFromNet (
       pageNum,
       pageSize,
       successCallback,
@@ -395,7 +482,7 @@ export default {
       })
     },
     // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
-    upCallback: function (page) {
+    upCallback (page) {
       // 联网加载数据
       var self = this
       self.getListDataFromNet(
@@ -442,7 +529,7 @@ export default {
         }
       )
     },
-    mescrollInstantiation: function () {
+    mescrollInstantiation () {
       // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
       // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
       var self = this
@@ -483,67 +570,11 @@ export default {
           //						clearEmptyId: "dataList"
         }
       })
-    }
+    },
+    ...mapActions(['APP_Banner']),
+    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
   },
-  created () {
-    this.getBanner()
-    this.getSuperme()
-    this.getChannel()
-    this.getGoods()
-    // this.getCategoryShop()//默认的加载列表交由mescroll第一次执行负责
-  },
-  mounted () {
-    this.mescrollInstantiation()
-  },
-  updated () {
-    // 百度地图
-    if (!sessionStorage.lng) {
-      // 如果本地缓存中没有经纬度才获取经纬度
-      // 百度地图API功能
-      var map = new BMap.Map('allmap') // 创建Map实例
-      // 获取自身定位并存入sessionStorage
-      var my_point = []
-      var geolocation = new BMap.Geolocation()
-      geolocation.getCurrentPosition(
-        function (r) {
-          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point)
-            map.addOverlay(mk)
-            map.panTo(r.point)
-            // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-            sessionStorage.lng = r.point.lng
-            sessionStorage.lat = r.point.lat
-          } else {
-            alert('failed' + this.getStatus())
-          }
-        },
-        { enableHighAccuracy: true }
-      )
-    }
-
-    /* eslint-disable no-new */
-    new Swiper('.banner-swiper', {
-      // 顶部banner实例化
-      autoplay: 8000,
-      loop: true,
-      centeredSlides: true,
-      slidesPerView: 'auto'
-      // effect: 'coverflow',
-      // coverflowEffect: {
-      //   rotate: 50,
-      //   stretch: 0,
-      //   depth: 100,
-      //   modifier: 1,
-      //   slideShadows: true
-      // }
-    })
-    new Swiper('.nav-swiper', {
-      // 分类导航实例化
-      pagination: {
-        el: '.swiper-pagination'
-      }
-    })
-  }
+  components: { ListInner, swiper, swiperSlide }
 }
 </script>
 
@@ -552,6 +583,15 @@ export default {
 @import url("../../../static/swiper/swiper-4.2.6.min.css");
 @import url("../../../static/css/mescroll.min.css");
 // @import url("../../../static/swiper/swiper.min.css");
+.img-fade-in {
+  animation: myfirst 0.5s ease;
+}
+
+@keyframes myfirst {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 .mescroll {
   position: fixed;
   top: 0;
@@ -559,12 +599,23 @@ export default {
   height: auto;
   width: 7.5rem;
 }
-#app {
-  // padding-bottom: 1rem;
+
+.home-rec { // 精选推荐
+  height: 4.6rem;
 }
+
+.careful-shops { // 精选商家
+  height: 3.54rem;
+}
+
+// .guess-you-like { // 猜你喜欢
+
+// }
+
 .swiper-container {
   overflow-y: inherit;
 }
+
 .banner-swiper.index {
   height: 2.96rem;
   .swiper-slide {
@@ -581,6 +632,7 @@ export default {
     height: 2.56rem;
   }
 }
+
 .nav-swiper {
   .swiper-slide {
     display: flex;
@@ -626,6 +678,7 @@ export default {
     bottom: 0.2rem;
   }
 }
+
 .ad {
   padding-left: 0.34rem;
   height: 0.35rem;
@@ -642,6 +695,7 @@ export default {
     padding-left: 0.24rem;
   }
 }
+
 .til-row {
   overflow: hidden;
   line-height: 0.4rem;
@@ -663,6 +717,7 @@ export default {
     }
   }
 }
+
 .ad-type-one {
   a {
     flex: 1;
@@ -673,6 +728,7 @@ export default {
     margin: 0 auto;
   }
 }
+
 .txt1 {
   margin-bottom: 0.26rem;
   > p:nth-child(1) {
@@ -686,6 +742,7 @@ export default {
     color: #999;
   }
 }
+
 .txt2 {
   display: flex;
   align-items: center;
@@ -702,6 +759,7 @@ export default {
     color: #666;
   }
 }
+
 .ad-type-two {
   a {
     flex: 1;
@@ -714,6 +772,7 @@ export default {
     display: block;
   }
 }
+
 .business {
   padding: 0 0.2rem;
   padding-bottom: 0.15rem;
@@ -730,6 +789,7 @@ export default {
     }
   }
 }
+
 .img-box {
   position: relative;
   width: 3.44rem;
@@ -746,12 +806,14 @@ export default {
     left: 0;
   }
 }
+
 .business-name {
   padding-left: 1.14rem;
   height: 0.53rem;
   line-height: 0.53rem;
   font-weight: bold;
 }
+
 .guess {
   .til-row1 {
     height: 0.94rem;
@@ -775,6 +837,7 @@ export default {
     }
   }
 }
+
 .swiper-pagination-bullet {
   width: 0.1rem !important;
   height: 0.1rem !important;
@@ -782,6 +845,7 @@ export default {
   opacity: 1;
   margin-right: 0.12rem !important;
 }
+
 .swiper-pagination-bullet-active {
   background: #ccc;
 }
