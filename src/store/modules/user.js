@@ -477,12 +477,6 @@ const weika = {
   }
 }
 
-// const Fajax /* 非请求 */ = {
-//   shopComplete () { /**/
-
-//   }
-// }
-
 const moduleUser = {
   actions: Object.assign({}, normal, weika)
 }

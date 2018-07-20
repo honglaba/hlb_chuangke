@@ -137,21 +137,11 @@
 </template>
 <script>
 import { Swiper } from 'vux'
-import { mapActions } from 'vuex'
 export default {
   props: {
     DataTree: {
       type: Object
     }
-  },
-  created () {
-    this.getUser()
-      .then(res => {
-        console.log(res)
-      })
-  },
-  methods: {
-    ...mapActions({getUser: 'HTTP_UserInfo'})
   },
   components: {
     Swiper
