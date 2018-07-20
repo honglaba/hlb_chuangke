@@ -41,7 +41,7 @@
         <dt :id="index">{{ index }}</dt>
         <dd>
           <ul>
-            <li class="vux-1px-b" v-for="(cx, i) in item" :key="i">{{ cx.region_name }}</li>
+            <li class="vux-1px-b" v-for="(cx, i) in item" :key="i" @click="test(index,i)">{{ cx.region_name }}</li>
           </ul>
         </dd>
       </dl>
@@ -101,7 +101,8 @@ export default {
       resultSeen: false,
       pageStatu: {
         present: ''
-      }
+      },
+      region: null
     }
   },
   watch: {
@@ -128,6 +129,12 @@ export default {
     blur () {
       this.maskSeen = false
       this.keyword = ''
+    },
+    test (a, b) {
+      this.region = cityJson[a][b]
+      sessionStorage.setItem('lat', cityJson[a][b].latitude)
+      sessionStorage.setItem('lng', cityJson[a][b].longitude)
+      sessionStorage.setItem('regionName', cityJson[a][b].region_name)
     }
   },
   mounted () {

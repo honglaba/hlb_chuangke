@@ -95,17 +95,16 @@ export default {
           sid: that.detailsGetter.id,
           content: that.myComment,
           score: that.myScore
-        }).then(res => {
-          console.log(res)
-          if (res.result_state == 'success') {
-            this.$vux.toast.text('评论成功')
-          } else {
-            this.$vux.toast.text(res.message)
-          }
-          setTimeout(function () {
-            that.$router.push({path: '/home/comment', query: {sid: that.detailsGetter.id}})
-          }, 1000)
         })
+          .then(res => {
+            this.$vux.toast.text('评论成功')
+            setTimeout(function () {
+              that.$router.push({path: '/home/comment', query: {sid: that.detailsGetter.id}})
+            }, 1000)
+          })
+          .catch(erro => {
+            this.$vux.toast.text(erro)
+          })
       }
     }
   },

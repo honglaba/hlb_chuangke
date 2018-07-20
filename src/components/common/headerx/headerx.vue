@@ -2,7 +2,7 @@
   <header class="y-flex y-ac">
     <div class="back-btn" @click="goBack" v-if="backSeen"></div>
     <div class="add y-flex y-ac" v-if="!backSeen">
-      <router-link to="/home/location" tag="p">东莞</router-link>
+      <router-link to="/home/location" tag="p">{{region}}</router-link>
       <span></span>
     </div>
     <div class="search-box y-flex y-ac">
@@ -22,7 +22,8 @@ export default {
       searchVal: '',
       backSeen: false,
       searchSeen: false,
-      historyWords: null
+      historyWords: null,
+      region: null
     }
   },
   methods: {
@@ -38,7 +39,9 @@ export default {
           localStorage.historyWords = this.historyWords
         }
       } else {
-        alert('请输入关键字')
+        this.$vux.alert.show({
+          content: '请输入关键字'
+        })
       }
     },
     goBack: function () {
@@ -52,18 +55,20 @@ export default {
 
   },
   mounted () {
+    // 其他形态
     if (this.$route.name === 'Food' || this.$route.name === 'Search' || this.$route.name === 'Result') {
       this.backSeen = true
     } else {
       this.backSeen = false
     }
-
+    // 搜索页形态
     this.$route.name === 'Search' ? this.searchSeen = true : this.searchSeen = false
+    // 从缓存读取地名
+    this.region = sessionStorage.regionName
   }
 }
 </script>
 <style lang="less" scoped>
-
 header {
   height: 0.88rem;
   padding:0 .2rem;

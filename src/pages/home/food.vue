@@ -84,7 +84,7 @@
         </section> -->
       </section>
       <section class="business-list">
-        <ul>
+        <ul id="dataList">
           <router-link tag="li" :to="{path:'/home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
@@ -100,7 +100,6 @@ import Other from '../../components/common/other/other'
 import ListInner from '../../components/common/listInner/listInner'
 import { mapActions } from 'vuex'
 import MeScroll from '@/../static/js/mescroll.min.js'
-import { Loadmore } from 'mint-ui'
 export default {
   data () {
     return {
@@ -143,7 +142,7 @@ export default {
       sortIndex: 0
     }
   },
-  components: { ListInner, Other, 'mt-loadmore': Loadmore },
+  components: { ListInner, Other },
   methods: {
     ...mapActions([
       'HTTP_GetCategory',
@@ -341,6 +340,8 @@ export default {
           .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
           .then(res => {
             this.areas = res.data[index - 1].children
+            this.areas.unshift({ region_name: '全部', active: true, id: this.region[index].id})
+            console.log(this.areas)
           })
       } else {
         this.areas = []
@@ -458,16 +459,17 @@ export default {
             // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset: 1000
+          },
+          empty: { // 配置列表无任何数据的提示
+            warpId: 'dataList',
+            icon: '../../../static/images/mescroll-empty.png',
+            tip: '亲,暂无相关数据哦~',
+            btntext: '去逛逛 >',
+            btnClick: function () {
+              // alert('点击了去逛逛按钮')
+              self.$router.push({path: '/'})
+            }
           }
-          // empty: { // 配置列表无任何数据的提示
-          //   warpId: 'dataList',
-          //   icon: '../../../static/images/mescroll-empty.png',
-          //   tip: '亲,暂无相关数据哦~',
-          //   btntext: '去逛逛 >',
-          //   btnClick: function () {
-          //     alert('点击了去逛逛按钮')
-          //   }
-          // }
         }
       })
     },

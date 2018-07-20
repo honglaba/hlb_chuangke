@@ -1,19 +1,20 @@
 <template>
     <div class="inner">
         <div class="business-img">
-            <img :src="businessList.logo" />
-            <!-- <img v-lazy="businessList.logo" /> -->
+            <!-- <img :src="businessList.logo" /> -->
+            <img v-lazy="businessList.logo" />
         </div>
         <div class="business-info">
             <div class="til-row">
               <!-- <h4>{{businessList.name}}</h4> -->
               <h4>{{businessList.title}}</h4>
+               <p>{{businessList.distance}}</p>
               <!-- <p>创客推荐</p> -->
             </div>
 
             <div class="mark-row">
-               <span class="mark type1">到店直换</span>
-               <span class="mark type2">创客推荐</span>
+               <!-- <span class="mark type1">到店直换</span>
+               <span class="mark type2">创客推荐</span> -->
             </div>
             <p class="tsc">{{businessList.category}}</p>
             <div class="price-row">
@@ -21,7 +22,7 @@
                 <p>({{businessList.total_comments}}条评价)</p>
             </div>
         </div>
-        <p>{{businessList.distance}}</p>
+        <!-- <p>{{businessList.distance}}</p> -->
     </div>
 </template>
 <script>
@@ -54,6 +55,7 @@ export default {
         .til-row {
           display: flex;
           align-items: center;
+          justify-content: space-between;
          // height: 0.5rem;
           // margin-bottom: 0.1rem;
           // > p {
@@ -69,7 +71,7 @@ export default {
           // }
         }
         h4 {
-          font-size: 0.36rem;
+          font-size: 0.32rem;
           color: #333;
           margin-right: 0.16rem;
           text-overflow: ellipsis;
@@ -80,6 +82,7 @@ export default {
           display: flex;
           align-items: center;
           margin-bottom: 0.42rem;
+          min-height: .32rem;
         }
         .mark.type1 {
           font-size: 0.22rem;

@@ -204,7 +204,7 @@
         <div class="til-row1 vux-1px-b">
           <h3>猜你喜欢</h3>
         </div>
-        <ul class="guess-list">
+        <ul class="guess-list" id="dataList">
           <router-link tag="li" :to="{path:'home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
           </router-link>
@@ -274,6 +274,7 @@ export default {
     getChannel: function () {
       // 分类导航
       this.axios.get('/api/banner?key=channel').then(res => {
+        console.log(res)
         for (let i = 0, len = res.data.length; i < len; i++) {
           // 处理链接
           if (res.data[i].link_url != '') {
@@ -467,20 +468,15 @@ export default {
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset : 1000
           },
-          empty: {
-            // 配置列表无任何数据的提示
-            // warpId: 'dataList',
-            icon: '../res/img/mescroll-empty.png'
-            //						  	tip : "亲,暂无相关数据哦~" ,
-            //						  	btntext : "去逛逛 >" ,
-            //						  	btnClick : function() {
-            //						  		alert("点击了去逛逛按钮");
-            //						  	}
+          empty: { // 配置列表无任何数据的提示
+            warpId: 'dataList',
+            icon: '../../../static/images/mescroll-empty.png',
+            tip: '亲,暂无相关数据哦~'
+            // btntext: '去逛逛 >',
+            // btnClick: function () {
+            //   alert('点击了去逛逛按钮')
+            // }
           }
-          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-          //						clearId: "dataList",
-          //						clearEmptyId: "dataList"
         }
       })
     }
@@ -494,6 +490,7 @@ export default {
   },
   mounted () {
     this.mescrollInstantiation()
+    console.log(sessionStorage)
   },
   updated () {
     // 百度地图
