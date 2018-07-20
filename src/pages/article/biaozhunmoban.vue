@@ -40,14 +40,14 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-    };
+    }
   },
   components: {
   },
   methods: {}
-};
+}
 </script>
 <style lang="less" scoped>
 .kefu {

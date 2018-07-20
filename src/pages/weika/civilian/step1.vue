@@ -7,11 +7,11 @@
           <ul>
             <li>
               <!-- <router-link :to="{path: '/weika/step2'}" tag="img" :src="imgs.A"></router-link><br>我有推荐人 -->
-              <img :src="imgs.A" @click="_hstep(true)"><br>我有推荐人
+              <img :src="require('../images/you.png')" @click="_hstep(true)"><br>我有推荐人
             </li>
             <li>
               <!-- <router-link :to="{path: '/weika/no_inv'}" tag="img" :src="imgs.B"></router-link><br>我没有推荐人 -->
-              <img :src="imgs.B" @click="_hstep(false)"><br>我没有推荐人
+              <img :src="require('../images/meiyou.png')" @click="_hstep(false)"><br>我没有推荐人
             </li>
           </ul>
         </div>
@@ -23,10 +23,6 @@
 export default {
   data () {
     return {
-      imgs: {
-        A: require('../images/you.png'),
-        B: require('../images/meiyou.png')
-      }
     }
   },
   methods: {

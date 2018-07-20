@@ -25,10 +25,11 @@
         <div class="base_box pd20 mt20">
           <div class="tit">
             <div class="l">提现金额</div>
-            <div class="r">提现规则<img src="~assets/images/you1.png"></div>
+            <!-- <div class="r">提现规则<img src="~assets/images/you1.png"></div> -->
           </div>
           <div class="money-input">
-            <span>¥</span>
+            <!-- <span>¥</span> -->
+            <span class="sign-withdraw"><img :src="require('../images/Withdrawal _ money sign@2x.png')" alt=""></span>
             <input type="number" class="money-input-item" v-model="numberA" @keydown="_onMoneyChange">
           </div>
           <p class="mtb20 c999">可提现金额￥{{ vipInfo.money }}</p>
@@ -62,16 +63,11 @@ export default {
       },
       numberA: '',
       remark: '',
-      clickAble: false
+      clickAble: true
     }
   },
   computed: {
     ...mapGetters({vipInfo: 'getWkVipInfo'})
-  },
-  watch: {
-    numberA (val) {
-      this.clickAble = val > 0
-    }
   },
   methods: {
     _onMoneyChange (e) {
@@ -94,10 +90,15 @@ export default {
       }
     },
     _withDraw () {
-      if (!this.numberA) {
+      if (+this.numberA < 1) {
+        this.$vux.toast.show({text: '提现金额要大于1元', width: '3rem'})
+        return
+      }
+      if (+this.numberA > this.vipInfo.money) {
         this.$vux.toast.show({text: '请输入正确的金额', width: '3rem'})
         return
       }
+
       let amount = this.numberA
       let remark = this.remark
       let _this = this
@@ -118,6 +119,9 @@ export default {
                 })
             })
         })
+        .catch(erro => {
+          this.$vux.toast.show(erro.message)
+        })
     },
     routeBack () {
       this.$router.push({path: '/weika/vip'})
@@ -133,7 +137,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .base_box .tit {
-  height: auto;
+  height: .6rem;
   margin-bottom: 0.2rem;
 }
 // 提现输入框
@@ -143,11 +147,21 @@ export default {
   font-size: .6rem;
   font-weight: 600;
   line-height: .9rem;
-  border-bottom: 1px solid rgb(196, 190, 190);
+  border-bottom: .5px solid rgb(224, 224, 224);
   position: relative;
   span {
     display: block;
     float: left;
+  }
+  .sign-withdraw {
+    width: .40rem;
+    height: 100%;
+    img {
+      display: block;
+      width: .40rem;
+      height: .47rem;
+      margin-top: 50%;
+    }
   }
   .money-input-item {
     display: block;
@@ -177,8 +191,8 @@ export default {
     align-items: center;
   }
   img {
-    width: 0.48rem;
-    height: 0.48rem;
+    width: 0.6rem;
+    height: 0.6rem;
     margin-right: 0.1rem;
   }
   &::before {
@@ -214,8 +228,8 @@ export default {
       margin-right: 0;
     }
     span {
-      width: 0.48rem;
-      height: 0.48rem;
+      width: 0.4rem;
+      height: 0.4rem;
       background: url("~assets/images/radio_unon.png") no-repeat;
       display: block;
       background-size: cover;

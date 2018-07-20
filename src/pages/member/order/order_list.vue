@@ -32,7 +32,7 @@
                       <em class="huangse" v-if="item.status_text === '待发货'">{{ item.status_text }}</em>
                       <em class="lvse" v-if="item.status_text === '待收货'">{{ item.status_text }}</em>
                       <em class="" v-if="item.status_text === '待评价'">{{ item.status_text }}</em>
-                      <em class="huise" v-if="item.status_text === '已取消'">{{ item.status_text }}</em>
+                      <em class="huise" v-if="item.status_text === '已取消' || item.status_text === '已关闭'">{{ item.status_text }}</em>
                     </span>
                   </div>
                 </div>
@@ -137,10 +137,10 @@ export default {
       this.updateLoading({ status: true })
       this.getGoodList(val)
         .then(res => {
-          this.ReqEnd = true
-          this.updateLoading({ status: false })
           this.nowSeen = val
           this.realData = res.data
+          this.ReqEnd = true
+          this.updateLoading({ status: false })
         })
     },
     routeBack () {
@@ -156,7 +156,9 @@ export default {
             .then(res => {
               _this.updateLoading({ status: false })
               _this.getGoodList(_this.$route.params.status)
-              _this.realData = res.data
+                .then(res1 => {
+                  _this.realData = res1.data
+                })
             })
         }
       })

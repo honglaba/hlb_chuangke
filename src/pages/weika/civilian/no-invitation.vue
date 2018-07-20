@@ -8,19 +8,19 @@
             <p class="tit">创客微卡·精选优质服务</p>
             <ul>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a8.png"></span>
                   <span>邀请有礼</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a3.png"></span>
                   <span>分享赚钱</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a7.png"></span>
                   <span>专享活动</span>
                 </a>

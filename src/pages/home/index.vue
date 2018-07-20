@@ -1,6 +1,6 @@
 <template>
-    <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  > -->
-    <div>
+  <!-- <mt-loadmore ref="loadmore"  :top-method="loadTop" :bottom-method="loadBottom" :auto-fill="false" :bottom-all-loaded="allLoaded"  > -->
+  <div>
     <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
       <div id="allmap" class="allmap" style="display:none"></div>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="y-flex ad">
-          <a href="#">
+          <a href="javascript:;">
             <!-- <img src="./images/home-news-text.png" /> -->
           </a>
           <a href="javascript:;" class="vux-1px-l">小米儿溜溜，注册成为创客会员</a>
@@ -38,13 +38,16 @@
       <section class="vux-1px-tb bmar20 bgf tpad36" key="2">
         <div class="lrpad32 til-row bmar56">
           <h3 class="fl">精选推荐</h3>
-          <router-link to="/home/recommend" class="fr"><span>更多</span><span class="littleArr"></span></router-link>
+          <router-link to="/home/recommend" class="fr">
+            <span>更多</span>
+            <span class="littleArr"></span>
+          </router-link>
         </div>
         <div class="y-flex ad-type-one">
-            <router-link tag="a" to="#" v-for="(item, index) in goods" :key="index">
+          <router-link tag="a" to="javascript:;" v-for="(item, index) in goods" :key="index">
             <img src="./images/home-recommend-img1.png" />
             <!-- <img :src="item.thumb" /> -->
-              <div class="lpad26">
+            <div class="lpad26">
               <div class="txt1">
                 <p>{{item.name}}</p>
                 <p>送创客微卡</p>
@@ -61,7 +64,7 @@
         </div>
         <!-- 以下是隐藏部分模板 有用 -->
         <!-- <div class="y-flex ad-type-one">
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img1.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -77,7 +80,7 @@
               </div>
             </div>
           </router-link>
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img2.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -93,7 +96,7 @@
               </div>
             </div>
           </router-link>
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img3.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -114,7 +117,7 @@
           <div class="vux-1px-t"></div>
         </div>
         <div class="y-flex ad-type-two">
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img4.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -130,7 +133,7 @@
               </div>
             </div>
           </router-link>
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img5.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -146,7 +149,7 @@
               </div>
             </div>
           </router-link>
-          <router-link tag="a" to="#">
+          <router-link tag="a" to="javascript:;">
             <img src="./images/home-recommend-img6.png" />
             <div class="lpad26">
               <div class="txt1">
@@ -170,10 +173,13 @@
         <div class="lrpad32 til-row bmar52">
           <h3 class="fl">精选商家</h3>
           <!-- <a class="fr" href="#">更多></a> -->
-          <router-link class="fr" tag="a" to="/home/choice"><span>更多</span><span class="littleArr"></span></router-link>
+          <router-link class="fr" tag="a" to="/home/choice">
+            <span>更多</span>
+            <span class="littleArr"></span>
+          </router-link>
         </div>
         <div class="y-flex business">
-          <!-- <router-link tag="a" to="#" class="flex1">
+          <!-- <router-link tag="a" to="javascript:;" class="flex1">
             <div class="img-box">
               <img src="./images/home-seller-img1.png" />
               <img src="./images/home-seller-logo1.png" />
@@ -188,7 +194,7 @@
             <p class="business-name">酱子（高级日料）</p>
           </router-link> -->
 
-          <router-link tag="a" to="#" class="flex1 sp" v-for="(item, index) in superme" :key="index">
+          <router-link tag="a" to="javascript:;" class="flex1 sp" v-for="(item, index) in superme" :key="index">
             <img :src='item.img_path'>
           </router-link>
         </div>
@@ -209,7 +215,7 @@
 
     </div>
     <Footerx></Footerx>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -268,9 +274,12 @@ export default {
     getChannel: function () {
       // 分类导航
       this.axios.get('/api/banner?key=channel').then(res => {
-        for (let i = 0, len = res.data.length; i < len; i++) { // 处理链接
+        for (let i = 0, len = res.data.length; i < len; i++) {
+          // 处理链接
           if (res.data[i].link_url != '') {
-            res.data[i].link_url = res.data[i].link_url.split('http://t.hlbck.com/#/').join('')
+            res.data[i].link_url = res.data[i].link_url
+              .split('http://t.hlbck.com/#/')
+              .join('')
           }
         }
         this.channel = res.data
@@ -280,7 +289,7 @@ export default {
       // 精选推荐
       this.axios.get('/api/weika/goods').then(res => {
         this.goods = res.data
-        this.goods.length = 3// 限制数量为三个
+        this.goods.length = 3 // 限制数量为三个
       })
     },
     getCategoryShop: function (id) {
@@ -288,35 +297,47 @@ export default {
       // this.HTTP_GetCategoryShop().then(res => {
       // id ? id = id : id = 0 // 0即为全部
       // id ? id = '&cid=' + id : id = ''
-      this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc').then(res => {
-      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+      this.axios
+        .get(
+          '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc'
+        )
+        .then(res => {
+          // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
 
-        this.page = res
-        if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
-        } else {
-          this.nextPageUrl = null
-        }
-        delete res.data.result_state
-        delete res.data.return_state
-        // this.businessList = []
-        for (let i in res.data) {
-          // this.businessList.push(res.data[i])
-          if (res.data[i].distance >= 1000) {
-            // res.data[i].distance = res.data[i].distance / 1000 + 'Km'
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+          this.page = res
+          if (res.next_page_url != null) {
+            this.nextPageUrl =
+              res.next_page_url.split('http://api.hlbck.com').join('') +
+              '&latitude=23.0148260&longitude=113.7451960'
           } else {
-            res.data[i].distance = res.data[i].distance + 'm'
+            this.nextPageUrl = null
           }
-        }
-        this.businessList = res.data
-      })
+          delete res.data.result_state
+          delete res.data.return_state
+          // this.businessList = []
+          for (let i in res.data) {
+            // this.businessList.push(res.data[i])
+            if (res.data[i].distance >= 1000) {
+              // res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+              res.data[i].distance =
+                (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            } else {
+              res.data[i].distance = res.data[i].distance + 'm'
+            }
+          }
+          this.businessList = res.data
+        })
     },
     /* 联网加载列表数据
 		 请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
 		 实际项目以您服务器接口返回的数据为准,无需本地处理分页.
 		 * */
-    getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback) {
+    getListDataFromNet: function (
+      pageNum,
+      pageSize,
+      successCallback,
+      errorCallback
+    ) {
       // 延时一秒,模拟联网
       let that = this
       // setTimeout(function () {
@@ -330,9 +351,9 @@ export default {
       //   var data = pdlist1 // 模拟数据: ../res/pdlist1.js
       //           	var listData = []// 模拟分页数据
       //   for (var i = (pageNum - 1) * pageSize; i < pageNum * pageSize; i++) {
-	    //         		if (i == data.length) break
-	    //         		listData.push(data[i])
-	    //         	}
+      //         		if (i == data.length) break
+      //         		listData.push(data[i])
+      //         	}
       //           	successCallback && successCallback(listData)// 成功回调
       //   //				})
       //   //				.catch(function(error) {
@@ -340,14 +361,19 @@ export default {
       //   //				});
       // }, 500)
       let url
-      this.nextPageUrl ? url = this.nextPageUrl : url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc'
+      this.nextPageUrl
+        ? (url = this.nextPageUrl)
+        : (url =
+            '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc')
       console.log(this.nextPageUrl)
       this.axios.get(url).then(res => {
-      // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
+        // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
 
         this.page = res
         if (res.next_page_url != null) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960'
+          this.nextPageUrl =
+            res.next_page_url.split('http://api.hlbck.com').join('') +
+            '&latitude=23.0148260&longitude=113.7451960'
         } else {
           this.nextPageUrl = null
         }
@@ -357,7 +383,8 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance =
+              (res.data[i].distance / 1000).toFixed(1) + 'Km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -371,41 +398,56 @@ export default {
     upCallback: function (page) {
       // 联网加载数据
       var self = this
-      self.getListDataFromNet(page.num, page.size, function (curPageData) {
-        console.log(curPageData)
-        // curPageData = [] //打开本行注释,可演示列表无任何数据empty的配置
+      self.getListDataFromNet(
+        page.num,
+        page.size,
+        function (curPageData) {
+          console.log(curPageData)
+          // curPageData = [] //打开本行注释,可演示列表无任何数据empty的配置
 
-        // 如果是第一页需手动制空列表 (代替clearId和clearEmptyId的配置)
-        // if (page.num == 1) self.businessList = []
+          // 如果是第一页需手动制空列表 (代替clearId和clearEmptyId的配置)
+          // if (page.num == 1) self.businessList = []
 
-        // 更新列表数据
-        self.businessList = self.businessList.concat(curPageData)
-        console.log(self.businessList)
-        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-        // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-        console.log('page.num=' + page.num + ', page.size=' + page.size + ', curPageData.length=' + curPageData.length + ', self.pdlist.length==' + self.businessList.length)
+          // 更新列表数据
+          self.businessList = self.businessList.concat(curPageData)
+          console.log(self.businessList)
+          // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+          // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+          console.log(
+            'page.num=' +
+              page.num +
+              ', page.size=' +
+              page.size +
+              ', curPageData.length=' +
+              curPageData.length +
+              ', self.pdlist.length==' +
+              self.businessList.length
+          )
 
-        // 方法一(推荐): 后台接口有返回列表的总页数 totalPage
-        // self.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+          // 方法一(推荐): 后台接口有返回列表的总页数 totalPage
+          // self.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
 
-        // 方法二(推荐): 后台接口有返回列表的总数据量 totalSize
-        // self.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+          // 方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+          // self.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
 
-        // 方法三(推荐): 您有其他方式知道是否有下一页 hasNext
-        // self.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
-        self.mescroll.endSuccess(curPageData.length, self.nextPageUrl)
-        // 方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
-        // self.mescroll.endSuccess(curPageData.length)
-      }, function () {
-        // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
-        self.mescroll.endErr()
-      })
+          // 方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+          // self.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+          self.mescroll.endSuccess(curPageData.length, self.nextPageUrl)
+          // 方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+          // self.mescroll.endSuccess(curPageData.length)
+        },
+        function () {
+          // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+          self.mescroll.endErr()
+        }
+      )
     },
     mescrollInstantiation: function () {
       // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
       // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
       var self = this
-      self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
+      self.mescroll = new MeScroll('mescroll', {
+        // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
         down: {
           // callback: function () {
           //   self.businessList = []
@@ -419,12 +461,14 @@ export default {
           // 以下参数可删除,不配置
           isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
           // page:{size:8}, //可配置每页8条数据,默认10
-          toTop: { // 配置回到顶部按钮
+          toTop: {
+            // 配置回到顶部按钮
             // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset : 1000
           },
-          empty: { // 配置列表无任何数据的提示
+          empty: {
+            // 配置列表无任何数据的提示
             // warpId: 'dataList',
             icon: '../res/img/mescroll-empty.png'
             //						  	tip : "亲,暂无相关数据哦~" ,
@@ -440,7 +484,6 @@ export default {
         }
       })
     }
-
   },
   created () {
     this.getBanner()
@@ -454,7 +497,8 @@ export default {
   },
   updated () {
     // 百度地图
-    if (!sessionStorage.lng) { // 如果本地缓存中没有经纬度才获取经纬度
+    if (!sessionStorage.lng) {
+      // 如果本地缓存中没有经纬度才获取经纬度
       // 百度地图API功能
       var map = new BMap.Map('allmap') // 创建Map实例
       // 获取自身定位并存入sessionStorage
@@ -478,7 +522,8 @@ export default {
     }
 
     /* eslint-disable no-new */
-    new Swiper('.banner-swiper', {// 顶部banner实例化
+    new Swiper('.banner-swiper', {
+      // 顶部banner实例化
       autoplay: 8000,
       loop: true,
       centeredSlides: true,
@@ -492,14 +537,14 @@ export default {
       //   slideShadows: true
       // }
     })
-    new Swiper('.nav-swiper', {// 分类导航实例化
+    new Swiper('.nav-swiper', {
+      // 分类导航实例化
       pagination: {
         el: '.swiper-pagination'
       }
     })
   }
 }
-
 </script>
 
 <style lang="less">
@@ -508,11 +553,11 @@ export default {
 @import url("../../../static/css/mescroll.min.css");
 // @import url("../../../static/swiper/swiper.min.css");
 .mescroll {
-    position: fixed;
-    top: 0;
-    bottom: 1rem;
-    height: auto;
-    width: 7.5rem;
+  position: fixed;
+  top: 0;
+  bottom: 1rem;
+  height: auto;
+  width: 7.5rem;
 }
 #app {
   // padding-bottom: 1rem;
@@ -527,9 +572,9 @@ export default {
     width: 6.86rem;
     height: 2.56rem;
     overflow: hidden;
-    margin:0 .1rem;
-    border-radius: .12rem;
-    box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.2)
+    margin: 0 0.1rem;
+    border-radius: 0.12rem;
+    box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.2);
   }
   img {
     width: 100%;
@@ -609,12 +654,12 @@ export default {
     align-items: center;
     font-size: 0.28rem;
     color: #666;
-    .littleArr{
-      width: .1rem;
-      height: .19rem;
+    .littleArr {
+      width: 0.1rem;
+      height: 0.19rem;
       background: url(../../../static/images/littleArr.png) no-repeat;
       background-size: 100%;
-      margin-left: .08rem;
+      margin-left: 0.08rem;
     }
   }
 }

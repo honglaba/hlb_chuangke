@@ -26,21 +26,7 @@ export default {
     }
   },
   methods: {
-    search: function () {
-      // if (this.searchVal) { // 旧的搜索方法 废弃
-      //   this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&title=' + this.searchVal).then(res => {
-      //     for (let i in res.data) {
-      //       if (res.data[i].distance >= 1000) {
-      //         res.data[i].distance = res.data[i].distance / 1000 + 'Km'
-      //       } else {
-      //         res.data[i].distance = res.data[i].distance + 'm'
-      //       }
-      //     }
-      //     this.$emit('result', res.data)// 将请求所得的值传给父组件
-      //   })
-      // } else {
-      //   alert('请输入关键字')
-      // }
+    search () {
       if (this.searchVal) {
         this.$router.push({path: '/home/result', query: {title: this.searchVal}})
         this.historyWords = localStorage.historyWords

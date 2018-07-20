@@ -76,21 +76,20 @@ export default {
         id_card: this.value.id_card
       })
         .then(res => {
-          if (res.result_state === 'success') {
-            this.HTTP_UserInfo()
-              .then(res1 => {
-                this.$store.commit('SET_USER_INFO', res1.data)
-                this.$vux.toast.show('实名认证成功')
-                this.WriteDisable = true
-                if (this.$route.query.status) this.$router.push({name: 'step1'})
-              })
-          } else {
-            this.$vux.confirm.show({
-              showCancelButton: false,
-              title: '提示',
-              content: res.message
+          this.HTTP_UserInfo()
+            .then(res1 => {
+              this.$store.commit('SET_USER_INFO', res1.data)
+              this.$vux.toast.show('实名认证成功')
+              this.WriteDisable = true
+              if (this.$route.query.status) this.$router.push({name: 'step1'})
             })
-          }
+        })
+        .catch(erro => {
+          this.$vux.confirm.show({
+            showCancelButton: false,
+            title: '提示',
+            content: erro.message
+          })
         })
     },
     routeBack () {

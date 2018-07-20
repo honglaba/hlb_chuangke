@@ -1,6 +1,6 @@
 <template>
   <footer class="y-flex y-ac vux-1px-t">
-    <router-link to="/" class="flex1" v-bind:class="{cur: /home/g.test(evenRoute) || evenRoute === ''}">
+    <router-link to="/" class="flex1" v-bind:class="{cur: /home/g.test(evenRoute) || evenRoute === undefined}">
       <span class="nav-ico type3"></span>
       <p>首页</p>
     </router-link>
@@ -23,10 +23,18 @@ export default {
   props: {
     linkOption: String
   },
-  computed: {
-    evenRoute () {
-      return this.$route.fullPath.split('/')[1]
+  data () {
+    return {
+      evenRoute: ''
     }
+  },
+  watch: {
+    '$route' () {
+      this.evenRoute = this.$route.fullPath.split('/')[1]
+    }
+  },
+  created () {
+    this.evenRoute = this.$route.fullPath.split('/')[1]
   }
 }
 </script>
