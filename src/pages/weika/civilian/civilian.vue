@@ -79,7 +79,7 @@
  * @Author: jack
  * @Date: 2018-07-14 09:41:37
  * @Last Modified by: jack
- * @Last Modified time: 2018-07-16 14:06:49
+ * @Last Modified time: 2018-07-20 10:12:34
  */
 import { Swiper } from 'vux'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
@@ -110,10 +110,8 @@ export default {
     _toOpen () {
       const _this = this
       if (this.getUser.id_card && this.getUser.real_name) {
-        this.updateLoading({status: true})
         this.Wk_Query() // 有没有未完成的微卡订单
           .then(res => {
-            this.updateLoading({status: false})
             if (res.data.exists === 1) { /* 已存在订单 */
               this.$vux.alert.show({
                 content: '您有未完成的微卡订单',
@@ -126,7 +124,6 @@ export default {
             }
           })
           .catch(erro => {
-            this.updateLoading({status: false})
             this.$vux.alert.show({
               content: erro.message,
               onConfirm () {
@@ -148,8 +145,7 @@ export default {
     routeBack () {
       this.$router.push({path: '/home'})
     },
-    ...mapActions(['Wk_Query']),
-    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
+    ...mapActions(['Wk_Query'])
   },
   components: {
     Swiper

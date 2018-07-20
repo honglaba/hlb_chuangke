@@ -15,6 +15,7 @@ export default {
     ...mapState(['isLoading'])
   },
   created () {
+    this.$printf({a: 0, b: 0})
     this._statusKeep()
   },
   methods: {

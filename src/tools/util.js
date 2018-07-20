@@ -34,6 +34,6 @@ export function formatDateTime (inputTime) {
 export function ConsoleFun (arg, tip) {
   console.log('---' + (tip || '-') + '---')
   console.log('%c' + Object.prototype.toString.call(arg), 'color:deeppink;font-size:8px;')
-  console.log('%c' + arg, 'color:deeppink;font-size:8px;')
+  console.log(arg)
   console.log('------')
 }

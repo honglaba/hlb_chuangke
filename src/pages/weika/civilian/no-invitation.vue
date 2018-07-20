@@ -52,26 +52,22 @@ export default {
     }
   },
   created () {
-    this.setLoding({status: true})
     this.invId(null) // 进入删除邀请码
     this.Wk_Quota()
       .then(res => {
-        this.setLoding({status: false})
         this.people = res.data
       })
   },
   methods: {
     _invCodePass () {
-      this.setLoding({status: true})
       setTimeout(() => {
-        this.setLoding({status: false})
         this.$router.push({path: '/weika/choose_products'})
       }, 100)
     },
     routeBack () {
       this.$router.push({path: '/weika/step1'})
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', setLoding: 'UPDATE_LOADING'}),
+    ...mapMutations({invId: 'SET_WEIKA_INVID'}),
     ...mapActions(['Wk_Quota'])
   }
 }

@@ -193,9 +193,7 @@ export default {
     ...mapGetters({ vip: 'getWkVipInfo' })
   },
   created () {
-    this.updateLoading({ status: true })
     this.Wk_Index().then(res => {
-      this.updateLoading({ status: false })
       this.updataVip(res.data)
       this.flag = true
     })
@@ -203,7 +201,6 @@ export default {
   methods: {
     ...mapActions(['Wk_Index']),
     ...mapMutations({
-      updateLoading: 'UPDATE_LOADING',
       updataVip: 'UPDATE_VIP_INFO'
     }),
     routeBack () {
