@@ -4,15 +4,17 @@
     <div class="main2">
       <div class="content">
         <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
-          <tab-item @on-item-click="handler" @click.native="tab" data-id=1 selected>收藏的商品</tab-item>
-          <tab-item @on-item-click="handler" @click.native="tab" data-id=2>收藏的商家</tab-item>
+          <tab-item @click.native="tab(1)" data-id=1 selected>收藏的商品</tab-item>
+          <tab-item @click.native="tab(2)" data-id=2>收藏的商家</tab-item>
         </tab>
-        <div class="tab-list1" v-if="nowSeen==1">
+
+        <div class="tab-list1" v-if="nowSeen === 1 && !isReq">
           <div class="empty">
             <p class="pic"><img src="./images/empty.png"></p>
             <p class="tips">还没有收藏的商品~</p>
           </div>
-          <ul>
+
+          <!-- <ul>
             <li>
               <div class="left">
                 <img src="./images/temp001.png">
@@ -55,82 +57,44 @@
                 </div>
               </div>
             </li>
-          </ul>
+          </ul> -->
         </div>
-        <div class="tab-list2" v-if="nowSeen==2">
-          <ul>
-            <li>
+
+        <div class="tab-list2" v-if="nowSeen === 2 && !isReq">
+
+          <div class="empty" v-if="realData.length === 0">
+            <p class="pic"><img src="./images/empty.png"></p>
+            <p class="tips">还没有收藏的商家~</p>
+          </div>
+
+          <ul v-else>
+
+            <li v-for="item in realData" :key="item.id">
               <div class="left">
-                <img src="./images/temp001.png">
+                <img :src="item.logo">
               </div>
               <div class="right">
-                <div class="name">肯德基宅急送</div>
+                <div class="name">{{ item.title }}</div>
                 <div class="caixi">
                   <span>特色菜</span>
-                  <span>人均消费￥30/人</span>
-                  <span>距离24.56km</span>
+                  <span>人均消费￥{{ item.average_cost }}/人</span>
+                  <span></span>
+                  <!-- <span>距离24.56km</span> -->
                 </div>
                 <div class="pingfen">
                   <span class="a1">
                     评分
-                    <em>4.9</em>
+                    <em>{{ item.score }}</em>
                   </span>
                 </div>
                 <div class="info">
                   <span class="a1">已有
-                    <em>188</em>人消费</span>
-                  <span class="a2">取消关注</span>
+                    <em>{{ item.total_customers }}</em>人消费</span>
+                  <span class="a2" @click="cancelCollect(item.id)">取消关注</span>
                 </div>
               </div>
             </li>
-            <li>
-              <div class="left">
-                <img src="./images/temp001.png">
-              </div>
-              <div class="right">
-                <div class="name">肯德基宅急送</div>
-                <div class="caixi">
-                  <span>特色菜</span>
-                  <span>人均消费￥30/人</span>
-                  <span>距离24.56km</span>
-                </div>
-                <div class="pingfen">
-                  <span class="a1">
-                    评分
-                    <em>4.9</em>
-                  </span>
-                </div>
-                <div class="info">
-                  <span class="a1">已有
-                    <em>188</em>人消费</span>
-                  <span class="a2">取消关注</span>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="left">
-                <img src="./images/temp001.png">
-              </div>
-              <div class="right">
-                <div class="name">肯德基宅急送</div>
-                <div class="caixi">
-                  <span>特色菜</span>
-                  <span>人均消费￥30/人</span>
-                  <span>距离24.56km</span>
-                </div>
-                <div class="pingfen">
-                  <span class="a1">
-                    评分
-                    <em>4.9</em>
-                  </span>
-                </div>
-                <div class="info">
-                  <span class="a1">已有
-                    <em>188</em>人消费</span>
-                  <span class="a2">取消关注</span>
-                </div>
-              </div>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -138,26 +102,50 @@
   </div>
 </template>
 <script>
+// for (let i in res.data) {
+// // this.businessList.push(res.data[i])
+// if (res.data[i].distance >= 1000) {
+// res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+// } else {
+// res.data[i].distance = res.data[i].distance + 'm'
+// }
+// }
 import { Tab, TabItem } from 'vux'
 import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      nowSeen: '1'
+      isReq: false,
+      nowSeen: 1,
+      realData: []
     }
   },
-  async created () {
-    await this.APP_collectCommodityList()
-  },
+  created () {},
   methods: {
-    ...mapActions(['APP_collectCommodityList']),
-    tab (e) {
-      // console.log(e.target.getAttribute('data-id'))
-      this.nowSeen = e.target.getAttribute('data-id')
+    cancelCollect (id) {
+      this.isReq = true
+      this.unCollectShop(id)
+        .then(res => {
+          this.getShop()
+            .then(res => {
+              this.isReq = false
+              this.realData = res.data
+            })
+        })
+    },
+    tab (val) {
+      this.isReq = true
+      this.getShop()
+        .then(res => {
+          this.isReq = false
+          this.realData = res.data
+          this.nowSeen = val
+        })
     },
     routeBack () {
       this.$router.push({path: '/member'})
-    }
+    },
+    ...mapActions({getShop: 'User_collectShopList', unCollectShop: 'APP_unCollectShop'})
   },
   components: {
     Tab,

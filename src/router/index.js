@@ -13,9 +13,11 @@ router.beforeEach((To, From, next) => {
   function getRedirectUrl () {
     _init()
     localStorage.setItem('historyTargetPath', To.path)
-    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
-      window.location.href = res.redirect
-    })
+
+    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path)
+      .then(res => { // aaaaa = #
+        window.location.href = res.redirect
+      })
   }
 
   if (!To.name) { // 路由不存在时跳转from页

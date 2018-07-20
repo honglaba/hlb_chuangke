@@ -84,7 +84,7 @@ export default {
       // this.tabFixed=false
     },
     // 滚动方法
-    handleScroll: function () {
+    handleScroll () {
       let that = this
       let h = document.getElementsByClassName('banner')[0].offsetHeight + document.getElementsByTagName('header')[0].offsetHeight
       let mescroll = document.getElementById('mescroll')

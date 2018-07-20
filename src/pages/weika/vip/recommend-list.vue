@@ -3,6 +3,7 @@
     <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的推荐'"></my-header>
     <div class="main2">
       <div class="content">
+
         <div class="txlist pd20" v-if="ChildList.length > 0">
           <ul>
 
@@ -23,6 +24,12 @@
 
           </ul>
         </div>
+
+        <div class="no-recommend" v-else>
+          <div><img src="../images/推荐人默认图.png"></div>
+          <div><span>还没有推荐用户, 赶快去推荐吧</span></div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -51,6 +58,20 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.no-recommend {
+  width: 100%;
+  margin: 50% 0 0 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #a0a0a0;
+  img {
+    margin: 0 auto;
+    display: block;
+    width: 1.64rem;
+    height: 1.64rem;
+  }
+}
+
 .txlist {
   background: #fff;
 }

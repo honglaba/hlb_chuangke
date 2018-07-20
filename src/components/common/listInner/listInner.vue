@@ -1,14 +1,14 @@
 <template>
     <div class="inner">
         <div class="business-img">
-            <!-- <img :src="businessList.pic" /> -->
             <img :src="businessList.logo" />
+            <!-- <img v-lazy="businessList.logo" /> -->
         </div>
         <div class="business-info">
             <div class="til-row">
-                <!-- <h4>{{businessList.name}}</h4> -->
-                <h4>{{businessList.title}}</h4>
-                <!-- <p>创客推荐</p> -->
+              <!-- <h4>{{businessList.name}}</h4> -->
+              <h4>{{businessList.title}}</h4>
+              <!-- <p>创客推荐</p> -->
             </div>
 
             <div class="mark-row">

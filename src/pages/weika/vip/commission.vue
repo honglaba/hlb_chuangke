@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div id="weika-commission" class="ck-better">
     <my-header :Title="'佣金首页'" :left-options="{preventGoBack: true}" @on-click-back="routeBack"></my-header>
     <div class="main2">
       <div class="content">
@@ -92,7 +92,7 @@
           </div>
           <div class="mxbox" v-if="hisMoney.total_money > 0">
             <p class="c333 pd20">历史获取佣金明细</p>
-            <Accordion :list="hisMoney.data"></Accordion>
+            <Accordion v-for="(list, index) in hisMoney.data" :list="list" :key="index"></Accordion>
           </div>
         </div>
       </div>
@@ -191,6 +191,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
+.content {
+  margin-bottom: 1rem;
+}
 .leiji-list {
   margin-top: 0.2rem;
   .box1 {
@@ -325,16 +328,3 @@ export default {
   }
 }
 </style>
-© 2018 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-API
-Training
-Shop
-Blog
-About
-Press h to open a hovercard with more details.

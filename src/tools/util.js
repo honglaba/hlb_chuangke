@@ -17,22 +17,23 @@ export function _init () {
   /* 初始化 */
   Cookies.remove('refreshToken')
   Cookies.remove('accessToken')
-  Cookies.remove(localStorage.getItem('sessionKeyName'))
+  Cookies.remove('laravel_session')
   localStorage.clear()
 }
 
 export function formatDateTime (inputTime) {
-  var date = new Date(inputTime)
-  var y = date.getFullYear()
-  var m = date.getMonth() + 1
+  let date = new Date(inputTime)
+  let y = date.getFullYear()
+  let m = date.getMonth() + 1
   m = m < 10 ? ('0' + m) : m
-  var d = date.getDate()
+  let d = date.getDate()
   d = d < 10 ? ('0' + d) : d
-  var h = date.getHours()
-  h = h < 10 ? ('0' + h) : h
-  var minute = date.getMinutes()
-  var second = date.getSeconds()
-  minute = minute < 10 ? ('0' + minute) : minute
-  second = second < 10 ? ('0' + second) : second
   return y + '-' + m + '-' + d
+}
+
+export function ConsoleFun (arg, tip) {
+  console.log('---' + (tip || '-') + '---')
+  console.log('%c' + Object.prototype.toString.call(arg), 'color:deeppink;font-size:8px;')
+  console.log('%c' + arg, 'color:deeppink;font-size:8px;')
+  console.log('------')
 }

@@ -13,55 +13,55 @@
           <div class="fuwu_tab">
             <div class="left">创客微卡特权服务</div>
             <div class="right">
-              <a href="#">如何获得创客微卡</a>
+              <a href="javascript:;">如何获得创客微卡</a>
             </div>
           </div>
           <div class="fuwu_con">
             <ul>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a1.png"></span>
                   <span>优惠购物</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a2.png"></span>
                   <span>线下消费</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a3.png"></span>
                   <span>分享赚钱</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a4.png"></span>
                   <span>1元疯抢</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a5.png"></span>
                   <span>免费体验</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a6.png"></span>
                   <span>我要领券</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a7.png"></span>
                   <span>专享活动</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a8.png"></span>
                   <span>邀请有礼</span>
                 </a>
@@ -75,8 +75,14 @@
   </div>
 </template>
 <script>
+/*
+ * @Author: jack
+ * @Date: 2018-07-14 09:41:37
+ * @Last Modified by: jack
+ * @Last Modified time: 2018-07-16 14:06:49
+ */
 import { Swiper } from 'vux'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 const baseList = [
   {
     url: 'javascript:',
@@ -103,29 +109,30 @@ export default {
   methods: {
     _toOpen () {
       const _this = this
-      // if (!this.getUser.mobile_phone) return
       if (this.getUser.id_card && this.getUser.real_name) {
+        this.updateLoading({status: true})
         this.Wk_Query() // 有没有未完成的微卡订单
           .then(res => {
-            if (res.result_state === 'error') {
+            this.updateLoading({status: false})
+            if (res.data.exists === 1) { /* 已存在订单 */
               this.$vux.alert.show({
-                content: res.message,
-                onConfirm () {
-                  _this.$router.go(0)
+                content: '您有未完成的微卡订单',
+                onHide () {
+                  _this.$router.push({path: '/member/order/order_list/1'})
                 }
               })
-            } else if (res.result_state === 'success') {
-              if (res.data.exists === 1) { /* 已存在订单 */
-                this.$vux.alert.show({
-                  content: '您有未完成的微卡订单',
-                  onHide () {
-                    _this.$router.push({path: '/member/order/order_list/1'})
-                  }
-                })
-              } else {
-                this.$router.push({path: '/weika/step1'})
-              }
+            } else {
+              this.$router.push({path: '/weika/step1'})
             }
+          })
+          .catch(erro => {
+            this.updateLoading({status: false})
+            this.$vux.alert.show({
+              content: erro.message,
+              onConfirm () {
+                _this.$router.go(0)
+              }
+            })
           })
       } else {
         this.$vux.toast.hide()
@@ -141,7 +148,8 @@ export default {
     routeBack () {
       this.$router.push({path: '/home'})
     },
-    ...mapActions(['Wk_Query'])
+    ...mapActions(['Wk_Query']),
+    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
   },
   components: {
     Swiper
@@ -179,7 +187,7 @@ export default {
     line-height: 0.6rem;
     display: flex;
     justify-content: space-between;
-    border-bottom: #e7e7e7 dashed 1px;
+    border-bottom: #E7E7E7 dashed 1px;
     .left {
       position: relative;
       font-size: 0.32rem;
