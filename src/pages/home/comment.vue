@@ -1,19 +1,21 @@
 <template>
-  <div>
+  <div class="comment-page">
     <my-header :Title="'评论'"></my-header>
     <div id="mescroll" class="mescroll">
+
      <section class="comment-info">
        <div>评论{{commentList.length}}</div>
        <div class="score-part">
          <span>评分{{score}}</span>
          <div class="score">
           <ul>
-            <li v-for="(item,index) in parseInt(score)" :key="index" class="cur"></li>
-            <li v-for="(item,index) in (5-parseInt(score))" :key="index"></li>
+            <li v-for="(item,index) in parseInt(score)"  class="cur"></li>
+            <li v-for="(item,index) in (5-parseInt(score))"></li>
           </ul>
          </div>
        </div>
      </section>
+
      <section class="comment-list">
        <ul>
         <li class="vux-1px-b" v-for="(item,index) in commentList" :key="index">
@@ -54,7 +56,7 @@ export default {
   data () {
     return {
       commentList: [],
-      score: '',
+      score: 0,
       times: 0
     }
   },
@@ -71,7 +73,6 @@ export default {
     },
     /* 联网加载列表数据* */
     getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback) {
-      let that = this
       let url
       this.times++ // 以加载次数充当页数
       // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
@@ -162,16 +163,19 @@ export default {
   },
   mounted () {
     // this.getCommentList()
+
     this.getShopScore()
+    this.mescrollInstantiation()
   },
   updated () {
-    this.mescrollInstantiation()
+
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import "~vux/src/styles/1px.less";
 @import url("../../../static/css/mescroll.min.css");
+.comment-page{
 .mescroll {
     position: fixed;
     top: .88rem;
@@ -291,4 +295,5 @@ export default {
       }
     }
   }
+}
 </style>
