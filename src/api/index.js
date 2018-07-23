@@ -1,12 +1,13 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Domain } from 'tools/env'
+import { STATE_OK, STATE_FAIL } from 'tools/ERR'
 
 // 配置axios对象
 axios.defaults.baseURL = Domain
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 // 请求过期时间 8s
-axios.defaults.timeout = 8000
+axios.defaults.timeout = 8 * 1000
 
 /* 被挂起的请求数组 */
 let refreshSubscribers = []
@@ -20,6 +21,7 @@ function onRrefreshed (token) {
 function _init () { // 初始化
   Cookies.remove('refreshToken')
   Cookies.remove('accessToken')
+  Cookies.remove('laravel_session')
   localStorage.clear()
   location.reload()
 }
@@ -29,6 +31,7 @@ axios.interceptors.request.use(config => {
   /* 是否有请求正在刷新token */
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
+
     if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
       _init()
       return
@@ -75,8 +78,13 @@ axios.interceptors.request.use(config => {
 
 // 响应拦截器
 axios.interceptors.response.use(response => {
-  // Do something with response data
-  return response.data
+  if (response.data.result_state === STATE_OK) {
+    return response.data
+  } else if (response.data.result_state === STATE_FAIL) {
+    return Promise.reject(response.data.message)
+  }
+
+  // return response.data
 }, error => {
   // Do something with response error
   return Promise.reject(error)

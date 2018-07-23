@@ -13,9 +13,14 @@ router.beforeEach((To, From, next) => {
   function getRedirectUrl () {
     _init()
     localStorage.setItem('historyTargetPath', To.path)
-    apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path).then(res => { // aaaaa = #
-      window.location.href = res.redirect
-    })
+    store.dispatch('HTTP_WxAccredit', window.location.origin + '/aaaaa' + From.path)
+      .then(res => { // aaaaa = #
+        window.location.href = res.redirect
+      })
+    // apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path)
+    //   .then(res => { // aaaaa = #
+    //     window.location.href = res.redirect
+    //   })
   }
 
   if (!To.name) { // 路由不存在时跳转from页
@@ -48,13 +53,20 @@ router.beforeEach((To, From, next) => {
       Cookies.set('accessToken', hashes.access_token, { expires: 1 / 25 })
       Cookies.set('refreshToken', hashes.refresh_token, { expires: 10 }) // 设置10天过期
 
-      apiList.HTTP_UserInfo()
+      store.dispatch('HTTP_UserInfo')
         .then(res => {
           Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
           localStorage.setItem('userInfo', JSON.stringify(res.data))
           store.commit('SET_USER_INFO', res.data)
           res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
         })
+      // apiList.HTTP_UserInfo()
+      //   .then(res => {
+      //     Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
+      //     localStorage.setItem('userInfo', JSON.stringify(res.data))
+      //     store.commit('SET_USER_INFO', res.data)
+      //     res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
+      //   })
       return
     }
   }

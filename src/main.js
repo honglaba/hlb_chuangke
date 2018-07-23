@@ -7,13 +7,20 @@ import store from './store'
 import axios from 'axios'
 import fastClick from 'fastclick'
 import VueClipboard from 'vue-clipboard2'
+// import VueLazyload from 'vue-lazyload'
 import Headerx from '@/components/common/headerx/headerx'
 import myHeader from 'components/common/headerx/header'
 import Footerx from '@/components/common/footerx/footerx'
-import {ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading} from 'vux'
+import { ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading } from 'vux'
 import md5 from 'js-md5'
 // import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
+import { ENV } from 'tools/env'
+import { ConsoleFun } from 'tools/util'
+import VConsole from 'vconsole' // 调试
+
+/* eslint-disable no-new */
+if (ENV) new VConsole()
 
 // Vue.use(VueScroller)
 fastClick.attach(document.body)
@@ -23,6 +30,7 @@ axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 Vue.prototype.$md5 = md5
+Vue.prototype.$printf = ConsoleFun
 
 // 全局组件
 Vue.component('my-header', myHeader) // 自定义头部

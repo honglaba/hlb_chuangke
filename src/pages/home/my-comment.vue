@@ -33,8 +33,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters} from 'vuex'
-import { setTimeout } from 'timers'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -62,7 +61,7 @@ export default {
   },
   methods: {
     ...mapActions(['HTTP_Comment']),
-    score: function (e) {
+    score (e) {
       let index = e.target.getAttribute('data-id')
       this.myScore = index
       this.scoreIndex = index - 1
@@ -73,8 +72,8 @@ export default {
         this.scoreStar[i].active = true
       }
     },
-    submitComment: function () {
-      console.log(this.myScore)
+    submitComment () {
+      // console.log(this.myScore)
       let that = this
       // if (this.myComment) {
       //   this.axios.post('/api/shop/comments', {

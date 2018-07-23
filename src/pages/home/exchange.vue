@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <my-header :Title="'大岗仙庙烧鸡-兑换商品'">
-       <router-link to="#" slot="right">
+       <router-link to="javascript:;" slot="right">
         <img src="./images/more.png" class="more-btn">
       </router-link>
     </my-header>
     <section class="main2">
       <section class="recommend-list">
-        <ul>
+        <ul> 
           <router-link to="/home/details" tag="li" class="vux-1px-b">
             <div class="recommend-img"><img src="./images/recommend-label-img1.png" /></div>
             <div class="recommend-info">

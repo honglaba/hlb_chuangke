@@ -128,15 +128,15 @@ export default {
             captcha: this.verification_code
           })
             .then(res => {
-              if (res.result_state === 'success') {
-                this.HTTP_UserInfo().then(res => {
+              this.HTTP_UserInfo()
+                .then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
                   this.$vux.toast.show('更换手机号完成')
                   this.$router.go(0)
                 })
-              } else {
-                this.$vux.toast.show('手机号码已经被占用')
-              }
+            })
+            .catch(erro => {
+              this.$vux.toast.show('手机号码已经被占用')
             })
         } else {
           this.HTTP_bindPhone({
@@ -144,16 +144,16 @@ export default {
             code: this.verification_code
           })
             .then(res => {
-              if (res.result_state === 'success') {
-                this.HTTP_UserInfo().then(res => {
+              this.HTTP_UserInfo()
+                .then(res => {
                   this.$store.commit('SET_USER_INFO', res.data)
                   this.$router.push({path: '/member/settings'})
                   this.$vux.toast.show('成功绑定手机号')
                 })
-              } else {
-                this.verification_code = ''
-                this.$vux.toast.show(res.message)
-              }
+            })
+            .catch(erro => {
+              this.verification_code = ''
+              this.$vux.toast.show(erro.message)
             })
         }
       }
@@ -177,10 +177,8 @@ export default {
                 _this.HTTP_resetPhonePassIdentityDrop(val)
                   .then(res => {
                     _this.$vux.loading.hide()
-                    if (res.result_state === 'success') {
-                      _this.$vux.toast.show('验证成功')
-                      _this.switchWindow = false
-                    }
+                    _this.$vux.toast.show('验证成功')
+                    _this.switchWindow = false
                   })
               }
             }

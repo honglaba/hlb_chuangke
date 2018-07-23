@@ -1,7 +1,7 @@
 <template>
   <div class="app">
         <my-header @left-action="routeBack" :Title="'帮助中心'">
-      <router-link to="#" slot="right"><img src="../../assets/images/kefu.png" class="kefu"></router-link>
+      <router-link to="javascript:;" slot="right"><img src="../../assets/images/kefu.png" class="kefu"></router-link>
     </my-header>
     <div class="main2">
       <div class="content">

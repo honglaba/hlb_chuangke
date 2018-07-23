@@ -2,8 +2,8 @@
   <div id="food-content" >
     <div id="mescroll" class="mescroll">
       <Headerx @result='result'></Headerx>
-      <section class="business-list">
-        <ul>
+      <section class="business-list" id="dataList">
+        <ul >
           <router-link tag="li" :to="{path:'/home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
             <Other></Other>
@@ -52,6 +52,7 @@ export default {
       // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
       url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&order=asc&by=distance&title=' + this.$route.query.title + '&page=' + this.times
       this.axios.get(url).then(res => {
+        console.log(res)
         this.page = res
         console.log('数据个数' + res.total)
         // 删除data中多余的项 根据返回数据使用 已无用
@@ -104,7 +105,7 @@ export default {
       // 创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
       // 解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
       var self = this
-      self.mescroll = null
+      // self.mescroll = null
       self.mescroll = new MeScroll('mescroll', { // 请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
         down: {
           // callback: self.refresh
@@ -121,16 +122,17 @@ export default {
             // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset: 1000
+          },
+          empty: { // 配置列表无任何数据的提示
+            warpId: 'dataList',
+            icon: '../../../static/images/mescroll-empty.png',
+            tip: '亲,暂无相关数据哦~',
+            btntext: '去逛逛 >',
+            btnClick: function () {
+              // alert('点击了去逛逛按钮')
+              self.$router.push({path: '/'})
+            }
           }
-          // empty: { // 配置列表无任何数据的提示
-          //   warpId: 'dataList',
-          //   icon: '../../../static/images/mescroll-empty.png',
-          //   tip: '亲,暂无相关数据哦~',
-          //   btntext: '去逛逛 >',
-          //   btnClick: function () {
-          //     alert('点击了去逛逛按钮')
-          //   }
-          // }
         }
       })
     }
@@ -154,6 +156,9 @@ export default {
   overflow: hidden;
 }
 #food-content {
+  .mescroll-empty{
+    padding-bottom:20px;
+  }
   .mescroll {
     position: fixed;
     top: 0;

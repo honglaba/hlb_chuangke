@@ -32,7 +32,7 @@
                       <em class="huangse" v-if="item.status_text === '待发货'">{{ item.status_text }}</em>
                       <em class="lvse" v-if="item.status_text === '待收货'">{{ item.status_text }}</em>
                       <em class="" v-if="item.status_text === '待评价'">{{ item.status_text }}</em>
-                      <em class="huise" v-if="item.status_text === '已取消'">{{ item.status_text }}</em>
+                      <em class="huise" v-if="item.status_text === '已取消' || item.status_text === '已关闭'">{{ item.status_text }}</em>
                     </span>
                   </div>
                 </div>
@@ -122,10 +122,8 @@ export default {
     }
   },
   created () {
-    this.$vux.loading.show()
     this.getGoodList(this.$route.params.status).then(res => {
       this.ReqEnd = true
-      this.$vux.loading.hide()
       this.nowSeen = this.$route.params.status
       this.realData = res.data
     })
@@ -134,13 +132,11 @@ export default {
     handler (val) {
       if (this.nowSeen === val) return
       this.ReqEnd = false
-      this.updateLoading({ status: true })
       this.getGoodList(val)
         .then(res => {
-          this.ReqEnd = true
-          this.updateLoading({ status: false })
           this.nowSeen = val
           this.realData = res.data
+          this.ReqEnd = true
         })
     },
     routeBack () {
@@ -151,22 +147,19 @@ export default {
       this.$vux.confirm.show({
         content: '确认取消该订单?',
         onConfirm () {
-          _this.updateLoading({ status: true })
           _this.cancelOrder({order_id: item.id})
             .then(res => {
-              _this.updateLoading({ status: false })
               _this.getGoodList(_this.$route.params.status)
-              _this.realData = res.data
+                .then(res1 => {
+                  _this.realData = res1.data
+                })
             })
         }
       })
     },
     _toPay (item) {
       this.momentPay = item
-      wxpay(
-        /* 回调 */ this._payLoopCallback,
-        /* 参数 */ { order_id: item.id, trade_type: 'weixinjsbridge' }
-      ) // 调起微信支付
+      wxpay(/* 回调 */ this._payLoopCallback, /* 参数 */ { order_id: item.id, trade_type: 'weixinjsbridge' }) // 调起微信支付
     },
     _payLoopCallback (val) {
       this.payMoney(val).then(response => {
@@ -188,14 +181,12 @@ export default {
       })
     },
     wxSuccessCall () {
-      this.updateLoading({ status: true })
       this.ReqEnd = false
       if (this.momentPay.type_text === '微卡订单') {
         this.getUsrInfo() // 更新用户信息后再跳转
           .then(res1 => {
             this.updataUsr(res1.data)
             this.momentPay = {}
-            this.updateLoading({ status: false })
             this.$router.push({ path: '/weika/vip' })
           })
       } else {
@@ -203,7 +194,6 @@ export default {
           this.ReqEnd = true
           this.realData = res.data
           this.$vux.loading.hide()
-          this.updateLoading({ status: false })
           this.$vux.toast.show({
             type: 'text',
             text: '订单支付完成'
@@ -219,10 +209,7 @@ export default {
       getUsrInfo: 'HTTP_UserInfo',
       cancelOrder: 'User_CancelOrder'
     }),
-    ...mapMutations({
-      updataUsr: 'SET_USER_INFO',
-      updateLoading: 'UPDATE_LOADING'
-    })
+    ...mapMutations({updataUsr: 'SET_USER_INFO'})
   },
   components: {
     Tab,

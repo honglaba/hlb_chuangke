@@ -13,7 +13,7 @@
                   <router-link :to="{path: '/ccc'}"><img src="./images/sm.png"></router-link>
                 </li>
                 <li>
-                  <router-link :to="{path: '/home/notice'}"><img src="./images/xiaoxi.png"></router-link>
+                  <router-link :to="{path: '/home/notice', query: {from: 'member'}}"><img src="./images/xiaoxi.png"></router-link>
                 </li>
                 <li>
                   <router-link :to="{path: '/member/settings'}"><img src="./images/shezhi.png"></router-link>
@@ -58,6 +58,17 @@
               </router-link>
             </li>
             <li>
+              <router-link :to="{path:'/member/order/order_list/2'}">
+                <span class="myorder-icon">
+                  <img src="./images/daishiyong.png">
+                  <span class="num" v-if="DataTree.undelivery_order_amount > 0">
+                    {{ DataTree.undelivery_order_amount }}
+                  </span>
+                </span>
+                <span>待发货</span>
+              </router-link>
+            </li>
+            <li>
               <router-link :to="{path:'/member/order/order_list/3'}">
                 <span class="myorder-icon">
                   <img src="./images/daishouhuo.png">
@@ -85,12 +96,12 @@
                 <span>待评论</span>
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link :to="{path:'/member/order/order_list/4'}">
                 <span class="myorder-icon"><img src="./images/daituikuan.png"></span>
                 <span>待退款</span>
               </router-link>
-            </li>
+            </li> -->
           </ul>
 
           <router-link :to="{path:'/member/points'}">

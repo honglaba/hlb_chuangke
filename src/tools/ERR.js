@@ -1,3 +1,3 @@
-export const ERR_OK = 'success'
+export const STATE_OK = 'success'
 
-export const ERR_NO = 'error'
+export const STATE_FAIL = 'error'

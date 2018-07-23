@@ -94,13 +94,11 @@ export default {
           break
       }
 
-      this.updataLoading({status: true})
       this.configUser({birthday, sex, address})
         .then(res => {
           this.getUser()
             .then(res => {
               this.updateUser(res.data)
-              this.updataLoading({status: false})
               this.$vux.toast.show('信息修改成功')
             })
         })
@@ -109,7 +107,7 @@ export default {
       this.$router.push({path: '/member/settings'})
     },
     ...mapActions({configUser: 'User_InfoConfig', getUser: 'HTTP_UserInfo'}),
-    ...mapMutations({updataLoading: 'UPDATE_LOADING', updateUser: 'SET_USER_INFO'})
+    ...mapMutations({updateUser: 'SET_USER_INFO'})
   },
   components: {
     XInput,

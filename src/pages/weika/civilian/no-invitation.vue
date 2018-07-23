@@ -8,19 +8,19 @@
             <p class="tit">创客微卡·精选优质服务</p>
             <ul>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a8.png"></span>
                   <span>邀请有礼</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a3.png"></span>
                   <span>分享赚钱</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="javascript:;">
                   <span><img src="../images/a7.png"></span>
                   <span>专享活动</span>
                 </a>
@@ -52,26 +52,22 @@ export default {
     }
   },
   created () {
-    this.setLoding({status: true})
     this.invId(null) // 进入删除邀请码
     this.Wk_Quota()
       .then(res => {
-        this.setLoding({status: false})
         this.people = res.data
       })
   },
   methods: {
     _invCodePass () {
-      this.setLoding({status: true})
       setTimeout(() => {
-        this.setLoding({status: false})
         this.$router.push({path: '/weika/choose_products'})
       }, 100)
     },
     routeBack () {
       this.$router.push({path: '/weika/step1'})
     },
-    ...mapMutations({invId: 'SET_WEIKA_INVID', setLoding: 'UPDATE_LOADING'}),
+    ...mapMutations({invId: 'SET_WEIKA_INVID'}),
     ...mapActions(['Wk_Quota'])
   }
 }

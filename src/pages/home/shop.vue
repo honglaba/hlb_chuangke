@@ -29,14 +29,12 @@
             <span class="c60">{{details.score}}</span>
           </div>
         </div>
-        <div class="follow" v-if="!following" @click="followTap">
-          <img src="./images/icon_details_btn_normal.png" />
-          <span>关注</span>
+
+        <div class="follow" :class="!following ? 'select' : ''" @click="followTap">
+          <img :src="following ? require('./images/icon_details_btn_normal.png') : require('./images/icon_details_btn_selected.png')" />
+          <span v-text="following ? '关注' : '已关注'"></span>
         </div>
-        <div class="follow select" v-else @click="followTap">
-          <img src="./images/icon_details_btn_selected.png" />
-          <span>已关注</span>
-        </div>
+
       </div>
       <!-- 活动推荐 -->
       <div class="action-box">
@@ -178,7 +176,7 @@
           </div>
         </li> -->
 
-        <li class="vux-1px-b" v-for="(item,index) in comments">
+        <li class="vux-1px-b" v-for="(item, index) in comments" :key="index">
           <div class="y-flex y-jc-b">
             <div class="y-flex y-ac">
               <div class="comment-img"><img :src="item.userInfo.headimgurl" /></div>
@@ -211,28 +209,58 @@
   </div>
 </template>
 <script>
+/*
+ * @Author: jack
+ * @Date: 2018-07-14 14:12:32
+ * @Last Modified by: jack
+ * @Last Modified time: 2018-07-16 13:59:20
+ */
 import { Confirm, TransferDomDirective as TransferDom } from 'vux'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
       actionDetail: false,
       following: false,
-      show: false
+      show: false,
+      shopId: 0
     }
   },
+  created () {
+    this.isCollect(this.$route.query.id)
+      .then(res => {
+        this.shopId = this.$route.query.id
+        this.following = !res.data.favorite
+      })
+  },
   methods: {
-    showMask: function () {
+    showMask () {
       this.show = true
     },
-    slideTap: function () {
+    slideTap () {
       this.actionDetail = !this.actionDetail
     },
-    followTap: function () {
-      this.following = !this.following
+    followTap () {
+      if (!this.following) {
+        this.unCollect(this.shopId)
+          .then(res => {
+            this.$vux.toast.show('取消关注成功')
+            this.following = true
+          })
+      } else {
+        this.collect(this.shopId)
+          .then(res => {
+            this.$vux.toast.show('关注成功')
+            this.following = false
+          })
+      }
+      // this.collect(this.shopId)
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      // this.following = !this.following
     },
     onConfirm (msg) {
-      console.log('on confirm')
       if (msg) {
         // window.location.href = msg
         alert('拨打电话')
@@ -240,19 +268,23 @@ export default {
     },
     // 商家信息
     getInfo () {
-      // console.log(this.$store.state)
       let that = this
-      this.axios.get('/api/shop?id=' + this.$route.query.id).then(function (res) {
-        console.log(res)
-        that.$store.commit('CHOICE_DETAILS', res.data)
-      })
+      this.axios.get('/api/shop?id=' + this.$route.query.id)
+        .then(res => {
+          that.shopId = res.data.id
+          that.$store.commit('CHOICE_DETAILS', res.data)
+        })
+        .catch(erro => {
+          that.$vux.toast.show('商家不存在或已经下架')
+        })
     },
     // 兑换商品列表
     getExchange () {
       let that = this
-      this.axios.get('/api/shop/commodities?sid=1').then(function (res) {
-        that.$store.commit('EXCHANHE', res.data)
-      })
+      this.axios.get('/api/shop/commodities?sid=1')
+        .then((res) => {
+          that.$store.commit('EXCHANHE', res.data)
+        })
     },
     // 评论
     getComments () {
@@ -265,6 +297,7 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+    ...mapActions({collect: 'APP_collectShop', unCollect: 'APP_unCollectShop', isCollect: 'User_isCollectShop'}),
     // 创建二维码
     createQR () {
       this.axios.post('/api/qrcode', {

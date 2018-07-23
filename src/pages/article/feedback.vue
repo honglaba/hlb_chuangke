@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import { XTextarea, Group, XInput } from "vux";
+import { XTextarea, Group, XInput } from 'vux'
 
 export default {
   components: {
@@ -35,11 +35,11 @@ export default {
     XInput
   },
   methods: {
-    onEvent(event) {
-      console.log("on", event);
+    onEvent (event) {
+      // console.log('on', event)
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .feedback {

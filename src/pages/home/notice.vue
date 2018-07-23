@@ -29,7 +29,7 @@
                   <div class="pic"><img src="./images/notice-banner.png" /></div>
                   <p class="fz26 c999 lh40">5.15创客开启新航信之旅，奖励翻倍5.15创客开启新航线之旅，奖励翻倍</p>
                 </div>
-                <router-link to="#" class="vux-1px-t">
+                <router-link to="javascript:;" class="vux-1px-t">
                   立即查看
                   <span></span>
                 </router-link>
@@ -47,7 +47,7 @@
                   <p>优惠券即将到期通知</p>
                   <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
                 </div>
-                <router-link to="#" class="vux-1px-t">
+                <router-link to="javascript:;" class="vux-1px-t">
                   立即查看
                   <span></span>
                 </router-link>
@@ -60,7 +60,7 @@
                   <p>优惠券即将到期通知</p>
                   <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
                 </div>
-                <router-link to="#" class="vux-1px-t">
+                <router-link to="javascript:;" class="vux-1px-t">
                   立即查看
                   <span></span>
                 </router-link>
@@ -83,27 +83,30 @@ export default {
       flag: false,
       nowSeen: 1,
       StatuA: {},
-      StatuB: {}
+      StatuB: {},
+      whichEnter: ''
     }
   },
   components: {
     Tab,
     TabItem
   },
-  async created () {
-    await this.User_Message(1).then(res => {
-      this.flag = true
-      this.StatuA = res
-    })
-    await this.User_Message(2).then(res => {
-      this.StatuB = res
-    })
+  created () {
+    this.User_Message(1)
+      .then(res => {
+        this.flag = true
+        this.StatuA = res
+      })
+    this.User_Message(2)
+      .then(res => {
+        this.StatuB = res
+      })
   },
   methods: {
     ...mapActions(['User_Message']),
     routeBack () {
       // window.webkit.messageHandlers.show.postMessage('hello，world') // ios callback
-      this.$router.push({ path: '/home' })
+      this.$router.go(-1)
     }
   }
 }
@@ -142,7 +145,7 @@ export default {
       // height: 2.91rem;
       border-radius: 0.03rem;
       background: #fff;
-      box-shadow: 0px 0.05rem 0.3rem rgba(245, 34, 45, 0.1);
+      box-shadow: 0px 0.05rem 0.3rem rgba(105, 101, 102, 0.1);
       margin: 0 auto;
       padding: 0.4rem 0.26rem 0 0.26rem;
       .txt {
