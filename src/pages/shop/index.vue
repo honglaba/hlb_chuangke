@@ -178,7 +178,7 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            res.data[i].distance = res.data[i].distance / 1000 + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
