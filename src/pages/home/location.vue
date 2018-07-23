@@ -2,8 +2,8 @@
   <div id="app" :class="{noscorll:maskSeen}">
     <!-- <Headerx></Headerx> -->
     <header class="y-flex y-ac" :class="{sp:maskSeen}">
-      <!-- <span class="close" v-if="!maskSeen"></span> -->
-      <router-link to="/" tag="a" class="close" v-show="!maskSeen"></router-link>
+      <span class="close" v-if="!maskSeen" @click="$router.go(-1)"></span>
+      <!-- <router-link to="/" tag="a" class="close" v-show="!maskSeen"></router-link> -->
       <div class="search-box y-flex y-ac">
         <span></span>
         <input type="text" placeholder="输入城市名称" v-on:focus="focus" ref="input" v-model="keyword" />
@@ -15,9 +15,9 @@
         <dt>你所在的地区/历史访问记录</dt>
         <dd>
           <ul class="city-block">
-            <li class="sp">
-              <span>{{ momentAddress /* 当前所在城市*/}}</span>
-              <p></p>
+            <li class="sp" @click="returnNow">
+              <span></span>
+              <p>{{nowRegion}}</p>
             </li>
           </ul>
         </dd>
@@ -26,12 +26,12 @@
         <dt>热门城市</dt>
         <dd>
           <ul class="city-block">
-            <li>北京</li>
-            <li>广州</li>
-            <li>上海</li>
-            <li>重庆</li>
-            <li>天津</li>
-            <li>长沙</li>
+            <li @click="changeRegion('B',1)">北京</li>
+            <li @click="changeRegion('G',1)">广州</li>
+            <li @click="changeRegion('S',25)">上海</li>
+            <li @click="changeRegion('C',21)">重庆</li>
+            <li @click="changeRegion('T',13)">天津</li>
+            <li @click="changeRegion('C',9)">长沙</li>
           </ul>
         </dd>
       </dl>
@@ -41,7 +41,7 @@
         <dt :id="index">{{ index }}</dt>
         <dd>
           <ul>
-            <li class="vux-1px-b" v-for="(cx, i) in item" :key="i" @click="test(index,i)">{{ cx.region_name }}</li>
+            <li class="vux-1px-b" v-for="(cx, i) in item" :key="i" @click="changeRegion(index,i)">{{ cx.region_name }}</li>
           </ul>
         </dd>
       </dl>
@@ -79,6 +79,7 @@
 </template>
 <script>
 import cityJson from 'static/js/city.js'
+console.log(cityJson)
 export default {
   computed: {
     momentAddress () {
@@ -102,13 +103,17 @@ export default {
       pageStatu: {
         present: ''
       },
-      region: null
+      region: null,
+      nowRegion: null
     }
   },
   watch: {
     keyword () {
       if (this.keyword) {
         this.resultSeen = true
+        // for(x in cityJson){
+          
+        // }
       } else {
         this.resultSeen = false
       }
@@ -130,16 +135,24 @@ export default {
       this.maskSeen = false
       this.keyword = ''
     },
-    test (a, b) {
+    changeRegion (a, b) { // 切换城市
       this.region = cityJson[a][b]
       sessionStorage.setItem('lat', cityJson[a][b].latitude)
       sessionStorage.setItem('lng', cityJson[a][b].longitude)
       sessionStorage.setItem('regionName', cityJson[a][b].region_name)
+      this.$router.go(-1)
+    },
+    returnNow () { // 切换至自身定位
+      sessionStorage.setItem('lat', sessionStorage.nowLat)
+      sessionStorage.setItem('lng', sessionStorage.nowLng)
+      sessionStorage.setItem('regionName', sessionStorage.nowRegion)
+      this.$router.go(-1)
     }
   },
   mounted () {
     // 进入页面即获取焦点
     // this.$refs['input'].focus()
+    this.nowRegion = sessionStorage.nowRegion
   }
 }
 </script>

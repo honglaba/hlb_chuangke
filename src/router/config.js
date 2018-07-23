@@ -1,54 +1,55 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+/* eslint-disable */
 // 首页
-import home_route from '@/pages/home/home_route'
-import HomeIndex from '@/pages/home/index'
-import Recommend from '@/pages/home/recommend'
-import Details from '@/pages/home/details'
-import Notice from '@/pages/home/notice'
-import BussinessDetails from '@/pages/home/business-details'
-import Food from '@/pages/home/food'
-import Location from '@/pages/home/location'
-import Map from '@/pages/home/map'
-import Pay from '@/pages/home/pay'
-import Choice from '@/pages/home/choice'
-import Shop from '@/pages/home/shop'
-import MyComment from '@/pages/home/my-comment'
-import Exchange from '@/pages/home/exchange'
-import ShopQRcode from '@/pages/home/shopqrcode'
-import Comment from '@/pages/home/comment'
-import Search from '@/pages/home/search'
-import Result from '@/pages/home/result'
+const home_route = () => import('@/pages/home/home_route')
+const HomeIndex = () => import('@/pages/home/index')
+const Recommend = () => import('@/pages/home/recommend')
+const Details = () => import('@/pages/home/details')
+const Notice = () => import('@/pages/home/notice')
+const BussinessDetails = () => import('@/pages/home/business-details')
+const Food = () => import('@/pages/home/food')
+const Location = () => import('@/pages/home/location')
+const MAP = () => import('@/pages/home/map')
+const Pay = () => import('@/pages/home/pay')
+const Choice = () => import('@/pages/home/choice')
+const Shop = () => import('@/pages/home/shop')
+const MyComment = () => import('@/pages/home/my-comment')
+const Exchange = () => import('@/pages/home/exchange')
+const ShopQRcode = () => import('@/pages/home/shopqrcode')
+const Comment = () => import('@/pages/home/comment')
+const Search = () => import('@/pages/home/search')
+const Result = () => import('@/pages/home/result')
+// const Scanning = () => import('@/pages/home/scanning')
 
-// import Scanning from '@/pages/home/scanning'
 // 附近商家
-import shop_route from '@/pages/shop/shop_route'
-import ShopIndex from '@/pages/shop/index'
+const shop_route = () => import('@/pages/shop/shop_route')
+const ShopIndex = () => import('@/pages/shop/index')
 // 用户中心
-import member_route from '@/pages/member/member_route'
-import favourite from '@/pages/member/favourite' // 我的收藏
-import exchange from '@/pages/member/exchange' // 我要兑换
-import exchange_log from '@/pages/member/exchange_log' // 兑换记录
-import points from '@/pages/member/points' // 我的积分
-import points_log from '@/pages/member/points_log' // 积分记录
-import order_list from '@/pages/member/order/order_list' // 订单列表
-import order_detail from '@/pages/member/order/order_detail' // 订单详情
-import order_logistics from '@/pages/member/order/order_logistics' // 订单物流详情
-import MemberLogin from '@/pages/member/login' // 登录、注册绑定手机
-import MemberIndex from '@/pages/member/index'
-import phone_update from '@/pages/member/phone_update'// 更改手机号
-import settings from '@/pages/member/settings'// 个人设置
-import myinfo from '@/pages/member/myinfo'// 个人信息
-import realname from '@/pages/member/realname'// 实名认证
-import paySetting from '@/pages/member/pay-setting' // 支付设置
-import address from '@/pages/member/address'// 收货地址管理
-import address_add from '@/pages/member/address_add'// 新增或修改收货地址
-import version from '@/pages/member/version'// 版本号
+const member_route = () => import('@/pages/member/member_route')
+const favourite = () => import('@/pages/member/favourite') // 我的收藏
+const exchange = () => import('@/pages/member/exchange') // 我要兑换
+const exchange_log = () => import('@/pages/member/exchange_log') // 兑换记录
+const points = () => import('@/pages/member/points') // 我的积分
+const points_log = () => import('@/pages/member/points_log') // 积分记录
+const order_list = () => import('@/pages/member/order/order_list') // 订单列表
+const order_detail = () => import('@/pages/member/order/order_detail') // 订单详情
+const order_logistics = () => import('@/pages/member/order/order_logistics') // 订单物流详情
+const MemberLogin = () => import('@/pages/member/login') // 登录、注册绑定手机
+const MemberIndex = () => import('@/pages/member/index')
+const phone_update = () => import('@/pages/member/phone_update') // 更改手机号
+const settings = () => import('@/pages/member/settings')// 个人设置
+const myinfo = () => import('@/pages/member/myinfo')// 个人信息
+const realname = () => import('@/pages/member/realname')// 实名认证
+const paySetting = () => import('@/pages/member/pay-setting')// 支付设置
+const address = () => import('@/pages/member/address')// 收货地址管理
+const address_add = () => import('@/pages/member/address_add')// 新增或修改收货地址
+const version = () => import('@/pages/member/version')// 版本号
 // 文章
-import article_route from '@/pages/article/article_route'
-import help_list from '@/pages/article/help_list' // 帮助中心
-import help_detail from '@/pages/article/help_detail' // 帮助详情
-import feedback from '@/pages/article/feedback' // 问题反馈
+const article_route = () => import('@/pages/article/article_route')
+const help_list = () => import('@/pages/article/help_list')// 帮助中心
+const help_detail = () => import('@/pages/article/help_detail')// 帮助详情
+const feedback = () => import('@/pages/article/feedback') // 问题反馈
 
 const PayFinish = () => import(/* 根组件 */ '@/pages/home/pay-finish')
 // ---------------------= 微 卡 =------------------
@@ -139,8 +140,8 @@ export default new VueRouter({
       }
     }, {
       path: 'map',
-      name: 'Map',
-      component: Map,
+      name: 'map',
+      component: MAP,
       meta: {
         title: '地图'
       }

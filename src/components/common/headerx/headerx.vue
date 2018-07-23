@@ -1,5 +1,6 @@
 <template>
   <header class="y-flex y-ac">
+    <div id="allmap1" class="allmap1" style="display:none"></div>
     <div class="back-btn" @click="goBack" v-if="backSeen"></div>
     <div class="add y-flex y-ac" v-if="!backSeen">
       <router-link to="/home/location" tag="p">{{region}}</router-link>
@@ -7,7 +8,8 @@
     </div>
     <div class="search-box y-flex y-ac">
       <span></span>
-      <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model.trim="searchVal" @focus="getFocus" />
+      <!-- <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model.trim="searchVal" @focus="getFocus" /> -->
+      <input type="input" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" v-model.trim="searchVal" @focus="getFocus" />      
     </div>
     <div class="screen" v-if="!searchSeen"></div>
     <router-link class="message" to="/home/notice" tag="div" v-if="!searchSeen"></router-link>
@@ -16,7 +18,6 @@
 </template>
 <script>
 export default {
-
   data () {
     return {
       searchVal: '',
@@ -51,7 +52,39 @@ export default {
       if (this.$route.name !== 'Search') {
         this.$router.push({path: '/home/search'})
       }
+    },
+    getLngLat () {
+      // 百度地图API功能
+      let that = this
+      var map = new BMap.Map('allmap1') // 创建Map实例
+      // 获取自身定位地名并存入sessionStorage
+      var geolocation = new BMap.Geolocation()
+      geolocation.getCurrentPosition(
+        function (r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point)
+            map.addOverlay(mk)
+            map.panTo(r.point)
+            // 根据坐标获取地名
+            let point = new BMap.Point(r.point.lng, r.point.lat)
+            let gc = new BMap.Geocoder()
+            gc.getLocation(point, function (rs) {
+              sessionStorage.setItem('regionName', rs.addressComponents.city.split('市').join(''))
+              that.region = rs.addressComponents.city.split('市').join('')
+              sessionStorage.setItem('nowLng', r.point.lng)
+              sessionStorage.setItem('nowLat', r.point.lat)
+              sessionStorage.setItem('nowRegion', rs.addressComponents.city.split('市').join(''))
+            })
+          } else {
+            alert('failed' + this.getStatus())
+          }
+        },
+        { enableHighAccuracy: true }
+      )
+    // 百度地图end
     }
+  },
+  created () {
 
   },
   mounted () {
@@ -63,8 +96,12 @@ export default {
     }
     // 搜索页形态
     this.$route.name === 'Search' ? this.searchSeen = true : this.searchSeen = false
-    // 从缓存读取地名
-    this.region = sessionStorage.regionName
+    // 若有缓存则从缓存读取地名 若第一次进入无缓存则在此页请求处理
+    if (sessionStorage.regionName) {
+      this.region = sessionStorage.regionName
+    } else {
+      this.getLngLat()
+    }
   }
 }
 </script>

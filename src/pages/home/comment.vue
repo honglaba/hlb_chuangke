@@ -17,7 +17,7 @@
      </section>
 
      <section class="comment-list">
-       <ul>
+       <ul id='dataList'>
         <li class="vux-1px-b" v-for="(item,index) in commentList" :key="index">
            <div class="user-row">
              <div>
@@ -147,16 +147,16 @@ export default {
             // src: '../../../static/images/mescroll-totop.png' // 默认滚动到1000px显示,可配置offset修改
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset: 1000
+          },
+          empty: { // 配置列表无任何数据的提示
+            warpId: 'dataList',
+            icon: '../../../static/images/nocomment.png',
+            tip: '亲，还没有相关的数据',
+            btntext: '去逛逛 >',
+            btnClick: function () {
+              alert('点击了去逛逛按钮')
+            }
           }
-          // empty: { // 配置列表无任何数据的提示
-          //   warpId: 'dataList',
-          //   icon: '../../../static/images/mescroll-empty.png',
-          //   tip: '亲,暂无相关数据哦~',
-          //   btntext: '去逛逛 >',
-          //   btnClick: function () {
-          //     alert('点击了去逛逛按钮')
-          //   }
-          // }
         }
       })
     }

@@ -8,6 +8,7 @@
         <span class="back" @click="goBack"></span>
         <div class="y-flex y-ac">
           <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}" @click.native="createQR"></router-link>
+          <!-- <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}"></router-link> -->
           <span></span>
         </div>
       </div>
@@ -203,7 +204,7 @@
     <router-link :to="{path:'/home/pay',query:{id:details.id,title:details.title,address:details.address}}" class="buy-btn">消费买单</router-link>
     <div v-transfer-dom>
       <confirm v-model="show"  @on-confirm="onConfirm('(0769)2221 4618')" confirm-text="呼叫">
-        <p style="text-align:center;">{{details.mobile_phone}}</p>
+        <p style="text-align:center;">{{details.phone}}</p>
       </confirm>
     </div>
   </div>
@@ -300,6 +301,7 @@ export default {
     ...mapActions({collect: 'APP_collectShop', unCollect: 'APP_unCollectShop', isCollect: 'User_isCollectShop'}),
     // 创建二维码
     createQR () {
+      console.log(this.details)
       this.axios.post('/api/qrcode', {
         text: this.details.address
       }).then(res => {
@@ -323,6 +325,7 @@ export default {
     this.getInfo()
     this.getExchange()
     this.getComments()
+    // this.createQR()// 进入页面立即创建二维码
   },
   directives: {
     TransferDom

@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   computed: {
     ...mapState(['isLoading'])
@@ -27,8 +27,10 @@ export default {
       if (localStorage.getItem('vip_info')) this.UPDATE_VIP_INFO(JSON.parse(localStorage.getItem('vip_info'))) // vip信息
       if (localStorage.getItem('shoppingCart')) this.SAVE_SHOPPING_CART(JSON.parse(localStorage.getItem('shoppingCart'))) // 购物车
     },
-    ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID', 'UPDATE_VIP_INFO', 'SAVE_SHOPPING_CART']),
-    ...mapActions(['HTTP_UserInfo'])
+    ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID', 'UPDATE_VIP_INFO', 'SAVE_SHOPPING_CART', 'UPDATE_LOADING'])
+  },
+  mounted () {
+
   }
 }
 </script>

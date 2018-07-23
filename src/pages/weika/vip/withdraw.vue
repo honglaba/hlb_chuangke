@@ -102,12 +102,10 @@ export default {
       let amount = this.numberA
       let remark = this.remark
       let _this = this
-      this.updateLoading({status: true})
       this.Vip_Withdraw({ amount, remark })
         .then(res => {
           this.Wk_Index()
             .then(vres => {
-              this.updateLoading({status: false})
               this.$vux.toast.show(
                 {
                   text: '提现申请成功',
@@ -126,8 +124,7 @@ export default {
     routeBack () {
       this.$router.push({path: '/weika/vip'})
     },
-    ...mapActions(['Vip_Withdraw', 'Wk_Index']),
-    ...mapMutations({updateLoading: 'UPDATE_LOADING'})
+    ...mapActions(['Vip_Withdraw', 'Wk_Index'])
   },
   components: {
     Radio,

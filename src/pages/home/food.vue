@@ -381,14 +381,14 @@ export default {
       }
       this.tempId = id// 将id缓存
       id == '' ? id = '&cid=1' : id = '&cid=' + id// 若id为空则判断为从别的路由进入，默认id为1；若不为空则判断为点击分类切换数据，id为点击的id
-      url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
+      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
 
       this.axios.get(url).then(res => {
         this.page = res
         console.log('数据个数' + res.total)
         // 设置下一页 由于加载方法使用以总数据量的方式  所以此处暂时无用
         if (res.next_page_url) {
-          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=23.0148260&longitude=113.7451960' + id
+          this.nextPageUrl = res.next_page_url.split('http://api.hlbck.com').join('') + '&latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + id
         } else {
           this.nextPageUrl = null
         }
@@ -462,8 +462,8 @@ export default {
           },
           empty: { // 配置列表无任何数据的提示
             warpId: 'dataList',
-            icon: '../../../static/images/mescroll-empty.png',
-            tip: '亲,暂无相关数据哦~',
+            icon: '../../../static/images/nodata.png',
+            tip: '亲，还没有相关的数据',
             btntext: '去逛逛 >',
             btnClick: function () {
               // alert('点击了去逛逛按钮')

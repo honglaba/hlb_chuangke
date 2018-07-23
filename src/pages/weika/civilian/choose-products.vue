@@ -118,9 +118,7 @@ export default {
   methods: {
     toBuy () {
       let choose = this.goodList[this.chooseIndex]
-      this.updateLoading({ status: true })
       setTimeout(() => {
-        this.updateLoading({ status: false })
         this.updateCart(choose)
         this.saveCurrTodo('Wkbuy')
         this.$router.push({path: '/weika/pay'})
@@ -130,7 +128,7 @@ export default {
       this.$router.go(-1)
     },
     ...mapActions(['Wk_GoodList']),
-    ...mapMutations({ updateLoading: 'UPDATE_LOADING', updateCart: 'SAVE_SHOPPING_CART', saveCurrTodo: 'UPDATE_CURRENT_OPERATION' })
+    ...mapMutations({ updateCart: 'SAVE_SHOPPING_CART', saveCurrTodo: 'UPDATE_CURRENT_OPERATION' })
   },
   components: {
     Scroller

@@ -2,7 +2,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Domain } from 'tools/env'
 import { STATE_OK, STATE_FAIL } from 'tools/ERR'
-import store from '@/store'
 
 // 配置axios对象
 axios.defaults.baseURL = Domain
@@ -29,7 +28,6 @@ function _init () { // 初始化
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
-  store.commit('UPDATE_LOADING', {status: true})
   /* 是否有请求正在刷新token */
   if (localStorage.getItem('userInfo')) { // 如果有用户信息则需要验证
     config.headers.Authorization = 'Bearer ' + Cookies.get('accessToken')
@@ -80,7 +78,6 @@ axios.interceptors.request.use(config => {
 
 // 响应拦截器
 axios.interceptors.response.use(response => {
-  store.commit('UPDATE_LOADING', {status: false})
   if (response.data.result_state === STATE_OK) {
     return response.data
   } else if (response.data.result_state === STATE_FAIL) {
@@ -89,7 +86,6 @@ axios.interceptors.response.use(response => {
 
   // return response.data
 }, error => {
-  store.commit('UPDATE_LOADING', {status: false})
   // Do something with response error
   return Promise.reject(error)
 })

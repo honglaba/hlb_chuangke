@@ -149,12 +149,10 @@ export default {
           this.numVal.map(r => {
             str += r
           })
-          this.updataLoading({ status: true })
           this.User_PayPwdPass({
             pay_password: str,
             action: 'modify_pay_password'
           }).then(res => {
-            this.updataLoading({ status: false })
             if (res) {
               this.$router.push({ path: '/member/paysetting/4' })
             } else {
@@ -200,13 +198,11 @@ export default {
       })
       if (flag) {
         this.isWaiting = true
-        this.updataLoading({ status: true })
         this.User_PayPwdConf(
           [str1, str2, this.resetType] /* type is important */
         ).then(res => {
           this.isWaiting = false
           this.HTTP_UserInfo().then(res => {
-            this.updataLoading({ status: false })
             // show-cancel-button
             this.$vux.confirm.show({
               showCancelButton: false,
@@ -218,10 +214,8 @@ export default {
           })
         })
       } else {
-        this.updataLoading({ status: true })
         setTimeout(() => {
           this.numVal = []
-          this.updataLoading({ status: false })
         }, 300)
         this.$vux.confirm.show({
           showCancelButton: false,
@@ -258,29 +252,24 @@ export default {
           closeOnConfirm: false,
           onConfirm (val) {
             if (val.match(/^[0-9]{5}$/)) {
-              _this.updataLoading({status: true})
               _this.User_PayResetPhoneVerificationPass(val)
                 .then(res => {
                   _this.resetType = '2'
                   _this.$vux.confirm.hide()
-                  _this.updataLoading({status: false})
                 })
             }
           }
         })
       } else if (c === 3) {
-        this.updataLoading({ status: true })
         setTimeout(() => {
           this.resetType = '3'
-          this.updataLoading({ status: false })
         }, 500)
       }
     },
     routeBack () {
       // 顶部返回按钮事件
       this.$router.push({ path: '/member/settings' })
-    },
-    ...mapMutations({ updataLoading: 'UPDATE_LOADING' })
+    }
   }
 }
 </script>
