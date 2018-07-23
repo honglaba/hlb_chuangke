@@ -10,9 +10,7 @@
     <section class="total-money">
       <p>支付金额</p>
       <!-- <p>￥300</p> -->
-      <p>￥<input type="number" class="pay-input" autofocus="autofocus" placeholder="请输入金额" v-model="money"
-       onkeyup="value=value.replace(/[^\d]/g,'') "
-onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"/></p>
+      <p>￥<input type="number" class="pay-input" autofocus="autofocus" placeholder="请输入金额" v-model="money"/></p>
       <div class="vux-1px-t" v-if="money">
         预计您将获得<span class="#cf00">{{money}}</span>积分
       </div>

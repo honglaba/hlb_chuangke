@@ -470,9 +470,10 @@ export default {
         ? (url = this.nextPageUrl)
         : (url =
             // '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc')
-            '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&by=total_customers&order=desc')
+            '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&by=distance&order=asc')
       // console.log(this.nextPageUrl)
       this.axios.get(url).then(res => {
+        console.log(res)
         // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
 
         this.page = res
@@ -491,7 +492,7 @@ export default {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
             res.data[i].distance =
-              (res.data[i].distance / 1000).toFixed(1) + 'Km'
+              (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }

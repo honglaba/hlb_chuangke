@@ -2,7 +2,7 @@
   <div class="bpad100">
     <section class="banner-box">
       <!-- <img src="./images/choicepic.png"> -->
-      <img :src="details.logo">
+      <img :src="details.banner">
 
       <div class="top-row">
         <span class="back" @click="goBack"></span>
@@ -301,9 +301,10 @@ export default {
     ...mapActions({collect: 'APP_collectShop', unCollect: 'APP_unCollectShop', isCollect: 'User_isCollectShop'}),
     // 创建二维码
     createQR () {
-      console.log(this.details)
+      let that = this
+      console.log(this.$route.fullPath)
       this.axios.post('/api/qrcode', {
-        text: this.details.address
+        text: that.$route.fullPath
       }).then(res => {
         console.log(res)
       })
