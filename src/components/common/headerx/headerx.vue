@@ -52,7 +52,7 @@ export default {
           localStorage.historyWords = this.historyWords
         }
       } else {
-        alert('请输入关键字')
+         this.$vux.toast.show('请输入关键字');
       }
     },
     goBack: function () {
