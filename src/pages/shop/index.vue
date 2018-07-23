@@ -9,10 +9,12 @@
         </section>
         <section class="business-list">
           <section class="tab">
-            <div class="slide-btn" :class="{cur:slideTap}" @click="slideTap=!slideTap"></div>
-            <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
-              <tab-item v-for="(tab, index) in tabNavs"  :selected="index === fixIndex" :key="index" @on-item-click="tabTap(index)" @click.native="fixIndex=index"> {{tab.title}}</tab-item>
-            </tab>
+
+              <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem" >
+                <tab-item v-for="(tab, index) in tabNavs"  :selected="index === fixIndex" :key="index" @on-item-click="tabTap(index)" @click.native="fixIndex=index"> {{tab.title}}</tab-item>
+              </tab>
+              <div class="slide-btn" :class="{cur:slideTap}" @click="slideTap=!slideTap"></div>
+
             <div class="tab-con" v-show="slideTap">
               <ul>
                 <li v-for="(nav,index) in navs" @click="navTap(index)" :class="{cur:nav.active}" :key="index">
@@ -33,7 +35,9 @@
   <!-- mescroll外的固定定位  解决苹果跟随抖动的bug -->
   <transition name="fade">
     <section class="tab sp" v-if="tabFixed">
-          <div class="slide-btn" :class="{cur:slideTap}"  @click="slideTap=!slideTap"></div>
+          <!-- <div class="slide-btn" :class="{cur:slideTap}"  @click="slideTap=!slideTap"></div> -->
+          <div class="slide-btn" :class="{cur:slideTap}"  @click="slideBtn"></div>
+
           <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
             <tab-item v-for="(tab, index) in tabNavs"  :selected="index === fixIndex" :key="index" @on-item-click="tabTap(index)" @click.native="fixIndex=index"> {{tab.title}}</tab-item>
           </tab>
@@ -71,10 +75,18 @@ export default {
       times: 0, // 加载次数
       tempId: 1, // 旧id,默认为1
       page: '',
-      slideTap: true
+      slideTap: false
     }
   },
   methods: {
+    // 下拉按钮
+    slideBtn: function () {
+      if (this.slideTap == true) {
+        this.slideTap = false
+      } else {
+        this.slideTap = true
+      }
+    },
     // 检测高度
     getScrollTop: function () {
       let mescroll = document.getElementById('mescroll')
@@ -134,6 +146,7 @@ export default {
         this.businessList = [] // 切换分类时数据清空 否则一直叠加
         this.mescroll.resetUpScroll()
       }
+      this.slideTap = false
     },
     getCategory: function () {
       // 获取1级分类
@@ -147,7 +160,7 @@ export default {
     },
     getCategoryChildren: function (id) {
       // 获取2级分类
-      id ? id = id : id = 1
+      id ? id = id : id = 131
       this.axios.get('/api/shop-category?parent=' + id).then(res => {
         for (let i = 0, len = res.data.length; i < len; i++) {
           res.data[i].active = false
@@ -178,7 +191,7 @@ export default {
         for (let i in res.data) {
           // this.businessList.push(res.data[i])
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = res.data[i].distance / 1000 + 'Km'
+            res.data[i].distance = res.data[i].distance / 1000 + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -209,8 +222,9 @@ export default {
         this.times = 1
       }
       this.tempId = id// 将id缓存
-      id == '' ? id = '&cid=1' : id = '&cid=' + id// 若id为空则判断为从别的路由进入，默认id为1；若不为空则判断为点击分类切换数据，id为点击的id
-      url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id
+      id == '' ? id = '&cid=131' : id = '&cid=' + id// 若id为空则判断为从别的路由进入，默认id为1；若不为空则判断为点击分类切换数据，id为点击的id
+      // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id
+      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&page=' + this.times + id
 
       this.axios.get(url).then(res => {
         this.page = res
@@ -292,12 +306,12 @@ export default {
           },
           empty: { // 配置列表无任何数据的提示
             warpId: 'dataList',
-            icon: '../../../static/images/mescroll-empty.png',
-            tip: '亲,暂无相关数据哦~',
-            btntext: '去逛逛 >',
-            btnClick: function () {
-              alert('点击了去逛逛按钮')
-            }
+            icon: '../../../static/images/nodata.png',
+            tip: '亲，还没有相关的数据'
+            // btntext: '去逛逛 >',
+            // btnClick: function () {
+            //   alert('点击了去逛逛按钮')
+            // }
           }
         }
       })
@@ -312,6 +326,7 @@ export default {
     next()
   },
   beforeRouteLeave (to, from, next) {
+    console.log('页面高度' + sessionStorage.shopPageScrollTo)
     from.meta.keepAlive = true
     next()
     this.getScrollTop()
@@ -343,6 +358,7 @@ export default {
 .shop-index{
   .vux-tab-wrap{
   padding-top:.8rem;
+  // width:calc(100vw - .8rem);
 }
 .vux-tab-wrap .vux-tab-container{
  height:.8rem;

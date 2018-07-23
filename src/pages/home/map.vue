@@ -6,7 +6,7 @@
             <div class="location-info">
                 <p>{{detailsGetter.title}}</p>
                 <p>距您
-                    <span>{{distance}}</span>米 {{detailsGetter.address}}</p>
+                    <span>{{distance}}</span> {{detailsGetter.address}}</p>
             </div>
             <div class="nav-btn" @click="useMap">
                 <span></span>
@@ -64,7 +64,7 @@ export default {
     var map = new BMap.Map('allmap') // 创建Map实例
     map.centerAndZoom(new BMap.Point(coordinate[0], coordinate[1]), 20) // 初始化地图,设置中心点坐标和地图级别
 
-    map.addControl(new BMap.MapTypeControl()) // 添加地图类型控件
+    // map.addControl(new BMap.MapTypeControl()) // 添加地图类型控件
     map.setCurrentCity('东莞') // 设置地图显示的城市 此项是必须设置的
 
     // 用经纬度设置地图中心点
@@ -98,6 +98,11 @@ export default {
     let pointeA = new BMap.Point(sessionStorage.lng, sessionStorage.lat)// 当前位置
     let pointeB = new BMap.Point(coordinate[0], coordinate[1])// 目标位置
     that.distance = (map.getDistance(pointeA, pointeB)).toFixed(2)// 计算距离
+    if (that.distance >= 1000) {
+      that.distance = (that.distance / 1000).toFixed(1) + '公里'
+    } else {
+      that.distance = that.distance + '米'
+    }
   }
 }
 </script>
@@ -131,14 +136,16 @@ export default {
   .location-info {
     width: 5.5rem;
     padding: .22rem .68rem 0 .24rem;
+    overflow-y: scroll;
     >p:nth-child(1){
       font-size: .36rem;
       color:#333;
       margin-bottom: .18rem;
       font-weight: bold;
+      line-height: .38rem;
     }
     >p:nth-child(2){
-      font-size: .28rem;
+      font-size: .24rem;
       color: #666;
       line-height: .36rem;
       span{

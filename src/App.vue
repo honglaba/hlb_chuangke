@@ -26,6 +26,9 @@ export default {
       if (localStorage.getItem('shoppingCart')) this.SAVE_SHOPPING_CART(JSON.parse(localStorage.getItem('shoppingCart'))) // 购物车
     },
     ...mapMutations(['SET_USER_INFO', 'SAVE_RECEIVER_ADDRESS', 'SET_WEIKA_INVID', 'UPDATE_VIP_INFO', 'SAVE_SHOPPING_CART', 'UPDATE_LOADING'])
+  },
+  mounted () {
+
   }
 }
 </script>

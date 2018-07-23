@@ -18,6 +18,7 @@ import md5 from 'js-md5'
 // import { ENV } from 'tools/env'
 import { ConsoleFun } from 'tools/util'
 import VConsole from 'vconsole' // 调试
+import VueLazyload from 'vue-lazyload'
 
 /* eslint-disable no-new */
 // if (ENV) new VConsole()
@@ -45,6 +46,12 @@ Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(AlertPlugin)
 Vue.use(VueClipboard)
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: '../static/images/商品默认图.png',
+  loading: '../static/images/商品默认图.png',
+  attempt: 1
+})
 
 Vue.filter('mobilePhoneFilter', val => { // 手机号码过滤器
   if (!val) return '未绑定'

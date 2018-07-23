@@ -187,8 +187,9 @@
           <h3 class="fl">精选商家</h3>
           <!-- <a class="fr" href="#">更多></a> -->
           <router-link class="fr" tag="a" to="/home/choice">
-            <span>更多</span>
-            <span class="littleArr"></span>
+            <!-- 暂时没有活动 隐藏更多 -->
+            <!-- <span>更多</span>
+            <span class="littleArr"></span> -->
           </router-link>
         </div>
         <div class="y-flex business">
@@ -218,7 +219,7 @@
         <div class="til-row1 vux-1px-b">
           <h3>猜你喜欢</h3>
         </div>
-        <ul class="guess-list">
+        <ul class="guess-list" id="dataList">
           <router-link tag="li" :to="{path:'home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
             <ListInner :businessList="item"></ListInner>
           </router-link>
@@ -239,6 +240,7 @@ import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import MeScroll from '@/../static/js/mescroll.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions, mapMutations } from 'vuex'
+import { setTimeout } from 'timers'
 export default {
   name: 'HomeIndex',
   data () {
@@ -253,7 +255,8 @@ export default {
       mescroll: null,
       pdlist: [],
       page: null,
-      chainLength: 0
+      chainLength: 0,
+      locationObj: null
       // businessList: []
       // businessList: [
       //   {
@@ -300,6 +303,7 @@ export default {
         this.updateLoading({status: false})
       }
     }
+
   },
   async created () {
     this.updateLoading({status: true})
@@ -310,39 +314,52 @@ export default {
     this.chainLength++
     await this.getGoods() // 精选推荐
     this.chainLength++
-    await this.getCategoryShop() // 默认的加载列表交由mescroll第一次执行负责
-    this.chainLength++
-  },
-  mounted () {
-    this.mescrollInstantiation()
+    this.getLngLat()
+    // await this.getCategoryShop() // 默认的加载列表交由mescroll第一次执行负责
+    // this.mescrollInstantiation()
+    // this.chainLength++
   },
   updated () {
-    // 百度地图
-    if (!sessionStorage.lng) {
-      // 如果本地缓存中没有经纬度才获取经纬度
-      // 百度地图API功能
-      var map = new BMap.Map('allmap') // 创建Map实例
-      // 获取自身定位并存入sessionStorage
-      var my_point = []
-      var geolocation = new BMap.Geolocation()
-      geolocation.getCurrentPosition(
-        function (r) {
-          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point)
-            map.addOverlay(mk)
-            map.panTo(r.point)
-            // alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-            sessionStorage.lng = r.point.lng
-            sessionStorage.lat = r.point.lat
-          } else {
-            alert('failed' + this.getStatus())
-          }
-        },
-        { enableHighAccuracy: true }
-      )
-    }
+
   },
   methods: {
+    getLngLat () {
+      let that = this
+      // 百度地图
+      if (!sessionStorage.lng) {
+      // 如果本地缓存中没有经纬度才获取经纬度
+      // 百度地图API功能
+        var map = new BMap.Map('allmap') // 创建Map实例
+        // 获取自身定位并存入sessionStorage
+        var geolocation = new BMap.Geolocation()
+        geolocation.getCurrentPosition(
+          function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+              var mk = new BMap.Marker(r.point)
+              map.addOverlay(mk)
+              map.panTo(r.point)
+              sessionStorage.lng = r.point.lng
+              sessionStorage.lat = r.point.lat
+              // 根据坐标获取地名
+              let point = new BMap.Point(r.point.lng, r.point.lat)
+              let gc = new BMap.Geocoder()
+              gc.getLocation(point, function (rs) {
+                // sessionStorage.setItem('regionName', rs.addressComponents.city.split('市').join(''))
+              })
+              that.mescrollInstantiation()// 头部地名未获取
+              that.chainLength++
+            } else {
+              alert('failed' + this.getStatus())
+            }
+          },
+          { enableHighAccuracy: true }
+        )
+      } else {
+        that.mescrollInstantiation()// 头部地名未获取
+        that.chainLength++
+      }
+    // 百度地图end
+    },
     result (result) {
       // 从子Headerx组件回传的值
       this.businessList = result
@@ -356,6 +373,7 @@ export default {
     getSuperme () {
       // 精选商家
       this.axios.get('/api/banner?key=superme').then(res => {
+        console.log(res)
         this.superme = res.data
       })
     },
@@ -451,8 +469,9 @@ export default {
       this.nextPageUrl
         ? (url = this.nextPageUrl)
         : (url =
-            '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc')
-      console.log(this.nextPageUrl)
+            // '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&by=total_customers&order=desc')
+            '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&by=total_customers&order=desc')
+      // console.log(this.nextPageUrl)
       this.axios.get(url).then(res => {
         // this.axios.get('/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960').then(res => {
 
@@ -460,7 +479,8 @@ export default {
         if (res.next_page_url != null) {
           this.nextPageUrl =
             res.next_page_url.split('http://api.hlbck.com').join('') +
-            '&latitude=23.0148260&longitude=113.7451960'
+            // '&latitude=23.0148260&longitude=113.7451960'
+            '&latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&by=total_customers&order=desc'
         } else {
           this.nextPageUrl = null
         }
@@ -489,7 +509,6 @@ export default {
         page.num,
         page.size,
         function (curPageData) {
-          console.log(curPageData)
           // curPageData = [] //打开本行注释,可演示列表无任何数据empty的配置
 
           // 如果是第一页需手动制空列表 (代替clearId和clearEmptyId的配置)
@@ -497,7 +516,6 @@ export default {
 
           // 更新列表数据
           self.businessList = self.businessList.concat(curPageData)
-          console.log(self.businessList)
           // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
           // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
           console.log(
@@ -554,27 +572,36 @@ export default {
             // html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
             // offset : 1000
           },
-          empty: {
-            // 配置列表无任何数据的提示
-            // warpId: 'dataList',
-            icon: '../res/img/mescroll-empty.png'
-            //						  	tip : "亲,暂无相关数据哦~" ,
-            //						  	btntext : "去逛逛 >" ,
-            //						  	btnClick : function() {
-            //						  		alert("点击了去逛逛按钮");
-            //						  	}
+          empty: { // 配置列表无任何数据的提示
+            warpId: 'dataList',
+            icon: '../../../static/images/nodata.png',
+            tip: '亲，还没有相关的数据'
+            // btntext: '去逛逛 >',
+            // btnClick: function () {
+            //   alert('点击了去逛逛按钮')
+            // }
           }
-          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-          // vue的案例请勿配置clearId和clearEmptyId,否则列表的数据模板会被清空
-          //						clearId: "dataList",
-          //						clearEmptyId: "dataList"
         }
       })
     },
     ...mapActions(['APP_Banner']),
     ...mapMutations({updateLoading: 'UPDATE_LOADING'})
   },
-  components: { ListInner, swiper, swiperSlide }
+  components: { ListInner, swiper, swiperSlide },
+  beforeRouteEnter (to, from, next) {
+    // console.log('进入')
+    // console.log(from)
+
+    next()
+  },
+  beforeRouteUpdate (to, from, next) {
+    console(from)
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    console.log(to)
+    next()
+  }
 }
 </script>
 
