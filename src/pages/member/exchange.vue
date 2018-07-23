@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <my-header @left-action="routeBack" :Title="'我要兑换'">
+    <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我要兑换'">
       <router-link to="exchange_log" slot="right">兑换记录</router-link>
     </my-header>
 

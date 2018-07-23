@@ -18,7 +18,7 @@
                   <div class="name">
                     <span class="vip-name">{{ vip.nickname }}</span>
                     <span class="vip-lv">
-                      <img :src="require('../images/vip-lv/vip' + '1' + '.png')">
+                      <img :src="require('../images/vip-lv/vip' + vip.level.slice(-1) + '.png')">
                     </span>
                   </div>
                   <!-- vip-lv.png -->

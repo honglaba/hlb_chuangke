@@ -1,7 +1,6 @@
 import router from './config'
 // cookie
 import Cookies from 'js-cookie'
-import apiList from '@/store/actions'
 import store from '@/store'
 import { _init } from 'tools/util'
 
@@ -17,10 +16,6 @@ router.beforeEach((To, From, next) => {
       .then(res => { // aaaaa = #
         window.location.href = res.redirect
       })
-    // apiList.HTTP_WxAccredit(window.location.origin + '/aaaaa' + From.path)
-    //   .then(res => { // aaaaa = #
-    //     window.location.href = res.redirect
-    //   })
   }
 
   if (!To.name) { // 路由不存在时跳转from页
@@ -60,13 +55,6 @@ router.beforeEach((To, From, next) => {
           store.commit('SET_USER_INFO', res.data)
           res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
         })
-      // apiList.HTTP_UserInfo()
-      //   .then(res => {
-      //     Cookies.set(res.session.name, res.session.value, { expires: 1 / 25 })
-      //     localStorage.setItem('userInfo', JSON.stringify(res.data))
-      //     store.commit('SET_USER_INFO', res.data)
-      //     res.data.mobile_phone ? next({path: hisUrl}) : next({path: '/member/phone_update'})
-      //   })
       return
     }
   }

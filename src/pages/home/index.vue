@@ -240,7 +240,7 @@ import MeScroll from '@/../static/js/mescroll.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions, mapMutations } from 'vuex'
 export default {
-  name: 'App',
+  name: 'HomeIndex',
   data () {
     return {
       banner: [],

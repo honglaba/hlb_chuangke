@@ -102,6 +102,7 @@ import { mapActions } from 'vuex'
 import MeScroll from '@/../static/js/mescroll.min.js'
 import { Loadmore } from 'mint-ui'
 export default {
+  name: 'Food',
   data () {
     return {
       businessList: [],
@@ -127,9 +128,9 @@ export default {
       tempArr: [],
       sortTxt: [
         // { title: '智能排序', active: true, by: 'total_customers', order: 'desc'},
-        { title: '离我最近', active: true, by: 'distance', order: 'asc'},
+        { title: '离我最近', active: true, by: 'distance', order: 'asc' },
         { title: '好评优先', active: false, by: 'score', order: 'desc' },
-        { title: '人气最高', active: false, by: 'total_customers', order: 'desc'}
+        { title: '人气最高', active: false, by: 'total_customers', order: 'desc' }
       ],
       region: [],
       areas: [],

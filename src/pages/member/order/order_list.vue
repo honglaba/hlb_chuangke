@@ -1,23 +1,27 @@
 <template>
   <div class="app">
     <my-header @on-click-back="routeBack" :left-options="{preventGoBack: true}" :Title="'我的订单'"></my-header>
+
     <div class="tab">
       <tab bar-active-color="#f5222d" active-color="#f5222d" custom-bar-width=".34rem">
-        <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen == 0">全部</tab-item>
-        <tab-item @on-item-click="handler(1)" data-id=1 :selected="nowSeen == 1">待付款</tab-item>
-        <tab-item @on-item-click="handler(2)" data-id=2 :selected="nowSeen == 2">待发货</tab-item>
-        <tab-item @on-item-click="handler(3)" data-id=3 :selected="nowSeen == 3">待收货</tab-item>
-        <tab-item @on-item-click="handler(4)" data-id=4 :selected="nowSeen == 4">待评价</tab-item>
+        <tab-item @on-item-click="handler(0)" data-id=0 :selected="nowSeen === 0">全部</tab-item>
+        <tab-item @on-item-click="handler(1)" data-id=1 :selected="nowSeen === 1">待付款</tab-item>
+        <tab-item @on-item-click="handler(2)" data-id=2 :selected="nowSeen === 2">待发货</tab-item>
+        <tab-item @on-item-click="handler(3)" data-id=3 :selected="nowSeen === 3">待收货</tab-item>
+        <tab-item @on-item-click="handler(4)" data-id=4 :selected="nowSeen === 4">待评价</tab-item>
         <!-- <tab-item @on-item-click="handler(5)" data-id=5 :selected="nowSeen === 5">退换/售后</tab-item> -->
       </tab>
     </div>
+
     <div class="main2">
       <div class="content">
         <div class="tab-list" v-if="ReqEnd">
+
           <div class="empty" v-if="realData.length === 0">
             <p class="pic"><img src="./../images/noorder.png"></p>
             <p class="tips">还没有相关订单,先去逛逛想买的商品~</p>
           </div>
+
           <div class="dhlist" v-else>
             <ul>
 
@@ -28,11 +32,14 @@
                       <em>{{ item.order_sn }}</em>
                     </span>
                     <span class="r">
-                      <em class="huangse" v-if="item.status_text === '待付款'">{{ item.status_text }}</em>
-                      <em class="huangse" v-if="item.status_text === '待发货'">{{ item.status_text }}</em>
-                      <em class="lvse" v-if="item.status_text === '待收货'">{{ item.status_text }}</em>
-                      <em class="" v-if="item.status_text === '待评价'">{{ item.status_text }}</em>
-                      <em class="huise" v-if="item.status_text === '已取消' || item.status_text === '已关闭'">{{ item.status_text }}</em>
+                      <em
+                        :class="{
+                          'huangse': item.status_text === '待付款',
+                          'huangse': item.status_text === '待发货',
+                          'lvse': item.status_text === '待收货',
+                          '': item.status_text === '待评价',
+                          'huise': item.status_text === '已取消' || item.status_text === '已关闭',
+                          }">{{ item.status_text }}</em>
                     </span>
                   </div>
                 </div>
@@ -103,6 +110,7 @@
               </li>
             </ul>
           </div>
+
         </div>
       </div>
     </div>
@@ -121,12 +129,17 @@ export default {
       momentPay: {}
     }
   },
-  created () {
-    this.getGoodList(this.$route.params.status).then(res => {
-      this.ReqEnd = true
-      this.nowSeen = this.$route.params.status
-      this.realData = res.data
-    })
+  async created () {
+    this.ReqEnd = false
+    await this.getGoodList(this.$route.params.status)
+      .then(res => {
+        this.nowSeen = this.$route.params.status
+        this.realData = res.data
+      })
+      .catch(erro => {
+        this.realData = []
+      })
+    this.ReqEnd = true
   },
   methods: {
     handler (val) {

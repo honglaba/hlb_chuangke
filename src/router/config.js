@@ -1,6 +1,6 @@
+/* eslint-disable */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-/* eslint-disable */
 // 首页
 const home_route = () => import('@/pages/home/home_route')
 const HomeIndex = () => import('@/pages/home/index')
@@ -154,7 +154,7 @@ export default new VueRouter({
       }
     },
     {
-      path: 'payfinish',
+      path: 'payfinish/:id',
       name: 'payfinish',
       component: PayFinish,
       meta: {
