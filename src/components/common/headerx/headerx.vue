@@ -40,9 +40,7 @@ export default {
           localStorage.historyWords = this.historyWords
         }
       } else {
-        this.$vux.alert.show({
-          content: '请输入关键字'
-        })
+        this.$vux.toast.show('请输入关键字');
       }
     },
     goBack: function () {

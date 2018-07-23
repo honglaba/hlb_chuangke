@@ -53,7 +53,7 @@ export default {
   methods: {}
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .order-info {
   display: flex;
   align-items: center;
