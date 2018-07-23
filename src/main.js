@@ -15,13 +15,14 @@ import { ToastPlugin, ConfirmPlugin, AlertPlugin, LoadingPlugin, Loading } from 
 import md5 from 'js-md5'
 // import BScroll from 'better-scroll'
 // import VueScroller from 'vue-scroller'
-import { ENV } from 'tools/env'
+// import { ENV } from 'tools/env'
 import { ConsoleFun } from 'tools/util'
 import VConsole from 'vconsole' // 调试
 import VueLazyload from 'vue-lazyload'
 
 /* eslint-disable no-new */
 // if (ENV) new VConsole()
+new VConsole()
 
 // Vue.use(VueScroller)
 fastClick.attach(document.body)

@@ -43,7 +43,7 @@
           <div class="tit">
             <div class="l">我的订单</div>
             <!-- <div class="r">全部订单<img src="./images/you1.png"></div> -->
-            <router-link class="r" tag="div" to="member/order/order_list/0">全部订单<img src="./images/you1.png"></router-link>
+            <router-link class="r" tag="div" to="/member/order/order_list/0">全部订单<img src="./images/you1.png"></router-link>
           </div>
           <ul class="myorder bdr-b">
             <li>

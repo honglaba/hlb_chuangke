@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <my-header :Title="'订单详情'"></my-header>
-    <div class="main2">
+    <div class="main2" v-if="Object.keys(momentState).length === 0">
+
       <section class="bgf tpad44 bpad51 bmar20 text-c">
         <img src="./images/finish.png" class="finish-logo" />
         <h3>支付完成</h3>
@@ -12,16 +13,18 @@
           <router-link to="javascript:;">去评价</router-link>
         </div>
       </section>
-      <section class="order-block">
+
+      <!-- 订单详情 -->
+      <section class="order-block" v-if="momentState.is_pay === 1">
         <div class="til-row">
           <div class="img">
             <img src="./images/home-like-img1.png" />
           </div>
           <div>
-            <p class="fz32 bmar10">东莞特产休闲食品店</p>
+            <p class="fz32 bmar10">{{ momentState.shop.name }}</p>
             <p class="fz24 c999">评分
-              <span class="cf5222d">5.0</span> 已有
-              <span class="cf5222d">1348</span>人消费</p>
+              <span class="cf5222d">{{ momentState.shop.score }}</span> 已有
+              <span class="cf5222d">{{ momentState.shop.total_consumption }}</span>人消费</p>
           </div>
         </div>
         <div class="fwb">
@@ -37,8 +40,8 @@
             <p class="fz20 c999">下单时间</p>
           </div>
           <div class="text-r">
-            <p class="fz24 c999">CK2018848484444</p>
-            <p class="fz20 c999">2018-08-18 10:10</p>
+            <p class="fz24 c999">{{ momentState.order_sn }}</p>
+            <p class="fz20 c999">{{ momentState.created_time }}</p>
           </div>
         </div>
         <div class="lh40">
@@ -48,7 +51,7 @@
           </div>
           <div class="text-r">
             <p class="fz24 c999">微信支付</p>
-            <p class="fz20 c999">2018-08-18 10:30</p>
+            <p class="fz20 c999">{{ momentState.pay_time }}</p>
           </div>
         </div>
       </section>
@@ -56,14 +59,26 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
-    return {}
+    return {
+      momentState: ''
+    }
   },
   created () {
-    this.$printf('123123213211232132131')
+    this.isFinished(this.$route.params.id)
+      .then(res => {
+        this.momentState = res.data
+        // this.$printf(res)
+      })
+      .catch(erro => {
+        // this.$printf(erro)
+      })
   },
-  methods: {}
+  methods: {
+    ...mapActions({isFinished: 'APP_isFinished'})
+  }
 }
 </script>
 <style lang="less" scoped>

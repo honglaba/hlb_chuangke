@@ -1,5 +1,6 @@
 import ajax from '@/api' // 配置后的axios
 
+/* eslint-disable */
 const actions = {
   HTTP_GetCategory ({commit}, data) { // 子分类
     return new Promise((resolve, reject) => {
@@ -84,6 +85,21 @@ const actions = {
   APP_Banner ({commit}, where) { // 展示图片
     return new Promise((resolve, reject) => {
       ajax.get(`/api/banner?key=${where}`)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(erro => {
+          reject(erro)
+        })
+    })
+  },
+  APP_isFinished ({commit}, order_id) { // 订单是否支付完成
+    return new Promise((resolve, reject) => {
+      ajax.get('/api/check-pay', {
+        params: {
+          order_id
+        }
+      })
         .then(res => {
           resolve(res)
         })

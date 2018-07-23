@@ -57,10 +57,10 @@
 <script>
 import ListInner from '../../components/common/listInner/listInner'
 import Other from '../../components/common/other/other'
-import { Loadmore } from 'mint-ui'
 import { Tab, TabItem } from 'vux'
 import MeScroll from '@/../static/js/mescroll.min.js'
 export default {
+  name: 'ShopIndex',
   data () {
     return {
       transitionName: '',

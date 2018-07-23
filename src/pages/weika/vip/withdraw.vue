@@ -44,7 +44,7 @@
 </template>
 <script>
 import { Radio, XInput } from 'vux'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -95,7 +95,7 @@ export default {
         return
       }
       if (+this.numberA > this.vipInfo.money) {
-        this.$vux.toast.show({text: '请输入正确的金额', width: '3rem'})
+        // this.$vux.toast.show({text: '请输入正确的金额', width: '3rem'})
         return
       }
 

@@ -95,7 +95,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['HTTP_pay']),
     showTip  () {
       this.mask = true
     },
@@ -104,15 +103,20 @@ export default {
     },
     onBridgeReady () {
       // this.HTTP_pay({money: this.money, id: this.detailsGetter.id})
-      this.HTTP_pay({money: this.money, id: this.$route.query.id})
+      this.payMoney({money: this.money, id: this.$route.query.id})
         .then(res => {
           window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', res.data, res => {
               // dosomthing
+              if (res.err_msg === 'get_brand_wcpay_request:ok') { this.payComplete() }
+              if (
+                res.err_msg === 'get_brand_wcpay_request:fail' ||
+                res.err_msg === 'get_brand_wcpay_request:cancel'
+              ) { return false }
             })
         })
     },
-    weixinPay  () {
+    weixinPay () {
       let that = this
       if (this.money > 0) {
         if (typeof WeixinJSBridge === 'undefined') {
@@ -128,12 +132,26 @@ export default {
       } else {
         this.$vux.toast.text('请输入正确的提现金额')
       }
-    }
+    },
+    payComplete () {
+      let _this = this
+      let payQues = setInterval(() => {
+        _this.isFinished(this.$route.query.id)
+          .then(res => {
+            if (res.data.is_pay === 1) {
+              alert('支付完成' + res.data.order_sn)
+              clearTimeout(payQues)
+            }
+          })
+          .catch(erro => {
+            _this.$printf(erro)
+          })
+      }, 1000)
+    },
+    ...mapActions({isFinished: 'APP_isFinished', payMoney: 'HTTP_pay'})
   },
   computed: {
     ...mapGetters(['detailsGetter'])
-  },
-  mounted () {
   }
 }
 </script>

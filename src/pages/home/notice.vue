@@ -1,76 +1,79 @@
 <template>
   <div class="app">
-        <my-header :Title="'消息公告'">
-    </my-header>
+    <my-header :Title="'消息公告'"></my-header>
+
     <div class="main2">
-    <section>
-      <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
-        <tab-item @click.native="nowSeen = 1" selected>消息</tab-item>
-        <tab-item @click.native="nowSeen = 2">公告</tab-item>
-      </tab>
-      <div class="tab-content" v-if="flag">
+      <section>
+        <tab bar-active-color="#f60" active-color="#f60" custom-bar-width=".34rem">
+          <tab-item @click.native="nowSeen = 1" selected>消息</tab-item>
+          <tab-item @click.native="nowSeen = 2">公告</tab-item>
+        </tab>
+        <div class="tab-content" v-if="flag">
 
-        <!-- 没有信息时显示的图片 -->
-        <div class="no-message-img" v-if="(nowSeen === 1 && StatuA.data.length === 0) || (nowSeen === 2 && StatuB.data.length === 0)">
-          <img src="~static/images/noMessage.png">
-          <span>哎呦呦! 这里还没有任何信息哦~</span>
-        </div>
+          <!-- 没有信息时显示的图片 -->
+          <div class="no-message-img" v-if="(nowSeen === 1 && StatuA.data.length === 0) || (nowSeen === 2 && StatuB.data.length === 0)">
+            <img src="~static/images/noMessage.png">
+            <span>哎呦呦! 这里还没有任何信息哦~</span>
+          </div>
 
-        <div v-if="nowSeen === 1 && StatuA.data.length > 0">
-          <ul class="notice-list">
-            <li>
-              <div class="time">2018-05-08 21:08:58</div>
-              <div class="inner type1">
-                <div class="bmar20">
-                  <div class="y-flex y-ac">
-                    <span class="activeico">活动</span>
-                    <p>5.15创客开启新航信之旅，奖励翻倍</p>
+          <div v-if="nowSeen === 1 && StatuA.data.length > 0">
+            <ul class="notice-list">
+              <li v-for="item in StatuA.data" :key="item.id">
+                <div class="time">{{ item.created_at }}</div>
+                <div class="inner type1">
+                  <div class="bmar20">
+                    <div class="y-flex y-ac">
+                      <span
+                      :class="{activeico: !!item.is_activity, sysico: !!item.is_system, classReaded: !!item.is_readed}"
+                      v-text="!item.is_activity ? !item.is_readed ? '系统' : '阅读' : '活动'"
+                      ></span>
+                      <p>{{ item.title }}</p>
+                    </div>
+                    <div class="pic"><img :src="item.img_path"/></div>
+                    <p class="fz26 c999 lh40">{{ item.make }}</p>
                   </div>
-                  <div class="pic"><img src="./images/notice-banner.png" /></div>
-                  <p class="fz26 c999 lh40">5.15创客开启新航信之旅，奖励翻倍5.15创客开启新航线之旅，奖励翻倍</p>
+                  <router-link :to="item.link_url" class="vux-1px-t">
+                    立即查看
+                    <span></span>
+                  </router-link>
                 </div>
-                <router-link to="javascript:;" class="vux-1px-t">
-                  立即查看
-                  <span></span>
-                </router-link>
-              </div>
-            </li>
-          </ul>
-        </div>
+              </li>
+            </ul>
+          </div>
 
-        <div v-if="nowSeen === 2 && StatuB.data.length > 0">
-          <ul class="notice-list">
-            <li>
-              <div class="time">2018-05-08 21:08:58</div>
-              <div class="inner">
-                <div class="txt">
-                  <p>优惠券即将到期通知</p>
-                  <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+          <div v-if="nowSeen === 2 && StatuB.data.length > 0">
+            <ul class="notice-list">
+              <li v-for="item in StatuB.data" :key="item.id">
+                <div class="time">{{ item.created_at }}</div>
+                <div class="inner">
+                  <div class="txt">
+                    <p>{{ item.title }}</p>
+                    <p>{{ item.make }}</p>
+                  </div>
+                  <router-link :to="item.link_url" class="vux-1px-t">
+                    立即查看
+                    <span></span>
+                  </router-link>
                 </div>
-                <router-link to="javascript:;" class="vux-1px-t">
-                  立即查看
-                  <span></span>
-                </router-link>
-              </div>
-            </li>
-            <li class="sp">
-              <div class="time">2018-05-08 21:08:58</div>
-              <div class="inner">
-                <div class="txt">
-                  <p>优惠券即将到期通知</p>
-                  <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+              </li>
+              <!-- <li class="sp">
+                <div class="time">2018-05-08 21:08:58</div>
+                <div class="inner">
+                  <div class="txt">
+                    <p>优惠券即将到期通知</p>
+                    <p>尊敬的用户，您好！您有优惠券即将到期，您可在我的优惠券进行查看。感谢您对我们的关注和支持！</p>
+                  </div>
+                  <router-link to="javascript:;" class="vux-1px-t">
+                    立即查看
+                    <span></span>
+                  </router-link>
                 </div>
-                <router-link to="javascript:;" class="vux-1px-t">
-                  立即查看
-                  <span></span>
-                </router-link>
-              </div>
-            </li>
-          </ul>
-        </div>
+              </li> -->
+            </ul>
+          </div>
 
-      </div>
-    </section>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -212,8 +215,11 @@ export default {
       }
       .pic {
         width: 100%;
+        height: 2.28rem;
+        margin: .26rem 0;
         > img {
           width: 100%;
+          height: 100%;
         }
       }
     }

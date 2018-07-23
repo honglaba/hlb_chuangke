@@ -242,7 +242,7 @@ import MeScroll from '@/../static/js/mescroll.min.js'
 import { mapActions, mapMutations } from 'vuex'
 import { setTimeout } from 'timers'
 export default {
-  name: 'App',
+  name: 'HomeIndex',
   data () {
     return {
       banner: [],

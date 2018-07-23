@@ -1,18 +1,22 @@
 <template>
   <footer class="y-flex y-ac vux-1px-t">
-    <router-link to="/" class="flex1" v-bind:class="{cur: /home/g.test(evenRoute) || evenRoute === undefined}">
+
+    <router-link to="/home" class="flex1" :class="{cur: /home/g.test(evenRoute)}">
       <span class="nav-ico type3"></span>
       <p>首页</p>
     </router-link>
-    <router-link to="/shop" class="flex1" v-bind:class="{cur: /shop/g.test(evenRoute)}">
+
+    <router-link to="/shop" class="flex1" :class="{cur: /shop/g.test(evenRoute)}">
       <span class="nav-ico type2"></span>
       <p>附近</p>
     </router-link>
-    <router-link to="/weika" class="flex1" v-bind:class="{cur: /weika/g.test(evenRoute)}">
+
+    <router-link to="/weika" class="flex1" :class="{cur: /weika/g.test(evenRoute)}">
       <span class="nav-ico type1"></span>
       <p>创客微卡</p>
     </router-link>
-    <router-link to="/member" class="flex1" v-bind:class="{cur: /member/g.test(evenRoute)}">
+
+    <router-link to="/member" class="flex1" :class="{cur: /member/g.test(evenRoute)}">
       <span class="nav-ico type4"></span>
       <p>我的</p>
     </router-link>
@@ -30,11 +34,11 @@ export default {
   },
   watch: {
     '$route' () {
-      this.evenRoute = this.$route.fullPath.split('/')[1]
+      this.evenRoute = this.$route.matched[0].path
     }
   },
   created () {
-    this.evenRoute = this.$route.fullPath.split('/')[1]
+    this.evenRoute = this.$route.matched[0].path
   }
 }
 </script>

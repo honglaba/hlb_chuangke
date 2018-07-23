@@ -192,7 +192,7 @@ export default {
             if (res.err_msg === 'get_brand_wcpay_request:ok') { this.wxSuccessCall() }
             if (
               res.err_msg === 'get_brand_wcpay_request:fail' ||
-            res.err_msg === 'get_brand_wcpay_request:cancel'
+              res.err_msg === 'get_brand_wcpay_request:cancel'
             ) { this.wxErrCall() }
           })
         })
