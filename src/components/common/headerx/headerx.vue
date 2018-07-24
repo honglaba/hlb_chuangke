@@ -9,14 +9,15 @@
     <div class="search-box y-flex y-ac">
       <span></span>
       <!-- <input type="search" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" @keyup.13=search() v-model.trim="searchVal" @focus="getFocus" /> -->
-      <input type="input" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" v-model.trim="searchVal" @focus="getFocus" />      
+      <input type="input" :placeholder="$route.query.title||'搜索附近的吃喝玩乐'" ref="search" v-model.trim="searchVal" @focus="getFocus" />
     </div>
     <div class="screen" v-if="!searchSeen"></div>
-    <router-link class="message" to="/home/notice" tag="div" v-if="!searchSeen"></router-link>
+    <router-link class="message" :class="[{'no':hasMessage==0}]" to="/home/notice" tag="div" v-if="!searchSeen"></router-link>
     <div v-if="searchSeen" class="search-btn" @click="search">搜索</div>
   </header>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -24,10 +25,17 @@ export default {
       backSeen: false,
       searchSeen: false,
       historyWords: null,
-      region: null
+      region: null,
+      hasMessage: null
     }
   },
   methods: {
+    ...mapActions(['HTTP_HasMessage']),
+    hasMessages () {
+      this.HTTP_HasMessage().then(res => {
+        this.hasMessage = res.data.hasMessage
+      })
+    },
     search () {
       if (this.searchVal) {
         this.$router.push({path: '/home/result', query: {title: this.searchVal}})
@@ -40,7 +48,7 @@ export default {
           localStorage.historyWords = this.historyWords
         }
       } else {
-        this.$vux.toast.show('请输入关键字');
+        this.$vux.toast.show('请输入关键字')
       }
     },
     goBack: function () {
@@ -86,6 +94,7 @@ export default {
 
   },
   mounted () {
+    this.hasMessages()
     // 其他形态
     if (this.$route.name === 'Food' || this.$route.name === 'Search' || this.$route.name === 'Result') {
       this.backSeen = true
@@ -171,6 +180,9 @@ header {
     right: -0.04rem;
     top: -0.04rem;
   }
+}
+.message.no::before{
+  content: none;
 }
 .back-btn{
   width:.7rem;

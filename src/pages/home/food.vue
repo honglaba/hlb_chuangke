@@ -140,7 +140,8 @@ export default {
       tempId: '', // 缓存的id
       tabFixed: false,
       times: 0,
-      sortIndex: 0
+      sortIndex: 0,
+      regionSelect: null
     }
   },
   components: { ListInner, Other },
@@ -300,7 +301,7 @@ export default {
     // },
     getArea: function () {
       this.axios
-        .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
+        .get('/api/areas?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng)
         .then(res => {
           console.log(res)
           for (let i = 0, len = res.data.length; i < len; i++) {
@@ -336,13 +337,14 @@ export default {
         this.region[i].active = false
       }
       this.region[index].active = true
+      this.regionSelect = this.region[index].region_name
+      // 判断是否选择全部
       if (index > 0) {
         this.axios
-          .get('/api/areas?latitude=23.0148260&longitude=113.7451960')
+          .get('/api/areas?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng)
           .then(res => {
             this.areas = res.data[index - 1].children
             this.areas.unshift({ region_name: '全部', active: true, id: this.region[index].id})
-            console.log(this.areas)
           })
       } else {
         this.areas = []
@@ -365,7 +367,16 @@ export default {
       this.screenTab[1].name = this.areas[index].region_name
       // this.getCategoryShop('&area_id=' + this.areas[index].id + '&cid=' + this.cid)
       this.areaId = this.areas[index].id
-      this.selectId = this.cid + '&area_id=' + this.areas[index].id
+
+      // 判断选择的是否全部
+      if (index == 0) {
+        this.selectId = this.cid + '&country_id=' + this.areas[index].id
+        this.screenTab[1].name = this.regionSelect
+      } else {
+        this.selectId = this.cid + '&area_id=' + this.areas[index].id
+        this.screenTab[1].name = this.areas[index].region_name
+      }
+
       if (this.selectId != this.tempId) { // 若切换分类才触发重置
         this.businessList = [] // 切换分类时数据清空 否则一直叠加
         this.mescroll.resetUpScroll()
@@ -374,6 +385,7 @@ export default {
     },
     /* 联网加载列表数据* */
     getListDataFromNet: function (pageNum, pageSize, successCallback, errorCallback, id) {
+      console.log('这里是' + id)
       let that = this
       let url
       this.times++ // 以加载次数充当页数
@@ -398,7 +410,7 @@ export default {
         // delete res.data.return_state
         for (let i in res.data) { // 距离格式
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }

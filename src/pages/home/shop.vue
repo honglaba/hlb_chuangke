@@ -7,8 +7,8 @@
       <div class="top-row">
         <span class="back" @click="goBack"></span>
         <div class="y-flex y-ac">
-          <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}" @click.native="createQR"></router-link>
-          <!-- <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}"></router-link> -->
+          <!-- <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:details.address,title:details.title}}" @click.native="createQR"></router-link> -->
+          <router-link tag="span" :to="{path:'/home/shopqrcode',query:{file:'http://t.hlbck.com/#' + $route.fullPath,title:details.title}}" @click.native="createQR"></router-link>
           <span></span>
         </div>
       </div>
@@ -117,9 +117,13 @@
           <span class="add-ico"></span>
           <p class="c666 address-row">{{details.address}}</p>
         </router-link>
+        <!-- 换成直接用a标签 -->
         <div class="call-btn" @click="showMask">
           <img src="./images/icon_details_iphone.png" />
         </div>
+        <!-- <a class="call-btn" :href="'tel:'+details.phone">
+          <img src="./images/icon_details_iphone.png" />
+        </a> -->
       </div>
     </section>
 
@@ -263,8 +267,7 @@ export default {
     },
     onConfirm (msg) {
       if (msg) {
-        // window.location.href = msg
-        alert('拨打电话')
+        window.location.href = `tel:${this.details.phone}`
       }
     },
     // 商家信息
@@ -302,9 +305,9 @@ export default {
     // 创建二维码
     createQR () {
       let that = this
-      console.log(this.$route.fullPath)
       this.axios.post('/api/qrcode', {
-        text: that.$route.fullPath
+        text: 'http://t.hlbck.com/#' + this.$route.fullPath
+
       }).then(res => {
         console.log(res)
       })
@@ -327,6 +330,12 @@ export default {
     this.getExchange()
     this.getComments()
     // this.createQR()// 进入页面立即创建二维码
+    console.log('这里是' + this.$route.fullPath)
+    // this.axios.post('/api/qrcode', {
+    //   text: 'http://t.hlbck.com/#' + this.$route.fullPath
+    // }).then(res => {
+    //   console.log(res)
+    // })
   },
   directives: {
     TransferDom

@@ -241,7 +241,7 @@ export default {
         // delete res.data.return_state
         for (let i in res.data) { // 距离格式
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -450,6 +450,8 @@ export default {
   background: #f5f5f5;
   padding: 0.24rem 0 0.06rem 0.24rem;
   overflow: hidden;
+  // max-height: 2.7rem;
+  // overflow-y: scroll;
   li {
     width: 1.6rem;
     height: 0.52rem;
@@ -563,6 +565,8 @@ export default {
   background: #f5f5f5;
   padding: 0.24rem 0 0.06rem 0.24rem;
   overflow: hidden;
+  // max-height: 2.7rem;
+  // overflow-y: scroll;
   li {
     width: 1.6rem;
     height: 0.52rem;

@@ -85,7 +85,7 @@ export default {
         // delete res.data.return_state
         for (let i in res.data) { // 距离格式
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
