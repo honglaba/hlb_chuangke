@@ -1,6 +1,6 @@
 <template>
   <!-- 文章详情 -->
-  <div class="article-detail">
+  <div class="article-content">
     <div class="art-title">
       <h2>{{ Cup.title }}</h2>
     </div>
@@ -17,20 +17,21 @@ export default {
       type: Object
     }
   },
-  created () {
-    this.$printf(this.Cup)
+  created() {
+    this.$printf(this.Cup);
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-// @import "~style/theme.less";
-.article-detail {
-  position: relative;
+.art-title {
+  margin-bottom: 0.2rem;
 }
-
 .art-content {
   width: 100%;
   word-break: break-all;
+  img {
+    max-width: 100%;
+  }
 }
 </style>

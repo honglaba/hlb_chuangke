@@ -31,15 +31,13 @@
     <div class="main2">
 
       <!-- nav -->
-      <div class="content" v-if="!isDetail">
-
-          <ul class="opt-box" v-if="GenerCup.length > 0">
-            <li class="opt-child" v-for="(item, key) in GenerCup" :key="key" @click="_toDetail(key)">
-              <span class="opt-child-text">{{ item.title }}</span>
-              <span class="opt-child-img"><img src="../../assets/images/you1.png"></span>
-            </li>
-          </ul>
-
+      <div class="content base_box" v-if="!isDetail">
+        <div class="tit" v-for="(item, key) in GenerCup" :key="key" @click="_toDetail(key)">
+          <div class="l">{{ item.title }}</div>
+          <div class="r">
+            <img src="../../assets/images/you1.png">
+          </div>
+        </div>
       </div>
 
       <!-- - -->
@@ -51,84 +49,64 @@
   </div>
 </template>
 <script>
-import detail from './detail'
-import { mapActions } from 'vuex'
+import detail from "./detail";
+import { mapActions } from "vuex";
 export default {
-  data () {
+  data() {
     return {
-      Title: '帮助中心',
+      Title: "帮助中心",
       Cup: {},
       GenerCup: [],
       isDetail: false
-    }
+    };
   },
-  created () {
-    this.getArticle({cid: 6, page: 1})
-      .then(res => {
-        this.GenerCup = res.data.data
-      })
+  created() {
+    this.getArticle({ cid: 6, page: 1 }).then(res => {
+      this.GenerCup = res.data.data;
+    });
   },
   methods: {
-    async _toDetail (face) {
-      this.Title = this.GenerCup[face].title
+    async _toDetail(face) {
+      this.Title = '文章详情'
 
       if (face === 3) {
-        this.$router.push({path: '/article/feedback'})
-        return
+        this.$router.push({ path: "/article/feedback" });
+        return;
       }
 
-      await this.getDetail({id: this.GenerCup[face].id})
-        .then(res => {
-          this.Cup = res.data
-        })
+      await this.getDetail({ id: this.GenerCup[face].id }).then(res => {
+        this.Cup = res.data;
+      });
 
-      this.isDetail = !this.isDetail
+      this.isDetail = !this.isDetail;
     },
-    routeBack () {
+    routeBack() {
       if (this.isDetail) {
-        this.Title = '帮助中心'
-        this.isDetail = !this.isDetail
-        return
+        this.Title = "帮助中心";
+        this.isDetail = !this.isDetail;
+        return;
       }
 
-      this.$router.push({path: '/member'})
+      this.$router.push({ path: "/member" });
     },
-    ...mapActions({getArticle: 'Art_Category', getDetail: 'Art_normalDetail'})
+    ...mapActions({ getArticle: "Art_Category", getDetail: "Art_normalDetail" })
   },
   components: {
     detail
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .content {
-  width: 100%;
-  .opt-box {
-    width: 100%;
-    background-color: #FFF;
-    .opt-child {
-      height: .9rem;
-      font-size: .3rem;
-      border-bottom: 1px solid #F0F0F0;
-      padding: 0 .3rem;
-      span {
-        display: block;
-        height: 100%;
-      }
-      .opt-child-text {
-        float: left;
-        line-height: .9rem;
-      }
-      .opt-child-img {
-        float: right;
-        line-height: .9rem;
-      }
-    }
-  }
+  padding: 0 0.2rem;
 }
-
+.kefu {
+  width: 0.36rem;
+  height: 0.36rem;
+}
 .article-detail {
-  width: 100%;
   height: 100%;
+  padding: 0.3rem;
+  line-height: 0.52rem;
 }
 </style>
