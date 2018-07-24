@@ -26,7 +26,7 @@
           <ul id="dataList" class="data-list">
             <router-link tag="li" :to="{path:'home/shop/',query:{id:item.id}}" class="vux-1px-b" v-for="(item,index) in businessList" :key="index">
               <ListInner :businessList="item"></ListInner>
-              <Other></Other>
+              <!-- <Other></Other> -->
             </router-link>
           </ul>
         </section>
@@ -224,7 +224,7 @@ export default {
       this.tempId = id// 将id缓存
       id == '' ? id = '&cid=131' : id = '&cid=' + id// 若id为空则判断为从别的路由进入，默认id为1；若不为空则判断为点击分类切换数据，id为点击的id
       // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id
-      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&page=' + this.times + id
+      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&page=' + this.times + id + '&by=distance&order=asc'
 
       this.axios.get(url).then(res => {
         this.page = res
@@ -241,7 +241,7 @@ export default {
         // delete res.data.return_state
         for (let i in res.data) { // 距离格式
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -450,6 +450,8 @@ export default {
   background: #f5f5f5;
   padding: 0.24rem 0 0.06rem 0.24rem;
   overflow: hidden;
+  // max-height: 2.7rem;
+  // overflow-y: scroll;
   li {
     width: 1.6rem;
     height: 0.52rem;
@@ -479,6 +481,7 @@ export default {
     padding: 0 0.3rem;
     > li {
     padding-top: 0.32rem;
+    padding-bottom: 0.32rem;
   }
 }
 
@@ -562,6 +565,8 @@ export default {
   background: #f5f5f5;
   padding: 0.24rem 0 0.06rem 0.24rem;
   overflow: hidden;
+  // max-height: 2.7rem;
+  // overflow-y: scroll;
   li {
     width: 1.6rem;
     height: 0.52rem;

@@ -56,18 +56,19 @@
     </section>
     <section class="mask" v-if="maskSeen" @click.self="blur">
       <div class="result" v-if="resultSeen">
-        <ul class="vux-1px-t">
-          <li class="vux-1px-b">
+        <ul class="vux-1px-t"  v-if="searchResult.length!=0">
+          <!-- <li class="vux-1px-b">
             <span>城市</span>
             <p>武汉</p>
-          </li>
-          <li class="vux-1px-b">
+          </li> -->
+
+          <li class="vux-1px-b" v-for="(item,index) in searchResult" :key="index"  @click="changeRegion(item.key1,item.key2)">
             <span>城市</span>
-            <p>武汉</p>
+            <p>{{item.region_name}}</p>
           </li>
         </ul>
 
-        <div class="no-result">
+        <div class="no-result" v-if="searchResult.length==0">
           <img src="./images/msg_fixed_icon.png" />
           <p>没有搜索结果</p>
           <p>换个关键词试试</p>
@@ -104,16 +105,25 @@ export default {
         present: ''
       },
       region: null,
-      nowRegion: null
+      nowRegion: null,
+      searchResult: []
     }
   },
   watch: {
     keyword () {
       if (this.keyword) {
         this.resultSeen = true
-        // for(x in cityJson){
-          
-        // }
+        this.searchResult = []
+        // 搜索
+        for (let x in cityJson) {
+          for (let i = 0, len = cityJson[x].length; i < len; i++) {
+            if (cityJson[x][i].region_name.indexOf(this.keyword) >= 0) {
+              cityJson[x][i].key1 = x
+              cityJson[x][i].key2 = i
+              this.searchResult.push(cityJson[x][i])
+            }
+          }
+        }
       } else {
         this.resultSeen = false
       }
@@ -308,6 +318,7 @@ header {
     padding-left: 0.24rem;
     box-sizing: border-box;
     padding-top: 0.07rem;
+    overflow-y: scroll;
     > ul {
       > li {
         height: 0.92rem;

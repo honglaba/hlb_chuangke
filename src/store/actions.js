@@ -3,6 +3,22 @@ import Cookies from 'js-cookie'
 import { client } from 'tools/client'
 /* eslint-disable*/
 
+export function HTTP_HasMessage ({commit}, data) { // 检测是否有新消息
+  return new Promise((resolve, reject) => {
+    ajax.get('/api/is-has-message',
+    {
+      headers: {
+        'Authorization': 'Bearer ' + Cookies.get('accessToken')
+      }
+    })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(erro => {
+        reject(erro)
+      })
+  })
+}
 
 export function HTTP_Comment ({commit}, data) { // 评论
   return new Promise((resolve, reject) => {

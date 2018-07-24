@@ -51,7 +51,7 @@ export default {
       this.times++ // 以加载次数充当页数
       // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&page=' + this.times + id + '&order=' + this.sortTxt[this.sortIndex].order + '&by=' + this.sortTxt[this.sortIndex].by
       // url = '/api/shop-category/shops?latitude=23.0148260&longitude=113.7451960&order=asc&by=distance&title=' + this.$route.query.title + '&page=' + this.times
-      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&order=asc&by=distance&title=' + this.$route.query.title + '&page=' + this.times      
+      url = '/api/shop-category/shops?latitude=' + sessionStorage.lat + '&longitude=' + sessionStorage.lng + '&order=asc&by=distance&title=' + this.$route.query.title + '&page=' + this.times
       this.axios.get(url).then(res => {
         console.log(res)
         this.page = res
@@ -61,7 +61,7 @@ export default {
         // delete res.data.return_state
         for (let i in res.data) { // 距离格式
           if (res.data[i].distance >= 1000) {
-            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'Km'
+            res.data[i].distance = (res.data[i].distance / 1000).toFixed(1) + 'km'
           } else {
             res.data[i].distance = res.data[i].distance + 'm'
           }
@@ -126,7 +126,7 @@ export default {
           },
           empty: { // 配置列表无任何数据的提示
             warpId: 'dataList',
-            icon: '../../../static/images/mescroll-empty.png',
+            icon: '../../../static/images/nodata.png',
             tip: '亲，还没有相关的数据',
             btntext: '去逛逛 >',
             btnClick: function () {

@@ -19,22 +19,40 @@
         <router-link tag="li" v-for="(item,index) in history" :key="index" :to="{path:'/home/result',query:{'title':item}}">{{item}}</router-link>
       </ul>
     </section>
+    <div v-transfer-dom>
+      <confirm v-model="show"  @on-confirm="onConfirm" confirm-text="确定">
+        <p style="text-align:center;">是否删除历史搜索数据?</p>
+      </confirm>
+    </div>
   </div>
 </template>
 <script>
+import { Confirm, TransferDomDirective as TransferDom } from 'vux'
 export default {
   data () {
     return {
-      history: localStorage.historyWords.split('|')
+      history: localStorage.historyWords.split('|'),
+      show: false
     }
   },
   methods: {
     deleteHistory () {
+      // localStorage.removeItem('historyWords')
+      // this.history = null
+      this.show = true
+    },
+    onConfirm () {
       localStorage.removeItem('historyWords')
       this.history = null
     }
   },
   mounted () {
+  },
+  directives: {
+    TransferDom
+  },
+  components: {
+    Confirm
   }
 }
 </script>

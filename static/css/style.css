@@ -360,3 +360,13 @@ body{
 .ck-heavy {
 	font-family: 'jiacu'!important;
 }
+.mescroll-empty .empty-icon{
+	width: 20% !important;
+}
+.mescroll-empty .empty-tip{
+	font-size: .28rem !important;
+}
+.mescroll-empty .empty-btn{
+	color: #f60 !important;
+	border: 1px solid #f60 !important;
+}
