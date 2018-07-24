@@ -133,11 +133,12 @@ export default {
     this.ReqEnd = false
     await this.getGoodList(this.$route.params.status)
       .then(res => {
-        this.nowSeen = this.$route.params.status
+        this.nowSeen = +this.$route.params.status
         this.realData = res.data
         console.log(this.realData)
       })
       .catch(erro => {
+        this.nowSeen = +this.$route.params.status
         this.realData = []
       })
     this.ReqEnd = true

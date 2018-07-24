@@ -477,8 +477,48 @@ const weika = {
   }
 }
 
+const article = {
+  Art_massageDetail ({commit}, id) { // 获取消息详细内容
+    return new Promise((resolve, reject) => {
+      ajax.get(`/api/message/${id}`)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(erro => {
+          reject(erro)
+        })
+    })
+  },
+  Art_Category ({commit}, data) { // 按分类获取文章列表 帮助中心6
+    return new Promise((resolve, reject) => {
+      ajax.get(`/api/get-category-article`, {
+        params: data // cid page
+      })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(erro => {
+          reject(erro)
+        })
+    })
+  },
+  Art_normalDetail ({commit}, data) {
+    return new Promise((resolve, reject) => {
+      ajax.get(`/api/get-article-detail`, {
+        params: data // cid
+      })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(erro => {
+          reject(erro)
+        })
+    })
+  }
+}
+
 const moduleUser = {
-  actions: Object.assign({}, normal, weika)
+  actions: Object.assign({}, normal, weika, article)
 }
 
 export default moduleUser

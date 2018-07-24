@@ -159,6 +159,7 @@ export default {
         is_invite: 0,
         trade_type: 'weixinjsbridge'
       }
+
       if (this.WkInvGetter) {
         inbObj.is_invite = 1
         inbObj.invite_id = this.WkInvGetter

@@ -40,9 +40,9 @@
               <span>
                 <router-link to="record">查看战绩</router-link>
               </span>
-              <span>
+              <!-- <span>
                 <a href="javascript:;">查看佣金使用明细</a>
-              </span>
+              </span> -->
             </div>
 
           </div>
@@ -58,7 +58,7 @@
             <ul class="fenleilist pd20">
               <li>
                 <div class="tit">创客新用户邀请佣金
-                  <span>{{ countMoney.invite_commission }}</span>
+                  <span>{{ countMoney.consumption_commission }}</span>
                 </div>
                 <!-- <div class="warper">
                   <p>
@@ -132,16 +132,16 @@ export default {
   async created () {
     await this.Vip_Commission()
       .then(res => {
-        let inviteCommission = res.data.invite_commission_per
+        let inviteCommissionPer = res.data.invite_commission_per
         let consumptionCommissionPer = res.data.consumption_commission_per
         let mapCanvas = {
-          '创客新用户邀请佣金': inviteCommission + '%',
-          '邀请的用户平台消费佣金': consumptionCommissionPer + '%'
+          '创客新用户邀请佣金': consumptionCommissionPer + '%',
+          '邀请的用户平台消费佣金': inviteCommissionPer + '%'
         }
 
         this.dataPie = [
-          { name: '创客新用户邀请佣金', percent: inviteCommission, a: '1' },
-          { name: '邀请的用户平台消费佣金', percent: consumptionCommissionPer, a: '1' }
+          { name: '创客新用户邀请佣金', percent: consumptionCommissionPer, a: '1' },
+          { name: '邀请的用户平台消费佣金', percent: inviteCommissionPer, a: '1' }
         // { name: '额外奖励佣金', percent: 0.52, a: '1' }
         ]
 

@@ -110,10 +110,9 @@ export default {
     }
   },
   created () {
-    this.Wk_GoodList()
-      .then(res => {
-        this.goodList = res.data
-      })
+    this.Wk_GoodList().then(res => {
+      this.goodList = res.data
+    })
   },
   methods: {
     toBuy () {
@@ -121,14 +120,17 @@ export default {
       setTimeout(() => {
         this.updateCart(choose)
         this.saveCurrTodo('Wkbuy')
-        this.$router.push({path: '/weika/pay'})
+        this.$router.push({ path: '/weika/pay' })
       }, 300)
     },
     routeBack () {
       this.$router.go(-1)
     },
     ...mapActions(['Wk_GoodList']),
-    ...mapMutations({ updateCart: 'SAVE_SHOPPING_CART', saveCurrTodo: 'UPDATE_CURRENT_OPERATION' })
+    ...mapMutations({
+      updateCart: 'SAVE_SHOPPING_CART',
+      saveCurrTodo: 'UPDATE_CURRENT_OPERATION'
+    })
   },
   components: {
     Scroller
@@ -230,45 +232,48 @@ export default {
   position: relative;
   width: 12.42rem;
   height: 3.8rem;
-}
-.dhbox-item {
-  width: 2.56rem;
-  height: 3.16rem;
-  display: inline-block;
-  border: #fff solid 1px;
-  box-shadow: 0 3px 12px rgba(21, 0, 71, 0.16);
-  border-radius: 5px;
-  margin-left: 0.1rem;
-  background: #fff;
-  padding: 0.2rem;
-  .name {
-    font-size: 0.32rem;
-    font-weight: bold;
-    min-height: 0.84rem;
-  }
-  .price {
-    margin-top: 0.1rem;
-    color: #f5232e;
-  }
-  .beizhu {
-    color: #999;
-    margin-top: 0.1rem;
-  }
-  .look {
-    margin-top: 0.3rem;
-    border-top: #eaeaea dashed 1px;
-    text-align: center;
-    span {
-      height: 0.48rem;
-      padding: 0 0.3rem;
-      margin-top: 0.3rem;
-      display: inline-block;
-      border: #e6e4e3 solid 1px;
-      border-radius: 5px;
+  perspective: 1000px;
+  .dhbox-item {
+    width: 2.56rem;
+    height: 3.16rem;
+    display: inline-block;
+    border: #fff solid 1px;
+    box-shadow: 0 3px 12px rgba(21, 0, 71, 0.16);
+    border-radius: 5px;
+    margin-left: 0.1rem;
+    background: #fff;
+    padding: 0.2rem;
+    box-sizing: border-box;
+    .name {
+      font-size: 0.32rem;
+      font-weight: bold;
+      min-height: 0.84rem;
     }
-  }
-  &.on {
-    border: #fa9196 solid 1px;
+    .price {
+      margin-top: 0.1rem;
+      color: #f5232e;
+    }
+    .beizhu {
+      color: #999;
+      margin-top: 0.1rem;
+    }
+    .look {
+      margin-top: 0.3rem;
+      border-top: #eaeaea dashed 1px;
+      text-align: center;
+      span {
+        height: 0.48rem;
+        padding: 0 0.3rem;
+        margin-top: 0.3rem;
+        display: inline-block;
+        border: #e6e4e3 solid 1px;
+        border-radius: 5px;
+        line-height: 0.48rem;
+      }
+    }
+    &.on {
+      border: #fa9196 solid 2px;
+    }
   }
 }
 .dhbox-item:first-child {
