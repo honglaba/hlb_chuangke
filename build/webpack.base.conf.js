@@ -42,7 +42,8 @@ const webpackConfig = {
       'static': resolve('static'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'tools': resolve('src/tools')
+      'tools': resolve('src/tools'),
+      'style': resolve('src/style')
     }
   },
   module: {

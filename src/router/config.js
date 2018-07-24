@@ -496,7 +496,7 @@ export default new VueRouter({
     path: '/article',
     component: article_route,
     children: [{
-      path: 'help_list',
+      path: 'help_list/:id',
       name: 'help_list',
       component: help_list,
       meta: {

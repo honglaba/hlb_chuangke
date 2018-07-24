@@ -110,19 +110,22 @@
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
+
           <!-- <router-link :to="{path:'/member/exchange'}">
             <div class="tit">
               <div class="l">我要兑换</div>
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link> -->
+
           <router-link :to="{path:'/member/favourite'}">
             <div class="tit">
               <div class="l">我的收藏</div>
               <div class="r"><img src="./images/you1.png"></div>
             </div>
           </router-link>
-          <router-link :to="{ path: '/article/help_list' }">
+
+          <router-link :to="{ path: '/article/help_list/6' }">
             <div class="tit">
               <div class="l">帮助中心</div>
               <div class="r"><img src="./images/you1.png"></div>

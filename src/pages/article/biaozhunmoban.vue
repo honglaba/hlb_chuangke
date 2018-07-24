@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-          <my-header :Title="'我的积分'"> <router-link to="points_log" slot="right">
+    <my-header :Title="'我的积分'">
+      <router-link to="points_log" slot="right">
         <img src="../../assets/images/kefu.png" class="kefu">
       </router-link>
     </my-header>

@@ -240,7 +240,6 @@ import Swiper from '@/../static/swiper/swiper-4.2.6.min.js'
 import MeScroll from '@/../static/js/mescroll.min.js'
 // import Swiper from '@/../static/swiper/swiper.min.js'
 import { mapActions, mapMutations } from 'vuex'
-import { setTimeout } from 'timers'
 export default {
   name: 'HomeIndex',
   data () {
