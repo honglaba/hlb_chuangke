@@ -51,7 +51,8 @@
       <p>热门定位</p>
       <!-- 字母导航 -->
       <ul>
-        <li v-for="(alp, i) in cityInitial" :key="i" @click="alpTarget($event, i)"><a :href="'#' + i">{{ i }}</a></li>
+        <!-- <li v-for="(alp, i) in cityInitial" :key="i" @click="alpTarget($event, i)"><a :href="'#' + i">{{ i }}</a></li> -->
+        <li v-for="(alp, i) in cityInitial" :key="i" @click="alpTarget($event, i)">{{ i }}</li>
       </ul>
     </section>
     <section class="mask" v-if="maskSeen" @click.self="blur">
@@ -163,6 +164,8 @@ export default {
     // 进入页面即获取焦点
     // this.$refs['input'].focus()
     this.nowRegion = sessionStorage.nowRegion
+    let ADl = document.getElementById('A')
+    console.log(ADl.offsetTop)
   }
 }
 </script>

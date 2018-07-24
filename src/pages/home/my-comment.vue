@@ -56,7 +56,8 @@ export default {
         }
       ],
       scoreIndex: 4,
-      myComment: ''
+      myComment: '',
+      myScore: 5
     }
   },
   methods: {
@@ -89,7 +90,6 @@ export default {
       //     }
       //   })
       // }
-
       if (this.myComment) {
         this.HTTP_Comment({
           sid: that.detailsGetter.id,
