@@ -39,7 +39,6 @@
           </div>
         </div>
       </div>
-
       <!-- - -->
       <div class="article-detail" v-else>
         <detail :Cup="Cup"></detail>
@@ -97,6 +96,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.main2{
+    background: #fff;
+}
 .content {
   padding: 0 0.2rem;
 }
