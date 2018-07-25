@@ -275,6 +275,7 @@ export default {
       let that = this
       this.axios.get('/api/shop?id=' + this.$route.query.id)
         .then(res => {
+          console.log(res)
           that.shopId = res.data.id
           that.$store.commit('CHOICE_DETAILS', res.data)
         })

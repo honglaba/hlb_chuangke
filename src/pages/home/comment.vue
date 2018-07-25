@@ -22,7 +22,7 @@
            <div class="user-row">
              <div>
                <div class="user-img">
-                 <img :src="item.userInfo.headerimgurl" />
+                 <img :src="item.userInfo.headimgurl" />
                </div>
                <div class="user-txt">
                  <p>{{item.userInfo.nickname||'未知用户'}}</p>
