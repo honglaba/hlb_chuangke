@@ -19,6 +19,7 @@ export function _init () {
   Cookies.remove('accessToken')
   Cookies.remove('laravel_session')
   localStorage.clear()
+  sessionStorage.clear()
 }
 
 export function formatDateTime (inputTime) {
@@ -32,8 +33,8 @@ export function formatDateTime (inputTime) {
 }
 
 export function ConsoleFun (arg, tip) {
-  console.log('---' + (tip || '-') + '---')
-  console.log('%c' + Object.prototype.toString.call(arg), 'color:deeppink;font-size:8px;')
-  console.log(arg)
-  console.log('------')
+  console.log('---' + (tip || '-') + '---\n')
+  console.log('%c' + Object.prototype.toString.call(arg), 'color:deeppink;font-size:8px;\n')
+  console.log(arg + '\n')
+  console.log('------\n')
 }

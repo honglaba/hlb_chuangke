@@ -58,7 +58,7 @@
             <ul class="fenleilist pd20">
               <li>
                 <div class="tit">创客新用户邀请佣金
-                  <span>{{ countMoney.consumption_commission }}</span>
+                  <span>{{ countMoney.invite_commission}}</span>
                 </div>
                 <!-- <div class="warper">
                   <p>
@@ -73,7 +73,7 @@
               </li>
               <li>
                 <div class="tit">邀请的用户平台消费佣金
-                  <span>{{ countMoney.invite_commission }}</span>
+                  <span>{{ countMoney.consumption_commission }}</span>
                 </div>
               </li>
               <!-- <li>

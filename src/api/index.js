@@ -2,6 +2,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Domain } from 'tools/env'
 import { STATE_OK, STATE_FAIL } from 'tools/ERR'
+import { _init } from 'tools/util'
 import store from '@/store'
 
 // 配置axios对象
@@ -19,14 +20,6 @@ function onRrefreshed (token) {
   refreshSubscribers.map(cb => cb(token))
 }
 
-function _init () { // 初始化
-  Cookies.remove('refreshToken')
-  Cookies.remove('accessToken')
-  Cookies.remove('laravel_session')
-  localStorage.clear()
-  location.reload()
-}
-
 // 请求拦截器
 axios.interceptors.request.use(config => {
   store.commit('UPDATE_LOADING', {status: true})
@@ -36,6 +29,7 @@ axios.interceptors.request.use(config => {
 
     if (!Cookies.get('refreshToken')) { // 判断refresh_token 是否过期
       _init()
+      location.reload()
       return
     }
 
@@ -63,9 +57,13 @@ axios.interceptors.request.use(config => {
             Cookies.set('accessToken', accessToken, {
               expires: 1 / 30
             })
+            // Cookies.set('larvel_session', accessToken, {
+            //   expires: 1 / 30
+            // })
             onRrefreshed(accessToken)
           } else if (responseJSON.result_state === 'error') {
             _init()
+            location.reload()
           }
         }
       }

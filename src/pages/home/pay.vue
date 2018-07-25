@@ -140,7 +140,8 @@ export default {
           .then(res => {
             if (res.data.is_pay === 1) {
               alert('支付完成' + res.data.order_sn)
-              clearTimeout(payQues)
+              clearInterval(payQues)
+              this.$router.push({path: `/home/payfinish/${this.$route.query.id}`})
             }
           })
           .catch(erro => {
